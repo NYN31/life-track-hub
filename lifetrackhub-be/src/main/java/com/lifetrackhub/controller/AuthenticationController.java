@@ -1,9 +1,9 @@
 package com.lifetrackhub.controller;
 
+import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.dto.request.LoginRequestDto;
 import com.lifetrackhub.dto.request.RegistrationRequestDto;
 import com.lifetrackhub.dto.response.LoginResponseDto;
-import com.lifetrackhub.dto.response.RegistrationResponseDto;
 import com.lifetrackhub.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +25,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authentication/registration")
-    public RegistrationResponseDto registration(@RequestBody @Valid RegistrationRequestDto dto) {
+    public UserDto registration(@RequestBody @Valid RegistrationRequestDto dto) {
         return authenticationService.registration(dto);
     }
 }

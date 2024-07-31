@@ -1,10 +1,10 @@
 package com.lifetrackhub.service.impl;
 
 import com.lifetrackhub.constant.enumeration.Role;
+import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.dto.request.RegistrationRequestDto;
 import com.lifetrackhub.dto.request.LoginRequestDto;
 import com.lifetrackhub.dto.response.LoginResponseDto;
-import com.lifetrackhub.dto.response.RegistrationResponseDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.AuthenticationService;
@@ -12,7 +12,6 @@ import com.lifetrackhub.service.JwtService;
 import com.lifetrackhub.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public RegistrationResponseDto registration(RegistrationRequestDto request) {
+    public UserDto registration(RegistrationRequestDto request) {
         Optional<User> user = userRepository.findByEmail(request.getEmail());
         if (user.isPresent()) {
             log.warn("User with email {} already exists", request.getEmail());
@@ -53,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userInfo = userRepository.save(userInfo);
         log.info("User created: {}", userInfo);
 
-        return RegistrationResponseDto.formEntity(userInfo);
+        return UserDto.formEntity(userInfo);
     }
 
     @Override
