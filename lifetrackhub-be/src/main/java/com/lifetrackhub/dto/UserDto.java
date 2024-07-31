@@ -11,6 +11,8 @@ public class UserDto extends BaseDto {
 
     private String role;
 
+    private boolean enabled;
+
     private UserDetails userDetails;
 
     public static UserDto formEntity(User user) {
@@ -21,6 +23,7 @@ public class UserDto extends BaseDto {
         dto.setLastname(user.getLastname());
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRole());
+        dto.setEnabled(user.isEnabled());
         dto.setUserDetails(user.getUserDetails());
 
         return dto;
@@ -58,6 +61,14 @@ public class UserDto extends BaseDto {
         this.role = role;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public UserDetails getUserDetails() {
         return userDetails;
     }
@@ -73,6 +84,7 @@ public class UserDto extends BaseDto {
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
+                ", enabled='" + enabled + '\'' +
                 ", userDetails=" + userDetails +
                 '}';
     }

@@ -46,6 +46,7 @@ public class JwtServiceImpl implements JwtService {
                     .withIssuer(issuer)
                     .withIssuedAt(Instant.now())
                     .withExpiresAt(Instant.now().plusSeconds(expirationTime))
+                    .withClaim("enabled", user.isEnabled())
                     .withClaim("role", Collections.singletonList(role))
                     .withClaim("userId", user.getId())
                     .sign(algorithm);
@@ -63,6 +64,7 @@ public class JwtServiceImpl implements JwtService {
         log.info("Access token: {}", accessToken);
         try {
             JWTVerifier verifier = JWT.require(algorithm)
+                    .withClaim("enabled", true)
                     .withClaimPresence("userId")
                     .withClaimPresence("role")
                     .build();

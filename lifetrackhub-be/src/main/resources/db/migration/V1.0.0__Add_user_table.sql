@@ -7,6 +7,7 @@ CREATE TABLE user
     email              VARCHAR(60)  NOT NULL,
     password           VARCHAR(100) NOT NULL,
     role               VARCHAR(100),
+    enabled            BOOLEAN      NOT NULL,
     user_details       BLOB,
 
     created_date       DATETIME     NOT NULL,

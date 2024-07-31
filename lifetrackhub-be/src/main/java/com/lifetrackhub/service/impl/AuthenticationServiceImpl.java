@@ -86,6 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(request.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         user.setRole(String.valueOf(Role.USER));
+        user.setEnabled(true);
         user.setUserDetails(null);
 
         return user;

@@ -19,6 +19,9 @@ public class User extends BaseEntity {
 
     private String role;
 
+    @NotNull
+    private boolean enabled;
+
     private UserDetails userDetails;
 
     public @NotNull String getFirstname() {
@@ -61,6 +64,15 @@ public class User extends BaseEntity {
         this.role = role;
     }
 
+    @NotNull
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(@NotNull boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public UserDetails getUserDetails() {
         return userDetails;
     }
@@ -77,6 +89,7 @@ public class User extends BaseEntity {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
+                ", enabled=" + enabled +
                 ", userDetails=" + userDetails +
                 '}' + super.toString();
     }
