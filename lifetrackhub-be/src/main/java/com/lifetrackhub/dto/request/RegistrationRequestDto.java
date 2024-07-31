@@ -1,6 +1,5 @@
 package com.lifetrackhub.dto.request;
 
-import com.lifetrackhub.dto.UserDetails;
 import jakarta.validation.constraints.NotNull;
 
 public class RegistrationRequestDto {
@@ -14,8 +13,6 @@ public class RegistrationRequestDto {
 
     @NotNull
     private String password;
-
-    private UserDetails userDetails;
 
     public String getFirstname() {
         return firstname;
@@ -47,13 +44,5 @@ public class RegistrationRequestDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public UserDetails getUserDetailsDto() {
-        return userDetails;
-    }
-
-    public void setUserDetailsDto(UserDetails userDetails) {
-        this.userDetails = userDetails;
     }
 }
