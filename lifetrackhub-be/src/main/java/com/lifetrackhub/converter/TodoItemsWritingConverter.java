@@ -1,6 +1,6 @@
 package com.lifetrackhub.converter;
 
-import com.lifetrackhub.dto.records.todo.TodoItem;
+import com.lifetrackhub.dto.TodoItems;
 
-public class TodoItemWritingConverter extends AbstractWritingConverter<TodoItem> {
+public class TodoItemsWritingConverter extends AbstractWritingConverter<TodoItems> {
 }

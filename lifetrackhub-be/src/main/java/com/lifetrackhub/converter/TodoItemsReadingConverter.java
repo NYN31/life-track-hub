@@ -1,10 +1,10 @@
 package com.lifetrackhub.converter;
 
-import com.lifetrackhub.dto.records.todo.TodoItem;
+import com.lifetrackhub.dto.TodoItems;
 
-public class TodoItemReadingConverter extends AbstractReadingConverter<TodoItem> {
+public class TodoItemsReadingConverter extends AbstractReadingConverter<TodoItems> {
     @Override
-    protected Class<TodoItem> valueType() {
-        return TodoItem.class;
+    protected Class<TodoItems> valueType() {
+        return TodoItems.class;
     }
 }
