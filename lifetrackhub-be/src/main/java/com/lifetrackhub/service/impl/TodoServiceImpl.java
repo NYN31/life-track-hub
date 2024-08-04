@@ -66,6 +66,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public TodoDto updateTodo(TodoDto dto) {
+        log.info("Updating todo: {}", dto);
         validateUserWithUserId(dto.getUserId());
 
         Optional<Todo> optional = todoRepository.findById(dto.getId());

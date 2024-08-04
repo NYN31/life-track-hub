@@ -65,6 +65,6 @@ public class TodoDto extends BaseDto {
                 ", title='" + title + '\'' +
                 ", done=" + done +
                 ", todoItems=" + Arrays.toString(todoItems) +
-                '}';
+                '}' + ' ' + super.toString();
     }
 }
