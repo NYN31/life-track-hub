@@ -2,12 +2,17 @@ package com.lifetrackhub.dto;
 
 import com.lifetrackhub.dto.records.todo.TodoItem;
 import com.lifetrackhub.entity.Todo;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Arrays;
 
 public class TodoDto extends BaseDto {
+    @NotNull
     private Long userId;
 
+    @NotNull
+    @Length(min = 3, max = 250)
     private String title;
 
     private Boolean done;

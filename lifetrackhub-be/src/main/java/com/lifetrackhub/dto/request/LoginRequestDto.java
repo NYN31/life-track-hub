@@ -9,7 +9,7 @@ public class LoginRequestDto {
     private String email;
 
     @NotNull
-    @Length(min = 3, max = 40)
+    @Length(min = 8, max = 40)
     private String password;
 
     public String getEmail() {
