@@ -1,6 +1,6 @@
 package com.lifetrackhub.entity;
 
-import com.lifetrackhub.dto.UserDetails;
+import com.lifetrackhub.dto.blob.UserDetails;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.relational.core.mapping.Table;
 

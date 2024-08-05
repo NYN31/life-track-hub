@@ -1,17 +1,21 @@
 package com.lifetrackhub.dto.request;
 
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 public class RegistrationRequestDto {
     @NotNull
+    @Length(min = 3, max = 40)
     private String firstname;
 
     private String lastname;
 
     @NotNull
+    @Length(min = 3, max = 40)
     private String email;
 
     @NotNull
+    @Length(min = 8, max = 40)
     private String password;
 
     public String getFirstname() {

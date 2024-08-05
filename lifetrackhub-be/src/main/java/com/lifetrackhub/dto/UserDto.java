@@ -1,5 +1,6 @@
 package com.lifetrackhub.dto;
 
+import com.lifetrackhub.dto.blob.UserDetails;
 import com.lifetrackhub.entity.User;
 
 public class UserDto extends BaseDto {

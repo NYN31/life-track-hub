@@ -1,4 +1,4 @@
-package com.lifetrackhub.dto.records;
+package com.lifetrackhub.dto.record.user;
 
 import java.time.Instant;
 

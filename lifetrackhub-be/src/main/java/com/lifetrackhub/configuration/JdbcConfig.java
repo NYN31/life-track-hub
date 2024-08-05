@@ -1,6 +1,8 @@
 package com.lifetrackhub.configuration;
 
 
+import com.lifetrackhub.converter.TodoItemsReadingConverter;
+import com.lifetrackhub.converter.TodoItemsWritingConverter;
 import com.lifetrackhub.converter.UserDetailsReadingConverter;
 import com.lifetrackhub.converter.UserDetailsWritingConverter;
 import com.lifetrackhub.entity.User;
@@ -28,7 +30,9 @@ public class JdbcConfig {
         public JdbcCustomConversions jdbcCustomConversions() {
             List<?> list = List.of(
                     new UserDetailsReadingConverter(),
-                    new UserDetailsWritingConverter()
+                    new UserDetailsWritingConverter(),
+                    new TodoItemsReadingConverter(),
+                    new TodoItemsWritingConverter()
             );
 
             return new JdbcCustomConversions(list);
