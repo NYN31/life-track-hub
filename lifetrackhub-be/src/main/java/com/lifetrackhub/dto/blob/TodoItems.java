@@ -1,6 +1,6 @@
-package com.lifetrackhub.dto;
+package com.lifetrackhub.dto.blob;
 
-import com.lifetrackhub.dto.records.todo.TodoItem;
+import com.lifetrackhub.dto.record.todo.TodoItem;
 
 import java.util.Arrays;
 

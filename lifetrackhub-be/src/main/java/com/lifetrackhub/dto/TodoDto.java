@@ -1,6 +1,6 @@
 package com.lifetrackhub.dto;
 
-import com.lifetrackhub.dto.records.todo.TodoItem;
+import com.lifetrackhub.dto.record.todo.TodoItem;
 import com.lifetrackhub.entity.Todo;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;

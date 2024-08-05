@@ -1,6 +1,6 @@
 package com.lifetrackhub.entity;
 
-import com.lifetrackhub.dto.TodoItems;
+import com.lifetrackhub.dto.blob.TodoItems;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table

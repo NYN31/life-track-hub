@@ -2,7 +2,7 @@ package com.lifetrackhub.service.impl;
 
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.TodoDto;
-import com.lifetrackhub.dto.TodoItems;
+import com.lifetrackhub.dto.blob.TodoItems;
 import com.lifetrackhub.entity.Todo;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.TodoRepository;

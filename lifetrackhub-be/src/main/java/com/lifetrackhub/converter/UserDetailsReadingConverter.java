@@ -1,6 +1,6 @@
 package com.lifetrackhub.converter;
 
-import com.lifetrackhub.dto.UserDetails;
+import com.lifetrackhub.dto.blob.UserDetails;
 
 public class UserDetailsReadingConverter extends AbstractReadingConverter<UserDetails> {
     @Override
