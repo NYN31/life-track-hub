@@ -2,12 +2,18 @@ package com.lifetrackhub.dto;
 
 import com.lifetrackhub.dto.blob.UserDetails;
 import com.lifetrackhub.entity.User;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 
 public class UserDto extends BaseDto {
+    @NotNull
+    @Length(min = 8, max = 40)
     private String firstname;
 
     private String lastname;
 
+    @NotNull
+    @Length(min = 8, max = 40)
     private String email;
 
     private String role;
