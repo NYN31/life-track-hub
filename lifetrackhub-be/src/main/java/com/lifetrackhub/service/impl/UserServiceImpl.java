@@ -1,5 +1,6 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -53,6 +55,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(UserDto dto) {
         String email = dto.getEmail();
+        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+
+        if(!Objects.equals(email, userFromSecurityContext.getEmail())) {
+            log.warn("User email {} is unauthorized", email);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User email " + email + " is unauthorized");
+        }
 
         User user;
         Optional<User> optional = userRepository.findByEmail(dto.getEmail());
