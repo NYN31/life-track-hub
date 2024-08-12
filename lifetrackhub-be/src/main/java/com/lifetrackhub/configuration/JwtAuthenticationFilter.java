@@ -11,14 +11,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +24,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private final static String AUTHORIZATION_HEADER = "Authorization";
+    private final static String AUTHORIZATION_SCHEME = "Bearer";
+
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final JwtService jwtService;
@@ -41,16 +43,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @Nullable HttpServletRequest request,
             @Nullable HttpServletResponse response,
             @Nullable FilterChain filterChain) throws ServletException, IOException {
-        String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+        assert request != null;
+        String accessToken = extractToken(request);
+
+        if (accessToken == null) {
             assert filterChain != null;
             filterChain.doFilter(request, response);
             return;
         }
-        log.info("Access token in filter: {}", authorizationHeader);
-        String accessToken = authorizationHeader.substring(7);
-        SecurityContext contextHolder = SecurityContextHolder.getContext();
 
+        SecurityContext context = SecurityContextHolder.getContext();
         try {
             DecodedJWT decodedJWT = jwtService.verify(accessToken);
             Long userId = decodedJWT.getClaim("userId").asLong();
@@ -61,12 +63,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.info("Token verification failed {}", e.getMessage());
-            contextHolder.setAuthentication(null);
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token verification failed");
+            context.setAuthentication(null);
         }
     }
 
+    private String extractToken(HttpServletRequest request) {
+        log.info("Extracting access token from request");
+        String authorization = request.getHeader(AUTHORIZATION_HEADER);
+        if (authorization == null || !authorization.startsWith(AUTHORIZATION_SCHEME)) {
+            return null;
+        }
+
+        return authorization.substring(7);
+    }
+
+    private User findUserById(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        return user.get();
+    }
+
     private void setAuthenticationContext(DecodedJWT decodedJWT, User user) {
+        log.info("Setting up authentication Context for {}", decodedJWT.getSubject());
         List<String> authorities = decodedJWT.getClaim("role").asList(String.class);
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -77,14 +98,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         context.setAuthentication(authentication);
         SecurityContextHolder.setContext(context);
-    }
-
-    private User findUserById(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new RuntimeException("User not found");
-        }
-
-        return user.get();
     }
 }

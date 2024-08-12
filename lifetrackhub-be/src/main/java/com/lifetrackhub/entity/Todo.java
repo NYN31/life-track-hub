@@ -1,12 +1,17 @@
 package com.lifetrackhub.entity;
 
 import com.lifetrackhub.dto.blob.TodoItems;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table
 public class Todo extends BaseEntity{
+    @NotNull
     private Long userId;
 
+    @NotNull
+    @Length(min = 3, max = 255)
     private String title;
 
     private boolean done;

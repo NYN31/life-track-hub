@@ -12,7 +12,7 @@ public class TodoDto extends BaseDto {
     private Long userId;
 
     @NotNull
-    @Length(min = 3, max = 250)
+    @Length(min = 3, max = 255)
     private String title;
 
     private Boolean done;

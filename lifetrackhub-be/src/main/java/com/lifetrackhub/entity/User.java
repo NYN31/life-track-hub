@@ -2,19 +2,23 @@ package com.lifetrackhub.entity;
 
 import com.lifetrackhub.dto.blob.UserDetails;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table
 public class User extends BaseEntity {
     @NotNull
+    @Length(min = 8, max = 40)
     private String firstname;
 
     private String lastname;
 
     @NotNull
+    @Length(min = 3, max = 40)
     private String email;
 
     @NotNull
+    @Length(min = 8, max = 40)
     private String password;
 
     private String role;

@@ -27,13 +27,13 @@ public class TodoController extends BaseController {
 
     @PostMapping("/todo/add")
     public TodoDto addTodo(@RequestBody @Valid TodoDto dto) {
-        log.info("Request in add todo controller");
+        log.info("Request enter into add todo controller");
         return todoService.addTodo(dto);
     }
 
     @PutMapping("/todo/update")
     public TodoDto updateTodo(@RequestBody @Valid TodoDto dto) {
-        log.info("Request in update todo controller");
+        log.info("Request enter into update todo controller");
         return todoService.updateTodo(dto);
     }
 }

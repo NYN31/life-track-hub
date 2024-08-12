@@ -61,7 +61,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public DecodedJWT verify(String accessToken) {
-        log.info("Access token: {}", accessToken);
+        log.info("Verifying access token.");
         try {
             JWTVerifier verifier = JWT.require(algorithm)
                     .withClaim("enabled", true)

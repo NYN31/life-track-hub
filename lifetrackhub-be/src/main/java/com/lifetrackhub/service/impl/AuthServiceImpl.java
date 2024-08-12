@@ -7,7 +7,7 @@ import com.lifetrackhub.dto.request.LoginRequestDto;
 import com.lifetrackhub.dto.response.LoginResponseDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.UserRepository;
-import com.lifetrackhub.service.AuthenticationService;
+import com.lifetrackhub.service.AuthService;
 import com.lifetrackhub.service.JwtService;
 import com.lifetrackhub.service.UserService;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class AuthServiceImpl implements AuthService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
@@ -29,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserService userService;
     private final JwtService jwtService;
 
-    public AuthenticationServiceImpl(
+    public AuthServiceImpl(
             UserRepository userRepository,
             PasswordEncoder bCryptPasswordEncoder,
             UserService userService,
@@ -76,7 +76,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return response;
     }
 
-    public User createUser(RegistrationRequestDto request) {
+    private User createUser(RegistrationRequestDto request) {
         log.info("Create user {}", request.getEmail());
 
         User user = new User();

@@ -7,7 +7,7 @@ import com.lifetrackhub.dto.response.LoginResponseDto;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface AuthenticationService {
+public interface AuthService {
     UserDto registration(RegistrationRequestDto request);
 
     LoginResponseDto login(LoginRequestDto request);
