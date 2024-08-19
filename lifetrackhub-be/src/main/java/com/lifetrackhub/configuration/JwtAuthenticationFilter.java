@@ -1,8 +1,4 @@
 package com.lifetrackhub.configuration;
-
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.lifetrackhub.entity.User;
-import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.JwtService;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.FilterChain;
@@ -12,16 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -31,11 +22,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final JwtService jwtService;
-    private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
+    public JwtAuthenticationFilter(JwtService jwtService) {
         this.jwtService = jwtService;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -54,17 +43,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         SecurityContext context = SecurityContextHolder.getContext();
         try {
-            DecodedJWT decodedJWT = jwtService.verify(accessToken);
-            Long userId = decodedJWT.getClaim("userId").asLong();
-            User user = findUserById(userId);
-            setAuthenticationContext(decodedJWT, user);
-
-            assert filterChain != null;
-            filterChain.doFilter(request, response);
+            UsernamePasswordAuthenticationToken authentication = jwtService.verify(accessToken);
+            context.setAuthentication(authentication);
         } catch (Exception e) {
-            log.info("Token verification failed {}", e.getMessage());
+            log.info("Token verification failed: {}", e.getMessage());
             context.setAuthentication(null);
         }
+
+        assert filterChain != null;
+        filterChain.doFilter(request, response);
     }
 
     private String extractToken(HttpServletRequest request) {
@@ -75,28 +62,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         return authorization.substring(7);
-    }
-
-    private User findUserById(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new RuntimeException("User not found");
-        }
-
-        return user.get();
-    }
-
-    private void setAuthenticationContext(DecodedJWT decodedJWT, User user) {
-        log.info("Setting up authentication Context for {}", decodedJWT.getSubject());
-        List<String> authorities = decodedJWT.getClaim("role").asList(String.class);
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user,
-                decodedJWT.getSubject(),
-                authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
-        );
-
-        context.setAuthentication(authentication);
-        SecurityContextHolder.setContext(context);
     }
 }

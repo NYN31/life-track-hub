@@ -19,11 +19,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionDto> handleException(Exception ex) {
         log.info("Unknown exception: {}", ex.getMessage());
-        ExceptionDto exceptionDto = new ExceptionDto();
-        exceptionDto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        exceptionDto.setMessage(ex.getMessage());
-
-        return new ResponseEntity<>(exceptionDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        ExceptionDto dto = new ExceptionDto(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return new ResponseEntity<>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ResponseStatusException.class)
@@ -35,7 +32,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionDto> handleException(MethodArgumentNotValidException ex) {
-      if (ex.getBindingResult().getFieldErrors().isEmpty()) {
+        if (ex.getBindingResult().getFieldErrors().isEmpty()) {
             log.warn("Validation exception: {}", ex.getMessage());
 
             ObjectError objectError = ex.getBindingResult().getAllErrors().get(0);
