@@ -18,14 +18,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
     private final JwtService jwtService;
-    private final UserRepository userRepository;
     private final FilterChainExceptionAuthenticationEntryPoint authEntryPoint;
 
     public SecurityConfiguration(JwtService jwtService,
                                  UserRepository userRepository,
                                  FilterChainExceptionAuthenticationEntryPoint authEntryPoint) {
         this.jwtService = jwtService;
-        this.userRepository = userRepository;
         this.authEntryPoint = authEntryPoint;
     }
 
@@ -42,7 +40,7 @@ public class SecurityConfiguration {
                         .authenticated()
                 )
                 .addFilterBefore(
-                        new JwtAuthenticationFilter(jwtService, userRepository),
+                        new JwtAuthenticationFilter(jwtService),
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .exceptionHandling(customizer -> customizer.authenticationEntryPoint(authEntryPoint))

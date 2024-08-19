@@ -4,16 +4,22 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.service.JwtService;
+import com.lifetrackhub.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -21,6 +27,9 @@ public class JwtServiceImpl implements JwtService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final Algorithm algorithm;
+    private final JWTVerifier verifier;
+
+    private final UserService userService;
 
     @Value("${jwt.issuer}")
     private String issuer;
@@ -28,8 +37,14 @@ public class JwtServiceImpl implements JwtService {
     @Value("${jwt.expiration.time}")
     private long expirationTime;
 
-    public JwtServiceImpl(@Value("${jwt.secret.key}") String secretKey) {
+    public JwtServiceImpl(@Value("${jwt.secret.key}") String secretKey, UserService userService) {
         this.algorithm = Algorithm.HMAC256(secretKey);
+        this.verifier = JWT.require(algorithm)
+                .withClaim("enabled", true)
+                .withClaimPresence("userId")
+                .withClaimPresence("role")
+                .build();
+        this.userService = userService;
     }
 
     @Override
@@ -57,13 +72,19 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public DecodedJWT verify(String accessToken) {
-        JWTVerifier verifier = JWT.require(algorithm)
-                .withClaim("enabled", true)
-                .withClaimPresence("userId")
-                .withClaimPresence("role")
-                .build();
+    public UsernamePasswordAuthenticationToken verify(String accessToken) {
+        DecodedJWT jwt = verifier.verify(accessToken);
 
-        return verifier.verify(accessToken);
+        Long userId = jwt.getClaim("userId").asLong();
+        Claim role = jwt.getClaim("role");
+        User user = userService.findUserById(userId);
+
+        List<SimpleGrantedAuthority> authorities = role
+                .asList(String.class)
+                .stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+
+        return new UsernamePasswordAuthenticationToken(user, null, authorities);
     }
 }
