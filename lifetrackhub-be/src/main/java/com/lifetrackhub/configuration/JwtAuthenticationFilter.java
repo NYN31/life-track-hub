@@ -58,13 +58,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Long userId = decodedJWT.getClaim("userId").asLong();
             User user = findUserById(userId);
             setAuthenticationContext(decodedJWT, user);
-
-            assert filterChain != null;
-            filterChain.doFilter(request, response);
         } catch (Exception e) {
-            log.info("Token verification failed {}", e.getMessage());
+            log.info("Token verification failed: {}", e.getMessage());
             context.setAuthentication(null);
         }
+
+        assert filterChain != null;
+        filterChain.doFilter(request, response);
     }
 
     private String extractToken(HttpServletRequest request) {
