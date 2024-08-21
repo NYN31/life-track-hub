@@ -1,5 +1,6 @@
 package com.lifetrackhub.controller;
 
+import com.lifetrackhub.dto.PageDto;
 import com.lifetrackhub.dto.TodoDto;
 import com.lifetrackhub.entity.Todo;
 import com.lifetrackhub.service.TodoService;
@@ -21,10 +22,11 @@ public class TodoController extends BaseController {
     }
 
     @GetMapping("/todo/by-user-id/{userId}/{page}/{size}")
-    public Page<Todo> findAllByUserId(@PathVariable Long userId,
-                                      @PathVariable int page,
-                                      @PathVariable int size) {
-        return todoService.findAllByUserId(userId, PageRequest.of(page, size));
+    public PageDto<TodoDto> findAllByUserId(@PathVariable Long userId,
+                                            @PathVariable int page,
+                                            @PathVariable int size) {
+        Page<Todo> todos = todoService.findAllByUserId(userId, PageRequest.of(page, size));
+        return PageDto.fromEntity(todos, TodoDto::formEntity);
     }
 
     @PostMapping("/todo/add")
