@@ -6,9 +6,9 @@ import com.lifetrackhub.service.TodoService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class TodoController extends BaseController {
@@ -20,9 +20,11 @@ public class TodoController extends BaseController {
         this.todoService = todoService;
     }
 
-    @GetMapping("/todo/by-user-id/{userId}")
-    public List<Todo> findAllByUserId(@PathVariable Long userId) {
-        return todoService.findAllByUserId(userId);
+    @GetMapping("/todo/by-user-id/{userId}/{page}/{size}")
+    public Page<Todo> findAllByUserId(@PathVariable Long userId,
+                                      @PathVariable int page,
+                                      @PathVariable int size) {
+        return todoService.findAllByUserId(userId, PageRequest.of(page, size));
     }
 
     @PostMapping("/todo/add")

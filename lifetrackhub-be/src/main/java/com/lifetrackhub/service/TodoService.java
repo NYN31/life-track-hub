@@ -2,13 +2,13 @@ package com.lifetrackhub.service;
 
 import com.lifetrackhub.dto.TodoDto;
 import com.lifetrackhub.entity.Todo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public interface TodoService {
-    List<Todo> findAllByUserId(Long userId);
+    Page<Todo> findAllByUserId(Long userId, Pageable pageable);
 
     Todo findTodoById(Long id);
 

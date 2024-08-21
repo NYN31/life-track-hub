@@ -9,6 +9,8 @@ import com.lifetrackhub.repository.TodoRepository;
 import com.lifetrackhub.service.TodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -28,9 +30,9 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<Todo> findAllByUserId(Long userId) {
+    public Page<Todo> findAllByUserId(Long userId, Pageable pageable) {
         validateUserWithUserId(userId);
-        return todoRepository.findAllByUserId(userId);
+        return todoRepository.findAllByUserId(userId, pageable);
     }
 
     @Override
