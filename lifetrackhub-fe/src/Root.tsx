@@ -3,16 +3,17 @@ import App from './App';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { store } from './app/store';
+import theme from './theme';
 
 const Root = () => {
   return (
-    <BrowserRouter>
-      <ChakraProvider>
-        <Provider store={store}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ChakraProvider theme={theme}>
           <App />
-        </Provider>
-      </ChakraProvider>
-    </BrowserRouter>
+        </ChakraProvider>
+      </BrowserRouter>
+    </Provider>
   );
 };
 
