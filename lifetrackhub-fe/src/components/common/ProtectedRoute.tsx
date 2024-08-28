@@ -11,23 +11,30 @@ const ProtectedRoute: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
 }) => {
   const [authed] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const SIDEBAR_WIDTH = '80%';
 
   if (authed) {
     return (
       <Flex direction="column" height="100vh">
         <Navbar onOpenDrawer={onOpen} />
+
         <Flex flex="1" overflow="hidden">
           <Show above="md">
-            <Sidebar onCloseDrawer={onClose} isMobileSidebar={false} />
+            <Sidebar
+              onCloseDrawer={onClose}
+              isMobileSidebar={false}
+              sidebarWidth="250px"
+            />
           </Show>
 
           <MobileSidebar
             isOpenDrawer={isOpen}
             onCloseDrawer={onClose}
             isMobileSidebar={true}
+            sidebarWidth={SIDEBAR_WIDTH}
           />
 
-          <Box flex="1" p="6" bg="gray.100" overflowY="auto">
+          <Box flex="1" px={[3, 4, 5]} py={3} bg="gray.100" overflowY="auto">
             {children}
           </Box>
         </Flex>

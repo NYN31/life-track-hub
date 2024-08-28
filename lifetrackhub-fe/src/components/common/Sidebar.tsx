@@ -10,10 +10,17 @@ import {
   Spacer,
   AccordionIcon,
   AccordionPanel,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
+  Text,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import SidebarData from '../../constants/sidebar/sidebar-items';
 import { IoClose } from 'react-icons/io5';
+import { ChevronDownIcon } from '@chakra-ui/icons';
 
 const sideBarListCssProperty = {
   margin: '4px',
@@ -32,6 +39,7 @@ const sideBarListCssProperty = {
 const Sidebar: React.FC<{
   onCloseDrawer: () => void;
   isMobileSidebar: boolean;
+  sidebarWidth: string;
 }> = ({ onCloseDrawer, isMobileSidebar }) => {
   const navigate = useNavigate();
 
@@ -79,8 +87,10 @@ const Sidebar: React.FC<{
         return (
           <Accordion key={index} defaultIndex={idx} allowToggle={true}>
             <AccordionItem border="0px">
-              <AccordionButton w="200px">
-                <Box color="#fff">{item.title}</Box>
+              <AccordionButton w="full" gap=".5rem">
+                <Box color="#fff" bg="#e2136e">
+                  {item.title}
+                </Box>
                 <Spacer />
                 <Box>
                   <AccordionIcon color="#fff" />
@@ -105,27 +115,55 @@ const Sidebar: React.FC<{
   return (
     <Flex
       height="100%"
-      width="250px"
       bg="#e2136e"
       color="white"
-      px="4"
-      py="1rem"
+      px="4px"
+      pt="0.5rem"
+      pb="1rem"
       boxShadow="md"
       overflowY="auto"
       overflowX="hidden"
       resize="horizontal"
     >
-      <List>
-        {isMobileSidebar && (
-          <Flex width="200px">
-            <Spacer />
-            <Box onClick={onCloseDrawer} cursor="pointer">
-              <IoClose size={24} />
-            </Box>
+      <Flex direction="column" justifyContent="space-between">
+        <Flex direction="column" overflow="hidden">
+          {isMobileSidebar && (
+            <Flex width="full">
+              <Spacer />
+              <Box onClick={onCloseDrawer} cursor="pointer">
+                <IoClose size={24} />
+              </Box>
+            </Flex>
+          )}
+          <Flex direction="column" overflowY="auto">
+            <List>{mapSidebarData(SidebarData, onCloseDrawer)}</List>
           </Flex>
+        </Flex>
+
+        {isMobileSidebar && (
+          <Box maxW="full" pt="1rem">
+            <Menu>
+              <MenuButton mx="10px" as={Button} rightIcon={<ChevronDownIcon />}>
+                <Flex>
+                  <Text noOfLines={1} minWidth="200px" overflowX="hidden">
+                    {'Md Sajjad Hosen Noyondasfdsf'}
+                  </Text>
+                </Flex>
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  as="b"
+                  onClick={() => {}}
+                  bg="#f2f2f2"
+                  color="#e2136e"
+                >
+                  Logout
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box>
         )}
-        {mapSidebarData(SidebarData, onCloseDrawer)}
-      </List>
+      </Flex>
     </Flex>
   );
 };

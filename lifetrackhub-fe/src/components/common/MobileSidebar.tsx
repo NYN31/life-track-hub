@@ -11,19 +11,17 @@ const MobileSidebar: React.FC<{
   isOpenDrawer: boolean;
   onCloseDrawer: () => void;
   isMobileSidebar: boolean;
-}> = ({ isOpenDrawer, onCloseDrawer, isMobileSidebar }) => {
+  sidebarWidth: string;
+}> = ({ isOpenDrawer, onCloseDrawer, isMobileSidebar, sidebarWidth }) => {
   return (
-    <Drawer
-      isOpen={isOpenDrawer}
-      placement="left"
-      onClose={onCloseDrawer}
-    >
+    <Drawer isOpen={isOpenDrawer} placement="left" onClose={onCloseDrawer}>
       <DrawerOverlay />
-      <DrawerContent maxW="250px">
+      <DrawerContent minW={sidebarWidth}>
         <DrawerBody p="0px" m="0px" bg="#e2136e">
           <Sidebar
             onCloseDrawer={onCloseDrawer}
             isMobileSidebar={isMobileSidebar}
+            sidebarWidth={sidebarWidth}
           />
         </DrawerBody>
       </DrawerContent>

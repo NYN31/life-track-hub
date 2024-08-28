@@ -7,6 +7,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Show,
   Spacer,
   Text,
 } from '@chakra-ui/react';
@@ -16,7 +17,9 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
 
-const Navbar: React.FC<{ onOpenDrawer: () => void }> = ({ onOpenDrawer }) => {
+const Navbar: React.FC<{
+  onOpenDrawer: () => void;
+}> = ({ onOpenDrawer }) => {
   const navigate = useNavigate();
   const [logout] = useLogoutMutation();
 
@@ -36,21 +39,25 @@ const Navbar: React.FC<{ onOpenDrawer: () => void }> = ({ onOpenDrawer }) => {
         <Text fontWeight={800} color="">
           LIFETRACK - HUB
         </Text>
-        <Hide above="md">
-          <Box onClick={onOpenDrawer}>
-            <RxHamburgerMenu size={24} cursor="pointer" />
-          </Box>
-        </Hide>
       </Flex>
       <Spacer />
-      <Menu>
-        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-          {name || 'Md Sajjad Hosen Noyon'}
-        </MenuButton>
-        <MenuList>
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
-        </MenuList>
-      </Menu>
+
+      <Hide below="md">
+        <Menu>
+          <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            {name || 'Md Sajjad Hosen Noyon'}
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </MenuList>
+        </Menu>
+      </Hide>
+
+      <Show below="md">
+        <Box onClick={onOpenDrawer}>
+          <RxHamburgerMenu size={24} cursor="pointer" />
+        </Box>
+      </Show>
     </Flex>
   );
 };
