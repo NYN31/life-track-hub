@@ -1,4 +1,7 @@
 // COMMON
+export const LOGIN = 'Login';
+export const LOGIN_PATH = '/login';
+
 export const HOME = 'Home';
 export const HOME_PATH = '/home';
 
