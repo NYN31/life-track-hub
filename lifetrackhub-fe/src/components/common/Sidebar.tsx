@@ -10,17 +10,11 @@ import {
   Spacer,
   AccordionIcon,
   AccordionPanel,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Button,
-  Text,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import SidebarData from '../../constants/sidebar/sidebar-items';
 import { IoClose } from 'react-icons/io5';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+import CommonMenu from './CommonMenu';
 
 const sideBarListCssProperty = {
   margin: '4px',
@@ -55,11 +49,13 @@ const Sidebar: React.FC<{
   ) => {
     return (
       <ListItem
+        borderRadius=".25rem"
+        w="230px"
         {...sideBarListCssProperty}
         bg={
           label.toLowerCase() === location.pathname.toLowerCase()
-            ? '#d12c74'
-            : '#e2136e'
+            ? '#5c2b37'
+            : ''
         }
         onClick={() => handleNavigation(path)}
       >
@@ -87,11 +83,10 @@ const Sidebar: React.FC<{
         return (
           <Accordion key={index} defaultIndex={idx} allowToggle={true}>
             <AccordionItem border="0px">
-              <AccordionButton w="full" gap=".5rem">
+              <AccordionButton maxW="230px" gap="6rem">
                 <Box color="#fff" bg="#e2136e">
                   {item.title}
                 </Box>
-                <Spacer />
                 <Box>
                   <AccordionIcon color="#fff" />
                 </Box>
@@ -115,6 +110,7 @@ const Sidebar: React.FC<{
   return (
     <Flex
       height="100%"
+      minW="250px"
       bg="#e2136e"
       color="white"
       px="4px"
@@ -141,26 +137,8 @@ const Sidebar: React.FC<{
         </Flex>
 
         {isMobileSidebar && (
-          <Box maxW="full" pt="1rem">
-            <Menu>
-              <MenuButton mx="10px" as={Button} rightIcon={<ChevronDownIcon />}>
-                <Flex>
-                  <Text noOfLines={1} minWidth="200px" overflowX="hidden">
-                    {'Md Sajjad Hosen Noyondasfdsf'}
-                  </Text>
-                </Flex>
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  as="b"
-                  onClick={() => {}}
-                  bg="#f2f2f2"
-                  color="#e2136e"
-                >
-                  Logout
-                </MenuItem>
-              </MenuList>
-            </Menu>
+          <Box pt="1rem">
+            <CommonMenu />
           </Box>
         )}
       </Flex>
