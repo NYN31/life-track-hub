@@ -11,6 +11,14 @@ function App() {
   return (
     <Routes>
       <Route
+        path={pathname.ROOT_PATH}
+        element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path={pathname.HOME_PATH}
         element={
           <ProtectedRoute>

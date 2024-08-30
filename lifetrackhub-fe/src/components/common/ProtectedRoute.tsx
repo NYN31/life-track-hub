@@ -11,11 +11,11 @@ const ProtectedRoute: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
 }) => {
   const [authed] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const SIDEBAR_WIDTH = '80%';
+  const SIDEBAR_WIDTH = '70%';
 
   if (authed) {
     return (
-      <Flex direction="column" height="100vh">
+      <Flex direction="column" height="100vh" fontSize="default">
         <Navbar onOpenDrawer={onOpen} />
 
         <Flex flex="1" overflow="hidden">

@@ -15,26 +15,13 @@ import { useNavigate } from 'react-router-dom';
 import SidebarData from '../../constants/sidebar/sidebar-items';
 import { IoClose } from 'react-icons/io5';
 import CommonMenu from './CommonMenu';
-
-const sideBarListCssProperty = {
-  margin: '4px',
-  py: '4px',
-  px: '4px',
-  cursor: 'pointer',
-  h: '40px',
-  _hover: {
-    bg: '#d12c74 !important',
-    color: '#fff !important',
-    borderRadius: '4px',
-  },
-  color: '#fff',
-};
+import { colors } from '../../constants/extend-theme/colors';
 
 const Sidebar: React.FC<{
   onCloseDrawer: () => void;
   isMobileSidebar: boolean;
   sidebarWidth: string;
-}> = ({ onCloseDrawer, isMobileSidebar }) => {
+}> = ({ onCloseDrawer, isMobileSidebar, sidebarWidth }) => {
   const navigate = useNavigate();
 
   function handleNavigation(path: string) {
@@ -49,19 +36,29 @@ const Sidebar: React.FC<{
   ) => {
     return (
       <ListItem
-        borderRadius=".25rem"
-        w="230px"
-        {...sideBarListCssProperty}
+        m={1}
+        py={1}
+        px={1}
+        cursor="pointer"
+        h={10}
+        borderRadius="4px"
+        color="white"
+        w={56}
         bg={
           label.toLowerCase() === location.pathname.toLowerCase()
-            ? '#5c2b37'
+            ? 'secondary_hover'
             : ''
         }
         onClick={() => handleNavigation(path)}
+        _hover={{
+          bg: `${colors.secondary_hover} !important`,
+          color: 'white !important',
+          borderRadius: '4px',
+        }}
       >
         <Stack align="left" direction="row">
           <Flex alignItems="center">{icon}</Flex>
-          <Flex pt="4px">
+          <Flex pt={1}>
             <span>{title}</span>
           </Flex>
         </Stack>
@@ -71,7 +68,7 @@ const Sidebar: React.FC<{
 
   const mapSidebarData = (sidebarData: any, onCloseDrawer: () => void) => {
     const openAccordionByDefault = (title: string) => {
-      const titles = ['xyz'];
+      const titles = ['Employee'];
       if (titles.includes(title)) return 0;
       else return 1;
     };
@@ -82,13 +79,11 @@ const Sidebar: React.FC<{
 
         return (
           <Accordion key={index} defaultIndex={idx} allowToggle={true}>
-            <AccordionItem border="0px">
-              <AccordionButton maxW="230px" gap="6rem">
-                <Box color="#fff" bg="#e2136e">
-                  {item.title}
-                </Box>
+            <AccordionItem border={0}>
+              <AccordionButton maxW={56} gap={24}>
+                <Box color="white">{item.title}</Box>
                 <Box>
-                  <AccordionIcon color="#fff" />
+                  <AccordionIcon color="white" />
                 </Box>
               </AccordionButton>
               <AccordionPanel pt={0} pb={0}>
@@ -111,11 +106,11 @@ const Sidebar: React.FC<{
     <Flex
       height="100%"
       minW="250px"
-      bg="#e2136e"
+      bg="secondary"
       color="white"
-      px="4px"
-      pt="0.5rem"
-      pb="1rem"
+      px={1}
+      pt={2}
+      pb={4}
       boxShadow="md"
       overflowY="auto"
       overflowX="hidden"

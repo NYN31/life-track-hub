@@ -8,9 +8,9 @@ const Navbar: React.FC<{
   onOpenDrawer: () => void;
 }> = ({ onOpenDrawer }) => {
   return (
-    <Flex px={['2rem', '2rem', '4rem']} py=".8rem" bg="green.200">
-      <Flex justify="center" align="center" gap="1rem">
-        <Text fontWeight={800} color="" textTransform="uppercase">
+    <Flex px={['2rem', '2rem', '3rem']} py=".8rem" bg="primary">
+      <Flex justify="center" align="center">
+        <Text fontWeight={800} textTransform="uppercase">
           {BANNAR_NAME}
         </Text>
       </Flex>

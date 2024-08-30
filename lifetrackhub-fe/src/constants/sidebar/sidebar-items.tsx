@@ -5,7 +5,7 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import { GoPeople } from 'react-icons/go';
 import { TbDetails } from 'react-icons/tb';
 
-const ICON_SIZE = 21;
+const ICON_SIZE = 18;
 
 const SidebarData = [
   {

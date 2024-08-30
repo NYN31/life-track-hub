@@ -7,19 +7,16 @@ import {
   Flex,
   Text,
   Avatar,
-  Box,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../../features/auth/authApi';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-
-const menuItemCss = {
-  bg: '#f2f2f2',
-  color: '#e2136e',
-  cursor: 'pointer',
-};
+import { FiLogOut } from 'react-icons/fi';
+import { AiOutlineProfile } from 'react-icons/ai';
 
 const CommonMenu = () => {
+  const ICON_SIZE = '20px';
+
   const navigate = useNavigate();
   const [logout] = useLogoutMutation();
 
@@ -27,7 +24,7 @@ const CommonMenu = () => {
   //   localStorage.getItem('name') !== 'undefined'
   //     ? localStorage.getItem('name')
   //     : localStorage.getItem('username');
-  const name = 'Md Sajjad HosenNoyon-Noyon Noyon';
+  const name = 'Md Sajjad Hosen Noyon';
 
   async function handleLogout() {
     //await logout({}).unwrap();
@@ -39,32 +36,71 @@ const CommonMenu = () => {
     navigate('/profile');
   }
 
+  const menuItemsData = [
+    {
+      title: 'Profile',
+      action: handleNavigateToProfile,
+      icon: <AiOutlineProfile size={ICON_SIZE} />,
+    },
+    {
+      title: 'Logout',
+      action: handleLogout,
+      icon: <FiLogOut size={ICON_SIZE} />,
+    },
+  ];
+
+  const getName = (name: string) => {
+    const MAX_LENGTH_OF_NAME = 21;
+    if (name.length > MAX_LENGTH_OF_NAME) {
+      return name.slice(0, MAX_LENGTH_OF_NAME) + '...';
+    }
+    return name;
+  };
+
+  const menuItem = (text: string, action: () => void, icon: JSX.Element) => {
+    return (
+      <MenuItem
+        borderRadius={4}
+        my={1}
+        cursor="pointer"
+        as="b"
+        onClick={action}
+        bg="gray.200"
+        color="gray.900"
+      >
+        <Flex gap={2}>
+          {icon} {text}
+        </Flex>
+      </MenuItem>
+    );
+  };
+
   return (
     <Menu>
       <MenuButton
-        mx="1rem"
-        px=".5rem"
+        mx={4}
+        px={2}
         minWidth="250px"
         maxWidth="250px"
         as={Button}
         rightIcon={<ChevronDownIcon />}
       >
-        <Flex align="center" justify="center" gap=".4rem">
-          <Box>
-            <Avatar size="sm" name={name} bg="#e2136e" color="#FFF" />
-          </Box>
-          <Text noOfLines={1} overflowWrap="break-word">
-            {name}
-          </Text>
+        <Flex align="center" gap={2} fontSize="sm">
+          <Avatar size="sm" name={name} bg="secondary" color="white" />
+
+          {getName(name)}
         </Flex>
       </MenuButton>
-      <MenuList>
-        <MenuItem {...menuItemCss} as="b" onClick={handleNavigateToProfile}>
-          Profile
-        </MenuItem>
-        <MenuItem {...menuItemCss} as="b" onClick={handleLogout}>
-          Logout
-        </MenuItem>
+      <MenuList
+        p={1}
+        bg="gray.200"
+        border="1px"
+        borderColor="gray.default"
+        fontSize="sm"
+      >
+        {menuItemsData.map(item =>
+          menuItem(item.title, item.action, item.icon)
+        )}
       </MenuList>
     </Menu>
   );
