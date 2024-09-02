@@ -5,7 +5,6 @@ import {
   MenuList,
   Button,
   Flex,
-  Text,
   Avatar,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -78,6 +77,7 @@ const CommonMenu = () => {
   return (
     <Menu>
       <MenuButton
+        bg="gray.300"
         mx={4}
         px={2}
         minWidth="250px"
@@ -86,8 +86,7 @@ const CommonMenu = () => {
         rightIcon={<ChevronDownIcon />}
       >
         <Flex align="center" gap={2} fontSize="sm">
-          <Avatar size="sm" name={name} bg="secondary" color="white" />
-
+          <Avatar size="sm" name={name} bg="black" color="white" />
           {getName(name)}
         </Flex>
       </MenuButton>

@@ -21,7 +21,7 @@ const Sidebar: React.FC<{
   onCloseDrawer: () => void;
   isMobileSidebar: boolean;
   sidebarWidth: string;
-}> = ({ onCloseDrawer, isMobileSidebar, sidebarWidth }) => {
+}> = ({ onCloseDrawer, isMobileSidebar }) => {
   const navigate = useNavigate();
 
   function handleNavigation(path: string) {
@@ -34,6 +34,7 @@ const Sidebar: React.FC<{
     title: string,
     label: string
   ) => {
+    console.log(label, location.pathname);
     return (
       <ListItem
         m={1}
@@ -42,16 +43,20 @@ const Sidebar: React.FC<{
         cursor="pointer"
         h={10}
         borderRadius="4px"
-        color="white"
+        color={
+          label.toLowerCase() === location.pathname.toLowerCase()
+            ? 'white'
+            : 'gray.900'
+        }
         w={56}
         bg={
           label.toLowerCase() === location.pathname.toLowerCase()
-            ? 'secondary_hover'
+            ? 'gray.hover'
             : ''
         }
         onClick={() => handleNavigation(path)}
         _hover={{
-          bg: `${colors.secondary_hover} !important`,
+          bg: `${colors.gray.hover} !important`,
           color: 'white !important',
           borderRadius: '4px',
         }}
@@ -81,9 +86,9 @@ const Sidebar: React.FC<{
           <Accordion key={index} defaultIndex={idx} allowToggle={true}>
             <AccordionItem border={0}>
               <AccordionButton maxW={56} gap={24}>
-                <Box color="white">{item.title}</Box>
+                <Box color="gray.900">{item.title}</Box>
                 <Box>
-                  <AccordionIcon color="white" />
+                  <AccordionIcon color="black" />
                 </Box>
               </AccordionButton>
               <AccordionPanel pt={0} pb={0}>
@@ -106,8 +111,7 @@ const Sidebar: React.FC<{
     <Flex
       height="100%"
       minW="250px"
-      bg="secondary"
-      color="white"
+      bg="white"
       px={1}
       pt={2}
       pb={4}
