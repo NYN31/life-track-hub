@@ -26,7 +26,7 @@ const CommonMenu = () => {
   const name = 'Md Sajjad Hosen Noyon';
 
   async function handleLogout() {
-    //await logout({}).unwrap();
+    await logout({}).unwrap();
     navigate('/login', { replace: true });
   }
 
@@ -65,7 +65,7 @@ const CommonMenu = () => {
         as="b"
         onClick={action}
         bg="gray.200"
-        color="gray.900"
+        color="menu.list_text"
       >
         <Flex gap={2}>
           {icon} {text}
@@ -77,7 +77,7 @@ const CommonMenu = () => {
   return (
     <Menu>
       <MenuButton
-        bg="gray.300"
+        bg="menu.bg"
         mx={4}
         px={2}
         minWidth="250px"
@@ -86,15 +86,20 @@ const CommonMenu = () => {
         rightIcon={<ChevronDownIcon />}
       >
         <Flex align="center" gap={2} fontSize="sm">
-          <Avatar size="sm" name={name} bg="black" color="white" />
+          <Avatar
+            size="sm"
+            name={name}
+            bg="menu.avatar_bg"
+            color="menu.avatar_text"
+          />
           {getName(name)}
         </Flex>
       </MenuButton>
       <MenuList
         p={1}
-        bg="gray.200"
+        bg="menu.list_bg"
         border="1px"
-        borderColor="gray.default"
+        borderColor="menu.list_border"
         fontSize="sm"
       >
         {menuItemsData.map(item =>

@@ -34,7 +34,7 @@ const ProtectedRoute: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
             sidebarWidth={SIDEBAR_WIDTH}
           />
 
-          <Box flex="1" px={[3, 4, 5]} py={3} bg="tertiary_white" overflowY="auto">
+          <Box flex="1" px={[3, 4, 5]} py={3} bg="body" overflowY="auto">
             {children}
           </Box>
         </Flex>

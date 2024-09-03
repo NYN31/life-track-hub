@@ -45,19 +45,19 @@ const Sidebar: React.FC<{
         borderRadius="4px"
         color={
           label.toLowerCase() === location.pathname.toLowerCase()
-            ? 'white'
-            : 'gray.900'
+            ? 'sidebar.hover_text'
+            : 'sidebar.text'
         }
         w={56}
         bg={
           label.toLowerCase() === location.pathname.toLowerCase()
-            ? 'gray.hover'
+            ? 'sidebar.hover_bg'
             : ''
         }
         onClick={() => handleNavigation(path)}
         _hover={{
-          bg: `${colors.gray.hover} !important`,
-          color: 'white !important',
+          bg: `${colors.sidebar.hover_bg} !important`,
+          color: `${colors.sidebar.hover_text} !important`,
           borderRadius: '4px',
         }}
       >
@@ -86,7 +86,7 @@ const Sidebar: React.FC<{
           <Accordion key={index} defaultIndex={idx} allowToggle={true}>
             <AccordionItem border={0}>
               <AccordionButton maxW={56} gap={24}>
-                <Box color="gray.900">{item.title}</Box>
+                <Box color="sidebar.text">{item.title}</Box>
                 <Box>
                   <AccordionIcon color="black" />
                 </Box>
@@ -111,7 +111,7 @@ const Sidebar: React.FC<{
     <Flex
       height="100%"
       minW="250px"
-      bg="white"
+      bg="sidebar.bg"
       px={1}
       pt={2}
       pb={4}

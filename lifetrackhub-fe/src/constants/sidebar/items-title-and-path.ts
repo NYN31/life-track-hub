@@ -1,6 +1,6 @@
 // COMMON
 export const ROOT = 'Home';
-export const ROOT_PATH = '/home';
+export const ROOT_PATH = '/';
 
 export const LOGIN = 'Login';
 export const LOGIN_PATH = '/login';

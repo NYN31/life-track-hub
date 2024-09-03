@@ -17,7 +17,7 @@ const MobileSidebar: React.FC<{
     <Drawer isOpen={isOpenDrawer} placement="left" onClose={onCloseDrawer}>
       <DrawerOverlay />
       <DrawerContent minW={sidebarWidth}>
-        <DrawerBody p="0px" m="0px" bg="#e2136e">
+        <DrawerBody p="0px" m="0px">
           <Sidebar
             onCloseDrawer={onCloseDrawer}
             isMobileSidebar={isMobileSidebar}
