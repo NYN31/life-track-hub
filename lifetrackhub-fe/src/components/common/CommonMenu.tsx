@@ -61,6 +61,7 @@ const CommonMenu = () => {
   const menuItem = (text: string, action: () => void, icon: JSX.Element) => {
     return (
       <MenuItem
+        key={text}
         borderRadius={4}
         my={1}
         cursor="pointer"

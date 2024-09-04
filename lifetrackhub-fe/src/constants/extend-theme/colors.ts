@@ -1,9 +1,10 @@
 export const colors = {
   primary: '#F2F2F2',
   body: '#e6e6e6',
-  icon: '#e2136e',
+  icon: '#000000',
+  btn: '#e6e6e6',
   avatar: {
-    bg: '#e2136e',
+    bg: '#000000',
     text: '#FFFFFF',
   },
   gray: {
@@ -11,8 +12,8 @@ export const colors = {
     hover: 'gray',
   },
   sidebar: {
-    bg: '#fff',
-    text: '#000',
+    bg: '#ffffff',
+    text: '#000000',
     hover_bg: '#e6e6e6',
     hover_text: '#000',
   },
