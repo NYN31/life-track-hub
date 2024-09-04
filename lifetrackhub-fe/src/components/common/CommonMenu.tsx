@@ -6,12 +6,14 @@ import {
   Button,
   Flex,
   Avatar,
+  Box,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../../features/auth/authApi';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { FiLogOut } from 'react-icons/fi';
 import { AiOutlineProfile } from 'react-icons/ai';
+import { colors } from '../../constants/extend-theme/colors';
 
 const CommonMenu = () => {
   const ICON_SIZE = '20px';
@@ -59,6 +61,7 @@ const CommonMenu = () => {
   const menuItem = (text: string, action: () => void, icon: JSX.Element) => {
     return (
       <MenuItem
+        key={text}
         borderRadius={4}
         my={1}
         cursor="pointer"
@@ -66,9 +69,12 @@ const CommonMenu = () => {
         onClick={action}
         bg="gray.200"
         color="menu.list_text"
+        _hover={{
+          bg: `${colors.menu.list_hover} !important`,
+        }}
       >
         <Flex gap={2}>
-          {icon} {text}
+          <Box color="icon">{icon}</Box> {text}
         </Flex>
       </MenuItem>
     );
@@ -83,15 +89,10 @@ const CommonMenu = () => {
         minWidth="250px"
         maxWidth="250px"
         as={Button}
-        rightIcon={<ChevronDownIcon />}
+        rightIcon={<ChevronDownIcon color="icon" />}
       >
         <Flex align="center" gap={2} fontSize="sm">
-          <Avatar
-            size="sm"
-            name={name}
-            bg="menu.avatar_bg"
-            color="menu.avatar_text"
-          />
+          <Avatar size="sm" name={name} bg="avatar.bg" color="avatar.text" />
           {getName(name)}
         </Flex>
       </MenuButton>

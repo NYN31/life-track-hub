@@ -34,7 +34,6 @@ const Sidebar: React.FC<{
     title: string,
     label: string
   ) => {
-    console.log(label, location.pathname);
     return (
       <ListItem
         m={1}
@@ -62,7 +61,9 @@ const Sidebar: React.FC<{
         }}
       >
         <Stack align="left" direction="row">
-          <Flex alignItems="center">{icon}</Flex>
+          <Flex alignItems="center" color="icon">
+            {icon}
+          </Flex>
           <Flex pt={1}>
             <span>{title}</span>
           </Flex>
@@ -88,7 +89,7 @@ const Sidebar: React.FC<{
               <AccordionButton maxW={56} gap={24}>
                 <Box color="sidebar.text">{item.title}</Box>
                 <Box>
-                  <AccordionIcon color="black" />
+                  <AccordionIcon color="icon" />
                 </Box>
               </AccordionButton>
               <AccordionPanel pt={0} pb={0}>
@@ -125,7 +126,7 @@ const Sidebar: React.FC<{
           {isMobileSidebar && (
             <Flex width="full">
               <Spacer />
-              <Box onClick={onCloseDrawer} cursor="pointer">
+              <Box onClick={onCloseDrawer} cursor="pointer" color="icon">
                 <IoClose size={24} />
               </Box>
             </Flex>
