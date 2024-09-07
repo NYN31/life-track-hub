@@ -2,7 +2,10 @@ import { Flex, Spacer, Text } from '@chakra-ui/react';
 import { BANNAR_NAME } from '../../constants/common-constants';
 import OnclickButton from './button/OnclickButton';
 import { useNavigate } from 'react-router-dom';
-import { LOGIN_PATH } from '../../constants/sidebar/items-title-and-path';
+import {
+  LOGIN_PATH,
+  REGISTRATION_PATH,
+} from '../../constants/sidebar/items-title-and-path';
 
 const PublicNavbar = () => {
   const navigate = useNavigate();
@@ -12,7 +15,7 @@ const PublicNavbar = () => {
   };
 
   const handleNavigateToRegistration = () => {
-    navigate('/registration');
+    navigate(REGISTRATION_PATH);
   };
 
   return (
