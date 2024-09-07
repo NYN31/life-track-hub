@@ -37,9 +37,16 @@ const Login = () => {
         <Heading as="h3" size={['sm', 'md', 'lg']}>
           {LOGIN_PAGE_HEADING}
         </Heading>
+        <Flex>
+          <Text color="gray.500">Don't have an account?</Text> &nbsp;
+          <Text as="u" color="link">
+            Sign Up
+          </Text>
+        </Flex>
 
         <FormControl isInvalid={!!errors.email}>
           <CustomFormInput
+            isRequired={true}
             label="Email"
             type="email"
             placeholder="Email"
@@ -65,6 +72,7 @@ const Login = () => {
 
         <FormControl isInvalid={!!errors.password}>
           <CustomFormInput
+            isRequired={true}
             label="Password"
             type="password"
             placeholder="Password"
