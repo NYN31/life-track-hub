@@ -1,7 +1,6 @@
 import {
   Box,
   Flex,
-  FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
@@ -34,14 +33,13 @@ const CustomFormInput: React.FC<{
           <Input
             type={type}
             placeContent={placeholder}
-            bg="btn.bg"
+            bg="body"
             color="btn.text"
             border="1px"
             borderColor="gray.300"
             _hover={{
               borderColor: 'gray.300',
             }}
-            //width={{ lg: '600px', md: '100%', sm: '100%', xs: '100%' }}
             {...register(label.toLowerCase(), registerObj)}
           />
 

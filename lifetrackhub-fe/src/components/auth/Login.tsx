@@ -11,7 +11,7 @@ import {
   PASSWORD_REQUIRED_VALIDATION_MESSAGE,
   PASSWORD_VALIDATION_MESSAGE,
 } from '../../constants/texts/validation-message';
-import SubmitButton from '../common/Button/SubmitButton';
+import SubmitButton from '../common/button/SubmitButton';
 
 const Login = () => {
   const {

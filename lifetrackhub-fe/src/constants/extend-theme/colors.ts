@@ -3,7 +3,7 @@ export const colors = {
   body: '#FFFFFF',
   icon: '#000000',
   btn: {
-    bg: '#f2f2f2',
+    bg: '#CBD5E0',
     text: '#000',
     bg_disable: '#e6e6e6',
     text_disable: '#718096',

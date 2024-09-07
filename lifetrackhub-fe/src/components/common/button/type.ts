@@ -7,4 +7,13 @@ export interface SubmitionButton {
   isLoading: boolean;
 }
 
+export interface ClickButton {
+  text: string;
+  width: string;
+  cursor: string;
+  isDisable: boolean;
+  isLoading: boolean;
+  action: () => void;
+}
+
 export type ButtonType = 'button' | 'submit' | 'reset';
