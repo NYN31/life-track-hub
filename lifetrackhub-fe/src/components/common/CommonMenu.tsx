@@ -9,7 +9,6 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { useLogoutMutation } from '../../features/auth/authApi';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { FiLogOut } from 'react-icons/fi';
 import { AiOutlineProfile } from 'react-icons/ai';
@@ -19,7 +18,6 @@ const CommonMenu = () => {
   const ICON_SIZE = '20px';
 
   const navigate = useNavigate();
-  const [logout] = useLogoutMutation();
 
   // const name =
   //   localStorage.getItem('name') !== 'undefined'
@@ -28,7 +26,7 @@ const CommonMenu = () => {
   const name = 'Md Sajjad Hosen Noyon';
 
   async function handleLogout() {
-    await logout({}).unwrap();
+    //await logout({}).unwrap();
     navigate('/login', { replace: true });
   }
 
