@@ -25,21 +25,21 @@ const PublicNavbar = () => {
 
       {location.pathname.includes('/login') ? (
         <OnclickButton
-          text="Login"
-          width="auto"
-          cursor="pointer"
-          isDisable={false}
-          isLoading={false}
-          action={handleNavigateToLogin}
-        />
-      ) : (
-        <OnclickButton
-          text="Registration"
+          text="Sign Up"
           width="auto"
           cursor="pointer"
           isDisable={false}
           isLoading={false}
           action={handleNavigateToRegistration}
+        />
+      ) : (
+        <OnclickButton
+          text="Sign In"
+          width="auto"
+          cursor="pointer"
+          isDisable={false}
+          isLoading={false}
+          action={handleNavigateToLogin}
         />
       )}
     </Flex>

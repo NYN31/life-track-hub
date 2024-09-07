@@ -92,7 +92,7 @@ const Login = () => {
           By login in, you agree to our Terms and Conditions
         </Text>
         <SubmitButton
-          text="Login"
+          text="Sign In"
           width="full"
           type="submit"
           cursor={isValid ? 'pointer' : 'not-allowed'}

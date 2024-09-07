@@ -17,6 +17,7 @@ const SubmitButton: React.FC<SubmitionButton> = ({
       type={type}
       bg="btn.bg"
       color="btn.text"
+      fontWeight={500}
       cursor={cursor}
       isDisabled={isDisable}
       isLoading={isLoading}
