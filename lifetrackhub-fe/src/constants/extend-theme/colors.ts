@@ -2,6 +2,7 @@ export const colors = {
   primary: '#F2F2F2',
   body: '#FFFFFF',
   icon: '#000000',
+  link: 'blue',
   btn: {
     bg: '#CBD5E0',
     text: '#000',

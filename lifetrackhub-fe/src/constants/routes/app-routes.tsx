@@ -6,8 +6,9 @@ import Setting from '../../pages/common/Setting';
 import Employee from '../../pages/employee/Employee';
 import EmployeeDetails from '../../pages/employee/EmployeeDetails';
 import * as pathname from '../sidebar/items-title-and-path';
-import AuthContainer from '../../pages/auth/AuthContainer';
 import PublicNavbar from '../../components/common/PublicNavbar';
+import RegistrationContainer from '../../pages/auth/RegistrationContainer';
+import LoginContainer from '../../pages/auth/LoginContainer';
 
 export const appRoutes = [
   {
@@ -23,10 +24,20 @@ export const appRoutes = [
     element: (
       <>
         <PublicNavbar />
-        <AuthContainer />
+        <LoginContainer />
       </>
     ),
   },
+  {
+    path: pathname.REGISTRATION_PATH,
+    element: (
+      <>
+        <PublicNavbar />
+        <RegistrationContainer />
+      </>
+    ),
+  },
+  ,
   {
     path: pathname.HOME_PATH,
     element: (

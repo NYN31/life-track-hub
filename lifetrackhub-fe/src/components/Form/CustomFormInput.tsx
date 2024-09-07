@@ -8,31 +8,39 @@ import {
 import React from 'react';
 
 const CustomFormInput: React.FC<{
+  isRequired: boolean;
   label: string;
   type: string;
   placeholder: string;
   errorMessage: string | undefined;
   register: any;
   registerObj: any;
-}> = ({ label, type, placeholder, errorMessage, register, registerObj }) => {
+}> = ({
+  isRequired,
+  label,
+  type,
+  placeholder,
+  errorMessage,
+  register,
+  registerObj,
+}) => {
+  let newLabel = label.split(' ').join('').toLowerCase();
+
   return (
     <>
-      <FormLabel
-        mt={4}
-        fontSize="sm"
-        fontWeight={600}
-        htmlFor={label.toLowerCase()}
-      >
+      <FormLabel mt={4} fontSize="sm" fontWeight={600} htmlFor={newLabel}>
         {label}{' '}
-        <Box as="span" color="red">
-          *
-        </Box>
+        {isRequired && (
+          <Box as="span" color="red">
+            *
+          </Box>
+        )}
       </FormLabel>
       <Flex direction="row">
         <Flex direction="column" w={{ base: '100%', md: '500px', lg: '500px' }}>
           <Input
             type={type}
-            placeContent={placeholder}
+            placeholder={placeholder}
             bg="body"
             color="btn.text"
             border="1px"
@@ -40,7 +48,7 @@ const CustomFormInput: React.FC<{
             _hover={{
               borderColor: 'gray.300',
             }}
-            {...register(label.toLowerCase(), registerObj)}
+            {...register(newLabel, registerObj)}
           />
 
           <FormErrorMessage width={{ lg: '400px', base: '96%' }}>

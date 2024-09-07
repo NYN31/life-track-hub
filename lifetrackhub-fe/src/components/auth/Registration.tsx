@@ -1,21 +1,23 @@
 import { Box, Flex, FormControl, Heading, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { LOGIN_PAGE_HEADING } from '../../constants/texts/page-headings';
+import { REGISTRATION_PAGE_HEADING } from '../../constants/texts/page-headings';
 import CustomFormInput from '../Form/CustomFormInput';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/regex';
 import {
   EMAIL_LENGTH_VALIDATION_MESSAGE,
   EMAIL_REQUIRED_VALIDATION_MESSAGE,
   EMAIL_VALIDATION_MESSAGE,
+  FIRSTNAME_LENGTH_VALIDATION_MESSAGE,
+  FIRSTNAME_REQUIRED_VALIDATION_MESSAGE,
   PASSWORD_LENGTH_VALIDATION_MESSAGE,
   PASSWORD_REQUIRED_VALIDATION_MESSAGE,
   PASSWORD_VALIDATION_MESSAGE,
 } from '../../constants/texts/validation-message';
 import SubmitButton from '../common/button/SubmitButton';
 import { useNavigate } from 'react-router-dom';
-import { REGISTRATION_PATH } from '../../constants/sidebar/items-title-and-path';
+import { LOGIN_PATH } from '../../constants/sidebar/items-title-and-path';
 
-const Login = () => {
+const Registration = () => {
   const navigate = useNavigate();
 
   const {
@@ -24,10 +26,10 @@ const Login = () => {
     formState: { errors, isValid },
   } = useForm({
     mode: 'onChange',
-    defaultValues: { email: '', password: '' },
+    defaultValues: { firstname: '', lastname: '', email: '', password: '' },
   });
 
-  const handleLogin = (data: any) => {
+  const handleRegistration = (data: any) => {
     console.log(data);
   };
 
@@ -35,23 +37,58 @@ const Login = () => {
     <Flex direction="column" m={4} justify="center" align="center">
       <Box
         as="form"
-        onSubmit={handleSubmit(handleLogin)}
-        w={{ base: '100%', sm: '100%', md: 'auto', lg: 'auto' }} // Responsive width
+        onSubmit={handleSubmit(handleRegistration)}
+        w={{ base: '100%', sm: '100%', md: 'auto', lg: 'auto' }}
       >
         <Heading as="h3" size={['sm', 'md', 'lg']}>
-          {LOGIN_PAGE_HEADING}
+          {REGISTRATION_PAGE_HEADING}
         </Heading>
+
         <Flex>
-          <Text color="gray.500">Don't have an account?</Text> &nbsp;
+          <Text color="gray.500">Already have an account?</Text> &nbsp;
           <Text
             as="u"
             color="link"
             cursor="pointer"
-            onClick={() => navigate(REGISTRATION_PATH)}
+            onClick={() => navigate(LOGIN_PATH)}
           >
-            Sign Up
+            Sign In
           </Text>
         </Flex>
+
+        <FormControl isInvalid={!!errors.firstname}>
+          <CustomFormInput
+            isRequired={true}
+            label="First Name"
+            type="text"
+            placeholder="First name"
+            errorMessage={errors?.firstname?.message}
+            register={register}
+            registerObj={{
+              required: FIRSTNAME_REQUIRED_VALIDATION_MESSAGE,
+              maxLength: {
+                value: 40,
+                message: FIRSTNAME_LENGTH_VALIDATION_MESSAGE,
+              },
+              minLength: {
+                value: 3,
+                message: FIRSTNAME_LENGTH_VALIDATION_MESSAGE,
+              },
+            }}
+          />
+        </FormControl>
+
+        <FormControl isInvalid={!!errors.lastname}>
+          <CustomFormInput
+            isRequired={false}
+            label="Last Name"
+            type="text"
+            placeholder="Last name"
+            errorMessage={errors?.lastname?.message}
+            register={register}
+            registerObj={{}}
+          />
+        </FormControl>
 
         <FormControl isInvalid={!!errors.email}>
           <CustomFormInput
@@ -109,7 +146,7 @@ const Login = () => {
           By login in, you agree to our Terms and Conditions
         </Text>
         <SubmitButton
-          text="Sign In"
+          text="Sign Up"
           width="full"
           type="submit"
           cursor={isValid ? 'pointer' : 'not-allowed'}
@@ -121,4 +158,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Registration;

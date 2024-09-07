@@ -5,6 +5,9 @@ export const ROOT_PATH = '/';
 export const LOGIN = 'Login';
 export const LOGIN_PATH = '/login';
 
+export const REGISTRATION = 'Registration';
+export const REGISTRATION_PATH = '/registration';
+
 export const HOME = 'Home';
 export const HOME_PATH = '/home';
 

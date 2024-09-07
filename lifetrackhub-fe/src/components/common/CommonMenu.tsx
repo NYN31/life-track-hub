@@ -13,6 +13,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { FiLogOut } from 'react-icons/fi';
 import { AiOutlineProfile } from 'react-icons/ai';
 import { colors } from '../../constants/extend-theme/colors';
+import { LOGIN_PATH } from '../../constants/sidebar/items-title-and-path';
 
 const CommonMenu = () => {
   const ICON_SIZE = '20px';
@@ -27,7 +28,7 @@ const CommonMenu = () => {
 
   async function handleLogout() {
     //await logout({}).unwrap();
-    navigate('/login', { replace: true });
+    navigate(LOGIN_PATH, { replace: true });
   }
 
   async function handleNavigateToProfile() {
