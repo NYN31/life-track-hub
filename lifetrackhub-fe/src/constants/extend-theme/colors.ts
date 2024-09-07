@@ -1,8 +1,13 @@
 export const colors = {
   primary: '#F2F2F2',
-  body: '#e6e6e6',
+  body: '#FFFFFF',
   icon: '#000000',
-  btn: '#e6e6e6',
+  btn: {
+    bg: '#f2f2f2',
+    text: '#000',
+    bg_disable: '#e6e6e6',
+    text_disable: '#718096',
+  },
   avatar: {
     bg: '#000000',
     text: '#FFFFFF',

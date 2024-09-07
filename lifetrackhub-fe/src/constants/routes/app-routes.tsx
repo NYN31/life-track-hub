@@ -6,14 +6,25 @@ import Setting from '../../pages/common/Setting';
 import Employee from '../../pages/employee/Employee';
 import EmployeeDetails from '../../pages/employee/EmployeeDetails';
 import * as pathname from '../sidebar/items-title-and-path';
+import AuthContainer from '../../pages/auth/AuthContainer';
+import PublicNavbar from '../../components/common/PublicNavbar';
 
 export const appRoutes = [
   {
     path: pathname.ROOT_PATH,
     element: (
       <ProtectedRoute>
-        <Navigate to={pathname.HOME_PATH} />
+        <Navigate to={pathname.LOGIN_PATH} />
       </ProtectedRoute>
+    ),
+  },
+  {
+    path: pathname.LOGIN_PATH,
+    element: (
+      <>
+        <PublicNavbar />
+        <AuthContainer />
+      </>
     ),
   },
   {
