@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 import { colors } from '../../../constants/extend-theme/colors';
-import { ClickButton } from './type';
+import { ClickButton } from '../../../types/button';
 
 const OnclickButton: React.FC<ClickButton> = ({
   text,

@@ -20,14 +20,21 @@ import {
 import { useLoginMutation } from '../../features/auth/authApi';
 import { useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { JWTDecoder, LoginInputData } from './type';
+import { JWTDecoder, LoginInputData } from '../../types/auth';
 import ErrorMessage from '../common/ErrorMessage';
 import { useDispatch } from 'react-redux';
 import { userLoggedIn } from '../../features/auth/authSlice';
+import useCustomToast from '../../helper/hook/CustomToast';
+import {
+  FAILED_TITLE,
+  LOGIN_SUCCESS_MESSAGE,
+  SUCCESS_TITLE,
+} from '../../constants/texts/title-and-message';
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { successToast, errorToast } = useCustomToast();
   const [loading, isLoading] = useState(false);
   const [errorMesssage, setErrorMessage] = useState('');
 
@@ -39,7 +46,7 @@ const Login = () => {
     formState: { errors, isValid },
   } = useForm({
     mode: 'onChange',
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: localStorage.getItem('email') || '', password: '' },
   });
 
   const handleLogin = async (data: LoginInputData) => {
@@ -62,9 +69,11 @@ const Login = () => {
         dispatch(
           userLoggedIn({ ...res, ...decodedJwt, email: decodedJwt.sub })
         );
+        successToast(SUCCESS_TITLE, LOGIN_SUCCESS_MESSAGE);
         navigate(HOME_PATH, { replace: true });
       })
       .catch(error => {
+        errorToast(FAILED_TITLE, error.data.message);
         setErrorMessage(error?.data?.message);
       })
       .finally(() => {

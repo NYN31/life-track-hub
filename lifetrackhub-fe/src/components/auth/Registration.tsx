@@ -16,21 +16,54 @@ import {
 import SubmitButton from '../common/button/SubmitButton';
 import { useNavigate } from 'react-router-dom';
 import { LOGIN_PATH } from '../../constants/sidebar/items-title-and-path';
+import { useState } from 'react';
+import { useRegistrationMutation } from '../../features/auth/authApi';
+import useCustomToast from '../../helper/hook/CustomToast';
+import {
+  FAILED_TITLE,
+  REGISTRATION_SUCCESS_MESSAGE,
+  SUCCESS_TITLE,
+} from '../../constants/texts/title-and-message';
+import ErrorMessage from '../common/ErrorMessage';
 
 const Registration = () => {
   const navigate = useNavigate();
+  const { successToast, errorToast } = useCustomToast();
+  const [loading, isLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [registration] = useRegistrationMutation();
 
   const {
     handleSubmit,
     register,
     formState: { errors, isValid },
+    reset,
   } = useForm({
     mode: 'onChange',
     defaultValues: { firstname: '', lastname: '', email: '', password: '' },
   });
 
-  const handleRegistration = (data: any) => {
-    console.log(data);
+  const handleRegistration = async (data: any) => {
+    isLoading(true);
+    await registration(data)
+      .unwrap()
+      .then(() => {
+        localStorage.setItem('email', data.email);
+        successToast(SUCCESS_TITLE, REGISTRATION_SUCCESS_MESSAGE);
+        navigate(LOGIN_PATH);
+      })
+      .catch(err => {
+        errorToast(FAILED_TITLE, err.data.message);
+        reset({
+          firstname: data.firstname,
+          lastname: data.lastname,
+          email: '',
+          password: '',
+        });
+        setErrorMessage(err.data.message);
+      })
+      .finally(() => isLoading(false));
   };
 
   return (
@@ -151,8 +184,10 @@ const Registration = () => {
           type="submit"
           cursor={isValid ? 'pointer' : 'not-allowed'}
           isDisable={!isValid}
-          isLoading={false}
+          isLoading={loading}
         />
+
+        {errorMessage && <ErrorMessage message={errorMessage} width="full" />}
       </Box>
     </Flex>
   );

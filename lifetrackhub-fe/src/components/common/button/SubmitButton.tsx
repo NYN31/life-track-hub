@@ -1,7 +1,7 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 import { colors } from '../../../constants/extend-theme/colors';
-import { SubmitionButton } from './type';
+import { SubmitionButton } from '../../../types/button';
 
 const SubmitButton: React.FC<SubmitionButton> = ({
   text,

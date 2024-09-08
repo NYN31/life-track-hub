@@ -16,22 +16,25 @@ import { colors } from '../../constants/extend-theme/colors';
 import { LOGIN_PATH } from '../../constants/sidebar/items-title-and-path';
 import { useDispatch } from 'react-redux';
 import { userLoggedOut } from '../../features/auth/authSlice';
+import useCustomToast from '../../helper/hook/CustomToast';
+import {
+  LOGOUT_SUCCESS_MESSAGE,
+  SUCCESS_TITLE,
+} from '../../constants/texts/title-and-message';
 
 const CommonMenu = () => {
   const ICON_SIZE = '20px';
 
+  const { successToast } = useCustomToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const name =
-  //   localStorage.getItem('name') !== 'undefined'
-  //     ? localStorage.getItem('name')
-  //     : localStorage.getItem('username');
-  const name = 'Md Sajjad Hosen Noyon';
+  const name = localStorage.getItem('name') || 'Unknown';
 
   async function handleLogout() {
     localStorage.clear();
     dispatch(userLoggedOut());
+    successToast(SUCCESS_TITLE, LOGOUT_SUCCESS_MESSAGE);
     navigate(LOGIN_PATH, { replace: true });
   }
 
