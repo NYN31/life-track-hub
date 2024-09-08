@@ -5,8 +5,9 @@ import {
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
+import { userLoggedOut } from '../auth/authSlice';
 
-export const API_URL = import.meta.env.BASE_URL;
+export const API_URL = 'http://localhost:8086';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
@@ -28,7 +29,7 @@ const baseQueryWithReauth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 403) {
-    // api.dispatch(userLoggedOut());
+    api.dispatch(userLoggedOut());
     localStorage.clear();
     location.reload();
   }
@@ -38,6 +39,5 @@ const baseQueryWithReauth: BaseQueryFn<
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   endpoints: builder => ({}),
 });

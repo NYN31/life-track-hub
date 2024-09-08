@@ -120,6 +120,7 @@ const Sidebar: React.FC<{
       overflowY="auto"
       overflowX="hidden"
       resize="horizontal"
+      borderRightWidth="1px"
     >
       <Flex direction="column" justifyContent="space-between">
         <Flex direction="column" overflow="hidden">

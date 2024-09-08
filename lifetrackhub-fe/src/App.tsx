@@ -5,7 +5,9 @@ function App() {
   return (
     <Routes>
       {appRoutes.map((route, index) => {
-        return <Route key={index} path={route.path} element={route.element} />;
+        return (
+          <Route key={index} path={route?.path} element={route?.element} />
+        );
       })}
     </Routes>
   );
