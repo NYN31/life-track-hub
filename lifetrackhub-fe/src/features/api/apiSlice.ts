@@ -6,7 +6,7 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
 
-export const API_URL = import.meta.env.BASE_URL;
+export const API_URL = 'http://localhost:8086';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
@@ -38,6 +38,5 @@ const baseQueryWithReauth: BaseQueryFn<
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   endpoints: builder => ({}),
 });

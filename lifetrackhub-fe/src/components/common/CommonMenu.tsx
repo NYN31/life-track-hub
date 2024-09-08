@@ -14,11 +14,14 @@ import { FiLogOut } from 'react-icons/fi';
 import { AiOutlineProfile } from 'react-icons/ai';
 import { colors } from '../../constants/extend-theme/colors';
 import { LOGIN_PATH } from '../../constants/sidebar/items-title-and-path';
+import { useDispatch } from 'react-redux';
+import { userLoggedOut } from '../../features/auth/authSlice';
 
 const CommonMenu = () => {
   const ICON_SIZE = '20px';
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // const name =
   //   localStorage.getItem('name') !== 'undefined'
@@ -27,7 +30,8 @@ const CommonMenu = () => {
   const name = 'Md Sajjad Hosen Noyon';
 
   async function handleLogout() {
-    //await logout({}).unwrap();
+    localStorage.clear();
+    dispatch(userLoggedOut());
     navigate(LOGIN_PATH, { replace: true });
   }
 

@@ -3,6 +3,7 @@ export const colors = {
   body: '#FFFFFF',
   icon: '#000000',
   link: 'blue',
+  alert: '#FFF5F5',
   btn: {
     bg: '#CBD5E0',
     text: '#000',

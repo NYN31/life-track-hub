@@ -13,10 +13,25 @@ import {
 } from '../../constants/texts/validation-message';
 import SubmitButton from '../common/button/SubmitButton';
 import { useNavigate } from 'react-router-dom';
-import { REGISTRATION_PATH } from '../../constants/sidebar/items-title-and-path';
+import {
+  HOME_PATH,
+  REGISTRATION_PATH,
+} from '../../constants/sidebar/items-title-and-path';
+import { useLoginMutation } from '../../features/auth/authApi';
+import { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { JWTDecoder, LoginInputData } from './type';
+import ErrorMessage from '../common/ErrorMessage';
+import { useDispatch } from 'react-redux';
+import { userLoggedIn } from '../../features/auth/authSlice';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loading, isLoading] = useState(false);
+  const [errorMesssage, setErrorMessage] = useState('');
+
+  const [login] = useLoginMutation();
 
   const {
     handleSubmit,
@@ -27,8 +42,34 @@ const Login = () => {
     defaultValues: { email: '', password: '' },
   });
 
-  const handleLogin = (data: any) => {
-    console.log(data);
+  const handleLogin = async (data: LoginInputData) => {
+    isLoading(true);
+
+    await login(data)
+      .unwrap()
+      .then(res => {
+        console.log(res);
+        const decodedJwt: JWTDecoder = jwtDecode(res.accessToken);
+        const { name, accessToken } = res;
+        const { sub, role, userId } = decodedJwt;
+
+        localStorage.setItem('name', name);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('email', sub);
+        localStorage.setItem('role', role[0]);
+        localStorage.setItem('userId', userId.toString());
+
+        dispatch(
+          userLoggedIn({ ...res, ...decodedJwt, email: decodedJwt.sub })
+        );
+        navigate(HOME_PATH, { replace: true });
+      })
+      .catch(error => {
+        setErrorMessage(error?.data?.message);
+      })
+      .finally(() => {
+        isLoading(false);
+      });
   };
 
   return (
@@ -36,7 +77,7 @@ const Login = () => {
       <Box
         as="form"
         onSubmit={handleSubmit(handleLogin)}
-        w={{ base: '100%', sm: '100%', md: 'auto', lg: 'auto' }} // Responsive width
+        w={{ base: '100%', sm: '100%', md: 'auto', lg: 'auto' }}
       >
         <Heading as="h3" size={['sm', 'md', 'lg']}>
           {LOGIN_PAGE_HEADING}
@@ -114,8 +155,10 @@ const Login = () => {
           type="submit"
           cursor={isValid ? 'pointer' : 'not-allowed'}
           isDisable={!isValid}
-          isLoading={false}
+          isLoading={loading}
         />
+
+        {errorMesssage && <ErrorMessage message={errorMesssage} width="full" />}
       </Box>
     </Flex>
   );
