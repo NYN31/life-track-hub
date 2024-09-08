@@ -17,7 +17,7 @@ export const authApi = apiSlice.injectEndpoints({
         method: 'POST',
       }),
 
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
           await queryFulfilled;
 
@@ -28,7 +28,16 @@ export const authApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
+    registration: builder.mutation({
+      query: credentials => ({
+        url: '/auth/registration',
+        method: 'POST',
+        body: { ...credentials },
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation } = authApi;
+export const { useLoginMutation, useLogoutMutation, useRegistrationMutation } =
+  authApi;

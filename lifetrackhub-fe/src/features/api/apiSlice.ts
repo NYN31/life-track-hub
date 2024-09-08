@@ -5,6 +5,7 @@ import {
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
+import { userLoggedOut } from '../auth/authSlice';
 
 export const API_URL = 'http://localhost:8086';
 
@@ -28,7 +29,7 @@ const baseQueryWithReauth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 403) {
-    // api.dispatch(userLoggedOut());
+    api.dispatch(userLoggedOut());
     localStorage.clear();
     location.reload();
   }
