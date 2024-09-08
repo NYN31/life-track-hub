@@ -12,3 +12,10 @@ export interface LoginInputData {
   email: string;
   password: string;
 }
+
+export interface RegistrationInputData {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+}

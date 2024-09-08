@@ -25,6 +25,7 @@ import {
   SUCCESS_TITLE,
 } from '../../constants/texts/title-and-message';
 import ErrorMessage from '../common/ErrorMessage';
+import { RegistrationInputData } from '../../types/auth';
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const Registration = () => {
     defaultValues: { firstname: '', lastname: '', email: '', password: '' },
   });
 
-  const handleRegistration = async (data: any) => {
+  const handleRegistration = async (data: RegistrationInputData) => {
     isLoading(true);
     await registration(data)
       .unwrap()
