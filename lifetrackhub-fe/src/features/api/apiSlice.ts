@@ -13,6 +13,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
   prepareHeaders: (headers, { getState }: { getState: any }) => {
     const token: string | undefined = getState().auth.accessToken;
+    console.log('Tooooken: ', token);
 
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
@@ -39,5 +40,5 @@ const baseQueryWithReauth: BaseQueryFn<
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  endpoints: builder => ({}),
+  endpoints: () => ({}),
 });
