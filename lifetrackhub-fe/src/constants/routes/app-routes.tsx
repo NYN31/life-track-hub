@@ -9,6 +9,7 @@ import * as pathname from '../sidebar/items-title-and-path';
 import PublicNavbar from '../../components/common/PublicNavbar';
 import RegistrationContainer from '../../pages/auth/RegistrationContainer';
 import LoginContainer from '../../pages/auth/LoginContainer';
+import TodoList from '../../pages/todo/TodoList';
 
 export const appRoutes = [
   {
@@ -37,12 +38,19 @@ export const appRoutes = [
       </>
     ),
   },
-  ,
   {
     path: pathname.HOME_PATH,
     element: (
       <ProtectedRoute>
         <Home />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: pathname.TODO_PATH,
+    element: (
+      <ProtectedRoute>
+        <TodoList />
       </ProtectedRoute>
     ),
   },

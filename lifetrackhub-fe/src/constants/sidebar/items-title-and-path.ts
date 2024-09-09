@@ -8,6 +8,9 @@ export const LOGIN_PATH = '/auth/sign-in';
 export const REGISTRATION = 'Registration';
 export const REGISTRATION_PATH = '/auth/sign-up';
 
+export const TODO = 'Todo';
+export const TODO_PATH = '/todo';
+
 export const HOME = 'Home';
 export const HOME_PATH = '/home';
 

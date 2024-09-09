@@ -4,6 +4,7 @@ import { TbArrowRoundaboutRight } from 'react-icons/tb';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { GoPeople } from 'react-icons/go';
 import { TbDetails } from 'react-icons/tb';
+import { LuListTodo } from 'react-icons/lu';
 
 const ICON_SIZE = 18;
 
@@ -13,6 +14,12 @@ const SidebarData = [
     label: data.HOME_PATH,
     path: data.HOME_PATH,
     icon: <IoHomeOutline size={ICON_SIZE} />,
+  },
+  {
+    title: data.TODO,
+    label: data.TODO_PATH,
+    path: data.TODO_PATH,
+    icon: <LuListTodo size={ICON_SIZE} />,
   },
   {
     title: data.ABOUT,
