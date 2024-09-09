@@ -10,6 +10,7 @@ export const REGISTRATION_PATH = '/auth/sign-up';
 
 export const TODO = 'Todo';
 export const TODO_PATH = '/todo';
+export const TODO_API_PATH = '/api/todo';
 
 export const HOME = 'Home';
 export const HOME_PATH = '/home';
