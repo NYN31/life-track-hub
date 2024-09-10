@@ -25,8 +25,6 @@ public class CorsConfig implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "*");
-        //response.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT");
-        //response.setHeader("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization");
         response.setHeader("Access-Control-Allow-Headers", "*");
 
 

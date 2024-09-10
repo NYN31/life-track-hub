@@ -1,15 +1,16 @@
 import { Box, Flex, Show, useDisclosure } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from './Navbar';
 import { Navigate } from 'react-router-dom';
 import { LOGIN_PATH } from '../../constants/sidebar/items-title-and-path';
 import Sidebar from './Sidebar';
 import MobileSidebar from './MobileSidebar';
+import useAuth from '../../helper/hook/useAuth';
 
 const ProtectedRoute: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
   children,
 }) => {
-  const [authed] = useState(true);
+  const authed = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const SIDEBAR_WIDTH = '70%';
 

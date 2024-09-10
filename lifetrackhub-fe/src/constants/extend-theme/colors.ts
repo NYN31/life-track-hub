@@ -30,7 +30,7 @@ export const colors = {
   },
   menu: {
     bg: '#CBD5E0',
-    list_bg: '#E2E8F0',
+    list_bg: '#FFF',
     list_border: '#CBD5E0',
     list_text: '#171923',
     list_hover: '#CBD5E0',
