@@ -8,7 +8,7 @@ export const blueColor = {
     bg: '#1560BD',
     text: '#fff',
     bg_disable: 'gray',
-    text_disable: '#fff',
+    text_disable: '#cccccc',
   },
   avatar: {
     bg: '#1560BD',

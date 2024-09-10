@@ -8,7 +8,7 @@ export const deepPinkColor = {
     bg: '#e2136e',
     text: '#fff',
     bg_disable: 'gray',
-    text_disable: '#fff',
+    text_disable: '#cccccc',
   },
   avatar: {
     bg: '#e2136e',

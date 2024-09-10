@@ -14,7 +14,6 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }: { getState: any }) => {
     const token: string | undefined =
       getState().auth.accessToken || localStorage.getItem('accessToken');
-    console.log('Tooooken: ', token);
 
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);

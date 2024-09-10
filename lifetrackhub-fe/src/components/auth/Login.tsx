@@ -55,7 +55,6 @@ const Login = () => {
     await login(data)
       .unwrap()
       .then(res => {
-        console.log(res);
         const decodedJwt: JWTDecoder = jwtDecode(res.accessToken);
         const { name, accessToken } = res;
         const { sub, role, userId } = decodedJwt;

@@ -8,7 +8,7 @@ export const whiteColor = {
     bg: '#CBD5E0',
     text: '#000',
     bg_disable: '#e6e6e6',
-    text_disable: '#718096',
+    text_disable: '#cccccc',
   },
   avatar: {
     bg: '#000000',

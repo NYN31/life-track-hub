@@ -21,6 +21,7 @@ import {
   LOGOUT_SUCCESS_MESSAGE,
   SUCCESS_TITLE,
 } from '../../constants/texts/title-and-message';
+import { logoutClearingLocalStorage } from '../../helper/local-storage/logout';
 
 const CommonMenu = () => {
   const ICON_SIZE = '20px';
@@ -32,14 +33,13 @@ const CommonMenu = () => {
   const name = localStorage.getItem('name') || 'Unknown';
 
   async function handleLogout() {
-    localStorage.clear();
     dispatch(userLoggedOut());
     successToast(SUCCESS_TITLE, LOGOUT_SUCCESS_MESSAGE);
+    logoutClearingLocalStorage();
     navigate(LOGIN_PATH, { replace: true });
   }
 
   async function handleNavigateToProfile() {
-    console.log('Profile page');
     navigate('/profile');
   }
 
