@@ -6,7 +6,7 @@ import PublicNavbar from '../../components/common/PublicNavbar';
 import RegistrationContainer from '../../pages/auth/RegistrationContainer';
 import LoginContainer from '../../pages/auth/LoginContainer';
 import TodoContainer from '../../pages/todo/TodoContainer';
-import Setting from '../../pages/common/Setting';
+import SettingContainer from '../../pages/setting/SettingContainer';
 
 export const appRoutes = [
   {
@@ -36,14 +36,6 @@ export const appRoutes = [
     ),
   },
   {
-    path: pathname.SETTING_PATH,
-    element: (
-      <ProtectedRoute>
-        <Setting />
-      </ProtectedRoute>
-    ),
-  },
-  {
     path: pathname.HOME_PATH,
     element: (
       <ProtectedRoute>
@@ -56,6 +48,14 @@ export const appRoutes = [
     element: (
       <ProtectedRoute>
         <TodoContainer />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: pathname.SETTING_PATH,
+    element: (
+      <ProtectedRoute>
+        <SettingContainer />
       </ProtectedRoute>
     ),
   },
