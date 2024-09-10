@@ -40,7 +40,37 @@ export const useCustomToast = () => {
     });
   };
 
-  return { successToast, errorToast };
+  const warningToast = (
+    title: string,
+    message: string,
+    status: ToastStatus = 'warning'
+  ) => {
+    toast({
+      title: title || SUCCESS_TITLE,
+      description: message || OPERATION_SUCCESS_MESSAGE,
+      status: status,
+      position: 'top',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  const infoToast = (
+    title: string,
+    message: string,
+    status: ToastStatus = 'info'
+  ) => {
+    toast({
+      title: title || SUCCESS_TITLE,
+      description: message || OPERATION_SUCCESS_MESSAGE,
+      status: status,
+      position: 'top',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  return { successToast, errorToast, warningToast, infoToast };
 };
 
 export default useCustomToast;
