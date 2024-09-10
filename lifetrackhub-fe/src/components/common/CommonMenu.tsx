@@ -74,7 +74,7 @@ const CommonMenu = () => {
         as="b"
         onClick={action}
         _hover={{
-          bg: `${colors.menu.list_hover} !important`,
+          bg: `${colors().menu.list_hover} !important`,
         }}
       >
         <Flex gap={2}>

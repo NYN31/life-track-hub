@@ -55,8 +55,8 @@ const Sidebar: React.FC<{
         }
         onClick={() => handleNavigation(path)}
         _hover={{
-          bg: `${colors.sidebar.hover_bg} !important`,
-          color: `${colors.sidebar.hover_text} !important`,
+          bg: `${colors().sidebar.hover_bg} !important`,
+          color: `${colors().sidebar.hover_text} !important`,
           borderRadius: '4px',
         }}
       >
