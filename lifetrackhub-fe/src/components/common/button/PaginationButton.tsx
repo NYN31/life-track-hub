@@ -1,0 +1,40 @@
+import React from 'react';
+import { Flex, Stack } from '@chakra-ui/react';
+import OnclickButton from './OnclickButton';
+
+const PaginationButton: React.FC<{
+  hasPrevious: boolean;
+  hasNext: boolean;
+  handlePreviousPage: () => void;
+  handleNextPage: () => void;
+}> = ({ hasPrevious, hasNext, handlePreviousPage, handleNextPage }) => {
+  return (
+    <Flex
+      direction="row"
+      justifyContent="flex-end"
+      mb="4"
+      mr={[0, 0, 0, 4, 12]}
+    >
+      <Stack spacing={6} direction="row" align="center">
+        <OnclickButton
+          text="Previous"
+          width="auto"
+          cursor="pointer"
+          isDisable={!hasPrevious}
+          isLoading={false}
+          action={handlePreviousPage}
+        />
+        <OnclickButton
+          text="Next"
+          width="auto"
+          cursor="pointer"
+          isDisable={!hasNext}
+          isLoading={false}
+          action={handleNextPage}
+        />
+      </Stack>
+    </Flex>
+  );
+};
+
+export default PaginationButton;

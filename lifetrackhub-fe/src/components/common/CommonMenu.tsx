@@ -73,8 +73,6 @@ const CommonMenu = () => {
         cursor="pointer"
         as="b"
         onClick={action}
-        bg="gray.200"
-        color="menu.list_text"
         _hover={{
           bg: `${colors.menu.list_hover} !important`,
         }}
