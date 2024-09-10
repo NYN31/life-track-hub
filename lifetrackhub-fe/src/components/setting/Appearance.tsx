@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import {
   APP_COLOR_KEY,
+  BLUE,
   DEEP_PINK,
   DEFAULT,
 } from '../../constants/extend-theme/colors';
@@ -29,7 +30,7 @@ const Appearance = () => {
   }, [value]);
 
   return (
-    <Flex direction="row" justifyContent="space-between">
+    <Flex direction={['column', 'column', 'column', 'row']} gap={[4, 4, 4, 16]}>
       <Box>
         <Heading as="h4">Accent Color</Heading>
         <Text color="gray.500">
@@ -44,6 +45,9 @@ const Appearance = () => {
           </Radio>
           <Radio size="lg" colorScheme="pink" value={DEEP_PINK}>
             Pink
+          </Radio>
+          <Radio size="lg" colorScheme="blue" value={BLUE}>
+            Blue
           </Radio>
         </Stack>
       </RadioGroup>

@@ -42,7 +42,6 @@ const CustomFormInput: React.FC<{
             type={type}
             placeholder={placeholder}
             bg="body"
-            color="btn.text"
             border="1px"
             borderColor="gray.300"
             _hover={{

@@ -1,17 +1,17 @@
-export const deepPinkColor = {
+export const blueColor = {
   primary: '#F2F2F2',
   body: '#FFFFFF',
-  icon: '#e2136e',
+  icon: '#1560BD',
   link: 'blue',
   alert: '#FFF5F5',
   btn: {
-    bg: '#e2136e',
+    bg: '#1560BD',
     text: '#fff',
     bg_disable: 'gray',
     text_disable: '#fff',
   },
   avatar: {
-    bg: '#e2136e',
+    bg: '#1560BD',
     text: '#FFFFFF',
   },
   gray: {

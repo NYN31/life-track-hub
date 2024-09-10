@@ -23,7 +23,7 @@ export const tabs = [
 
 const SettingTabs = () => {
   return (
-    <Box py={8} w="800px">
+    <Box py={8}>
       <Tabs position="relative" variant="unstyled">
         <TabList>
           {tabs.map(t => (
