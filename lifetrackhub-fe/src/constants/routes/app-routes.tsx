@@ -5,7 +5,7 @@ import * as pathname from '../sidebar/items-title-and-path';
 import PublicNavbar from '../../components/common/PublicNavbar';
 import RegistrationContainer from '../../pages/auth/RegistrationContainer';
 import LoginContainer from '../../pages/auth/LoginContainer';
-import TodoList from '../../pages/todo/TodoList';
+import TodoContainer from '../../pages/todo/TodoContainer';
 import Setting from '../../pages/common/Setting';
 
 export const appRoutes = [
@@ -55,7 +55,7 @@ export const appRoutes = [
     path: pathname.TODO_PATH,
     element: (
       <ProtectedRoute>
-        <TodoList />
+        <TodoContainer />
       </ProtectedRoute>
     ),
   },

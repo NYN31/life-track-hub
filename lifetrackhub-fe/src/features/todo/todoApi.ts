@@ -14,4 +14,4 @@ export const todoApi = apiSlice
     }),
   });
 
-export const { useGetTodosByIdQuery } = todoApi;
+export const { useLazyGetTodosByIdQuery } = todoApi;
