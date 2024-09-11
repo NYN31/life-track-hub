@@ -3,7 +3,7 @@ export const whiteColor = {
   body: '#FFFFFF',
   icon: '#000000',
   link: 'blue',
-  alert: '#FFF5F5',
+  alert: '#FED7D7',
   btn: {
     bg: '#CBD5E0',
     text: '#000',

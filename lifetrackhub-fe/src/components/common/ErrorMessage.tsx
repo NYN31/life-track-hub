@@ -6,7 +6,7 @@ const ErrorMessage: React.FC<{ message: string; width?: string }> = ({
   width,
 }) => {
   return (
-    <Box width={width ? width : '30%'} mt={4}>
+    <Box width={width ? width : ['full', 'full', 'full', '50%', '50%']} mt={4}>
       <Alert status="error" bg="alert" borderRadius={4}>
         <AlertIcon />
         <AlertDescription>

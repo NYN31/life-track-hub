@@ -13,6 +13,7 @@ import PaginationButton from '../../components/common/button/PaginationButton';
 import TodoResult from '../../components/todo/TodoResult';
 import PageHeading from '../../components/common/PageHeading';
 import Loading from '../../components/common/Loading';
+import ErrorMessage from '../../components/common/ErrorMessage';
 
 const TodoContainer = () => {
   const queryPage = useQuery().get('page') || '0';
@@ -26,6 +27,7 @@ const TodoContainer = () => {
   const [next, setNext] = useState(-1);
   const [previous, setPrevious] = useState(-1);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const userId = useSelector((state: any) => state.auth.userId);
 
@@ -43,6 +45,7 @@ const TodoContainer = () => {
 
   const handleTodoSearch = async (page = 0) => {
     setLoading(true);
+    setErrorMessage('');
     await triggerGetTodosById({
       userId: userId || localStorage.getItem('userId'),
       page,
@@ -53,6 +56,8 @@ const TodoContainer = () => {
         setResponseToState(res);
       })
       .catch(err => {
+        setResponseToState({ content: [], hasPrevious: false, hasNext: false });
+        setErrorMessage(err.data.message || SEARCH_FAILED_ERROR_MESSAGE);
         errorToast(
           err.data.status || FAILED_TITLE,
           err.data.message || SEARCH_FAILED_ERROR_MESSAGE
@@ -96,6 +101,7 @@ const TodoContainer = () => {
       </Flex>
 
       <TodoResult todos={todoResults} />
+      {errorMessage && <ErrorMessage message={errorMessage} />}
     </Flex>
   );
 };

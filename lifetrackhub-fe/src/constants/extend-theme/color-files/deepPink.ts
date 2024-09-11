@@ -3,7 +3,7 @@ export const deepPinkColor = {
   body: '#FFFFFF',
   icon: '#e2136e',
   link: 'blue',
-  alert: '#FFF5F5',
+  alert: '#FED7D7',
   btn: {
     bg: '#e2136e',
     text: '#fff',

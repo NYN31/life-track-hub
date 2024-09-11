@@ -3,7 +3,7 @@ export const blueColor = {
   body: '#FFFFFF',
   icon: '#1560BD',
   link: 'blue',
-  alert: '#FFF5F5',
+  alert: '#FED7D7',
   btn: {
     bg: '#1560BD',
     text: '#fff',
