@@ -22,8 +22,8 @@ const SubmitButton: React.FC<SubmitionButton> = ({
       isDisabled={isDisable}
       isLoading={isLoading}
       _disabled={{
-        bg: `${colors.btn.bg_disable} !important`,
-        color: `${colors.btn.text_disable} !important`,
+        bg: `${colors().btn.bg_disable} !important`,
+        color: `${colors().btn.text_disable} !important`,
       }}
     >
       {text}

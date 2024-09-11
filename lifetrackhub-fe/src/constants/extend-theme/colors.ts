@@ -1,38 +1,25 @@
-export const colors = {
-  primary: '#F2F2F2',
-  body: '#FFFFFF',
-  icon: '#000000',
-  link: 'blue',
-  alert: '#FFF5F5',
-  btn: {
-    bg: '#CBD5E0',
-    text: '#000',
-    bg_disable: '#e6e6e6',
-    text_disable: '#718096',
-  },
-  avatar: {
-    bg: '#000000',
-    text: '#FFFFFF',
-  },
-  gray: {
-    default: '#CBD5E0',
-    hover: 'gray',
-  },
-  sidebar: {
-    bg: '#ffffff',
-    text: '#000000',
-    hover_bg: '#e6e6e6',
-    hover_text: '#000',
-  },
-  navbar: {
-    bg: '#f2f2f2',
-    text: '#000',
-  },
-  menu: {
-    bg: '#CBD5E0',
-    list_bg: '#FFF',
-    list_border: '#CBD5E0',
-    list_text: '#171923',
-    list_hover: '#CBD5E0',
-  },
+import { blueColor } from './color-files/blue';
+import { pinkColor } from './color-files/pink';
+import { whiteColor } from './color-files/default';
+import { cyanColor } from './color-files/cyan';
+import { purpleColor } from './color-files/purple';
+
+export const DEFAULT = 'default';
+export const PINK = 'pink';
+export const BLUE = 'blue';
+export const CYAN = 'cyan';
+export const PURPLE = 'purple';
+
+export const APP_COLOR_KEY = 'appColor';
+
+export const colors = () => {
+  const appColor = localStorage.getItem(APP_COLOR_KEY) || DEFAULT;
+  localStorage.setItem(APP_COLOR_KEY, appColor);
+
+  if (appColor === DEFAULT) return whiteColor;
+  else if (appColor === PINK) return pinkColor;
+  else if (appColor === BLUE) return blueColor;
+  else if (appColor === CYAN) return cyanColor;
+  else if (appColor === PURPLE) return purpleColor;
+  else return whiteColor;
 };

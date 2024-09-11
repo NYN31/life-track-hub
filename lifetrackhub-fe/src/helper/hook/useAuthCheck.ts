@@ -9,7 +9,6 @@ export default function useAuthCheck() {
 
   const handleAuth = useCallback(() => {
     const { name, accessToken, email, role, userId } = getAllLocalStoreValue();
-    console.log('In useAuthCheck() hook!');
 
     if (name && accessToken && email && role && userId) {
       dispatch(

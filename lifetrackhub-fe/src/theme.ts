@@ -9,7 +9,7 @@ const theme = extendTheme({
     body: 'Roboto, sans-serif',
   },
   fontSizes: fontSizes,
-  colors: colors,
+  colors: colors(),
 });
 
 export default theme;

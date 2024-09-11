@@ -19,7 +19,7 @@ const PaginationButton: React.FC<{
         <OnclickButton
           text="Previous"
           width="auto"
-          cursor="pointer"
+          cursor={hasPrevious ? 'pointer' : 'not-allowed'}
           isDisable={!hasPrevious}
           isLoading={false}
           action={handlePreviousPage}
@@ -27,7 +27,7 @@ const PaginationButton: React.FC<{
         <OnclickButton
           text="Next"
           width="auto"
-          cursor="pointer"
+          cursor={hasNext ? 'pointer' : 'not-allowed'}
           isDisable={!hasNext}
           isLoading={false}
           action={handleNextPage}
