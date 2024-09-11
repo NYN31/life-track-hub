@@ -21,11 +21,11 @@ export const purpleColor = {
   sidebar: {
     bg: '#ffffff',
     text: '#000000',
-    hover_bg: '#e6e6e6',
+    hover_bg: '#E9D8FD',
     hover_text: '#000',
   },
   navbar: {
-    bg: '#f2f2f2',
+    bg: '#FAF5FF',
     text: '#000',
   },
   menu: {
@@ -33,6 +33,6 @@ export const purpleColor = {
     list_bg: '#FFF',
     list_border: '#CBD5E0',
     list_text: '#171923',
-    list_hover: '#CBD5E0',
+    list_hover: '#E9D8FD',
   },
 };

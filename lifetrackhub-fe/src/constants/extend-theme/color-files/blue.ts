@@ -21,11 +21,11 @@ export const blueColor = {
   sidebar: {
     bg: '#ffffff',
     text: '#000000',
-    hover_bg: '#e6e6e6',
+    hover_bg: '#bee3f8',
     hover_text: '#000',
   },
   navbar: {
-    bg: '#f2f2f2',
+    bg: '#ebf8ff',
     text: '#000',
   },
   menu: {
@@ -33,6 +33,6 @@ export const blueColor = {
     list_bg: '#FFF',
     list_border: '#CBD5E0',
     list_text: '#171923',
-    list_hover: '#CBD5E0',
+    list_hover: '#bee3f8',
   },
 };

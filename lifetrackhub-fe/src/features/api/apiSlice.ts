@@ -6,6 +6,7 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
 import { userLoggedOut } from '../auth/authSlice';
+import { logoutClearingLocalStorage } from '../../helper/local-storage/logout';
 
 export const API_URL = 'http://localhost:8086';
 
@@ -31,7 +32,7 @@ const baseQueryWithReauth: BaseQueryFn<
 
   if (result?.error?.status === 403) {
     api.dispatch(userLoggedOut());
-    localStorage.clear();
+    logoutClearingLocalStorage();
     location.reload();
   }
   return result;

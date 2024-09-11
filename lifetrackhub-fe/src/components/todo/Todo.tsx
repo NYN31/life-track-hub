@@ -27,7 +27,7 @@ const Todo: React.FC<{ todo: ITodoListItem }> = ({ todo }) => {
       w={['full', 'full', 'full', '350px', '350px', '350px']}
       p={4}
       mt={4}
-      bg="primary"
+      bg="navbar.bg"
       borderRadius={4}
       boxShadow="0 1px 3px gray"
     >

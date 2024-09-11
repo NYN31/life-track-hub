@@ -21,11 +21,11 @@ export const pinkColor = {
   sidebar: {
     bg: '#ffffff',
     text: '#000000',
-    hover_bg: '#e6e6e6',
+    hover_bg: '#FED7E2',
     hover_text: '#000',
   },
   navbar: {
-    bg: '#f2f2f2',
+    bg: '#FFF5F7',
     text: '#000',
   },
   menu: {
@@ -33,6 +33,6 @@ export const pinkColor = {
     list_bg: '#FFF',
     list_border: '#CBD5E0',
     list_text: '#171923',
-    list_hover: '#CBD5E0',
+    list_hover: '#FED7E2',
   },
 };

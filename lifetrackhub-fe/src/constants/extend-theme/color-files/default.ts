@@ -33,6 +33,6 @@ export const whiteColor = {
     list_bg: '#FFF',
     list_border: '#CBD5E0',
     list_text: '#171923',
-    list_hover: '#CBD5E0',
+    list_hover: '#e6e6e6',
   },
 };
