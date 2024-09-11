@@ -11,8 +11,10 @@ import { useEffect, useState } from 'react';
 import {
   APP_COLOR_KEY,
   BLUE,
-  DEEP_PINK,
+  CYAN,
+  PINK,
   DEFAULT,
+  PURPLE,
 } from '../../constants/extend-theme/colors';
 
 const Appearance = () => {
@@ -39,15 +41,21 @@ const Appearance = () => {
       </Box>
 
       <RadioGroup onChange={setValue} value={value}>
-        <Stack direction="row">
+        <Stack direction={['column', 'column', 'row']}>
           <Radio size="lg" colorScheme="gray" value={DEFAULT}>
             Default
           </Radio>
-          <Radio size="lg" colorScheme="pink" value={DEEP_PINK}>
+          <Radio size="lg" colorScheme="pink" value={PINK}>
             Pink
           </Radio>
           <Radio size="lg" colorScheme="blue" value={BLUE}>
             Blue
+          </Radio>
+          <Radio size="lg" colorScheme="cyan" value={CYAN}>
+            Cyan
+          </Radio>
+          <Radio size="lg" colorScheme="purple" value={PURPLE}>
+            Purple
           </Radio>
         </Stack>
       </RadioGroup>
