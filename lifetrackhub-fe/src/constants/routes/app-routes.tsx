@@ -7,6 +7,7 @@ import RegistrationContainer from '../../pages/auth/RegistrationContainer';
 import LoginContainer from '../../pages/auth/LoginContainer';
 import TodoContainer from '../../pages/todo/TodoContainer';
 import SettingContainer from '../../pages/setting/SettingContainer';
+import CreateTodoContainer from '../../pages/todo/CreateTodoContainer';
 
 export const appRoutes = [
   {
@@ -44,10 +45,18 @@ export const appRoutes = [
     ),
   },
   {
-    path: pathname.TODO_PATH,
+    path: pathname.TODO_LIST_PATH,
     element: (
       <ProtectedRoute>
         <TodoContainer />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: pathname.TODO_CREATE_PATH,
+    element: (
+      <ProtectedRoute>
+        <CreateTodoContainer />
       </ProtectedRoute>
     ),
   },

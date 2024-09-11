@@ -14,6 +14,7 @@ import TodoResult from '../../components/todo/TodoResult';
 import PageHeading from '../../components/common/PageHeading';
 import Loading from '../../components/common/Loading';
 import ErrorMessage from '../../components/common/ErrorMessage';
+import { TODO_LIST_PATH } from '../../constants/sidebar/items-title-and-path';
 
 const TodoContainer = () => {
   const queryPage = useQuery().get('page') || '0';
@@ -67,7 +68,7 @@ const TodoContainer = () => {
   };
 
   const updateAndPushUrl = (page = '0') => {
-    navigate(getUpdatedUrl(`/todo?page=${page}`), {
+    navigate(getUpdatedUrl(`${TODO_LIST_PATH}?page=${page}`), {
       replace: true,
     });
   };
