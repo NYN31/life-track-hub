@@ -1,9 +1,9 @@
 import React from 'react';
-import { ITodoListItem } from '../../types/todo';
+import { ITodoItemsResponse } from '../../types/todo';
 import { Grid } from '@chakra-ui/react';
 import Todo from './Todo';
 
-const TodoResult: React.FC<{ todos: ITodoListItem[] }> = ({ todos }) => {
+const TodoResult: React.FC<{ todos: ITodoItemsResponse[] }> = ({ todos }) => {
   return (
     <Grid
       templateColumns={[
@@ -16,7 +16,7 @@ const TodoResult: React.FC<{ todos: ITodoListItem[] }> = ({ todos }) => {
       ]}
       gap={2}
     >
-      {todos.map((todo: ITodoListItem) => (
+      {todos.map((todo: ITodoItemsResponse) => (
         <Todo key={todo.id} todo={todo} />
       ))}
     </Grid>

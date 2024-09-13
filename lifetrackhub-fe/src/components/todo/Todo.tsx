@@ -1,9 +1,9 @@
-import { Box, Flex, GridItem, Text } from '@chakra-ui/react';
-import { ITodoListItem } from '../../types/todo';
+import { Box, Flex, GridItem } from '@chakra-ui/react';
+import { ITodoItemsResponse } from '../../types/todo';
 import OnclickButton from '../common/button/OnclickButton';
 import { format } from 'date-fns';
 
-const Todo: React.FC<{ todo: ITodoListItem }> = ({ todo }) => {
+const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
   const { title, id, done, createdDate, lastModifiedDate, todoItems } = todo;
 
   let todoCompleted = 0;
@@ -34,20 +34,22 @@ const Todo: React.FC<{ todo: ITodoListItem }> = ({ todo }) => {
       <Flex direction="column" justifyContent="space-evenly" gap={2}>
         <Flex direction="column" gap={2}>
           {showText('Title: ', title)}
+
           <Flex gap={12}>
             {showText('Id: ', id)}
             {showText('Done: ', done)}
           </Flex>
+
           {showText(
             'Create At: ',
             format(new Date(createdDate), 'yyyy-MM-dd HH:mm:ss')
           )}
-          <Text>
-            {showText(
-              'Last Modified At: ',
-              format(new Date(lastModifiedDate), 'yyyy-MM-dd HH:mm:ss')
-            )}
-          </Text>
+
+          {showText(
+            'Last Modified At: ',
+            format(new Date(lastModifiedDate), 'yyyy-MM-dd HH:mm:ss')
+          )}
+
           {showText('Todo Items: ', todoItems.length)}
           {showText('Todo Completed: ', todoCompleted)}
         </Flex>

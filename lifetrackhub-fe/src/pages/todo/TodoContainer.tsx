@@ -15,6 +15,7 @@ import PageHeading from '../../components/common/PageHeading';
 import Loading from '../../components/common/Loading';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import { TODO_LIST_PATH } from '../../constants/sidebar/items-title-and-path';
+import { ITodoItemsResponse, ITodoResponse } from '../../types/todo';
 
 const TodoContainer = () => {
   const queryPage = useQuery().get('page') || '0';
@@ -22,7 +23,7 @@ const TodoContainer = () => {
   const { errorToast } = useCustomToast();
   const navigate = useNavigate();
 
-  const [todoResults, setTodoResults] = useState([]);
+  const [todoResults, setTodoResults] = useState<ITodoItemsResponse[]>([]);
   const [hasNext, setHasNext] = useState(false);
   const [hasPrevious, setHasPrevious] = useState(false);
   const [next, setNext] = useState(-1);
@@ -34,7 +35,7 @@ const TodoContainer = () => {
 
   const [triggerGetTodosById] = useLazyGetTodosByIdQuery();
 
-  const setResponseToState = (todoResponse: any) => {
+  const setResponseToState = (todoResponse: ITodoResponse) => {
     const { content, hasNext, hasPrevious, pageNumber } = todoResponse;
 
     setTodoResults(content);
@@ -57,7 +58,13 @@ const TodoContainer = () => {
         setResponseToState(res);
       })
       .catch(err => {
-        setResponseToState({ content: [], hasPrevious: false, hasNext: false });
+        setResponseToState({
+          content: [],
+          hasPrevious: false,
+          hasNext: false,
+          totalPages: 0,
+          pageNumber: -1,
+        });
         setErrorMessage(err.data.message || SEARCH_FAILED_ERROR_MESSAGE);
         errorToast(
           err.data.status || FAILED_TITLE,
