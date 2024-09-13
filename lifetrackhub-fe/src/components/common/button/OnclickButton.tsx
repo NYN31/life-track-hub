@@ -4,6 +4,7 @@ import { colors } from '../../../constants/extend-theme/colors';
 import { ClickButton } from '../../../types/button';
 
 const OnclickButton: React.FC<ClickButton> = ({
+  color,
   text,
   width,
   cursor,
@@ -14,8 +15,9 @@ const OnclickButton: React.FC<ClickButton> = ({
   return (
     <Button
       w={width}
-      bg="btn.bg"
+      bg={color ? color : 'btn.bg'}
       color="btn.text"
+      borderRadius={0}
       fontWeight={500}
       cursor={cursor}
       isDisabled={isDisable}
