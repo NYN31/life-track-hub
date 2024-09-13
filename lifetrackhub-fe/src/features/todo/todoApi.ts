@@ -1,4 +1,5 @@
 import { TODO_API_PATH } from '../../constants/sidebar/items-title-and-path';
+import { ITodoItemsRequest, ITodoItemsResponse } from '../../types/todo';
 import { apiSlice } from '../api/apiSlice';
 
 export const todoApi = apiSlice
@@ -11,7 +12,15 @@ export const todoApi = apiSlice
         },
         providesTags: ['Todos'],
       }),
+
+      addTodo: builder.mutation<ITodoItemsResponse, ITodoItemsRequest>({
+        query: todo => ({
+          url: `${TODO_API_PATH}/add`,
+          method: 'POST',
+          body: { ...todo },
+        }),
+      }),
     }),
   });
 
-export const { useLazyGetTodosByIdQuery } = todoApi;
+export const { useLazyGetTodosByIdQuery, useAddTodoMutation } = todoApi;
