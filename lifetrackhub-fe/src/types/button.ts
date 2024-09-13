@@ -8,6 +8,7 @@ export interface SubmitionButton {
 }
 
 export interface ClickButton {
+  color: string;
   text: string;
   width: string;
   cursor: string;

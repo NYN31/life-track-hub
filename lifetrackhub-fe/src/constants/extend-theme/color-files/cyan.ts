@@ -1,4 +1,5 @@
 export const cyanColor = {
+  danger: 'red',
   primary: '#F2F2F2',
   body: '#FFFFFF',
   icon: '#00A3C4',

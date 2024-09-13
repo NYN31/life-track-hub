@@ -1,4 +1,5 @@
 export const blueColor = {
+  danger: 'red',
   primary: '#F2F2F2',
   body: '#FFFFFF',
   icon: '#1560BD',
