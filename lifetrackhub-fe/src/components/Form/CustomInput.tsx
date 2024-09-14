@@ -28,8 +28,8 @@ const CustomInput: React.FC<{
           </Box>
         )}
       </Box>
-      <Flex direction="row">
-        <Flex direction="column" w={{ base: '100%', md: '500px', lg: '500px' }}>
+      <Flex direction="row" w="full">
+        <Flex direction="column" w="full">
           <Input
             value={value}
             onChange={e => setValue(e.target.value)}

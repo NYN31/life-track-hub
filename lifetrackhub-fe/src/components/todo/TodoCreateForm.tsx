@@ -1,21 +1,25 @@
-import { Box, Flex, Input } from '@chakra-ui/react';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Flex, Input } from '@chakra-ui/react';
+import { useState } from 'react';
 import OnclickButton from '../common/button/OnclickButton';
 import CustomInput from '../Form/CustomInput';
 import { ITodoItems } from '../../types/todo';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTodoItemText, setTitleOfTodo } from '../../features/todo/todoSlice';
 
-const TodoCreateForm: React.FC<{
-  todoItems: ITodoItems[];
-  setTodoItems: Dispatch<SetStateAction<ITodoItems[]>>;
-  setTitleHandler: (string: string) => void;
-}> = ({ todoItems, setTodoItems, setTitleHandler }) => {
+const TodoCreateForm = () => {
+  const dispatch = useDispatch();
+  const {
+    todoObject: { title },
+  } = useSelector((state: any) => state.todo);
+
   const [todoText, setTodoText] = useState('');
-  const [title, setTitle] = useState('');
+
+  const handleTodoTitle = (title: string) => {
+    dispatch(setTitleOfTodo(title));
+  };
 
   const handleAddTodoItem = (item: ITodoItems) => {
-    const currentTodoItems = todoItems;
-    const newTodoItems: ITodoItems[] = [...currentTodoItems, item];
-    setTodoItems(newTodoItems);
+    dispatch(addTodoItemText(item));
     setTodoText('');
   };
 
@@ -23,21 +27,19 @@ const TodoCreateForm: React.FC<{
     <Flex direction="column" gap={4}>
       <Input
         value={title}
-        onChange={e => {
-          setTitle(e.target.value);
-          setTitleHandler(e.target.value);
-        }}
+        onChange={e => handleTodoTitle(e.target.value)}
         placeholder="Title"
         _placeholder={{
           fontSize: '2xl',
         }}
+        fontSize="2xl"
+        p="0px"
         border="0px"
+        borderRadius="0px"
         borderColor="#FFF"
-        fontWeight={900}
-        fontSize="lg"
-        _hover={{ border: '0px', borderColor: '#FFF' }}
+        fontWeight={500}
       />
-      <Flex>
+      <Flex direction="row">
         <CustomInput
           value={todoText}
           setValue={setTodoText}
@@ -48,19 +50,15 @@ const TodoCreateForm: React.FC<{
           errorMessage=""
         />
 
-        <Box pr={4}>
-          <OnclickButton
-            color=""
-            text="Add"
-            width="auto"
-            cursor={todoText ? 'pointer' : 'not-allowed'}
-            isDisable={!todoText}
-            isLoading={false}
-            action={() =>
-              handleAddTodoItem({ text: todoText, completed: false })
-            }
-          />
-        </Box>
+        <OnclickButton
+          color=""
+          text="Add"
+          width="auto"
+          cursor={todoText ? 'pointer' : 'not-allowed'}
+          isDisable={!todoText}
+          isLoading={false}
+          action={() => handleAddTodoItem({ text: todoText, completed: false })}
+        />
       </Flex>
     </Flex>
   );
