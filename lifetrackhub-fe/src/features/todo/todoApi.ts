@@ -17,6 +17,7 @@ export const todoApi = apiSlice
         query: ({ id }) => {
           return `${TODO_API_PATH}/by-id/${id}`;
         },
+        keepUnusedDataFor: 0,
       }),
 
       addTodo: builder.mutation<ITodoItemsResponse, ITodoItemsRequest>({
@@ -39,7 +40,7 @@ export const todoApi = apiSlice
 
 export const {
   useLazyGetTodosByUserIdQuery,
-  useGetTodoByIdQuery,
+  useLazyGetTodoByIdQuery,
   useAddTodoMutation,
   useUpdateTodoMutation,
 } = todoApi;

@@ -2,9 +2,13 @@ import { Box, Flex, GridItem } from '@chakra-ui/react';
 import { ITodoItemsResponse } from '../../types/todo';
 import OnclickButton from '../common/button/OnclickButton';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
+import { TODO_UPDATE_PATH } from '../../constants/sidebar/items-title-and-path';
 
 const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
   const { title, id, done, createdDate, lastModifiedDate, todoItems } = todo;
+
+  const navigate = useNavigate();
 
   let todoCompleted = 0;
   for (let i = 0; i < todoItems.length; i++) {
@@ -60,7 +64,7 @@ const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
           cursor="pointer"
           isDisable={done}
           isLoading={false}
-          action={() => {}}
+          action={() => navigate(`${TODO_UPDATE_PATH}/${id}`)}
         />
       </Flex>
     </GridItem>

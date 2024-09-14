@@ -5,11 +5,14 @@ import CustomInput from '../Form/CustomInput';
 import { ITodoItems } from '../../types/todo';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTodoItemText, setTitleOfTodo } from '../../features/todo/todoSlice';
+import { useParams } from 'react-router-dom';
 
 const TodoCreateForm = () => {
+  const { todoId } = useParams();
   const dispatch = useDispatch();
   const {
     todoObject: { title },
+    errorMessage,
   } = useSelector((state: any) => state.todo);
 
   const [todoText, setTodoText] = useState('');
@@ -55,7 +58,7 @@ const TodoCreateForm = () => {
           text="Add"
           width="auto"
           cursor={todoText ? 'pointer' : 'not-allowed'}
-          isDisable={!todoText}
+          isDisable={!todoText || (!!todoId && !!errorMessage)}
           isLoading={false}
           action={() => handleAddTodoItem({ text: todoText, completed: false })}
         />

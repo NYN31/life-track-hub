@@ -20,6 +20,13 @@ const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
+    updateTodoObject: (state, action) => {
+      state.todoObject.title = action.payload.title;
+      state.todoObject.done = action.payload.done;
+      state.todoObject.userId = action.payload.userId;
+      state.todoObject.todoItems = action.payload.todoItems;
+    },
+
     setTitleOfTodo: (state, action) => {
       state.todoObject.title = action.payload;
     },
@@ -70,6 +77,7 @@ const todoSlice = createSlice({
 });
 
 export const {
+  updateTodoObject,
   setTitleOfTodo,
   checkboxToggler,
   addTodoItemText,
