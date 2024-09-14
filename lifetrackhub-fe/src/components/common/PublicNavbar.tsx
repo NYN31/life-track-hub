@@ -27,17 +27,9 @@ const PublicNavbar = () => {
       </Flex>
       <Spacer />
 
-      {location.pathname.includes(LOGIN_PATH) ? (
+      <Flex direction="row" gap={4}>
         <OnclickButton
-          text="Sign Up"
-          width="auto"
-          cursor="pointer"
-          isDisable={false}
-          isLoading={false}
-          action={handleNavigateToRegistration}
-        />
-      ) : (
-        <OnclickButton
+          color="#D69E2E"
           text="Sign In"
           width="auto"
           cursor="pointer"
@@ -45,7 +37,16 @@ const PublicNavbar = () => {
           isLoading={false}
           action={handleNavigateToLogin}
         />
-      )}
+        <OnclickButton
+          color="btn.bg"
+          text="Sign Up"
+          width="auto"
+          cursor="pointer"
+          isDisable={false}
+          isLoading={false}
+          action={handleNavigateToRegistration}
+        />
+      </Flex>
     </Flex>
   );
 };
