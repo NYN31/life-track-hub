@@ -13,4 +13,10 @@ export const Components = {
       },
     },
   },
+  Input: {
+    defaultProps: {
+      variant: 'none',
+      // Set your desired variant here ('none', 'outline', 'filled', 'flushed', 'unstyled')
+    },
+  },
 };
