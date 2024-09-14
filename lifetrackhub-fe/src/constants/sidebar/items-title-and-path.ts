@@ -21,6 +21,8 @@ export const TODO_LIST_PATH = '/todos';
 export const TODO_CREATE = 'Create';
 export const TODO_CREATE_PATH = '/todos/create';
 
+export const TODO_UPDATE_PATH = '/todos/update';
+
 // SETTING
 export const SETTING = 'Setting';
 export const SETTING_PATH = '/setting';
