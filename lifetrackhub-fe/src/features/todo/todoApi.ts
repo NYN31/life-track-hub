@@ -6,11 +6,17 @@ export const todoApi = apiSlice
   .enhanceEndpoints({ addTagTypes: ['Todos'] })
   .injectEndpoints({
     endpoints: builder => ({
-      getTodosById: builder.query({
+      getTodosByUserId: builder.query({
         query: ({ userId, page = 0, size = 10 }) => {
           return `${TODO_API_PATH}/by-user-id/${userId}/${page}/${size}`;
         },
         providesTags: ['Todos'],
+      }),
+
+      getTodoById: builder.query({
+        query: ({ id }) => {
+          return `${TODO_API_PATH}/by-id/${id}`;
+        },
       }),
 
       addTodo: builder.mutation<ITodoItemsResponse, ITodoItemsRequest>({
@@ -20,7 +26,20 @@ export const todoApi = apiSlice
           body: { ...todo },
         }),
       }),
+
+      updateTodo: builder.mutation<ITodoItemsResponse, ITodoItemsRequest>({
+        query: todo => ({
+          url: `${TODO_API_PATH}/update`,
+          method: 'PUT',
+          body: { ...todo },
+        }),
+      }),
     }),
   });
 
-export const { useLazyGetTodosByIdQuery, useAddTodoMutation } = todoApi;
+export const {
+  useLazyGetTodosByUserIdQuery,
+  useGetTodoByIdQuery,
+  useAddTodoMutation,
+  useUpdateTodoMutation,
+} = todoApi;

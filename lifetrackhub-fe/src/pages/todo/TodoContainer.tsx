@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useLazyGetTodosByIdQuery } from '../../features/todo/todoApi';
+import { useLazyGetTodosByUserIdQuery } from '../../features/todo/todoApi';
 import { getUpdatedUrl, useQuery } from '../../helper/url/search-params';
 import { useEffect, useState } from 'react';
 import useCustomToast from '../../helper/hook/CustomToast';
@@ -33,7 +33,7 @@ const TodoContainer = () => {
 
   const userId = useSelector((state: any) => state.auth.userId);
 
-  const [triggerGetTodosById] = useLazyGetTodosByIdQuery();
+  const [triggerGetTodosById] = useLazyGetTodosByUserIdQuery();
 
   const setResponseToState = (todoResponse: ITodoResponse) => {
     const { content, hasNext, hasPrevious, pageNumber } = todoResponse;
