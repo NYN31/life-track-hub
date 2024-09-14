@@ -1,4 +1,5 @@
 export const purpleColor = {
+  danger: '#F56565',
   primary: '#F2F2F2',
   body: '#FFFFFF',
   icon: '#805AD5',

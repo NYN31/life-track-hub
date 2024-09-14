@@ -11,15 +11,15 @@ import { useEffect, useState } from 'react';
 import {
   APP_COLOR_KEY,
   BLUE,
-  CYAN,
+  GREEN,
+  ORANGE,
   PINK,
-  DEFAULT,
   PURPLE,
 } from '../../constants/extend-theme/colors';
 
 const Appearance = () => {
   const [value, setValue] = useState(
-    localStorage.getItem(APP_COLOR_KEY) || DEFAULT
+    localStorage.getItem(APP_COLOR_KEY) || PURPLE
   );
 
   const handleAppColor = () => {
@@ -42,8 +42,8 @@ const Appearance = () => {
 
       <RadioGroup onChange={setValue} value={value}>
         <Stack direction={['column', 'column', 'row']}>
-          <Radio size="lg" colorScheme="gray" value={DEFAULT}>
-            Default
+          <Radio size="lg" colorScheme="purple" value={PURPLE}>
+            Purple
           </Radio>
           <Radio size="lg" colorScheme="pink" value={PINK}>
             Pink
@@ -51,11 +51,11 @@ const Appearance = () => {
           <Radio size="lg" colorScheme="blue" value={BLUE}>
             Blue
           </Radio>
-          <Radio size="lg" colorScheme="cyan" value={CYAN}>
-            Cyan
+          <Radio size="lg" colorScheme="orange" value={ORANGE}>
+            Orange
           </Radio>
-          <Radio size="lg" colorScheme="purple" value={PURPLE}>
-            Purple
+          <Radio size="lg" colorScheme="green" value={GREEN}>
+            Green
           </Radio>
         </Stack>
       </RadioGroup>

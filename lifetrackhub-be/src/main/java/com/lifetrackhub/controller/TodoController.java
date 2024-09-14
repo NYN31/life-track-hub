@@ -29,6 +29,12 @@ public class TodoController extends BaseController {
         return PageDto.fromEntity(todos, TodoDto::formEntity);
     }
 
+    @GetMapping("/todo/by-id/{id}")
+    public TodoDto findTodoById(@PathVariable Long id) {
+        Todo todo = todoService.findTodoById(id);
+        return TodoDto.formEntity(todo);
+    }
+
     @PostMapping("/todo/add")
     public TodoDto addTodo(@RequestBody @Valid TodoDto dto) {
         log.info("Request enter into add todo controller");

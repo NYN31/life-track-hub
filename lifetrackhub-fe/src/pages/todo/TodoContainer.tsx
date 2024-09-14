@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useLazyGetTodosByIdQuery } from '../../features/todo/todoApi';
+import { useLazyGetTodosByUserIdQuery } from '../../features/todo/todoApi';
 import { getUpdatedUrl, useQuery } from '../../helper/url/search-params';
 import { useEffect, useState } from 'react';
 import useCustomToast from '../../helper/hook/CustomToast';
@@ -14,6 +14,8 @@ import TodoResult from '../../components/todo/TodoResult';
 import PageHeading from '../../components/common/PageHeading';
 import Loading from '../../components/common/Loading';
 import ErrorMessage from '../../components/common/ErrorMessage';
+import { TODO_LIST_PATH } from '../../constants/sidebar/items-title-and-path';
+import { ITodoItemsResponse, ITodoResponse } from '../../types/todo';
 
 const TodoContainer = () => {
   const queryPage = useQuery().get('page') || '0';
@@ -21,7 +23,7 @@ const TodoContainer = () => {
   const { errorToast } = useCustomToast();
   const navigate = useNavigate();
 
-  const [todoResults, setTodoResults] = useState([]);
+  const [todoResults, setTodoResults] = useState<ITodoItemsResponse[]>([]);
   const [hasNext, setHasNext] = useState(false);
   const [hasPrevious, setHasPrevious] = useState(false);
   const [next, setNext] = useState(-1);
@@ -31,9 +33,9 @@ const TodoContainer = () => {
 
   const userId = useSelector((state: any) => state.auth.userId);
 
-  const [triggerGetTodosById] = useLazyGetTodosByIdQuery();
+  const [triggerGetTodosById] = useLazyGetTodosByUserIdQuery();
 
-  const setResponseToState = (todoResponse: any) => {
+  const setResponseToState = (todoResponse: ITodoResponse) => {
     const { content, hasNext, hasPrevious, pageNumber } = todoResponse;
 
     setTodoResults(content);
@@ -56,7 +58,13 @@ const TodoContainer = () => {
         setResponseToState(res);
       })
       .catch(err => {
-        setResponseToState({ content: [], hasPrevious: false, hasNext: false });
+        setResponseToState({
+          content: [],
+          hasPrevious: false,
+          hasNext: false,
+          totalPages: 0,
+          pageNumber: -1,
+        });
         setErrorMessage(err.data.message || SEARCH_FAILED_ERROR_MESSAGE);
         errorToast(
           err.data.status || FAILED_TITLE,
@@ -67,7 +75,7 @@ const TodoContainer = () => {
   };
 
   const updateAndPushUrl = (page = '0') => {
-    navigate(getUpdatedUrl(`/todo?page=${page}`), {
+    navigate(getUpdatedUrl(`${TODO_LIST_PATH}?page=${page}`), {
       replace: true,
     });
   };

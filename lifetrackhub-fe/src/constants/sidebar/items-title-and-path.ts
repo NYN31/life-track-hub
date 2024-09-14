@@ -8,24 +8,21 @@ export const LOGIN_PATH = '/auth/sign-in';
 export const REGISTRATION = 'Registration';
 export const REGISTRATION_PATH = '/auth/sign-up';
 
-export const TODO = 'Todo';
-export const TODO_PATH = '/todo';
-export const TODO_API_PATH = '/api/todo';
-
 export const HOME = 'Home';
 export const HOME_PATH = '/home';
 
-export const ABOUT = 'About';
-export const ABOUT_PATH = '/about';
+// TODO
+export const TODO = 'Todo';
+export const TODO_API_PATH = '/api/todo';
 
+export const TODO_LIST = 'Todos';
+export const TODO_LIST_PATH = '/todos';
+
+export const TODO_CREATE = 'Create';
+export const TODO_CREATE_PATH = '/todos/create';
+
+export const TODO_UPDATE_PATH = '/todos/update';
+
+// SETTING
 export const SETTING = 'Setting';
 export const SETTING_PATH = '/setting';
-
-// EMPLOYEE
-export const EMPLOYEE = 'Employee';
-
-export const EMPLOYEE_LIST = 'Employee List';
-export const EMPLOYEE_LIST_PATH = '/employee';
-
-export const EMPLOYEE_DETIALS = 'Employee Detail';
-export const EMPLOYEE_DETIALS_PATH = '/employee/detail';

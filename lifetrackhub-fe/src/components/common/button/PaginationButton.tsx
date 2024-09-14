@@ -17,6 +17,7 @@ const PaginationButton: React.FC<{
     >
       <Stack spacing={6} direction="row" align="center">
         <OnclickButton
+          color="btn.bg"
           text="Previous"
           width="auto"
           cursor={hasPrevious ? 'pointer' : 'not-allowed'}
@@ -25,6 +26,7 @@ const PaginationButton: React.FC<{
           action={handlePreviousPage}
         />
         <OnclickButton
+          color="btn.bg"
           text="Next"
           width="auto"
           cursor={hasNext ? 'pointer' : 'not-allowed'}

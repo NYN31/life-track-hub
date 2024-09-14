@@ -1,10 +1,14 @@
-import { Box, Flex, GridItem, Text } from '@chakra-ui/react';
-import { ITodoListItem } from '../../types/todo';
+import { Box, Flex, GridItem } from '@chakra-ui/react';
+import { ITodoItemsResponse } from '../../types/todo';
 import OnclickButton from '../common/button/OnclickButton';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
+import { TODO_UPDATE_PATH } from '../../constants/sidebar/items-title-and-path';
 
-const Todo: React.FC<{ todo: ITodoListItem }> = ({ todo }) => {
+const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
   const { title, id, done, createdDate, lastModifiedDate, todoItems } = todo;
+
+  const navigate = useNavigate();
 
   let todoCompleted = 0;
   for (let i = 0; i < todoItems.length; i++) {
@@ -34,30 +38,33 @@ const Todo: React.FC<{ todo: ITodoListItem }> = ({ todo }) => {
       <Flex direction="column" justifyContent="space-evenly" gap={2}>
         <Flex direction="column" gap={2}>
           {showText('Title: ', title)}
+
           <Flex gap={12}>
             {showText('Id: ', id)}
             {showText('Done: ', done)}
           </Flex>
+
           {showText(
             'Create At: ',
             format(new Date(createdDate), 'yyyy-MM-dd HH:mm:ss')
           )}
-          <Text>
-            {showText(
-              'Last Modified At: ',
-              format(new Date(lastModifiedDate), 'yyyy-MM-dd HH:mm:ss')
-            )}
-          </Text>
+
+          {showText(
+            'Last Modified At: ',
+            format(new Date(lastModifiedDate), 'yyyy-MM-dd HH:mm:ss')
+          )}
+
           {showText('Todo Items: ', todoItems.length)}
           {showText('Todo Completed: ', todoCompleted)}
         </Flex>
         <OnclickButton
+          color="btn.bg"
           text="View"
           width="auto"
           cursor="pointer"
           isDisable={done}
           isLoading={false}
-          action={() => {}}
+          action={() => navigate(`${TODO_UPDATE_PATH}/${id}`)}
         />
       </Flex>
     </GridItem>

@@ -2,6 +2,7 @@ import * as data from './items-title-and-path';
 import { IoHomeOutline } from 'react-icons/io5';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { LuListTodo } from 'react-icons/lu';
+import { MdOutlineCreateNewFolder } from 'react-icons/md';
 
 const ICON_SIZE = 18;
 
@@ -14,9 +15,20 @@ const SidebarData = [
   },
   {
     title: data.TODO,
-    label: data.TODO_PATH,
-    path: data.TODO_PATH,
-    icon: <LuListTodo size={ICON_SIZE} />,
+    hasAccordion: [
+      {
+        title: data.TODO_LIST,
+        label: data.TODO_LIST_PATH,
+        path: data.TODO_LIST_PATH,
+        icon: <LuListTodo size={ICON_SIZE} />,
+      },
+      {
+        title: data.TODO_CREATE,
+        label: data.TODO_CREATE_PATH,
+        path: data.TODO_CREATE_PATH,
+        icon: <MdOutlineCreateNewFolder size={ICON_SIZE} />,
+      },
+    ],
   },
   {
     title: data.SETTING,

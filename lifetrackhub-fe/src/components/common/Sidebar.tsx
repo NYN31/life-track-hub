@@ -86,7 +86,14 @@ const Sidebar: React.FC<{
         return (
           <Accordion key={index} defaultIndex={idx} allowToggle={true}>
             <AccordionItem border={0}>
-              <AccordionButton maxW={56} gap={24}>
+              <AccordionButton
+                maxW={56}
+                gap={24}
+                _hover={{
+                  bg: `${colors().sidebar.hover_bg} !important`,
+                  borderRadius: '4px',
+                }}
+              >
                 <Box color="sidebar.text">{item.title}</Box>
                 <Box>
                   <AccordionIcon color="icon" />
@@ -119,8 +126,9 @@ const Sidebar: React.FC<{
       boxShadow="md"
       overflowY="auto"
       overflowX="hidden"
-      resize="horizontal"
+      //resize="horizontal"
       borderRightWidth="1px"
+      borderRightColor="sidebar.hover_bg"
     >
       <Flex direction="column" justifyContent="space-between">
         <Flex direction="column" overflow="hidden">
