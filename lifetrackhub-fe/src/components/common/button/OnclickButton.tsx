@@ -15,7 +15,7 @@ const OnclickButton: React.FC<ClickButton> = ({
   return (
     <Button
       w={width}
-      bg={color ? color : 'btn.bg'}
+      bg={color}
       color="btn.text"
       borderRadius={0}
       fontWeight={500}

@@ -27,7 +27,7 @@ const CreateTodoButtons: React.FC<{
         action={() => dispatch(resetTodo())}
       />
       <OnclickButton
-        color=""
+        color="btn.bg"
         text={todoId ? 'Update' : 'Create'}
         width="50%"
         cursor={todoItems.length > 0 ? 'pointer' : 'not-allowed'}

@@ -58,7 +58,7 @@ const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
           {showText('Todo Completed: ', todoCompleted)}
         </Flex>
         <OnclickButton
-          color=""
+          color="btn.bg"
           text="View"
           width="auto"
           cursor="pointer"

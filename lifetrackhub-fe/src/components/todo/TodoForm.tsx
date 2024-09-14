@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTodoItemText, setTitleOfTodo } from '../../features/todo/todoSlice';
 import { useParams } from 'react-router-dom';
 
-const TodoCreateForm = () => {
+const TodoForm = () => {
   const { todoId } = useParams();
   const dispatch = useDispatch();
   const {
@@ -54,7 +54,7 @@ const TodoCreateForm = () => {
         />
 
         <OnclickButton
-          color=""
+          color="btn.bg"
           text="Add"
           width="auto"
           cursor={todoText ? 'pointer' : 'not-allowed'}
@@ -67,4 +67,4 @@ const TodoCreateForm = () => {
   );
 };
 
-export default TodoCreateForm;
+export default TodoForm;

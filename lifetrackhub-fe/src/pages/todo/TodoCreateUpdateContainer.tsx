@@ -18,7 +18,6 @@ import {
 import ErrorMessage from '../../components/common/ErrorMessage';
 import Loading from '../../components/common/Loading';
 import TodoItemList from '../../components/todo/TodoItemList';
-import TodoCreateForm from '../../components/todo/TodoCreateForm';
 import CreateTodoButtons from '../../components/common/button/CreateTodoButtons';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -36,8 +35,9 @@ import {
 } from '../../constants/texts/page-headings';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TODO_UPDATE_PATH } from '../../constants/sidebar/items-title-and-path';
+import TodoForm from '../../components/todo/TodoForm';
 
-const CreateTodoContainer = () => {
+const TodoCreateUpdateContainer = () => {
   const { todoId } = useParams();
 
   const { successToast, errorToast } = useCustomToast();
@@ -102,7 +102,6 @@ const CreateTodoContainer = () => {
           navigate(`${TODO_UPDATE_PATH}/${res.id}`, { replace: true });
         })
         .catch(err => {
-          console.log(err);
           dispatch(setErrorMessage(err?.data?.message));
           errorToast(FAILED_TITLE, CREATION_FAILED_MESSAGE);
         })
@@ -131,7 +130,7 @@ const CreateTodoContainer = () => {
           }
         />
         <Box mt={4} w={{ base: 'full', sm: 'full', md: '500px', lg: '500px' }}>
-          <TodoCreateForm />
+          <TodoForm />
 
           <TodoItemList />
 
@@ -149,4 +148,4 @@ const CreateTodoContainer = () => {
   );
 };
 
-export default CreateTodoContainer;
+export default TodoCreateUpdateContainer;
