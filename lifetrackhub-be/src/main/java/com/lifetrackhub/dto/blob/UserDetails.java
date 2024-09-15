@@ -7,11 +7,11 @@ import java.util.Arrays;
 public class UserDetails {
     private String objective;
 
-    private Skill[] skills;
-
     private byte[] profileImage;
 
     private byte[] cv;
+
+    private Skill[] skills;
 
     private Experience[] experiences;
 
