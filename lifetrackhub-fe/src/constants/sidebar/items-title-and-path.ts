@@ -26,3 +26,8 @@ export const TODO_UPDATE_PATH = '/todos/update';
 // SETTING
 export const SETTING = 'Setting';
 export const SETTING_PATH = '/setting';
+
+// PROFILE
+export const PROFILE = 'Profile';
+export const PROFILE_PATH = '/profile';
+export const PROFILE_API_PATH = '/api/user';
