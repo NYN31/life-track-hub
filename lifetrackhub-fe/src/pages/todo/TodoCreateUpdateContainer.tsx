@@ -115,6 +115,12 @@ const TodoCreateUpdateContainer = () => {
     if (todoId) {
       getTodoByTodoIdHandler();
     }
+
+    return () => {
+      if (todoId) {
+        dispatch(resetTodo());
+      }
+    };
   }, [todoId]);
 
   if (loading) return <Loading />;
