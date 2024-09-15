@@ -22,6 +22,8 @@ import {
   SUCCESS_TITLE,
 } from '../../constants/texts/title-and-message';
 import { logoutClearingLocalStorage } from '../../helper/local-storage/logout';
+import { resetUserObject } from '../../features/user/userSlice';
+import { resetTodo } from '../../features/todo/todoSlice';
 
 const CommonMenu = () => {
   const ICON_SIZE = '20px';
@@ -34,6 +36,8 @@ const CommonMenu = () => {
 
   async function handleLogout() {
     dispatch(userLoggedOut());
+    dispatch(resetTodo());
+    dispatch(resetUserObject());
     successToast(SUCCESS_TITLE, LOGOUT_SUCCESS_MESSAGE);
     logoutClearingLocalStorage();
     navigate(LOGIN_PATH, { replace: true });

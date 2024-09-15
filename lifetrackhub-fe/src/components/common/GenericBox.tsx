@@ -6,7 +6,7 @@ const GenericBox: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
 }) => {
   return (
     <Box
-      w={{ lg: '800px', md: 'full', sm: 'full', base: 'full' }}
+      w="full"
       bg="#FFF"
       py={5}
       px={3}
