@@ -17,7 +17,7 @@ import {
   LOGIN_PATH,
   PROFILE_DETAILS_PATH,
 } from '../../constants/sidebar/items-title-and-path';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userLoggedOut } from '../../features/auth/authSlice';
 import useCustomToast from '../../helper/hook/CustomToast';
 import {
@@ -35,7 +35,12 @@ const CommonMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const name = localStorage.getItem('name') || 'Unknown';
+  const { userObject } = useSelector((state: any) => state.user);
+
+  const name =
+    userObject.firstname + ' ' + userObject.lastname ||
+    localStorage.getItem('name') ||
+    'Unknown';
 
   async function handleLogout() {
     dispatch(userLoggedOut());
