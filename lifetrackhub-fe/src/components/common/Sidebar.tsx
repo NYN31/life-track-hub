@@ -88,7 +88,7 @@ const Sidebar: React.FC<{
             <AccordionItem border={0}>
               <AccordionButton
                 maxW={56}
-                gap={24}
+                justifyContent="space-between"
                 _hover={{
                   bg: `${colors().sidebar.hover_bg} !important`,
                   borderRadius: '4px',
