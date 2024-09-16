@@ -9,9 +9,7 @@ import {
 } from '@chakra-ui/react';
 import IntroEdit from './IntroEdit';
 import SkillsEdit from './SkillsEdit';
-import ExperienceEdit from './ExperienceEdit';
-import EducationEdit from './EducationEdit';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useUserFindByIdQuery } from '../../../features/user/userApi';
 import { useEffect } from 'react';
 import { updateUserObject } from '../../../features/user/userSlice';
@@ -26,32 +24,18 @@ export const tabs = [
     title: 'Skill',
     tab: <SkillsEdit />,
   },
-  {
-    title: 'Education',
-    tab: <EducationEdit />,
-  },
-  {
-    title: 'Experience',
-    tab: <ExperienceEdit />,
-  },
-  {
-    title: 'Experience',
-    tab: <ExperienceEdit />,
-  },
-  {
-    title: 'Experience',
-    tab: <ExperienceEdit />,
-  },
 ];
 
 const ProfileEditTabs = () => {
   const userId = localStorage.getItem('userId');
 
   const dispatch = useDispatch();
+  const { userObject } = useSelector((state: any) => state.user);
   const { data: userData, isLoading } = useUserFindByIdQuery(userId);
 
   useEffect(() => {
     if (userData) dispatch(updateUserObject(userData));
+    else dispatch(updateUserObject(userObject));
   }, [isLoading]);
 
   if (isLoading) return <Loading />;

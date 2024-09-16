@@ -27,6 +27,7 @@ import {
 import { logoutClearingLocalStorage } from '../../helper/local-storage/logout';
 import { resetUserObject } from '../../features/user/userSlice';
 import { resetTodo } from '../../features/todo/todoSlice';
+import { IUser } from '../../types/user';
 
 const CommonMenu = () => {
   const ICON_SIZE = '20px';
@@ -36,11 +37,10 @@ const CommonMenu = () => {
   const dispatch = useDispatch();
 
   const { userObject } = useSelector((state: any) => state.user);
+  const { firstname, lastname } = userObject as IUser;
 
   const name =
-    userObject.firstname + ' ' + userObject.lastname ||
-    localStorage.getItem('name') ||
-    'Unknown';
+    firstname + ' ' + lastname || localStorage.getItem('name') || 'Unknown';
 
   async function handleLogout() {
     dispatch(userLoggedOut());

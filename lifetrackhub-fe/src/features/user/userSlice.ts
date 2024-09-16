@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 import { IUserDetails } from '../../types/user';
 
 const userDetails: IUserDetails = {
-  objective: undefined,
-  profileImage: undefined,
-  cv: undefined,
+  objective: '',
+  profileImage: null,
+  cv: null,
   skills: [],
   educations: [],
   experiences: [],
@@ -14,17 +14,17 @@ const userDetails: IUserDetails = {
 
 const initialState = {
   userObject: {
-    id: undefined,
-    createdDate: undefined,
-    lastModifiedDate: undefined,
-    firstname: undefined,
-    lastname: undefined,
-    email: undefined,
-    enabled: undefined,
-    role: undefined,
+    id: 0,
+    createdDate: '',
+    lastModifiedDate: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    enabled: true,
+    role: '',
     userDetails: userDetails,
   },
-  userErrorMessage: undefined,
+  userErrorMessage: '',
 };
 
 const userSlice = createSlice({
@@ -37,17 +37,17 @@ const userSlice = createSlice({
 
     resetUserObject: state => {
       state.userObject = {
-        id: undefined,
-        createdDate: undefined,
-        lastModifiedDate: undefined,
-        firstname: undefined,
-        lastname: undefined,
-        email: undefined,
-        enabled: undefined,
-        role: undefined,
+        id: 0,
+        createdDate: '',
+        lastModifiedDate: '',
+        firstname: '',
+        lastname: '',
+        email: '',
+        enabled: true,
+        role: '',
         userDetails: userDetails,
       };
-      state.userErrorMessage = undefined;
+      state.userErrorMessage = '';
     },
   },
 });

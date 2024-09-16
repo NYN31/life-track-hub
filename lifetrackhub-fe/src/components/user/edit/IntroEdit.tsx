@@ -13,6 +13,7 @@ import {
   OPERATION_SUCCESS_MESSAGE,
   SUCCESS_TITLE,
 } from '../../../constants/texts/title-and-message';
+import GenericBox from '../../common/GenericBox';
 
 const IntroEdit = () => {
   const dispatch = useDispatch();
@@ -21,10 +22,10 @@ const IntroEdit = () => {
   const { userObject } = useSelector((state: any) => state.user);
   const socialLinks: ISocialLink[] = userObject?.userDetails?.socialLinks;
 
-  const [firstname, setFirstname] = useState(userObject.firstname);
-  const [lastname, setLastname] = useState(userObject.lastname);
+  const [firstname, setFirstname] = useState(userObject?.firstname);
+  const [lastname, setLastname] = useState(userObject?.lastname);
   const [objective, setObjective] = useState(
-    userObject.userDetails.objective || ''
+    userObject?.userDetails?.objective || ''
   );
   const [facebook, setFacebook] = useState(
     (socialLinks && socialLinks[0]?.link) || ''
@@ -63,7 +64,7 @@ const IntroEdit = () => {
 
     isLoading(true);
     await updateUser(userUpdateRequest)
-      .then((res: any) => {
+      .then(res => {
         const { data } = res;
         dispatch(updateUserObject(data));
         localStorage.setItem('name', data.firstname + ' ' + data.lastname);
@@ -76,102 +77,104 @@ const IntroEdit = () => {
   };
 
   return (
-    <Flex direction="column">
-      <Flex
-        direction={['column', 'column', 'column', 'row']}
-        gap={[0, 0, 0, 4]}
-      >
-        <CustomInput
-          value={firstname}
-          setValue={setFirstname}
-          isRequired={false}
-          label="First name"
-          type="text"
-          placeholder="Enter Firstname"
-          errorMessage=""
-        />
-        <CustomInput
-          value={lastname}
-          setValue={setLastname}
-          isRequired={false}
-          label="Last name"
-          type="text"
-          placeholder="Enter Lastname"
-          errorMessage=""
-        />
-      </Flex>
-      <Flex gap={[0, 0, 0, 4]}>
-        <CustomTextarea
-          value={objective}
-          setValue={setObjective}
-          isRequired={false}
-          label="Objective"
-          placeholder="Enter Objective"
-          errorMessage=""
-        />
-      </Flex>
+    <GenericBox>
+      <Flex direction="column">
+        <Flex
+          direction={['column', 'column', 'column', 'row']}
+          gap={[0, 0, 0, 4]}
+        >
+          <CustomInput
+            value={firstname}
+            setValue={setFirstname}
+            isRequired={false}
+            label="First name"
+            type="text"
+            placeholder="Enter Firstname"
+            errorMessage=""
+          />
+          <CustomInput
+            value={lastname}
+            setValue={setLastname}
+            isRequired={false}
+            label="Last name"
+            type="text"
+            placeholder="Enter Lastname"
+            errorMessage=""
+          />
+        </Flex>
+        <Flex gap={[0, 0, 0, 4]}>
+          <CustomTextarea
+            value={objective}
+            setValue={setObjective}
+            isRequired={false}
+            label="Objective"
+            placeholder="Enter Objective"
+            errorMessage=""
+          />
+        </Flex>
 
-      <Text color="icon" fontSize="2xl" py={4}>
-        Social Links
-      </Text>
-      <Flex
-        direction={['column', 'column', 'column', 'row']}
-        gap={[1, 1, 1, 4]}
-      >
-        <CustomInput
-          value={facebook}
-          setValue={setFacebook}
-          isRequired={false}
-          label="Facebook"
-          type="text"
-          placeholder="Link"
-          errorMessage=""
-        />
-        <CustomInput
-          value={linkedIn}
-          setValue={setLinkedIn}
-          isRequired={false}
-          label="LinkedIn"
-          type="text"
-          placeholder="Link"
-          errorMessage=""
+        <Text color="icon" fontSize="2xl" py={4}>
+          Social Links
+        </Text>
+        <Flex
+          direction={['column', 'column', 'column', 'row']}
+          gap={[1, 1, 1, 4]}
+        >
+          <CustomInput
+            value={facebook}
+            setValue={setFacebook}
+            isRequired={false}
+            label="Facebook"
+            type="text"
+            placeholder="Link"
+            errorMessage=""
+          />
+          <CustomInput
+            value={linkedIn}
+            setValue={setLinkedIn}
+            isRequired={false}
+            label="LinkedIn"
+            type="text"
+            placeholder="Link"
+            errorMessage=""
+          />
+        </Flex>
+        <Flex
+          direction={['column', 'column', 'column', 'row']}
+          gap={[1, 1, 1, 4]}
+        >
+          <CustomInput
+            value={github}
+            setValue={setGithub}
+            isRequired={false}
+            label="Github"
+            type="text"
+            placeholder="Link"
+            errorMessage=""
+          />
+          <CustomInput
+            value={stackOverflow}
+            setValue={setStackOverflow}
+            isRequired={false}
+            label="StackOverflow"
+            type="text"
+            placeholder="Link"
+            errorMessage=""
+          />
+        </Flex>
+        <OnclickButton
+          color="btn.bg"
+          text="Update"
+          width="auto"
+          cursor={true ? 'pointer' : 'not-allowed'}
+          isDisable={false}
+          isLoading={loading}
+          action={() => {
+            introUpdateHandler();
+          }}
         />
       </Flex>
-      <Flex
-        direction={['column', 'column', 'column', 'row']}
-        gap={[1, 1, 1, 4]}
-      >
-        <CustomInput
-          value={github}
-          setValue={setGithub}
-          isRequired={false}
-          label="Github"
-          type="text"
-          placeholder="Link"
-          errorMessage=""
-        />
-        <CustomInput
-          value={stackOverflow}
-          setValue={setStackOverflow}
-          isRequired={false}
-          label="StackOverflow"
-          type="text"
-          placeholder="Link"
-          errorMessage=""
-        />
-      </Flex>
-      <OnclickButton
-        color="btn.bg"
-        text="Update"
-        width="auto"
-        cursor={true ? 'pointer' : 'not-allowed'}
-        isDisable={false}
-        isLoading={loading}
-        action={() => {
-          introUpdateHandler();
-        }}
-      />
-    </Flex>
+    </GenericBox>
   );
 };
 
