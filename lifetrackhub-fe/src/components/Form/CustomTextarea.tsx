@@ -1,23 +1,14 @@
-import { Box, Flex, Input } from '@chakra-ui/react';
+import { Box, Flex, Textarea } from '@chakra-ui/react';
 import React from 'react';
 
-const CustomInput: React.FC<{
+const CustomTextarea: React.FC<{
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   isRequired: boolean;
   label: string;
-  type: string;
   placeholder: string;
   errorMessage: string | undefined;
-}> = ({
-  value,
-  setValue,
-  isRequired,
-  label,
-  type,
-  placeholder,
-  errorMessage,
-}) => {
+}> = ({ value, setValue, isRequired, label, placeholder, errorMessage }) => {
   return (
     <Flex direction="column" gap={2} w="full">
       <Box fontSize="sm" fontWeight={600}>
@@ -30,10 +21,9 @@ const CustomInput: React.FC<{
       </Box>
       <Flex direction="row" w="full">
         <Flex direction="column" w="full">
-          <Input
+          <Textarea
             value={value}
             onChange={e => setValue(e.target.value)}
-            type={type}
             placeholder={placeholder}
             bg="body"
             border="1px"
@@ -42,6 +32,7 @@ const CustomInput: React.FC<{
               borderColor: 'gray.300',
             }}
             borderRadius={0}
+            resize="vertical"
           />
 
           <Box width={{ lg: '400px', base: '96%' }} color="red" pt={4}>
@@ -53,4 +44,4 @@ const CustomInput: React.FC<{
   );
 };
 
-export default CustomInput;
+export default CustomTextarea;
