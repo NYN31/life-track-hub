@@ -14,7 +14,11 @@ const MySkills = () => {
       <Flex align="center" justifyContent="center">
         <PageHeading heading={PROFILE_SKILLS_HEADING} />
       </Flex>
-      <SimpleGrid minChildWidth="120px" spacing="40px" mt={4}>
+      <SimpleGrid
+        minChildWidth={['80px', '80px', '100px', '120px']}
+        spacing="20px"
+        mt={4}
+      >
         {skills?.map((skill, index) => {
           return (
             <Flex
@@ -24,6 +28,7 @@ const MySkills = () => {
               align="center"
               justifyContent="center"
               color="#FFFF"
+              fontSize={['sm', 'sm', 'md', 'md']}
               borderRadius={4}
             >
               {skill.name}
