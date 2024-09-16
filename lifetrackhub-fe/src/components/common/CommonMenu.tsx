@@ -13,7 +13,10 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { FiLogOut } from 'react-icons/fi';
 import { AiOutlineProfile } from 'react-icons/ai';
 import { colors } from '../../constants/extend-theme/colors';
-import { LOGIN_PATH } from '../../constants/sidebar/items-title-and-path';
+import {
+  LOGIN_PATH,
+  PROFILE_DETAILS_PATH,
+} from '../../constants/sidebar/items-title-and-path';
 import { useDispatch } from 'react-redux';
 import { userLoggedOut } from '../../features/auth/authSlice';
 import useCustomToast from '../../helper/hook/CustomToast';
@@ -44,7 +47,7 @@ const CommonMenu = () => {
   }
 
   async function handleNavigateToProfile() {
-    navigate('/profile');
+    navigate(PROFILE_DETAILS_PATH);
   }
 
   const menuItemsData = [

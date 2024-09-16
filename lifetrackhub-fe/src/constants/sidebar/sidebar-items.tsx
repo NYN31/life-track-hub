@@ -3,6 +3,7 @@ import { IoHomeOutline } from 'react-icons/io5';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { LuListTodo } from 'react-icons/lu';
 import { MdOutlineCreateNewFolder } from 'react-icons/md';
+import { TbListDetails } from "react-icons/tb";
 
 const ICON_SIZE = 18;
 
@@ -35,6 +36,17 @@ const SidebarData = [
     label: data.SETTING_PATH,
     path: data.SETTING_PATH,
     icon: <IoSettingsOutline size={ICON_SIZE} />,
+  },
+  {
+    title: data.PROFILE,
+    hasAccordion: [
+      {
+        title: data.PROFILE_DETAILS,
+        label: data.PROFILE_DETAILS_PATH,
+        path: data.PROFILE_DETAILS_PATH,
+        icon: <TbListDetails size={ICON_SIZE} />,
+      },
+    ],
   },
 ];
 

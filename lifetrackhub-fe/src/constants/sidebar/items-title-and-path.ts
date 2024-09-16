@@ -31,3 +31,6 @@ export const SETTING_PATH = '/setting';
 export const PROFILE = 'Profile';
 export const PROFILE_PATH = '/profile';
 export const PROFILE_API_PATH = '/api/user';
+
+export const PROFILE_DETAILS = 'Details';
+export const PROFILE_DETAILS_PATH = '/user/profile';

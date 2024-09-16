@@ -78,7 +78,7 @@ export const appRoutes = [
     ),
   },
   {
-    path: pathname.PROFILE_PATH,
+    path: pathname.PROFILE_DETAILS_PATH,
     element: (
       <ProtectedRoute>
         <UserProfileContainer />

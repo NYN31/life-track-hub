@@ -15,7 +15,6 @@ const UserProfileContainer = () => {
   const userId = localStorage.getItem('userId');
 
   const userSlice = useSelector((state: any) => state.user);
-  console.log(userSlice);
   const dispatch = useDispatch();
   const { data: userData, isLoading } = useUserFindByIdQuery(userId);
 

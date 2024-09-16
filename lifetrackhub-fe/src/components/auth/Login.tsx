@@ -14,7 +14,7 @@ import {
 import SubmitButton from '../common/button/SubmitButton';
 import { useNavigate } from 'react-router-dom';
 import {
-  HOME_PATH,
+  PROFILE_DETAILS_PATH,
   REGISTRATION_PATH,
 } from '../../constants/sidebar/items-title-and-path';
 import { useLoginMutation } from '../../features/auth/authApi';
@@ -69,7 +69,7 @@ const Login = () => {
           userLoggedIn({ ...res, ...decodedJwt, email: decodedJwt.sub })
         );
         successToast(SUCCESS_TITLE, LOGIN_SUCCESS_MESSAGE);
-        navigate(HOME_PATH, { replace: true });
+        navigate(PROFILE_DETAILS_PATH, { replace: true });
       })
       .catch(error => {
         errorToast(FAILED_TITLE, error.data.message);
