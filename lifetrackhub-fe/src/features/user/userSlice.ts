@@ -54,34 +54,3 @@ const userSlice = createSlice({
 
 export const { updateUserObject, resetUserObject } = userSlice.actions;
 export default userSlice.reducer;
-
-// const skills: ISkills = {
-//   name: undefined,
-//   description: undefined,
-// };
-
-// const educations: IEducation = {
-//   title: undefined,
-//   institution: undefined,
-//   graduationStartDate: undefined,
-//   graduationEndDate: undefined,
-//   result: undefined,
-// };
-
-// const experiences: IExperience = {
-//   name: undefined,
-//   description: undefined,
-//   yearOfExperience: undefined,
-//   link: undefined,
-// };
-
-// const achivemenets: IAchievement = {
-//   title: undefined,
-//   description: undefined,
-//   link: undefined,
-// };
-
-// const socialLinks: ISocialLink = {
-//   name: undefined,
-//   link: undefined,
-// };
