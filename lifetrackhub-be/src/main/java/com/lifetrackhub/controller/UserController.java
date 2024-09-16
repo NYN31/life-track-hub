@@ -23,10 +23,17 @@ public class UserController extends BaseController {
         return "Hello World!";
     }
 
-    @GetMapping("/user/{email}")
+    @GetMapping("/user/find-by-email/{email}")
     public UserDto findByEmail(@PathVariable String email) {
         log.info("Request enter into user find by email controller");
         User user = userService.findUserByEmail(email);
+        return UserDto.formEntity(user);
+    }
+
+    @GetMapping("/user/find-by-id/{id}")
+    public UserDto findById(@PathVariable Long id) {
+        log.info("Request enter into user find by id controller");
+        User user = userService.findUserById(id);
         return UserDto.formEntity(user);
     }
 

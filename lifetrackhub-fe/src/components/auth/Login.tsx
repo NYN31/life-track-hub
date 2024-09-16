@@ -1,7 +1,7 @@
 import { Box, Flex, FormControl, Heading, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { LOGIN_PAGE_HEADING } from '../../constants/texts/page-headings';
-import CustomFormInput from '../Form/CustomFormInput';
+import CustomFormInput from '../form/CustomFormInput';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/regex';
 import {
   EMAIL_LENGTH_VALIDATION_MESSAGE,
@@ -14,7 +14,7 @@ import {
 import SubmitButton from '../common/button/SubmitButton';
 import { useNavigate } from 'react-router-dom';
 import {
-  HOME_PATH,
+  PROFILE_DETAILS_PATH,
   REGISTRATION_PATH,
 } from '../../constants/sidebar/items-title-and-path';
 import { useLoginMutation } from '../../features/auth/authApi';
@@ -69,7 +69,7 @@ const Login = () => {
           userLoggedIn({ ...res, ...decodedJwt, email: decodedJwt.sub })
         );
         successToast(SUCCESS_TITLE, LOGIN_SUCCESS_MESSAGE);
-        navigate(HOME_PATH, { replace: true });
+        navigate(PROFILE_DETAILS_PATH, { replace: true });
       })
       .catch(error => {
         errorToast(FAILED_TITLE, error.data.message);

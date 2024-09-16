@@ -1,8 +1,4 @@
-export interface IBaseTodo {
-  id: number;
-  createdDate: string;
-  lastModifiedDate: string;
-}
+import { IBase } from './common';
 
 export interface ITodoResponse {
   content: ITodoItemsResponse[];
@@ -19,7 +15,7 @@ export interface ITodoItemsRequest {
   todoItems: ITodoItems[];
 }
 
-export interface ITodoItemsResponse extends IBaseTodo {
+export interface ITodoItemsResponse extends IBase {
   userId: number;
   title: string;
   done: boolean;

@@ -19,7 +19,7 @@ const CustomInput: React.FC<{
   errorMessage,
 }) => {
   return (
-    <>
+    <Flex direction="column" gap={2} w="full">
       <Box fontSize="sm" fontWeight={600}>
         {label}{' '}
         {isRequired && (
@@ -35,6 +35,9 @@ const CustomInput: React.FC<{
             onChange={e => setValue(e.target.value)}
             type={type}
             placeholder={placeholder}
+            _placeholder={{
+              fontSize: 'sm',
+            }}
             bg="body"
             border="1px"
             borderColor="gray.300"
@@ -49,7 +52,7 @@ const CustomInput: React.FC<{
           </Box>
         </Flex>
       </Flex>
-    </>
+    </Flex>
   );
 };
 

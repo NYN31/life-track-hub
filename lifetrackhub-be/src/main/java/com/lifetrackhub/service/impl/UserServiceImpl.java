@@ -2,6 +2,8 @@ package com.lifetrackhub.service.impl;
 
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.UserDto;
+import com.lifetrackhub.dto.blob.UserDetails;
+import com.lifetrackhub.dto.record.user.*;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.UserService;
@@ -40,7 +42,12 @@ public class UserServiceImpl implements UserService {
         if (user.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist with this id");
         }
-        return user.get();
+
+        User updateduser = user.get();
+        if (updateduser.getUserDetails() == null) {
+            updateUserDetailsObject(updateduser);
+        }
+        return updateduser;
     }
 
     @Override
@@ -57,7 +64,7 @@ public class UserServiceImpl implements UserService {
         String email = dto.getEmail();
         User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
 
-        if(!Objects.equals(email, userFromSecurityContext.getEmail())) {
+        if (!Objects.equals(email, userFromSecurityContext.getEmail())) {
             log.warn("User email {} is unauthorized", email);
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User email " + email + " is unauthorized");
         }
@@ -76,5 +83,20 @@ public class UserServiceImpl implements UserService {
 
             return userRepository.save(user);
         }
+    }
+
+    private void updateUserDetailsObject(User user) {
+        UserDetails userDetails = new UserDetails();
+
+        userDetails.setObjective(null);
+        userDetails.setProfileImage(null);
+        userDetails.setCv(null);
+        userDetails.setSkills(null);
+        userDetails.setEducations(null);
+        userDetails.setAchievements(null);
+        userDetails.setExperiences(null);
+        userDetails.setSocialLinks(null);
+
+        user.setUserDetails(userDetails);
     }
 }

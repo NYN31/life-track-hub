@@ -1,7 +1,7 @@
 import { Flex, Input } from '@chakra-ui/react';
 import { useState } from 'react';
 import OnclickButton from '../common/button/OnclickButton';
-import CustomInput from '../Form/CustomInput';
+import CustomInput from '../form/CustomInput';
 import { ITodoItems } from '../../types/todo';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTodoItemText, setTitleOfTodo } from '../../features/todo/todoSlice';

@@ -19,4 +19,10 @@ export const Components = {
       // Set your desired variant here ('none', 'outline', 'filled', 'flushed', 'unstyled')
     },
   },
+  Textarea: {
+    defaultProps: {
+      variant: 'none',
+      // Set your desired variant here ('none', 'outline', 'filled', 'flushed', 'unstyled')
+    },
+  },
 };
