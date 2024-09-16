@@ -35,6 +35,9 @@ const CustomInput: React.FC<{
             onChange={e => setValue(e.target.value)}
             type={type}
             placeholder={placeholder}
+            _placeholder={{
+              fontSize: 'sm',
+            }}
             bg="body"
             border="1px"
             borderColor="gray.300"

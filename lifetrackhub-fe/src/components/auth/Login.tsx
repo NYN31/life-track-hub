@@ -1,7 +1,7 @@
 import { Box, Flex, FormControl, Heading, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { LOGIN_PAGE_HEADING } from '../../constants/texts/page-headings';
-import CustomFormInput from '../Form/CustomFormInput';
+import CustomFormInput from '../form/CustomFormInput';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/regex';
 import {
   EMAIL_LENGTH_VALIDATION_MESSAGE,
