@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
         User updateduser = user.get();
         if (updateduser.getUserDetails() == null) {
-            updateUserDetailsObject(updateduser);
+            updateduser.setUserDetails(new UserDetails());
         }
         return updateduser;
     }
@@ -83,20 +83,5 @@ public class UserServiceImpl implements UserService {
 
             return userRepository.save(user);
         }
-    }
-
-    private void updateUserDetailsObject(User user) {
-        UserDetails userDetails = new UserDetails();
-
-        userDetails.setObjective(null);
-        userDetails.setProfileImage(null);
-        userDetails.setCv(null);
-        userDetails.setSkills(null);
-        userDetails.setEducations(null);
-        userDetails.setAchievements(null);
-        userDetails.setExperiences(null);
-        userDetails.setSocialLinks(null);
-
-        user.setUserDetails(userDetails);
     }
 }

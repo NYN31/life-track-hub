@@ -14,18 +14,18 @@ import org.springframework.data.jdbc.core.convert.JdbcCustomConversions;
 import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration;
 import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
 @Configuration
-@EntityScan(basePackageClasses = User.class)
-@EnableJdbcRepositories(basePackageClasses = UserRepository.class)
 @EnableJdbcAuditing
 public class JdbcConfig {
 
     static class CustomJdbcConfiguration extends AbstractJdbcConfiguration {
 
         @Bean
+        @NonNull
         @Override
         public JdbcCustomConversions jdbcCustomConversions() {
             List<?> list = List.of(

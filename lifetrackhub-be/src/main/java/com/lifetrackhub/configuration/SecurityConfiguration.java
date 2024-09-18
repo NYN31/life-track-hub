@@ -31,8 +31,6 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors()
-                .and()
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/auth/**", "/public/**").permitAll()
                         .requestMatchers("/super-admin/api/**").hasAnyAuthority(String.valueOf(Role.SUPER_ADMIN))

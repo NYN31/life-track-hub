@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,9 +24,9 @@ public class TodoController extends BaseController {
 
     @GetMapping("/todo/by-user-id/{userId}/{page}/{size}")
     public PageDto<TodoDto> findAllByUserId(@PathVariable Long userId,
-                                            @PathVariable int page,
-                                            @PathVariable int size) {
-        Page<Todo> todos = todoService.findAllByUserId(userId, PageRequest.of(page, size));
+                                            @PathVariable Integer page,
+                                            @PathVariable Integer size) {
+        Page<Todo> todos = todoService.findAllByUserId(userId, page, size);
         return PageDto.fromEntity(todos, TodoDto::formEntity);
     }
 
