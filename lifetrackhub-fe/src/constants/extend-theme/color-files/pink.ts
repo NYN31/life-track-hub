@@ -30,10 +30,13 @@ export const pinkColor = {
     text: '#000',
   },
   menu: {
-    bg: '#CBD5E0',
+    bg: '#FED7E2',
     list_bg: '#FFF',
     list_border: '#CBD5E0',
     list_text: '#171923',
     list_hover: '#FED7E2',
+  },
+  todo: {
+    bg: '#FFF',
   },
 };

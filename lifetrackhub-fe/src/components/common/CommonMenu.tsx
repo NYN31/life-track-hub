@@ -38,9 +38,10 @@ const CommonMenu = () => {
 
   const { userObject } = useSelector((state: any) => state.user);
   const { firstname, lastname } = userObject as IUser;
+  const fullname = firstname + ' ' + lastname;
 
   const name =
-    firstname + ' ' + lastname || localStorage.getItem('name') || 'Unknown';
+    (firstname && fullname) || localStorage.getItem('name') || 'Unknown';
 
   async function handleLogout() {
     dispatch(userLoggedOut());
@@ -100,6 +101,8 @@ const CommonMenu = () => {
     <Menu>
       <MenuButton
         bg="menu.bg"
+        _active={{ bg: `${colors().menu.bg} !important` }}
+        _hover={{ bg: `${colors().menu.bg} !important` }}
         mx={4}
         px={2}
         minWidth="250px"

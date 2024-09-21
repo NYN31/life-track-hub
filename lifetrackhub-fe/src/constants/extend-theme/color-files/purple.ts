@@ -30,10 +30,13 @@ export const purpleColor = {
     text: '#000',
   },
   menu: {
-    bg: '#CBD5E0',
+    bg: '#E9D8FD',
     list_bg: '#FFF',
     list_border: '#CBD5E0',
     list_text: '#171923',
     list_hover: '#E9D8FD',
+  },
+  todo: {
+    bg: '#FFF',
   },
 };

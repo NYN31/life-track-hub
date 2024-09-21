@@ -30,10 +30,13 @@ export const blueColor = {
     text: '#000',
   },
   menu: {
-    bg: '#CBD5E0',
+    bg: '#bee3f8',
     list_bg: '#FFF',
     list_border: '#CBD5E0',
     list_text: '#171923',
     list_hover: '#bee3f8',
+  },
+  todo: {
+    bg: '#FFF',
   },
 };
