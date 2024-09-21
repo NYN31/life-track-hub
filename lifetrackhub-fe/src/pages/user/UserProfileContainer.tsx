@@ -31,14 +31,14 @@ const UserProfileContainer = () => {
       <Flex direction="column" align="center" justifyContent="center" gap={4}>
         <Flex
           direction="column"
-          w={{ lg: '800px', md: 'full', sm: 'full', base: 'full' }}
+          w={{ lg: '750px', md: 'full', sm: 'full', base: 'full' }}
           gap={4}
         >
           <PageHeading heading={PROIFLE_PAGE_HEADING} />
           <Intro />
-          {skills && <MySkills />}
-          {educations && <Education />}
-          {experiences && <Experience />}
+          {skills.length > 0 && <MySkills />}
+          {educations.length > 0 && <Education />}
+          {experiences.length > 0 && <Experience />}
         </Flex>
       </Flex>
     </Box>

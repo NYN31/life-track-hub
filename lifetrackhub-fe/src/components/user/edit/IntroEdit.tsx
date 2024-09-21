@@ -2,9 +2,9 @@ import { Flex, Text } from '@chakra-ui/react';
 import CustomInput from '../../form/CustomInput';
 import { useState } from 'react';
 import CustomTextarea from '../../form/CustomTextarea';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import OnclickButton from '../../common/button/OnclickButton';
-import { ISocialLink } from '../../../types/user';
+import { ISocialLink, IUser } from '../../../types/user';
 import { updateUserObject } from '../../../features/user/userSlice';
 import { useUpdateUserMutation } from '../../../features/user/userApi';
 import useCustomToast from '../../../helper/hook/CustomToast';
@@ -15,12 +15,11 @@ import {
 } from '../../../constants/texts/title-and-message';
 import GenericBox from '../../common/GenericBox';
 
-const IntroEdit = () => {
+const IntroEdit: React.FC<{ userObject: IUser }> = ({ userObject }) => {
   const dispatch = useDispatch();
   const { successToast, errorToast } = useCustomToast();
 
-  const { userObject } = useSelector((state: any) => state.user);
-  const socialLinks: ISocialLink[] = userObject?.userDetails?.socialLinks;
+  const socialLinks: ISocialLink[] = userObject?.userDetails?.socialLinks || [];
 
   const [firstname, setFirstname] = useState(userObject?.firstname);
   const [lastname, setLastname] = useState(userObject?.lastname);
@@ -91,6 +90,7 @@ const IntroEdit = () => {
             type="text"
             placeholder="Enter Firstname"
             errorMessage=""
+            borderRadius={8}
           />
           <CustomInput
             value={lastname}
@@ -100,6 +100,7 @@ const IntroEdit = () => {
             type="text"
             placeholder="Enter Lastname"
             errorMessage=""
+            borderRadius={8}
           />
         </Flex>
         <Flex gap={[0, 0, 0, 4]}>
@@ -110,6 +111,7 @@ const IntroEdit = () => {
             label="Objective"
             placeholder="Enter Objective"
             errorMessage=""
+            borderRadius={8}
           />
         </Flex>
 
@@ -128,6 +130,7 @@ const IntroEdit = () => {
             type="text"
             placeholder="Link"
             errorMessage=""
+            borderRadius={8}
           />
           <CustomInput
             value={linkedIn}
@@ -137,6 +140,7 @@ const IntroEdit = () => {
             type="text"
             placeholder="Link"
             errorMessage=""
+            borderRadius={8}
           />
         </Flex>
         <Flex
@@ -151,6 +155,7 @@ const IntroEdit = () => {
             type="text"
             placeholder="Link"
             errorMessage=""
+            borderRadius={8}
           />
           <CustomInput
             value={stackOverflow}
@@ -160,6 +165,7 @@ const IntroEdit = () => {
             type="text"
             placeholder="Link"
             errorMessage=""
+            borderRadius={8}
           />
         </Flex>
         <OnclickButton

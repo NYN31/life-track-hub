@@ -32,8 +32,7 @@ const TodoForm = () => {
       <Textarea
         value={title}
         onChange={e => handleTodoTitle(e.target.value)}
-        minHeight={8}
-        maxHeight={16}
+        minHeight={16}
         placeholder="Title"
         _placeholder={{
           fontSize: '2xl',
@@ -44,6 +43,7 @@ const TodoForm = () => {
         borderRadius="0px"
         borderColor="#FFF"
         fontWeight={500}
+        resize="none"
       />
       <Flex direction="row">
         <CustomInput

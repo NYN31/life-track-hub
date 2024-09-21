@@ -9,7 +9,7 @@ import { userLoggedOut } from '../auth/authSlice';
 import { logoutClearingLocalStorage } from '../../helper/local-storage/logout';
 
 //export const API_URL = 'http://localhost:8086'; // localhost
-export const API_URL = 'http://192.168.0.111:8086'; // home
+export const API_URL = 'http://172.16.20.194:8086'; // home
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,

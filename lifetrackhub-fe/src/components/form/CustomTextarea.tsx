@@ -8,7 +8,16 @@ const CustomTextarea: React.FC<{
   label: string;
   placeholder: string;
   errorMessage: string | undefined;
-}> = ({ value, setValue, isRequired, label, placeholder, errorMessage }) => {
+  borderRadius: number;
+}> = ({
+  value,
+  setValue,
+  isRequired,
+  label,
+  placeholder,
+  errorMessage,
+  borderRadius = 0,
+}) => {
   return (
     <Flex direction="column" gap={2} w="full">
       <Box fontSize="sm" fontWeight={600}>
@@ -31,7 +40,7 @@ const CustomTextarea: React.FC<{
             _hover={{
               borderColor: 'gray.400',
             }}
-            borderRadius={0}
+            borderRadius={borderRadius}
             resize="vertical"
           />
 

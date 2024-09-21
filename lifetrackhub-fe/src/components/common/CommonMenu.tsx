@@ -70,7 +70,7 @@ const CommonMenu = () => {
   ];
 
   const getName = (name: string) => {
-    const MAX_LENGTH_OF_NAME = 21;
+    const MAX_LENGTH_OF_NAME = 24;
     if (name.length > MAX_LENGTH_OF_NAME) {
       return name.slice(0, MAX_LENGTH_OF_NAME) + '...';
     }

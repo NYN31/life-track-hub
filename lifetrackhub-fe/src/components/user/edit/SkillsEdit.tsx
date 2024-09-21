@@ -141,6 +141,7 @@ const SkillsEdit = () => {
             action={() => {
               skillAddHandler();
             }}
+            borderRadius="0px"
           />
         </Box>
       </Flex>

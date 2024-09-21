@@ -9,34 +9,32 @@ import {
 } from '@chakra-ui/react';
 import IntroEdit from './IntroEdit';
 import SkillsEdit from './SkillsEdit';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useUserFindByIdQuery } from '../../../features/user/userApi';
 import { useEffect } from 'react';
 import { updateUserObject } from '../../../features/user/userSlice';
 import Loading from '../../common/Loading';
 
-export const tabs = [
-  {
-    title: 'Intro',
-    tab: <IntroEdit />,
-  },
-  {
-    title: 'Skill',
-    tab: <SkillsEdit />,
-  },
-];
-
 const ProfileEditTabs = () => {
   const userId = localStorage.getItem('userId');
 
   const dispatch = useDispatch();
-  const { userObject } = useSelector((state: any) => state.user);
   const { data: userData, isLoading } = useUserFindByIdQuery(userId);
 
   useEffect(() => {
     if (userData) dispatch(updateUserObject(userData));
-    else dispatch(updateUserObject(userObject));
-  }, [isLoading]);
+  }, [isLoading, userData]);
+
+  const tabs = [
+    {
+      title: 'Intro',
+      tab: <IntroEdit userObject={userData} />,
+    },
+    {
+      title: 'Skill',
+      tab: <SkillsEdit />,
+    },
+  ];
 
   if (isLoading) return <Loading />;
 

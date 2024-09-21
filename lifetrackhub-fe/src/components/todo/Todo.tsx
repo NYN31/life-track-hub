@@ -71,7 +71,7 @@ const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
         <OnclickButton
           color="btn.bg"
           text="View"
-          width="auto"
+          width="full"
           cursor="pointer"
           isDisable={done}
           isLoading={false}

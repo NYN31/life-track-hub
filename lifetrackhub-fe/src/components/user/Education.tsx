@@ -3,7 +3,7 @@ import { IEducation, IUserDetails } from '../../types/user';
 import GenericBox from '../common/GenericBox';
 import PageHeading from '../common/PageHeading';
 import { PROFILE_EDUCATION_HEADING } from '../../constants/texts/page-headings';
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Grid, Text } from '@chakra-ui/react';
 import { IoSchoolSharp } from 'react-icons/io5';
 import { FaRegCheckCircle } from 'react-icons/fa';
 import { ICON_SIZE_20 } from '../../constants/common-constants';
@@ -30,7 +30,16 @@ const Education = () => {
       <Flex align="center" justifyContent="center">
         <PageHeading heading={PROFILE_EDUCATION_HEADING} />
       </Flex>
-      <Flex mt={4} direction="column" gap={4}>
+      <Grid
+        mt={4}
+        templateColumns={[
+          'repeat(1, 1fr)',
+          'repeat(1, 1fr)',
+          'repeat(1, 1fr)',
+          'repeat(2, 1fr)',
+        ]}
+        gap={4}
+      >
         {educations?.map((education, index) => {
           const {
             title,
@@ -43,7 +52,7 @@ const Education = () => {
           return (
             <GenericBox key={index}>
               <Flex direction="row" gap={4}>
-                <Flex color="icon" align="center">
+                <Flex color="icon" align="baseline">
                   <IoSchoolSharp size={ICON_SIZE_20} />
                 </Flex>
                 <Text as="b">{title}</Text>
@@ -58,7 +67,7 @@ const Education = () => {
             </GenericBox>
           );
         })}
-      </Flex>
+      </Grid>
     </GenericBox>
   );
 };

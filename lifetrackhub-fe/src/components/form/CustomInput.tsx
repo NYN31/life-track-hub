@@ -9,6 +9,7 @@ const CustomInput: React.FC<{
   type: string;
   placeholder: string;
   errorMessage: string | undefined;
+  borderRadius?: number;
 }> = ({
   value,
   setValue,
@@ -17,6 +18,7 @@ const CustomInput: React.FC<{
   type,
   placeholder,
   errorMessage,
+  borderRadius = 0,
 }) => {
   return (
     <Flex direction="column" gap={2} w="full">
@@ -44,7 +46,7 @@ const CustomInput: React.FC<{
             _hover={{
               borderColor: 'gray.400',
             }}
-            borderRadius={0}
+            borderRadius={borderRadius}
           />
 
           <Box width={{ lg: '400px', base: '96%' }} color="red" pt={4}>
