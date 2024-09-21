@@ -11,13 +11,14 @@ const OnclickButton: React.FC<ClickButton> = ({
   isDisable,
   isLoading = false,
   action,
+  borderRadius,
 }) => {
   return (
     <Button
       w={width}
       bg={color}
       color="btn.text"
-      borderRadius={0}
+      borderRadius={borderRadius || '50px'}
       fontWeight={500}
       cursor={cursor}
       isDisabled={isDisable}

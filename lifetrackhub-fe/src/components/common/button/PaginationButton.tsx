@@ -9,12 +9,7 @@ const PaginationButton: React.FC<{
   handleNextPage: () => void;
 }> = ({ hasPrevious, hasNext, handlePreviousPage, handleNextPage }) => {
   return (
-    <Flex
-      direction="row"
-      justifyContent="flex-end"
-      mb="4"
-      mr={[0, 0, 0, 4, 12]}
-    >
+    <Flex direction="row" justifyContent="flex-end" mb="4">
       <Stack spacing={6} direction="row" align="center">
         <OnclickButton
           color="btn.bg"
