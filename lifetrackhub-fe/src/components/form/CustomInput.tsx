@@ -40,9 +40,9 @@ const CustomInput: React.FC<{
             }}
             bg="body"
             border="1px"
-            borderColor="gray.300"
+            borderColor="gray.100"
             _hover={{
-              borderColor: 'gray.300',
+              borderColor: 'gray.400',
             }}
             borderRadius={0}
           />
