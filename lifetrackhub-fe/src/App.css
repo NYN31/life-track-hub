@@ -1,0 +1,16 @@
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #F2F2F2;
+  border: 1px;
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #77bab7;
+  border-radius: 8px;
+  border: 1px;
+}

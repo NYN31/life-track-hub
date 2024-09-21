@@ -126,7 +126,6 @@ const Sidebar: React.FC<{
       boxShadow="md"
       overflowY="auto"
       overflowX="hidden"
-      //resize="horizontal"
       borderRightWidth="1px"
       borderRightColor="sidebar.hover_bg"
     >
