@@ -1,4 +1,4 @@
-import { Flex, Input } from '@chakra-ui/react';
+import { Box, Flex, Text, Textarea } from '@chakra-ui/react';
 import { useState } from 'react';
 import OnclickButton from '../common/button/OnclickButton';
 import CustomInput from '../form/CustomInput';
@@ -28,9 +28,12 @@ const TodoForm = () => {
 
   return (
     <Flex direction="column" gap={4}>
-      <Input
+      <Text as="b">Title</Text>
+      <Textarea
         value={title}
         onChange={e => handleTodoTitle(e.target.value)}
+        minHeight={8}
+        maxHeight={16}
         placeholder="Title"
         _placeholder={{
           fontSize: '2xl',
@@ -52,16 +55,20 @@ const TodoForm = () => {
           placeholder="Enter a Todo"
           errorMessage=""
         />
-
-        <OnclickButton
-          color="btn.bg"
-          text="Add"
-          width="auto"
-          cursor={todoText ? 'pointer' : 'not-allowed'}
-          isDisable={!todoText || (!!todoId && !!errorMessage)}
-          isLoading={false}
-          action={() => handleAddTodoItem({ text: todoText, completed: false })}
-        />
+        <Box mt={2}>
+          <OnclickButton
+            color="btn.bg"
+            text="Add"
+            width="auto"
+            cursor={todoText ? 'pointer' : 'not-allowed'}
+            isDisable={!todoText || (!!todoId && !!errorMessage)}
+            isLoading={false}
+            action={() =>
+              handleAddTodoItem({ text: todoText, completed: false })
+            }
+            borderRadius="0px"
+          />
+        </Box>
       </Flex>
     </Flex>
   );
