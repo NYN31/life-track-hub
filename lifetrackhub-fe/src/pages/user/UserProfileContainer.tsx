@@ -36,9 +36,9 @@ const UserProfileContainer = () => {
         >
           <PageHeading heading={PROIFLE_PAGE_HEADING} />
           <Intro />
-          {skills.length > 0 && <MySkills />}
-          {educations.length > 0 && <Education />}
-          {experiences.length > 0 && <Experience />}
+          {skills?.length > 0 && <MySkills />}
+          {educations?.length > 0 && <Education />}
+          {experiences?.length > 0 && <Experience />}
         </Flex>
       </Flex>
     </Box>

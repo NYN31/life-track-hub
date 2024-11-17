@@ -1,7 +1,7 @@
 import GenericBox from '../common/GenericBox';
 import PageHeading from '../common/PageHeading';
 import { PROFILE_SKILLS_HEADING } from '../../constants/texts/page-headings';
-import { Flex, SimpleGrid } from '@chakra-ui/react';
+import { Flex, Radio, SimpleGrid } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { IUserDetails } from '../../types/user';
 
@@ -21,18 +21,9 @@ const MySkills = () => {
       >
         {skills?.map((skill, index) => {
           return (
-            <Flex
-              key={index}
-              height="40px"
-              bg="icon"
-              align="center"
-              justifyContent="center"
-              color="#FFFF"
-              fontSize={['sm', 'sm', 'md', 'md']}
-              borderRadius={4}
-            >
+            <Radio key={index} bg="icon">
               {skill.name}
-            </Flex>
+            </Radio>
           );
         })}
       </SimpleGrid>
