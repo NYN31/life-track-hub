@@ -17,19 +17,21 @@ const CreateTodoButtons: React.FC<{
 
   return (
     <Flex gap={4} mt={4}>
-      <OnclickButton
-        color="danger"
-        text="Reset"
-        width="50%"
-        cursor={todoItems.length > 0 ? 'pointer' : 'not-allowed'}
-        isDisable={todoItems.length === 0 && !title}
-        isLoading={false}
-        action={() => dispatch(resetTodo())}
-      />
+      {!todoId && (
+        <OnclickButton
+          color="danger"
+          text="Reset"
+          width="50%"
+          cursor={todoItems.length > 0 ? 'pointer' : 'not-allowed'}
+          isDisable={todoItems.length === 0 && !title}
+          isLoading={false}
+          action={() => dispatch(resetTodo())}
+        />
+      )}
       <OnclickButton
         color="btn.bg"
         text={todoId ? 'Update' : 'Create'}
-        width="50%"
+        width={todoId ? '100%' : '50%'}
         cursor={todoItems.length > 0 ? 'pointer' : 'not-allowed'}
         isDisable={todoItems.length === 0 || !title}
         isLoading={loading}
