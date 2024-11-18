@@ -9,7 +9,7 @@ export interface ITodoResponse {
 }
 
 export interface ITodoItemsRequest {
-  userId: number;
+  userId: number | null;
   title: string;
   done: boolean;
   todoItems: ITodoItems[];

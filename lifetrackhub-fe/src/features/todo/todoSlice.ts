@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { ITodoItems, ITodoItemsRequest } from '../../types/todo';
 
 const initialTodo: ITodoItemsRequest = {
-  userId: Number(localStorage.getItem('userId')),
+  userId: null,
   title: '',
   done: false,
   todoItems: [],
@@ -28,6 +28,7 @@ const todoSlice = createSlice({
     },
 
     setTitleOfTodo: (state, action) => {
+      state.todoObject.userId = Number(localStorage.getItem('userId'));
       state.todoObject.title = action.payload;
     },
 

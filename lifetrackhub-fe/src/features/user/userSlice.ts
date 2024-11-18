@@ -14,7 +14,7 @@ const userDetails: IUserDetails = {
 
 const initialState = {
   userObject: {
-    id: 0,
+    id: undefined,
     createdDate: '',
     lastModifiedDate: '',
     firstname: '',
@@ -37,7 +37,7 @@ const userSlice = createSlice({
 
     resetUserObject: state => {
       state.userObject = {
-        id: 0,
+        id: undefined,
         createdDate: '',
         lastModifiedDate: '',
         firstname: '',
