@@ -45,6 +45,15 @@ const todoSlice = createSlice({
           return item;
         }
       );
+
+      console.log(newTodoItems);
+
+      // todo done logic
+      const isAllChecked = newTodoItems.find(item => item.completed === false);
+      console.log(isAllChecked);
+      if (!isAllChecked) state.todoObject.done = true;
+      else state.todoObject.done = false;
+
       state.todoObject.todoItems = newTodoItems;
     },
 

@@ -82,6 +82,7 @@ const TodoCreateUpdateContainer = () => {
     isLoading(true);
     dispatch(setErrorMessage(''));
     if (todoId) {
+      console.log({ ...todoSlice.todoObject });
       await updateTodo({ ...todoSlice.todoObject, id: todoId })
         .unwrap()
         .then(() => {

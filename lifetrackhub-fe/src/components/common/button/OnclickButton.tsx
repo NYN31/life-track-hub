@@ -27,10 +27,10 @@ const OnclickButton: React.FC<ClickButton> = ({
         bg: `${colors().btn.bg_disable} !important`,
         color: `${colors().btn.text_disable} !important`,
       }}
-      _hover={{
-        bg: `${color} !important`,
-        color: `${colors().btn.text} !important`,
-      }}
+      // _hover={{
+      //   bg: `${color} !important`,
+      //   color: `${colors().btn.text} !important`,
+      // }}
       onClick={action}
     >
       {text}

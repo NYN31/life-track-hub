@@ -24,19 +24,19 @@ const Intro = () => {
   const socialLinksDetails = [
     {
       mediaName: facebook?.name || '',
-      link: facebook.link,
+      link: facebook?.link,
       icon: <FaSquareFacebook size={ICON_SIZE_20} />,
     },
 
     {
       mediaName: linkedIn?.name || '',
-      link: linkedIn.link,
+      link: linkedIn?.link,
       icon: <FaLinkedin size={ICON_SIZE_20} />,
     },
 
     {
       mediaName: github?.name || '',
-      link: github.link,
+      link: github?.link,
       icon: <FaGithub size={ICON_SIZE_20} />,
     },
 
