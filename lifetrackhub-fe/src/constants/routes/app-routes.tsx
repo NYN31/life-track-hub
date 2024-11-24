@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import ProtectedRoute from '../../components/common/ProtectedRoute';
-import Home from '../../pages/common/Home';
 import * as pathname from '../sidebar/items-title-and-path';
 import PublicNavbar from '../../components/common/PublicNavbar';
 import RegistrationContainer from '../../pages/auth/RegistrationContainer';
@@ -8,6 +7,8 @@ import LoginContainer from '../../pages/auth/LoginContainer';
 import TodoContainer from '../../pages/todo/TodoContainer';
 import SettingContainer from '../../pages/setting/SettingContainer';
 import TodoCreateUpdateContainer from '../../pages/todo/TodoCreateUpdateContainer';
+import UserProfileContainer from '../../pages/user/UserProfileContainer';
+import UpdateProfileContainer from '../../pages/user/UpdateProfileContainer';
 
 export const appRoutes = [
   {
@@ -34,14 +35,6 @@ export const appRoutes = [
         <PublicNavbar />
         <RegistrationContainer />
       </>
-    ),
-  },
-  {
-    path: pathname.HOME_PATH,
-    element: (
-      <ProtectedRoute>
-        <Home />
-      </ProtectedRoute>
     ),
   },
   {
@@ -73,6 +66,22 @@ export const appRoutes = [
     element: (
       <ProtectedRoute>
         <SettingContainer />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: pathname.PROFILE_DETAILS_PATH,
+    element: (
+      <ProtectedRoute>
+        <UserProfileContainer />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: pathname.PROFILE_EDIT_PATH,
+    element: (
+      <ProtectedRoute>
+        <UpdateProfileContainer />
       </ProtectedRoute>
     ),
   },

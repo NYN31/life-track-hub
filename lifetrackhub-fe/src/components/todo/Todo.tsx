@@ -1,4 +1,4 @@
-import { Box, Flex, GridItem } from '@chakra-ui/react';
+import { Box, Divider, Flex, GridItem, Spacer, Text } from '@chakra-ui/react';
 import { ITodoItemsResponse } from '../../types/todo';
 import OnclickButton from '../common/button/OnclickButton';
 import { format } from 'date-fns';
@@ -17,10 +17,16 @@ const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
     }
   }
 
-  const showText = (title: string, value: string | number | boolean) => {
+  const showText = (
+    title: string,
+    value: string | number | boolean,
+    size: string = 'sm',
+    space: boolean = true
+  ) => {
     return (
-      <Box display="flex" noOfLines={1}>
+      <Box display="flex" fontSize={size}>
         <Box as="b">{title}</Box>
+        {space ? <Spacer /> : <span>&nbsp;</span>}
         {typeof value === 'boolean' ? value.toString() : value}
       </Box>
     );
@@ -28,21 +34,25 @@ const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
 
   return (
     <GridItem
-      w={['full', 'full', 'full', '350px', '350px', '350px']}
-      p={4}
-      mt={4}
-      bg="navbar.bg"
-      borderRadius={4}
-      boxShadow="0 1px 3px gray"
+      p={6}
+      bg="todo.bg"
+      borderRadius={16}
+      boxShadow="0 1px 10px rgba(0, 0, 0, .3)"
+      _hover={{
+        boxShadow: '0 1px 10px rgba(0, 0, 0, .6)',
+      }}
     >
-      <Flex direction="column" justifyContent="space-evenly" gap={2}>
+      <Flex direction="column" justifyContent="space-between" gap={2}>
         <Flex direction="column" gap={2}>
-          {showText('Title: ', title)}
-
-          <Flex gap={12}>
-            {showText('Id: ', id)}
-            {showText('Done: ', done)}
+          <Flex fontSize="xl">
+            <Box as="b">{'Title:'}</Box>
+            <span>&nbsp;</span>
+            <Text noOfLines={1}>{title}</Text>
           </Flex>
+
+          <Divider colorScheme="orange" orientation="horizontal" />
+
+          {showText('Done: ', done)}
 
           {showText(
             'Create At: ',
@@ -57,10 +67,11 @@ const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
           {showText('Todo Items: ', todoItems.length)}
           {showText('Todo Completed: ', todoCompleted)}
         </Flex>
+        <Spacer />
         <OnclickButton
           color="btn.bg"
           text="View"
-          width="auto"
+          width="full"
           cursor="pointer"
           isDisable={done}
           isLoading={false}

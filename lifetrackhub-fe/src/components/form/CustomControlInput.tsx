@@ -1,9 +1,10 @@
 import { Box, Flex, Input } from '@chakra-ui/react';
 import React from 'react';
 
-const CustomInput: React.FC<{
+const CustomControlInput: React.FC<{
   value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  setValue: (value: string, name: string) => void;
+  name: string;
   isRequired: boolean;
   label: string;
   type: string;
@@ -12,6 +13,7 @@ const CustomInput: React.FC<{
 }> = ({
   value,
   setValue,
+  name,
   isRequired,
   label,
   type,
@@ -19,7 +21,7 @@ const CustomInput: React.FC<{
   errorMessage,
 }) => {
   return (
-    <>
+    <Flex direction="column" gap={2} w="full">
       <Box fontSize="sm" fontWeight={600}>
         {label}{' '}
         {isRequired && (
@@ -32,14 +34,14 @@ const CustomInput: React.FC<{
         <Flex direction="column" w="full">
           <Input
             value={value}
-            onChange={e => setValue(e.target.value)}
+            onChange={e => setValue(e.target.value, name)}
             type={type}
             placeholder={placeholder}
             bg="body"
             border="1px"
-            borderColor="gray.300"
+            borderColor="gray.100"
             _hover={{
-              borderColor: 'gray.300',
+              borderColor: 'gray.400',
             }}
             borderRadius={0}
           />
@@ -49,8 +51,8 @@ const CustomInput: React.FC<{
           </Box>
         </Flex>
       </Flex>
-    </>
+    </Flex>
   );
 };
 
-export default CustomInput;
+export default CustomControlInput;

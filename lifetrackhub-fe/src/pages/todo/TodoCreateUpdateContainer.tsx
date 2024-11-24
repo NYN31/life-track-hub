@@ -36,6 +36,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { TODO_UPDATE_PATH } from '../../constants/sidebar/items-title-and-path';
 import TodoForm from '../../components/todo/TodoForm';
+import { TODO_TITLE_LENGTH } from '../../constants/common-constants';
 
 const TodoCreateUpdateContainer = () => {
   const { todoId } = useParams();
@@ -72,7 +73,7 @@ const TodoCreateUpdateContainer = () => {
       errorToast(FAILED_TITLE, CREATION_FAILED_MESSAGE);
       return;
     }
-    if (title.length < 3) {
+    if (title.length < TODO_TITLE_LENGTH) {
       dispatch(setErrorMessage(TODO_TITLE_LENGTH_VALIDATION_MESSAGE));
       errorToast(FAILED_TITLE, CREATION_FAILED_MESSAGE);
       return;
@@ -81,6 +82,7 @@ const TodoCreateUpdateContainer = () => {
     isLoading(true);
     dispatch(setErrorMessage(''));
     if (todoId) {
+      console.log({ ...todoSlice.todoObject });
       await updateTodo({ ...todoSlice.todoObject, id: todoId })
         .unwrap()
         .then(() => {
@@ -115,6 +117,12 @@ const TodoCreateUpdateContainer = () => {
     if (todoId) {
       getTodoByTodoIdHandler();
     }
+
+    return () => {
+      if (todoId) {
+        dispatch(resetTodo());
+      }
+    };
   }, [todoId]);
 
   if (loading) return <Loading />;

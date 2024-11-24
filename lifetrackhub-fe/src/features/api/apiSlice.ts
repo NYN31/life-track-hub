@@ -8,7 +8,9 @@ import {
 import { userLoggedOut } from '../auth/authSlice';
 import { logoutClearingLocalStorage } from '../../helper/local-storage/logout';
 
-export const API_URL = 'http://localhost:8086';
+//export const API_URL = 'http://localhost:8086'; // localhost
+
+export const API_URL = import.meta.env.VITE_SERVER_BASE_URL;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,

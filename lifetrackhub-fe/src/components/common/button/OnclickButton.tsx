@@ -11,13 +11,14 @@ const OnclickButton: React.FC<ClickButton> = ({
   isDisable,
   isLoading = false,
   action,
+  borderRadius,
 }) => {
   return (
     <Button
       w={width}
       bg={color}
       color="btn.text"
-      borderRadius={0}
+      borderRadius={borderRadius || '8px'}
       fontWeight={500}
       cursor={cursor}
       isDisabled={isDisable}
@@ -26,6 +27,10 @@ const OnclickButton: React.FC<ClickButton> = ({
         bg: `${colors().btn.bg_disable} !important`,
         color: `${colors().btn.text_disable} !important`,
       }}
+      // _hover={{
+      //   bg: `${color} !important`,
+      //   color: `${colors().btn.text} !important`,
+      // }}
       onClick={action}
     >
       {text}

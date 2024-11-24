@@ -25,5 +25,5 @@ build
 *.sw?
 
 .env
-.env-local
+.env-dev
 .env-prod

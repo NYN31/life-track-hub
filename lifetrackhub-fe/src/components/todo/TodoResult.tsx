@@ -14,7 +14,7 @@ const TodoResult: React.FC<{ todos: ITodoItemsResponse[] }> = ({ todos }) => {
         'repeat(3, 1fr)',
         'repeat(4, 1fr)',
       ]}
-      gap={2}
+      gap={8}
     >
       {todos.map((todo: ITodoItemsResponse) => (
         <Todo key={todo.id} todo={todo} />

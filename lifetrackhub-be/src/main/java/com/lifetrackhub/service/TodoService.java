@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface TodoService {
-    Page<Todo> findAllByUserId(Long userId, Pageable pageable);
+    Page<Todo> findAllByUserId(Long userId, Integer page, Integer size);
 
     Todo findTodoById(Long id);
 

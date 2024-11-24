@@ -15,6 +15,7 @@ export interface ClickButton {
   isDisable: boolean;
   isLoading: boolean;
   action: () => void;
+  borderRadius?: string;
 }
 
 export type ButtonType = 'button' | 'submit' | 'reset';

@@ -30,10 +30,13 @@ export const greenColor = {
     text: '#000',
   },
   menu: {
-    bg: '#CBD5E0',
+    bg: '#C6F6D5',
     list_bg: '#FFF',
     list_border: '#CBD5E0',
     list_text: '#171923',
     list_hover: '#C6F6D5', // 100
+  },
+  todo: {
+    bg: '#FFF',
   },
 };

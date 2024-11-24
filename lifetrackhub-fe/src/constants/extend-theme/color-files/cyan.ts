@@ -36,4 +36,7 @@ export const cyanColor = {
     list_text: '#171923',
     list_hover: '#C4F1F9',
   },
+  todo: {
+    bg: '#FFF',
+  },
 };

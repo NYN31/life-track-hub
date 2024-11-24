@@ -1,7 +1,7 @@
-import { Flex, Input } from '@chakra-ui/react';
+import { Box, Flex, Text, Textarea } from '@chakra-ui/react';
 import { useState } from 'react';
 import OnclickButton from '../common/button/OnclickButton';
-import CustomInput from '../Form/CustomInput';
+import CustomInput from '../form/CustomInput';
 import { ITodoItems } from '../../types/todo';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTodoItemText, setTitleOfTodo } from '../../features/todo/todoSlice';
@@ -28,9 +28,11 @@ const TodoForm = () => {
 
   return (
     <Flex direction="column" gap={4}>
-      <Input
+      <Text as="b">Title</Text>
+      <Textarea
         value={title}
         onChange={e => handleTodoTitle(e.target.value)}
+        minHeight={16}
         placeholder="Title"
         _placeholder={{
           fontSize: '2xl',
@@ -41,6 +43,7 @@ const TodoForm = () => {
         borderRadius="0px"
         borderColor="#FFF"
         fontWeight={500}
+        resize="none"
       />
       <Flex direction="row">
         <CustomInput
@@ -52,16 +55,20 @@ const TodoForm = () => {
           placeholder="Enter a Todo"
           errorMessage=""
         />
-
-        <OnclickButton
-          color="btn.bg"
-          text="Add"
-          width="auto"
-          cursor={todoText ? 'pointer' : 'not-allowed'}
-          isDisable={!todoText || (!!todoId && !!errorMessage)}
-          isLoading={false}
-          action={() => handleAddTodoItem({ text: todoText, completed: false })}
-        />
+        <Box mt={2}>
+          <OnclickButton
+            color="btn.bg"
+            text="Add"
+            width="auto"
+            cursor={todoText ? 'pointer' : 'not-allowed'}
+            isDisable={!todoText || (!!todoId && !!errorMessage)}
+            isLoading={false}
+            action={() =>
+              handleAddTodoItem({ text: todoText, completed: false })
+            }
+            borderRadius="0px"
+          />
+        </Box>
       </Flex>
     </Flex>
   );
