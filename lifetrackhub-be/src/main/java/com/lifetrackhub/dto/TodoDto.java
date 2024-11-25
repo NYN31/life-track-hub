@@ -7,7 +7,9 @@ import org.hibernate.validator.constraints.Length;
 
 import java.util.Arrays;
 
-public class TodoDto extends BaseDto {
+public class TodoDto {
+    private Long id;
+
     @NotNull
     private Long userId;
 
@@ -22,13 +24,21 @@ public class TodoDto extends BaseDto {
     public static TodoDto formEntity(Todo entity) {
         TodoDto dto = new TodoDto();
 
-        dto.fill(entity);
+        dto.setId(entity.getId());
         dto.setUserId(entity.getUserId());
         dto.setTitle(entity.getTitle());
         dto.setDone(entity.isDone());
         dto.setTodoItems(entity.getTodoItems().getTodoItems());
 
         return dto;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {
@@ -66,10 +76,11 @@ public class TodoDto extends BaseDto {
     @Override
     public String toString() {
         return "TodoDto{" +
-                "userId=" + userId +
+                "id=" + id +
+                ", userId=" + userId +
                 ", title='" + title + '\'' +
                 ", done=" + done +
                 ", todoItems=" + Arrays.toString(todoItems) +
-                '}' + ' ' + super.toString();
+                '}';
     }
 }

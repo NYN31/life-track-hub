@@ -12,7 +12,6 @@ public class LoginRequestDto {
     private String email;
 
     @NotNull
-    @Password
     private String password;
 
     public String getEmail() {

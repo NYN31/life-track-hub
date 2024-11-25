@@ -5,7 +5,9 @@ import com.lifetrackhub.entity.User;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-public class UserDto extends BaseDto {
+public class UserDto {
+    private Long id;
+
     @NotNull
     @Length(min = 3, max = 40)
     private String firstname;
@@ -25,7 +27,7 @@ public class UserDto extends BaseDto {
     public static UserDto formEntity(User user) {
         UserDto dto = new UserDto();
 
-        dto.fill(user);
+        dto.setId(user.getId());
         dto.setFirstname(user.getFirstname());
         dto.setLastname(user.getLastname());
         dto.setEmail(user.getEmail());
@@ -34,6 +36,14 @@ public class UserDto extends BaseDto {
         dto.setUserDetails(user.getUserDetails());
 
         return dto;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstname() {
@@ -87,7 +97,8 @@ public class UserDto extends BaseDto {
     @Override
     public String toString() {
         return "UserUpdateResponseDto{" +
-                "firstname='" + firstname + '\'' +
+                "id='" + id + '\'' +
+                ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +

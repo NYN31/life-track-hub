@@ -1,12 +1,28 @@
 package com.lifetrackhub.entity;
 
+import com.lifetrackhub.converter.TodoItemsConverter;
 import com.lifetrackhub.dto.blob.TodoItems;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.Instant;
+
+@Data
+@ToString
+@Entity
 @Table
-public class Todo extends BaseEntity{
+public class Todo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull
     private Long userId;
 
@@ -16,47 +32,15 @@ public class Todo extends BaseEntity{
 
     private boolean done;
 
+    @Convert(converter = TodoItemsConverter.class)
+    @Lob
     private TodoItems todoItems;
 
-    public Long getUserId() {
-        return userId;
-    }
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Instant createdDate;
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isDone() {
-        return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
-    }
-
-    public TodoItems getTodoItems() {
-        return todoItems;
-    }
-
-    public void setTodoItems(TodoItems todoItems) {
-        this.todoItems = todoItems;
-    }
-
-    @Override
-    public String toString() {
-        return "Todo{" +
-                "userId='" + userId + '\'' +
-                "title='" + title + '\'' +
-                ", done=" + done +
-                ", todoItems=" + todoItems +
-                '}';
-    }
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private Instant lastModifiedDate;
 }
