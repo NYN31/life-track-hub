@@ -3,10 +3,14 @@ package com.lifetrackhub.dto;
 import com.lifetrackhub.dto.record.todo.TodoItem;
 import com.lifetrackhub.entity.Todo;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
-import java.util.Arrays;
+import java.time.Instant;
 
+@Data
+@ToString
 public class TodoDto {
     private Long id;
 
@@ -21,66 +25,21 @@ public class TodoDto {
 
     private TodoItem[] todoItems;
 
-    public static TodoDto formEntity(Todo entity) {
+    private Instant createdDate;
+
+    private Instant lastModifiedDate;
+
+    public static TodoDto formEntity(Todo todo) {
         TodoDto dto = new TodoDto();
 
-        dto.setId(entity.getId());
-        dto.setUserId(entity.getUserId());
-        dto.setTitle(entity.getTitle());
-        dto.setDone(entity.isDone());
-        dto.setTodoItems(entity.getTodoItems().getTodoItems());
+        dto.setId(todo.getId());
+        dto.setUserId(todo.getUserId());
+        dto.setTitle(todo.getTitle());
+        dto.setDone(todo.isDone());
+        dto.setTodoItems(todo.getTodoItems().getTodoItems());
+        dto.setCreatedDate(todo.getCreatedDate());
+        dto.setLastModifiedDate(todo.getLastModifiedDate());
 
         return dto;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long todoId) {
-        this.userId = todoId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Boolean getDone() {
-        return done;
-    }
-
-    public void setDone(Boolean done) {
-        this.done = done;
-    }
-
-    public TodoItem[] getTodoItems() {
-        return todoItems;
-    }
-
-    public void setTodoItems(TodoItem[] todoItems) {
-        this.todoItems = todoItems;
-    }
-
-    @Override
-    public String toString() {
-        return "TodoDto{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", title='" + title + '\'' +
-                ", done=" + done +
-                ", todoItems=" + Arrays.toString(todoItems) +
-                '}';
     }
 }

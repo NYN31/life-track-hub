@@ -9,8 +9,6 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
 
@@ -33,7 +31,6 @@ public class Todo {
     private boolean done;
 
     @Convert(converter = TodoItemsConverter.class)
-    @Lob
     private TodoItems todoItems;
 
     @CreationTimestamp

@@ -3,7 +3,6 @@ package com.lifetrackhub.entity;
 import com.lifetrackhub.converter.UserDetailsConverter;
 import com.lifetrackhub.dto.blob.UserDetails;
 import com.lifetrackhub.validation.Email;
-import com.lifetrackhub.validation.Password;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -42,7 +41,6 @@ public class User {
     private boolean enabled;
 
     @Convert(converter = UserDetailsConverter.class)
-    @Lob
     private UserDetails userDetails;
 
     @CreationTimestamp
@@ -50,6 +48,6 @@ public class User {
     private Instant createdDate;
 
     @UpdateTimestamp
-    @Column(nullable = false, updatable = true)
+    @Column(nullable = false)
     private Instant lastModifiedDate;
 }
