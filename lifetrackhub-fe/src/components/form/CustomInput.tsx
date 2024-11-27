@@ -10,6 +10,7 @@ const CustomInput: React.FC<{
   placeholder: string;
   errorMessage: string | undefined;
   borderRadius?: number;
+  onEnterKeyDown?: any;
 }> = ({
   value,
   setValue,
@@ -19,6 +20,7 @@ const CustomInput: React.FC<{
   placeholder,
   errorMessage,
   borderRadius = 0,
+  onEnterKeyDown,
 }) => {
   return (
     <Flex direction="column" gap={2} w="full">
@@ -47,6 +49,7 @@ const CustomInput: React.FC<{
               borderColor: 'gray.400',
             }}
             borderRadius={borderRadius}
+            onKeyDown={onEnterKeyDown}
           />
 
           <Box width={{ lg: '400px', base: '96%' }} color="red" pt={4}>

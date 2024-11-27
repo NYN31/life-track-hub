@@ -54,6 +54,11 @@ const TodoForm = () => {
           type="text"
           placeholder="Enter a Todo"
           errorMessage=""
+          onEnterKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter' && todoText.trim() !== '') {
+              handleAddTodoItem({ text: todoText, completed: false });
+            }
+          }}
         />
         <Box mt={2}>
           <OnclickButton
