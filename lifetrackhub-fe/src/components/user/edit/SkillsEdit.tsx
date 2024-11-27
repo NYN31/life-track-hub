@@ -129,6 +129,11 @@ const SkillsEdit = () => {
           type="text"
           placeholder="Add Skill"
           errorMessage=""
+          onEnterKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.key === 'Enter' && newSkill.trim() !== '') {
+              skillAddHandler();
+            }
+          }}
         />
         <Box mt="29px">
           <OnclickButton
@@ -136,7 +141,7 @@ const SkillsEdit = () => {
             text="Add"
             width="auto"
             cursor={true ? 'pointer' : 'not-allowed'}
-            isDisable={false}
+            isDisable={!newSkill}
             isLoading={false}
             action={() => {
               skillAddHandler();
@@ -150,7 +155,7 @@ const SkillsEdit = () => {
         text="Update"
         width="full"
         cursor={true ? 'pointer' : 'not-allowed'}
-        isDisable={false}
+        isDisable={!skills.length}
         isLoading={loading}
         action={() => {
           skillUpdateHandler();

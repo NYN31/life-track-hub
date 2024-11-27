@@ -1,14 +1,26 @@
 package com.lifetrackhub.entity;
 
+import com.lifetrackhub.converter.UserDetailsConverter;
 import com.lifetrackhub.dto.blob.UserDetails;
 import com.lifetrackhub.validation.Email;
-import com.lifetrackhub.validation.Password;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.Instant;
+
+@Data
+@ToString
+@Entity
 @Table
-public class User extends BaseEntity {
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotNull
     @Length(min = 3, max = 40)
     private String firstname;
@@ -21,7 +33,6 @@ public class User extends BaseEntity {
     private String email;
 
     @NotNull
-    @Password
     private String password;
 
     private String role;
@@ -29,75 +40,14 @@ public class User extends BaseEntity {
     @NotNull
     private boolean enabled;
 
+    @Convert(converter = UserDetailsConverter.class)
     private UserDetails userDetails;
 
-    public @NotNull String getFirstname() {
-        return firstname;
-    }
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Instant createdDate;
 
-    public void setFirstname(@NotNull String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public @NotNull String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@NotNull String email) {
-        this.email = email;
-    }
-
-    public @NotNull String getPassword() {
-        return password;
-    }
-
-    public void setPassword(@NotNull String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    @NotNull
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(@NotNull boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public UserDetails getUserDetails() {
-        return userDetails;
-    }
-
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                ", enabled=" + enabled +
-                ", userDetails=" + userDetails +
-                '}' + super.toString();
-    }
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private Instant lastModifiedDate;
 }

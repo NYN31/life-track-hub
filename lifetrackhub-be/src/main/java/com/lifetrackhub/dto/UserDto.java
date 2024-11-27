@@ -3,9 +3,17 @@ package com.lifetrackhub.dto;
 import com.lifetrackhub.dto.blob.UserDetails;
 import com.lifetrackhub.entity.User;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
-public class UserDto extends BaseDto {
+import java.time.Instant;
+
+@Data
+@ToString
+public class UserDto {
+    private Long id;
+
     @NotNull
     @Length(min = 3, max = 40)
     private String firstname;
@@ -22,77 +30,23 @@ public class UserDto extends BaseDto {
 
     private UserDetails userDetails;
 
+    private Instant createdDate;
+
+    private Instant lastModifiedDate;
+
     public static UserDto formEntity(User user) {
         UserDto dto = new UserDto();
 
-        dto.fill(user);
+        dto.setId(user.getId());
         dto.setFirstname(user.getFirstname());
         dto.setLastname(user.getLastname());
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRole());
         dto.setEnabled(user.isEnabled());
         dto.setUserDetails(user.getUserDetails());
+        dto.setCreatedDate(user.getCreatedDate());
+        dto.setLastModifiedDate(user.getLastModifiedDate());
 
         return dto;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public UserDetails getUserDetails() {
-        return userDetails;
-    }
-
-    public void setUserDetails(UserDetails userDetails) {
-        this.userDetails = userDetails;
-    }
-
-    @Override
-    public String toString() {
-        return "UserUpdateResponseDto{" +
-                "firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                ", enabled='" + enabled + '\'' +
-                ", userDetails=" + userDetails +
-                '}';
     }
 }

@@ -1,7 +1,5 @@
 package com.lifetrackhub.dto.response;
 
-import com.lifetrackhub.dto.BaseDto;
-
 public class LoginResponseDto {
     private String name;
 
