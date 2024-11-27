@@ -33,4 +33,10 @@ public class AuthController {
         log.info("Request enter into registration controller");
         return authService.registration(dto);
     }
+
+    @PostMapping("/auth/create/admin")
+    public UserDto createAdmin(@RequestBody @Valid RegistrationRequestDto dto) {
+        log.info("Request enter into create admin controller");
+        return authService.createAdmin(dto);
+    }
 }

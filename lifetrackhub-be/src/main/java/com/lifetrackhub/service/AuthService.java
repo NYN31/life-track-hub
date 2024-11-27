@@ -11,4 +11,6 @@ public interface AuthService {
     UserDto registration(RegistrationRequestDto request);
 
     LoginResponseDto login(LoginRequestDto request);
+
+    UserDto createAdmin(RegistrationRequestDto request);
 }

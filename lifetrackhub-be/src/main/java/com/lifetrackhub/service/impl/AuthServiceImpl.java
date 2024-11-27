@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User already exists");
         }
 
-        User userInfo = createUser(request);
+        User userInfo = createUser(request, String.valueOf(Role.USER));
         userInfo = userRepository.save(userInfo);
         log.info("User created: {}", userInfo);
 
@@ -58,12 +58,26 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponseDto login(LoginRequestDto request) {
         User user = userService.findUserByEmail(request.getEmail());
-        if(!bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())) {
             log.warn("Wrong password for user {}", request.getEmail());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
         }
 
         return createToken(user);
+    }
+
+    @Override
+    public UserDto createAdmin(RegistrationRequestDto request) {
+        Optional<User> user = userRepository.findByRole(String.valueOf(Role.ADMIN));
+        if (user.isPresent()) {
+            log.warn("Admin user {} already exists", request.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Admin user already exists");
+        }
+        User userInfo = createUser(request, String.valueOf(Role.ADMIN));
+        userInfo = userRepository.save(userInfo);
+        log.info("Admin user created: {}", userInfo);
+
+        return UserDto.formEntity(userInfo);
     }
 
     private LoginResponseDto createToken(User user) {
@@ -76,7 +90,7 @@ public class AuthServiceImpl implements AuthService {
         return response;
     }
 
-    private User createUser(RegistrationRequestDto request) {
+    private User createUser(RegistrationRequestDto request, String role) {
         log.info("Create user {}", request.getEmail());
 
         User user = new User();
@@ -85,7 +99,7 @@ public class AuthServiceImpl implements AuthService {
         user.setLastname(request.getLastname());
         user.setEmail(request.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-        user.setRole(String.valueOf(Role.USER));
+        user.setRole(role);
         user.setEnabled(true);
         user.setUserDetails(null);
 
