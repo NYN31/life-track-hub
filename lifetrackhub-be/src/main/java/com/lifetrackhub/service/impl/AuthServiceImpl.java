@@ -70,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
     public UserDto createAdmin(RegistrationRequestDto request) {
         Optional<User> user = userRepository.findByRole(String.valueOf(Role.ADMIN));
         if (user.isPresent()) {
-            log.warn("Admin user {} already exists", request.getEmail());
+            log.warn("Admin user already exists");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Admin user already exists");
         }
         User userInfo = createUser(request, String.valueOf(Role.ADMIN));
