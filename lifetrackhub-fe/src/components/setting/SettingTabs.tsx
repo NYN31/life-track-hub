@@ -1,42 +1,32 @@
 import Appearance from './Appearance';
-import Tab2 from './Tab2';
-import {
-  Box,
-  Tab,
-  TabIndicator,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react';
+import { Box, Tabs } from '@chakra-ui/react';
 
 export const tabs = [
   {
     title: 'Appearance',
     tab: <Appearance />,
   },
-  {
-    title: 'Test',
-    tab: <Tab2 />,
-  },
 ];
 
 const SettingTabs = () => {
   return (
     <Box py={8}>
-      <Tabs position="relative" variant="unstyled">
-        <TabList>
+      <Tabs.Root position="relative">
+        <Tabs.List>
           {tabs.map(t => (
-            <Tab key={t.title}>{t.title}</Tab>
+            <Tabs.Trigger key={t.title} value={t.title}>
+              {t.title}
+            </Tabs.Trigger>
           ))}
-        </TabList>
-        <TabIndicator mt="-1.5px" height="2px" bg="icon" borderRadius="1px" />
-        <TabPanels>
-          {tabs.map(t => (
-            <TabPanel key={t.title}>{t.tab}</TabPanel>
-          ))}
-        </TabPanels>
-      </Tabs>
+        </Tabs.List>
+        <Tabs.Indicator mt="-1.5px" height="2px" bg="icon" borderRadius="1px" />
+
+        {tabs.map(t => (
+          <Tabs.Content key={t.title} value={t.title}>
+            {t.tab}
+          </Tabs.Content>
+        ))}
+      </Tabs.Root>
     </Box>
   );
 };

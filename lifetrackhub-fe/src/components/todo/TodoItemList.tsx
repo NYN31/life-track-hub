@@ -1,7 +1,8 @@
-import { Checkbox, Flex, Text } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { ITodoItemsRequest } from '../../types/todo';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkboxToggler } from '../../features/todo/todoSlice';
+import { Checkbox } from '../ui/checkbox';
 
 const TodoItemList = () => {
   const dispatch = useDispatch();
@@ -12,10 +13,11 @@ const TodoItemList = () => {
     return (
       <Flex key={index} gap={4}>
         <Checkbox
-          isChecked={item.completed}
+          defaultChecked={item.completed}
           onChange={() => dispatch(checkboxToggler(index))}
-        />
-        <Text>{item.text}</Text>
+        >
+          {item.text}
+        </Checkbox>
       </Flex>
     );
   });

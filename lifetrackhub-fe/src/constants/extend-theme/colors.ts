@@ -1,5 +1,4 @@
 import { blueColor } from './color-files/blue';
-import { greenColor } from './color-files/green';
 import { orangeColor } from './color-files/orange';
 import { pinkColor } from './color-files/pink';
 import { purpleColor } from './color-files/purple';
@@ -20,6 +19,5 @@ export const colors = () => {
   else if (appColor === BLUE) return blueColor;
   else if (appColor === PURPLE) return purpleColor;
   else if (appColor === ORANGE) return orangeColor;
-  else if (appColor === GREEN) return greenColor;
   else return purpleColor;
 };

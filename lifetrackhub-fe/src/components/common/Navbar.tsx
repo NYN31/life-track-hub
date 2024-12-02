@@ -1,4 +1,4 @@
-import { Box, Flex, Hide, Show, Spacer, Text } from '@chakra-ui/react';
+import { Box, Flex, Show, Spacer, Text } from '@chakra-ui/react';
 import React from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { BANNAR_NAME } from '../../constants/common-constants';
@@ -16,11 +16,13 @@ const Navbar: React.FC<{
       </Flex>
       <Spacer />
 
-      <Hide below="md">
-        <CommonMenu />
-      </Hide>
+      {/* below md */}
 
-      <Show below="md">
+      {/* <Show when={['md', 'lg']}>
+        <CommonMenu />
+      </Show> */}
+
+      <Show when={['base', 'sm']}>
         <Box onClick={onOpenDrawer} color="icon">
           <RxHamburgerMenu size={24} cursor="pointer" />
         </Box>

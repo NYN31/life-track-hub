@@ -1,5 +1,5 @@
 import GenericBox from '../common/GenericBox';
-import { Flex, Image, Text, Tooltip } from '@chakra-ui/react';
+import { Flex, Image, Text } from '@chakra-ui/react';
 import PageHeading from '../common/PageHeading';
 import { Link } from 'react-router-dom';
 import { FaSquareFacebook } from 'react-icons/fa6';
@@ -11,6 +11,7 @@ import { FaStackOverflow } from 'react-icons/fa';
 import { ICON_SIZE_20 } from '../../constants/common-constants';
 import { useSelector } from 'react-redux';
 import { IUserDetails } from '../../types/user';
+import { Tooltip } from '../ui/tooltip';
 
 const Intro = () => {
   const { userObject } = useSelector((state: any) => state.user);
@@ -53,14 +54,19 @@ const Intro = () => {
     return (
       <Tooltip
         key={index}
-        label={item?.mediaName || ''}
-        placement="top"
-        hasArrow
-        bg="icon"
+        //label={item?.mediaName || ''}
+        //placement="top"
+        //hasArrow
+        //bg="icon"
+        showArrow
+        contentProps={{ css: { '--tooltip-bg': 'icon' } }}
+        content={
+          <Link to={item.link} target="_blank">
+            {item.icon}
+          </Link>
+        }
       >
-        <Link to={item.link} target="_blank">
-          {item.icon}
-        </Link>
+        {item?.mediaName || ''}
       </Tooltip>
     );
   };

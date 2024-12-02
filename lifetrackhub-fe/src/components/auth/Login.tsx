@@ -1,4 +1,5 @@
-import { Box, Flex, FormControl, Heading, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { FormControl } from '@chakra-ui/form-control'
 import { useForm } from 'react-hook-form';
 import { LOGIN_PAGE_HEADING } from '../../constants/texts/page-headings';
 import CustomFormInput from '../form/CustomFormInput';

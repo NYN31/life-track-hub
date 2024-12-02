@@ -1,12 +1,4 @@
-import {
-  Box,
-  Tab,
-  TabIndicator,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from '@chakra-ui/react';
+import { Box, Tabs } from '@chakra-ui/react';
 import IntroEdit from './IntroEdit';
 import SkillsEdit from './SkillsEdit';
 import { useDispatch } from 'react-redux';
@@ -40,21 +32,22 @@ const ProfileEditTabs = () => {
 
   return (
     <Box py={8}>
-      <Tabs position="relative" variant="unstyled">
-        <TabList gap={[0, 0, 4, 8]}>
+      <Tabs.Root position="relative">
+        <Tabs.List gap={[0, 0, 4, 8]}>
           {tabs.map(t => (
-            <Tab key={t.title}>{t.title}</Tab>
+            <Tabs.Trigger key={t.title} value={t.title}>
+              {t.title}
+            </Tabs.Trigger>
           ))}
-        </TabList>
-        <TabIndicator mt="-1.5px" height="2px" bg="icon" borderRadius="1px" />
-        <TabPanels>
-          {tabs.map(t => (
-            <TabPanel px={0} key={t.title}>
-              {t.tab}
-            </TabPanel>
-          ))}
-        </TabPanels>
-      </Tabs>
+        </Tabs.List>
+        <Tabs.Indicator mt="-1.5px" height="2px" bg="icon" borderRadius="1px" />
+
+        {tabs.map(t => (
+          <Tabs.Content px={0} key={t.title} value={t.title}>
+            {t.tab}
+          </Tabs.Content>
+        ))}
+      </Tabs.Root>
     </Box>
   );
 };

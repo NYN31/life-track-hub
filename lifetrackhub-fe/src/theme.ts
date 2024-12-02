@@ -1,17 +1,19 @@
-import { extendTheme } from '@chakra-ui/react';
 import '@fontsource/roboto';
 import { colors } from './constants/extend-theme/colors';
 import { fontSizes } from './constants/extend-theme/font-sizes';
-import { Components } from './constants/extend-theme/components';
+import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react';
 
-const theme = extendTheme({
-  fonts: {
-    heading: 'Open Sans, sans-serif',
-    body: 'Roboto, sans-serif',
+const config = defineConfig({
+  theme: {
+    tokens: {
+      fonts: {
+        heading: { value: 'Open Sans, sans-serif' },
+        body: { value: 'Roboto, sans-serif' },
+      },
+      colors: colors(),
+      fontSizes: fontSizes,
+    },
   },
-  fontSizes: fontSizes,
-  colors: colors(),
-  components: Components,
 });
 
-export default theme;
+export const system = createSystem(defaultConfig, config);

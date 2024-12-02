@@ -1,21 +1,13 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Radio,
-  RadioGroup,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, RadioGroup, Stack, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import {
   APP_COLOR_KEY,
   BLUE,
-  GREEN,
   ORANGE,
   PINK,
   PURPLE,
 } from '../../constants/extend-theme/colors';
+import { Radio } from '../ui/radio';
 
 const Appearance = () => {
   const [value, setValue] = useState(
@@ -40,25 +32,23 @@ const Appearance = () => {
         </Text>
       </Box>
 
-      <RadioGroup onChange={setValue} value={value}>
+      {/* onChange={setValue} */}
+      <RadioGroup.Root value={value}>
         <Stack direction={['column', 'column', 'row']}>
-          <Radio size="lg" colorScheme="purple" value={PURPLE}>
+          <Radio colorScheme="purple" value={PURPLE}>
             Purple
           </Radio>
-          <Radio size="lg" colorScheme="pink" value={PINK}>
+          <Radio colorScheme="pink" value={PINK}>
             Pink
           </Radio>
-          <Radio size="lg" colorScheme="blue" value={BLUE}>
+          <Radio colorScheme="blue" value={BLUE}>
             Blue
           </Radio>
-          <Radio size="lg" colorScheme="orange" value={ORANGE}>
+          <Radio colorScheme="orange" value={ORANGE}>
             Orange
           </Radio>
-          <Radio size="lg" colorScheme="green" value={GREEN}>
-            Green
-          </Radio>
         </Stack>
-      </RadioGroup>
+      </RadioGroup.Root>
     </Flex>
   );
 };

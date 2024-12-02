@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, GridItem, Spacer, Text } from '@chakra-ui/react';
+import { Box, Flex, GridItem, Spacer, Text } from '@chakra-ui/react';
 import { ITodoItemsResponse } from '../../types/todo';
 import OnclickButton from '../common/button/OnclickButton';
 import { format } from 'date-fns';
@@ -47,10 +47,14 @@ const Todo: React.FC<{ todo: ITodoItemsResponse }> = ({ todo }) => {
           <Flex fontSize="xl">
             <Box as="b">{'Title:'}</Box>
             <span>&nbsp;</span>
-            <Text noOfLines={1}>{title}</Text>
+            <Text
+            //noOfLines={1}
+            >
+              {title}
+            </Text>
           </Flex>
 
-          <Divider colorScheme="orange" orientation="horizontal" />
+          <Box divideY="2px" />
 
           {showText('Done: ', done)}
 

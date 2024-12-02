@@ -10,7 +10,7 @@ const PaginationButton: React.FC<{
 }> = ({ hasPrevious, hasNext, handlePreviousPage, handleNextPage }) => {
   return (
     <Flex direction="row" justifyContent="flex-end" mb="4">
-      <Stack spacing={6} direction="row" align="center">
+      <Stack gap={6} direction="row" align="center">
         <OnclickButton
           color="btn.bg"
           text="Previous"

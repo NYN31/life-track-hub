@@ -1,8 +1,7 @@
+import { FormErrorMessage, FormLabel } from '@chakra-ui/form-control';
 import {
   Box,
   Flex,
-  FormErrorMessage,
-  FormLabel,
   Input,
 } from '@chakra-ui/react';
 import React from 'react';

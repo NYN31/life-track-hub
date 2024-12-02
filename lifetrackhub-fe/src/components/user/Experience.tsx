@@ -3,7 +3,7 @@ import { IExperience, IUserDetails } from '../../types/user';
 import GenericBox from '../common/GenericBox';
 import PageHeading from '../common/PageHeading';
 import { PROFILE_EXPERIENCES_HEADING } from '../../constants/texts/page-headings';
-import { Box, Flex, ListItem, Text, UnorderedList } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { FaRegCheckCircle } from 'react-icons/fa';
 import { ICON_SIZE_18 } from '../../constants/common-constants';
 import { FaNetworkWired } from 'react-icons/fa';
@@ -48,11 +48,11 @@ const Experience = () => {
 
               <Flex mt={4} direction="column" gap={4}>
                 {getListItem('Year of Experience', yearOfExperience)}
-                <UnorderedList spacing={2}>
+                <Box as="ul" gap={2}>
                   {descriptionList?.map((item, index) => {
-                    return <ListItem key={index}>{item}</ListItem>;
+                    return <li key={index}>{item}</li>;
                   })}
-                </UnorderedList>
+                </Box>
               </Flex>
             </GenericBox>
           );

@@ -1,9 +1,10 @@
 import GenericBox from '../common/GenericBox';
 import PageHeading from '../common/PageHeading';
 import { PROFILE_SKILLS_HEADING } from '../../constants/texts/page-headings';
-import { Flex, Radio, SimpleGrid } from '@chakra-ui/react';
+import { Flex, SimpleGrid } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { IUserDetails } from '../../types/user';
+import { Radio } from '../ui/radio';
 
 const MySkills = () => {
   const { userObject } = useSelector((state: any) => state.user);
@@ -16,12 +17,12 @@ const MySkills = () => {
       </Flex>
       <SimpleGrid
         minChildWidth={['80px', '80px', '100px', '120px']}
-        spacing="20px"
+        gap="20px"
         mt={4}
       >
         {skills?.map((skill, index) => {
           return (
-            <Radio key={index} bg="icon">
+            <Radio key={index} value={skill.name} bg="icon">
               {skill.name}
             </Radio>
           );

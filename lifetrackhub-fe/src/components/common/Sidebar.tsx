@@ -1,21 +1,16 @@
-import {
-  Flex,
-  List,
-  ListItem,
-  Stack,
-  Box,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  Spacer,
-  AccordionIcon,
-  AccordionPanel,
-} from '@chakra-ui/react';
+import { Flex, Stack, Box, Spacer, List } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import SidebarData from '../../constants/sidebar/sidebar-items';
 import { IoClose } from 'react-icons/io5';
 import CommonMenu from './CommonMenu';
 import { colors } from '../../constants/extend-theme/colors';
+import {
+  AccordionItem,
+  AccordionItemContent,
+  AccordionItemTrigger,
+  AccordionRoot,
+} from '../ui/accordion';
+import { Button } from '../ui/button';
 
 const Sidebar: React.FC<{
   onCloseDrawer: () => void;
@@ -35,7 +30,7 @@ const Sidebar: React.FC<{
     label: string
   ) => {
     return (
-      <ListItem
+      <List.Item
         m={1}
         py={1}
         px={1}
@@ -68,42 +63,41 @@ const Sidebar: React.FC<{
             <span>{title}</span>
           </Flex>
         </Stack>
-      </ListItem>
+      </List.Item>
     );
   };
 
   const mapSidebarData = (sidebarData: any, onCloseDrawer: () => void) => {
-    const openAccordionByDefault = (title: string) => {
-      const titles = ['Employee'];
-      if (titles.includes(title)) return 0;
-      else return 1;
-    };
+    // const openAccordionByDefault = (title: string) => {
+    //   const titles = ['Employee'];
+    //   if (titles.includes(title)) return 0;
+    //   else return 1;
+    // };
 
     return sidebarData.map((item: any, index: number) => {
       if (item?.hasAccordion) {
-        const idx = openAccordionByDefault(item.title);
+        //const idx = openAccordionByDefault(item.title);
 
         return (
-          <Accordion key={index} defaultIndex={idx} allowToggle={true}>
-            <AccordionItem border={0}>
-              <AccordionButton
-                maxW={56}
-                justifyContent="space-between"
-                _hover={{
-                  bg: `${colors().sidebar.hover_bg} !important`,
-                  borderRadius: '4px',
-                }}
-              >
-                <Box color="sidebar.text">{item.title}</Box>
-                <Box>
-                  <AccordionIcon color="icon" />
-                </Box>
-              </AccordionButton>
-              <AccordionPanel pt={0} pb={0}>
+          <AccordionRoot key={index} collapsible>
+            <AccordionItem value={item.title}>
+              <AccordionItemTrigger>
+                <Button
+                  maxW={56}
+                  justifyContent="space-between"
+                  _hover={{
+                    bg: `${colors().sidebar.hover_bg} !important`,
+                    borderRadius: '4px',
+                  }}
+                >
+                  <Box color="sidebar.text">{item.title}</Box>
+                </Button>
+              </AccordionItemTrigger>
+              <AccordionItemContent pt={0} pb={0}>
                 {mapSidebarData(item.hasAccordion, onCloseDrawer)}
-              </AccordionPanel>
+              </AccordionItemContent>
             </AccordionItem>
-          </Accordion>
+          </AccordionRoot>
         );
       }
 
@@ -140,7 +134,7 @@ const Sidebar: React.FC<{
             </Flex>
           )}
           <Flex direction="column" overflowY="auto">
-            <List>{mapSidebarData(SidebarData, onCloseDrawer)}</List>
+            <List.Root>{mapSidebarData(SidebarData, onCloseDrawer)}</List.Root>
           </Flex>
         </Flex>
 

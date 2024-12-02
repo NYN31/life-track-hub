@@ -1,15 +1,6 @@
-import {
-  MenuItem,
-  Menu,
-  MenuButton,
-  MenuList,
-  Button,
-  Flex,
-  Avatar,
-  Box,
-} from '@chakra-ui/react';
+import { Button, Flex, Box } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+import { FaChevronDown } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 import { AiOutlineProfile } from 'react-icons/ai';
 import { colors } from '../../constants/extend-theme/colors';
@@ -28,6 +19,8 @@ import { logoutClearingLocalStorage } from '../../helper/local-storage/logout';
 import { resetUserObject } from '../../features/user/userSlice';
 import { resetTodo } from '../../features/todo/todoSlice';
 import { IUser } from '../../types/user';
+import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from '../ui/menu';
+import { Avatar } from '../ui/avatar';
 
 const CommonMenu = () => {
   const ICON_SIZE = '20px';
@@ -81,6 +74,7 @@ const CommonMenu = () => {
     return (
       <MenuItem
         key={text}
+        value={text}
         borderRadius={4}
         my={1}
         cursor="pointer"
@@ -98,24 +92,26 @@ const CommonMenu = () => {
   };
 
   return (
-    <Menu>
-      <MenuButton
-        bg="menu.bg"
-        _active={{ bg: `${colors().menu.bg} !important` }}
-        _hover={{ bg: `${colors().menu.bg} !important` }}
-        mx={4}
-        px={2}
-        minWidth="250px"
-        maxWidth="250px"
-        as={Button}
-        rightIcon={<ChevronDownIcon color="icon" />}
-      >
-        <Flex align="center" gap={2} fontSize="sm">
-          <Avatar size="sm" name={name} bg="avatar.bg" color="avatar.text" />
-          {getName(name)}
-        </Flex>
-      </MenuButton>
-      <MenuList
+    <MenuRoot>
+      <MenuTrigger>
+        <Button
+          bg="menu.bg"
+          _active={{ bg: `${colors().menu.bg} !important` }}
+          _hover={{ bg: `${colors().menu.bg} !important` }}
+          mx={4}
+          px={2}
+          minWidth="250px"
+          maxWidth="250px"
+          as={Button}
+        >
+          <Flex align="center" gap={2} fontSize="sm">
+            <Avatar size="sm" name={name} bg="avatar.bg" color="avatar.text" />
+            {getName(name)}
+          </Flex>
+        </Button>
+        <FaChevronDown />
+      </MenuTrigger>
+      <MenuContent
         p={1}
         bg="menu.list_bg"
         border="1px"
@@ -125,8 +121,8 @@ const CommonMenu = () => {
         {menuItemsData.map(item =>
           menuItem(item.title, item.action, item.icon)
         )}
-      </MenuList>
-    </Menu>
+      </MenuContent>
+    </MenuRoot>
   );
 };
 

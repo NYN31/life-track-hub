@@ -11,7 +11,7 @@ const ProtectedRoute: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
   children,
 }) => {
   const authed = useAuth();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { open, onOpen, onClose } = useDisclosure();
   const SIDEBAR_WIDTH = '70%';
 
   if (authed) {
@@ -20,7 +20,7 @@ const ProtectedRoute: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
         <Navbar onOpenDrawer={onOpen} />
 
         <Flex flex="1" overflow="hidden">
-          <Show above="md">
+          <Show when={['md', 'sm', 'base']}>
             <Sidebar
               onCloseDrawer={onClose}
               isMobileSidebar={false}
@@ -29,7 +29,7 @@ const ProtectedRoute: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
           </Show>
 
           <MobileSidebar
-            isOpenDrawer={isOpen}
+            isOpenDrawer={open}
             onCloseDrawer={onClose}
             isMobileSidebar={true}
             sidebarWidth={SIDEBAR_WIDTH}

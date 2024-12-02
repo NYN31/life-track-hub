@@ -92,7 +92,7 @@ const SkillsEdit = () => {
     <GenericBox>
       <SimpleGrid
         minChildWidth={['100px', '100px', '100px', '120px']}
-        spacing="20px"
+        gap="20px"
         mt={4}
       >
         {skills?.map((skill: any, index: number) => {
@@ -108,7 +108,11 @@ const SkillsEdit = () => {
               fontSize={['sm', 'sm', 'md', 'md']}
               borderRadius={4}
             >
-              <Text noOfLines={1}>{skill.name}</Text>
+              <Text
+              //noOfLines={1}
+              >
+                {skill.name}
+              </Text>
               <Box
                 color="pink"
                 cursor="pointer"

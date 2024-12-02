@@ -1,20 +1,16 @@
-import { ChakraProvider } from '@chakra-ui/react';
 import App from './App';
-import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { store } from './app/store';
-import theme from './theme';
 import './App.css';
+import { ChakraProvider } from '@chakra-ui/react';
+import { system } from './theme';
 
 const Root = () => {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <ChakraProvider value={system}>
+        <App />
+      </ChakraProvider>
+    </BrowserRouter>
   );
 };
 

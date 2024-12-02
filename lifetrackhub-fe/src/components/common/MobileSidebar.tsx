@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-  Drawer,
-  DrawerBody,
-  DrawerOverlay,
-  DrawerContent,
-} from '@chakra-ui/react';
+
 import Sidebar from './Sidebar';
+import { DrawerBackdrop, DrawerBody, DrawerContent, DrawerRoot } from '../ui/drawer';
 
 const MobileSidebar: React.FC<{
   isOpenDrawer: boolean;
@@ -14,8 +10,8 @@ const MobileSidebar: React.FC<{
   sidebarWidth: string;
 }> = ({ isOpenDrawer, onCloseDrawer, isMobileSidebar, sidebarWidth }) => {
   return (
-    <Drawer isOpen={isOpenDrawer} placement="left" onClose={onCloseDrawer}>
-      <DrawerOverlay />
+    <DrawerRoot open={isOpenDrawer} placement="start" onOpenChange={onCloseDrawer}>
+      <DrawerBackdrop />
       <DrawerContent minW={sidebarWidth}>
         <DrawerBody p="0px" m="0px">
           <Sidebar
@@ -25,7 +21,7 @@ const MobileSidebar: React.FC<{
           />
         </DrawerBody>
       </DrawerContent>
-    </Drawer>
+    </DrawerRoot>
   );
 };
 
