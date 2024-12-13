@@ -24,19 +24,16 @@ public class AuthController {
 
     @PostMapping("/auth/login")
     public LoginResponseDto login(@RequestBody @Valid LoginRequestDto dto) {
-        log.info("Request enter into login controller");
         return authService.login(dto);
     }
 
     @PostMapping("/auth/registration")
     public UserDto registration(@RequestBody @Valid RegistrationRequestDto dto) {
-        log.info("Request enter into registration controller");
         return authService.registration(dto);
     }
 
     @PostMapping("/auth/create/admin")
     public UserDto createAdmin(@RequestBody @Valid RegistrationRequestDto dto) {
-        log.info("Request enter into create admin controller");
         return authService.createAdmin(dto);
     }
 }
