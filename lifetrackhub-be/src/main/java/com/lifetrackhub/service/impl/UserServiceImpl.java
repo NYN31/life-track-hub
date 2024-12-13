@@ -36,6 +36,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findSelfDetails() {
+        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+
+        return findUserById(userFromSecurityContext.getId());
+    }
+
+    @Override
     public User findUserById(Long userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
