@@ -25,21 +25,18 @@ public class UserController extends BaseController {
 
     @GetMapping("/user/find-by-email/{email}")
     public UserDto findByEmail(@PathVariable String email) {
-        log.info("Request enter into user find by email controller");
         User user = userService.findUserByEmail(email);
         return UserDto.formEntity(user);
     }
 
     @GetMapping("/user/find-self-details")
-    public UserDto findById() {
-        log.info("Request enter into user find self details controller");
+    public UserDto findSelfDetails() {
         User user = userService.findSelfDetails();
         return UserDto.formEntity(user);
     }
 
     @PutMapping("/user/update")
     public UserDto update(@RequestBody @Valid UserDto dto) {
-        log.info("Request enter into update user controller");
         User user = userService.update(dto);
         return UserDto.formEntity(user);
     }
