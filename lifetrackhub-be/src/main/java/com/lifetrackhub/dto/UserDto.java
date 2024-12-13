@@ -12,8 +12,6 @@ import java.time.Instant;
 @Data
 @ToString
 public class UserDto {
-    private Long id;
-
     @NotNull
     @Length(min = 3, max = 40)
     private String firstname;
@@ -37,7 +35,6 @@ public class UserDto {
     public static UserDto formEntity(User user) {
         UserDto dto = new UserDto();
 
-        dto.setId(user.getId());
         dto.setFirstname(user.getFirstname());
         dto.setLastname(user.getLastname());
         dto.setEmail(user.getEmail());

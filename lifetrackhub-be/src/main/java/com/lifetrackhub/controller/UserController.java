@@ -30,10 +30,10 @@ public class UserController extends BaseController {
         return UserDto.formEntity(user);
     }
 
-    @GetMapping("/user/find-by-id/{id}")
-    public UserDto findById(@PathVariable Long id) {
-        log.info("Request enter into user find by id controller");
-        User user = userService.findUserById(id);
+    @GetMapping("/user/find-self-details")
+    public UserDto findById() {
+        log.info("Request enter into user find self details controller");
+        User user = userService.findSelfDetails();
         return UserDto.formEntity(user);
     }
 
