@@ -33,6 +33,15 @@ public class UserDto {
     private Instant lastModifiedDate;
 
     public static UserDto formEntity(User user) {
+        UserDto dto = formEntityWithoutDetails(user);
+        dto.setUserDetails(user.getUserDetails());
+        dto.setCreatedDate(user.getCreatedDate());
+        dto.setLastModifiedDate(user.getLastModifiedDate());
+
+        return dto;
+    }
+
+    public static UserDto formEntityWithoutDetails(User user) {
         UserDto dto = new UserDto();
 
         dto.setFirstname(user.getFirstname());
@@ -40,9 +49,6 @@ public class UserDto {
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRole());
         dto.setEnabled(user.isEnabled());
-        dto.setUserDetails(user.getUserDetails());
-        dto.setCreatedDate(user.getCreatedDate());
-        dto.setLastModifiedDate(user.getLastModifiedDate());
 
         return dto;
     }

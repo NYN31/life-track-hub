@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthController {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
