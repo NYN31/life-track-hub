@@ -4,14 +4,10 @@ import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.service.UserService;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController extends BaseController {
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
     private final UserService userService;
 
     public UserController(UserService userService) {
