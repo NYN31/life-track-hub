@@ -33,8 +33,8 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/auth/**", "/public/**").permitAll()
-                        .requestMatchers("/admin/api/**").hasAnyAuthority(String.valueOf(Role.ADMIN))
-                        .requestMatchers("/api/**").hasAnyAuthority(String.valueOf(Role.USER))
+                        .requestMatchers("/admin/api/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                         .anyRequest()
                         .authenticated()
                 )
