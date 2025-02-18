@@ -19,5 +19,11 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
 
     Page<Blog> findByTitleContaining(String title, Pageable pageable);
 
+    Page<Blog> findAllByCreatedDateBetween(Instant start, Instant end, Pageable pageable);
+
     Page<Blog> findAllByVisibilityAndCreatedDateBetween(String visibility, Instant start, Instant end, Pageable pageable);
+
+    Page<Blog> findAllByUserIdAndCreatedDateBetween(Long userId, Instant start, Instant end, Pageable pageable);
+
+    Page<Blog> findAllByUserIdAndVisibilityAndCreatedDateBetween(Long userId, String visibility, Instant start, Instant end, Pageable pageable);
 }
