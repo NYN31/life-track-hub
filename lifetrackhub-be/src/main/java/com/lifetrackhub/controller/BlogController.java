@@ -1,5 +1,6 @@
 package com.lifetrackhub.controller;
 
+import com.lifetrackhub.constant.enumeration.Visibility;
 import com.lifetrackhub.dto.BlogDto;
 import com.lifetrackhub.dto.PageDto;
 import com.lifetrackhub.entity.Blog;
@@ -24,11 +25,11 @@ public class BlogController extends BaseController {
     public PageDto<BlogDto> findAll(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "visibility", required = false) String visibility,
             @RequestParam(value = "start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
     ) {
-        Page<Blog> blogs = blogService.findFilteredBlog(page, size, visibility, startDate, endDate);
+        String visibility = Visibility.PUBLIC.name();
+        Page<Blog> blogs = blogService.findAll(page, size, visibility, startDate, endDate);
         return PageDto.fromEntity(blogs, BlogDto::formEntity);
     }
 }

@@ -20,24 +20,16 @@ public class AdminBlogController extends AdminBaseController {
         this.blogService = blogService;
     }
 
-    @GetMapping("/blog/find-all")
-    public PageDto<BlogDto> getAllBlogs(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size
-    ) {
-        Page<Blog> blogs = blogService.findAll(page, size);
-        return PageDto.fromEntity(blogs, BlogDto::formEntity);
-    }
-
-    @GetMapping("/blog/filter/find-all")
-    public PageDto<BlogDto> getFilteredBlogs(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "visibility", required = false) String visibility,
+    @GetMapping("/blog/find-by-userId")
+    public PageDto<BlogDto> getBlogsByUserId(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam String email,
+            @RequestParam(required = false) String visibility,
             @RequestParam(value = "start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
     ) {
-        Page<Blog> blogs = blogService.findFilteredBlog(page, size, visibility, startDate, endDate);
+        Page<Blog> blogs = blogService.findBlogsByUserId(page, size, email, visibility, startDate, endDate);
         return PageDto.fromEntity(blogs, BlogDto::formEntity);
     }
 
