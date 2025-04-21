@@ -13,6 +13,11 @@ export interface LoginInputData {
   password: string;
 }
 
+export interface LoginResponse {
+  name: string;
+  accessToken: string;
+}
+
 export interface RegistrationInputData {
   firstname: string;
   lastname: string;

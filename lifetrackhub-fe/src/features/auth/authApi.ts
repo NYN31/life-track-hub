@@ -36,8 +36,27 @@ export const authApi = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
     }),
+
+    googleRedirectUrl: builder.query({
+      query: () => ({
+        url: '/auth/google-url',
+        method: 'POST',
+      }),
+    }),
+
+    googleCallback: builder.mutation({
+      query: (code: string) => ({
+        url: `/auth/google-callback?code=${code}`,
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegistrationMutation } =
-  authApi;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useRegistrationMutation,
+  useLazyGoogleRedirectUrlQuery,
+  useGoogleCallbackMutation,
+} = authApi;
