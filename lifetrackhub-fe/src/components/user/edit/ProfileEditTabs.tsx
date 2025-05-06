@@ -10,16 +10,14 @@ import {
 import IntroEdit from './IntroEdit';
 import SkillsEdit from './SkillsEdit';
 import { useDispatch } from 'react-redux';
-import { useUserFindByIdQuery } from '../../../features/user/userApi';
 import { useEffect } from 'react';
 import { updateUserObject } from '../../../features/user/userSlice';
 import Loading from '../../common/Loading';
+import { useFindSelfDetailsQuery } from '../../../features/user/userApi';
 
 const ProfileEditTabs = () => {
-  const userId = localStorage.getItem('userId');
-
   const dispatch = useDispatch();
-  const { data: userData, isLoading } = useUserFindByIdQuery(userId);
+  const { data: userData, isLoading } = useFindSelfDetailsQuery({});
 
   useEffect(() => {
     if (userData) dispatch(updateUserObject(userData));

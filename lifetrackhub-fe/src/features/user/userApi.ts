@@ -12,6 +12,13 @@ export const userApi = apiSlice
         providesTags: (_, __, arg) => [{ type: 'UserByEmail', id: arg }],
       }),
 
+      findSelfDetails: builder.query({
+        query: () => {
+          return `${PROFILE_API_PATH}/find-self-details`;
+        },
+        providesTags: (_, __, arg) => [{ type: 'UserByEmail', id: arg }],
+      }),
+
       userFindById: builder.query({
         query: userId => {
           return `${PROFILE_API_PATH}/find-by-id/${userId}`;
@@ -37,6 +44,7 @@ export const userApi = apiSlice
 
 export const {
   useUserFindByEmailQuery,
+  useFindSelfDetailsQuery,
   useUserFindByIdQuery,
   useUpdateUserMutation,
 } = userApi;
