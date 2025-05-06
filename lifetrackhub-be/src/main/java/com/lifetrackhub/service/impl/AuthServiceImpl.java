@@ -80,7 +80,8 @@ public class AuthServiceImpl implements AuthService {
         return UserDto.formEntity(userInfo);
     }
 
-    private LoginResponseDto createToken(User user) {
+    @Override
+    public LoginResponseDto createToken(User user) {
         String accessToken = jwtService.createToken(user);
 
         LoginResponseDto response = new LoginResponseDto();
