@@ -1,5 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { useUserFindByIdQuery } from '../../features/user/userApi';
+import { useFindSelfDetailsQuery } from '../../features/user/userApi';
 import PageHeading from '../../components/common/PageHeading';
 import { PROIFLE_PAGE_HEADING } from '../../constants/texts/page-headings';
 import Intro from '../../components/user/Intro';
@@ -12,11 +12,9 @@ import Loading from '../../components/common/Loading';
 import Experience from '../../components/user/Experience';
 
 const UserProfileContainer = () => {
-  const userId = localStorage.getItem('userId');
-
   const userSlice = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
-  const { data: userData, isLoading } = useUserFindByIdQuery(userId);
+  const { data: userData, isLoading } = useFindSelfDetailsQuery({});
 
   const { skills, experiences, educations } = userSlice.userObject.userDetails;
 

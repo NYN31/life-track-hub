@@ -155,7 +155,7 @@ const SkillsEdit = () => {
         text="Update"
         width="full"
         cursor={true ? 'pointer' : 'not-allowed'}
-        isDisable={!skills.length}
+        isDisable={!skills?.length}
         isLoading={loading}
         action={() => {
           skillUpdateHandler();
