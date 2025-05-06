@@ -1,5 +1,6 @@
 package com.lifetrackhub.entity;
 
+import com.lifetrackhub.constant.enumeration.LoginType;
 import com.lifetrackhub.converter.UserDetailsConverter;
 import com.lifetrackhub.dto.blob.UserDetails;
 import com.lifetrackhub.validation.Email;
@@ -32,7 +33,6 @@ public class User {
     @Email
     private String email;
 
-    @NotNull
     private String password;
 
     private String role;
@@ -50,4 +50,7 @@ public class User {
     @UpdateTimestamp
     @Column(nullable = false)
     private Instant lastModifiedDate;
+
+    @Enumerated(EnumType.STRING)
+    private LoginType loginType;
 }

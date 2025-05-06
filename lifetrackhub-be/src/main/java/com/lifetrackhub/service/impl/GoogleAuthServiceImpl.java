@@ -1,13 +1,15 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.enumeration.LoginType;
+import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.constant.utils.DecodedToken;
 import com.lifetrackhub.dto.response.LoginResponseDto;
 import com.lifetrackhub.dto.response.SsoRedirectUrlResponseDto;
 import com.lifetrackhub.dto.response.VerifyCodeResponseDto;
 import com.lifetrackhub.entity.User;
+import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.AuthService;
 import com.lifetrackhub.service.GoogleAuthService;
-import com.lifetrackhub.service.UserService;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
@@ -31,6 +33,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,18 +45,24 @@ public class GoogleAuthServiceImpl implements GoogleAuthService {
     private static final String GOOGLE_JWK_URL = "https://www.googleapis.com/oauth2/v3/certs";
     private static final String GOOGLE_ISSUER = "https://accounts.google.com";
 
-    private final UserService userService;
     private final AuthService authService;
     private final RestClient restClient;
+
+    private final UserRepository userRepository;
 
     private final String googleClientId;
     private final String googleRedirectUri;
     private final String googleClientSecret;
 
-    public GoogleAuthServiceImpl(UserService userService, AuthService authService, RestClient restClient, @Value("${google.client.id}") String googleClientId, @Value("${google.client.redirect.uri}") String googleRedirectUri, @Value("${google.client.secret}") String googleClientSecret) {
-        this.userService = userService;
+    public GoogleAuthServiceImpl(AuthService authService,
+                                 RestClient restClient,
+                                 UserRepository userRepository,
+                                 @Value("${google.client.id}") String googleClientId,
+                                 @Value("${google.client.redirect.uri}") String googleRedirectUri,
+                                 @Value("${google.client.secret}") String googleClientSecret) {
         this.authService = authService;
         this.restClient = restClient;
+        this.userRepository = userRepository;
         this.googleClientId = googleClientId;
         this.googleRedirectUri = googleRedirectUri;
         this.googleClientSecret = googleClientSecret;
@@ -77,9 +86,19 @@ public class GoogleAuthServiceImpl implements GoogleAuthService {
 
         String token = exchangeGoogleCodeForToken(code);
         verifyIdToken(token);
-        String email = decodeTokenAndGetEmail(token);
+        DecodedToken userDetails = decodeTokenAndGetDetails(token);
 
-        User user = userService.findUserByEmail(email);
+        Optional<User> userInfo = userRepository.findByEmail(userDetails.getEmail());
+        User user;
+        if (userInfo.isEmpty()) {
+            user = createUser(userDetails, String.valueOf(Role.USER));
+            user = userRepository.save(user);
+            log.info("User created: {}", user);
+        } else {
+            user = userInfo.get();
+            log.info("User already exist: {}", user);
+        }
+
         return authService.createToken(user);
     }
 
@@ -193,7 +212,7 @@ public class GoogleAuthServiceImpl implements GoogleAuthService {
         return user;
     }
 
-    private String decodeTokenAndGetEmail(String jwtToken) {
+    private DecodedToken decodeTokenAndGetDetails(String jwtToken) {
         log.info("Decode token {}", jwtToken);
         DecodedToken token;
         try {
@@ -202,6 +221,22 @@ public class GoogleAuthServiceImpl implements GoogleAuthService {
             throw new BadCredentialsException("JWT Token Decode Failed | " + e.getMessage());
         }
 
-        return token.getEmail();
+        return token;
+    }
+
+    private User createUser(DecodedToken userDetails, String role) {
+        log.info("Create user {}", userDetails.getEmail());
+
+        User user = new User();
+
+        user.setFirstname(userDetails.getName());
+        user.setLastname("");
+        user.setEmail(userDetails.getEmail());
+        user.setRole(role);
+        user.setEnabled(true);
+        user.setUserDetails(null);
+        user.setLoginType(LoginType.GOOGLE);
+
+        return user;
     }
 }
