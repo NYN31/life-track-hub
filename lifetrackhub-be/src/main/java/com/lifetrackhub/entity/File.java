@@ -1,5 +1,6 @@
 package com.lifetrackhub.entity;
 
+import com.lifetrackhub.constant.enumeration.FileType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -13,13 +14,17 @@ import java.time.Instant;
 @ToString
 @Entity
 @Table
-public class Image {
+public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     private Long userId;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private FileType fileType;
 
     @NotNull
     private String originalFileName;
