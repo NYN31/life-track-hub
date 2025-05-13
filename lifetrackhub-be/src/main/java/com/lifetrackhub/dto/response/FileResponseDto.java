@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 
 @Data
 @Builder
-public class ImageResponseDto {
+public class FileResponseDto {
     private byte[] content;
 
     private MediaType contentType;
