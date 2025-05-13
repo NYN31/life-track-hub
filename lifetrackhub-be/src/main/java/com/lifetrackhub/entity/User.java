@@ -40,6 +40,11 @@ public class User {
     @NotNull
     private boolean enabled;
 
+    @Enumerated(EnumType.STRING)
+    private LoginType loginType;
+
+    private boolean premiumUser;
+
     @Convert(converter = UserDetailsConverter.class)
     private UserDetails userDetails;
 
@@ -50,7 +55,4 @@ public class User {
     @UpdateTimestamp
     @Column(nullable = false)
     private Instant lastModifiedDate;
-
-    @Enumerated(EnumType.STRING)
-    private LoginType loginType;
 }
