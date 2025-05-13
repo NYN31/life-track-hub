@@ -27,6 +27,8 @@ public class UserDto {
 
     private boolean enabled;
 
+    private boolean premium_user;
+
     private UserDetails userDetails;
 
     private Instant createdDate;
@@ -53,6 +55,7 @@ public class UserDto {
         dto.setRole(user.getRole());
         dto.setEnabled(user.isEnabled());
         dto.setLoginType(user.getLoginType());
+        dto.setPremium_user(user.isPremiumUser());
 
         return dto;
     }
