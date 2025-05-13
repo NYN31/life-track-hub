@@ -1,23 +1,23 @@
 package com.lifetrackhub.controller.publicController;
 
-import com.lifetrackhub.dto.response.ImageResponseDto;
-import com.lifetrackhub.service.ImageService;
+import com.lifetrackhub.dto.response.FileResponseDto;
+import com.lifetrackhub.service.FileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class PublicImageController extends PublicBaseController{
-    private final ImageService imageService;
+public class PublicFileController extends PublicBaseController{
+    private final FileService fileService;
 
-    public PublicImageController(final ImageService imageService) {
-        this.imageService = imageService;
+    public PublicFileController(final FileService fileService) {
+        this.fileService = fileService;
     }
 
-    @GetMapping("/image/by-file-path")
+    @GetMapping("/file/by-file-path")
     public ResponseEntity<?> getImageByFilePath(@RequestParam("filePath") String filePath) {
-        ImageResponseDto dto = imageService.loadImageFileByFilePath(filePath);
+        FileResponseDto dto = fileService.loadFileByFilePath(filePath);
         return ResponseEntity
                 .ok()
                 .contentType(dto.getContentType())
