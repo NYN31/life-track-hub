@@ -15,6 +15,8 @@ public class ImageDto {
 
     private String filePath;
 
+    private String previewUrl;
+
     private Instant createdDate;
 
     private Instant lastModifiedDate;
@@ -24,6 +26,7 @@ public class ImageDto {
         dto.setUserId(image.getUserId());
         dto.setOriginalFileName(image.getOriginalFileName());
         dto.setFilePath(image.getFilePath());
+        dto.setPreviewUrl(image.getPreviewUrl());
         dto.setCreatedDate(image.getCreatedDate());
         dto.setLastModifiedDate(image.getLastModifiedDate());
 

@@ -3,12 +3,14 @@ package com.lifetrackhub.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
 @Data
+@ToString
 @Entity
 @Table
 public class Image {
@@ -24,6 +26,9 @@ public class Image {
 
     @NotNull
     private String filePath;
+
+    @NotNull
+    private String previewUrl;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
