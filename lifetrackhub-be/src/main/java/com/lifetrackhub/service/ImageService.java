@@ -2,16 +2,18 @@ package com.lifetrackhub.service;
 
 import com.lifetrackhub.dto.response.ImageResponseDto;
 import com.lifetrackhub.entity.Image;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Service
 public interface ImageService {
-    Image saveImage(MultipartFile file);
+    Image uploadImage(MultipartFile file, HttpServletRequest request);
 
-    ImageResponseDto loadFileById(Long id);
+    ImageResponseDto loadImageFileByFilePath(String filePath);
 
-    List<Image> getImagesByUserId(Long userId);
+    Page<Image> getImages(int page, int size, LocalDate startDate, LocalDate endDate);
 }
