@@ -30,9 +30,9 @@ public class AuthController {
         return authService.registration(dto);
     }
 
-    @PostMapping("/auth/create/admin")
+    @PostMapping("/auth/create/super-admin")
     public UserDto createAdmin(@RequestBody @Valid RegistrationRequestDto dto) {
-        return authService.createAdmin(dto);
+        return authService.createSuperAdmin(dto);
     }
 
     @PostMapping("/auth/google-url")
