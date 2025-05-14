@@ -11,7 +11,10 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Pattern(regexp = "^[a-zA-Z0-9]{8,40}$")
+@Pattern(
+        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,40}$",
+        message = "Password must be 8-40 characters long and include at least one uppercase letter, one lowercase letter, and one digit"
+)
 @Constraint(validatedBy = {})
 public @interface Password {
     String message() default "Invalid password format";

@@ -4,6 +4,7 @@ import com.lifetrackhub.constant.enumeration.LoginType;
 import com.lifetrackhub.converter.UserDetailsConverter;
 import com.lifetrackhub.dto.blob.UserDetails;
 import com.lifetrackhub.validation.Email;
+import com.lifetrackhub.validation.Password;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -33,6 +34,7 @@ public class User {
     @Email
     private String email;
 
+    @Password
     private String password;
 
     private String role;
