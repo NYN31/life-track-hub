@@ -14,7 +14,7 @@ public interface AuthService {
 
     LoginResponseDto login(LoginRequestDto request);
 
-    UserDto createAdmin(RegistrationRequestDto request);
+    UserDto createSuperAdmin(RegistrationRequestDto request);
 
     LoginResponseDto createToken(User user);
 }

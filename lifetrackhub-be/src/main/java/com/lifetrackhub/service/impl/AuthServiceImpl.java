@@ -67,15 +67,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserDto createAdmin(RegistrationRequestDto request) {
-        Optional<User> user = userRepository.findByRole(String.valueOf(Role.ADMIN));
+    public UserDto createSuperAdmin(RegistrationRequestDto request) {
+        Optional<User> user = userRepository.findByRole(String.valueOf(Role.SUPER_ADMIN));
         if (user.isPresent()) {
-            log.warn("Admin user already exists");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Admin user already exists");
+            log.warn("Super admin user already exists");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Super admin user already exists");
         }
-        User userInfo = createUser(request, String.valueOf(Role.ADMIN));
+
+        User userInfo = createUser(request, String.valueOf(Role.SUPER_ADMIN));
         userInfo = userRepository.save(userInfo);
-        log.info("Admin user created: {}", userInfo);
+        log.info("Super admin user created: {}", userInfo);
 
         return UserDto.formEntity(userInfo);
     }

@@ -32,7 +32,7 @@ public class FileController extends BaseController {
     public PageDto<FileDto> findFileList(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "fileType", defaultValue = "PDF") FileType fileType,
+            @RequestParam(value = "fileType", defaultValue = "IMG") FileType fileType,
             @RequestParam(value = "start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
     ) {
