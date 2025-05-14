@@ -3,12 +3,15 @@ package com.lifetrackhub.service.impl;
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.dto.blob.UserDetails;
+import com.lifetrackhub.dto.request.UpdatePasswordRequestDto;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,9 +24,11 @@ public class UserServiceImpl implements UserService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(final UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -89,5 +94,22 @@ public class UserServiceImpl implements UserService {
 
             return userRepository.save(user);
         }
+    }
+
+    @Override
+    public CommonResponseDto updatePassword(UpdatePasswordRequestDto dto) {
+        User user = Util.getUserFromSecurityContextHolder();
+
+        if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Old password does not match");
+        }
+
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        userRepository.save(user);
+
+        return CommonResponseDto.builder()
+                .message("Password updated successfully")
+                .status(HttpStatus.OK)
+                .build();
     }
 }
