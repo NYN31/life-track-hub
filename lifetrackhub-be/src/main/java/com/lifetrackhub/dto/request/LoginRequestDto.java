@@ -1,6 +1,7 @@
 package com.lifetrackhub.dto.request;
 
 import com.lifetrackhub.validation.Email;
+import com.lifetrackhub.validation.Password;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
@@ -11,6 +12,7 @@ public class LoginRequestDto {
     private String email;
 
     @NotNull
+    @Password
     private String password;
 
     public String getEmail() {

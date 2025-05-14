@@ -18,7 +18,7 @@ public class RegistrationRequestDto {
     private String email;
 
     @NotNull
-    @Length(min = 8, max = 40)
+    @Password
     private String password;
 
     public String getFirstname() {
