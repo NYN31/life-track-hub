@@ -1,6 +1,8 @@
 package com.lifetrackhub.service;
 
 import com.lifetrackhub.dto.UserDto;
+import com.lifetrackhub.dto.request.UpdatePasswordRequestDto;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +17,6 @@ public interface UserService {
     User findUserByEmail(String email);
 
     User update(UserDto dto);
+
+    CommonResponseDto updatePassword(UpdatePasswordRequestDto dto);
 }

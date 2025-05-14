@@ -1,9 +1,13 @@
 package com.lifetrackhub.controller;
 
 import com.lifetrackhub.dto.UserDto;
+import com.lifetrackhub.dto.request.UpdatePasswordRequestDto;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,5 +39,10 @@ public class UserController extends BaseController {
     public UserDto update(@RequestBody @Valid UserDto dto) {
         User user = userService.update(dto);
         return UserDto.formEntity(user);
+    }
+
+    @PutMapping("/user/password/update")
+    public CommonResponseDto updatePassword(@RequestBody @Valid UpdatePasswordRequestDto dto) {
+        return userService.updatePassword(dto);
     }
 }
