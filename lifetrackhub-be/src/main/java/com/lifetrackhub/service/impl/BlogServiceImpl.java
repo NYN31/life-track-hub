@@ -28,7 +28,7 @@ import java.util.Optional;
 @Service
 public class BlogServiceImpl implements BlogService {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private static final Integer DATE_RANGE_PERIOD_FOR_BLOG_SEARCH = 30;
+    private static final int DATE_RANGE_PERIOD_FOR_BLOG_SEARCH = 30;
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
@@ -55,11 +55,16 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Page<Blog> findAll(Integer page, Integer size, String visibility, LocalDate startDate, LocalDate endDate) {
-        // this is for both user and super admin.
-        // for user: visibility will always PUBLIC and
-        // for super admin visibility will be dynamic (PUBLIC/PRIVATE)
-        log.info("Finding all {} blogs within {} to {}", visibility, startDate, endDate);
+    public Page<Blog> findAllBlogs(int page, int size, String email, String visibility, LocalDate startDate, LocalDate endDate) {
+        log.info("Finding all {} blogs of {}, within {} to {}", visibility, email, startDate, endDate);
+
+        Long userId = null;
+        if (email != null) {
+            Optional<User> optionalUser = userRepository.findByEmail(email);
+            if (optionalUser.isPresent()) {
+                userId = optionalUser.get().getId();
+            }
+        }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
 
@@ -77,50 +82,11 @@ public class BlogServiceImpl implements BlogService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
         }
 
-        if (visibility == null) {
-            return blogRepository.findAllByCreatedDateBetween(start, end, pageable);
-        }
-        return blogRepository.findAllByVisibilityAndCreatedDateBetween(visibility, start, end, pageable);
-    }
-
-    @Override
-    public Page<Blog> findBlogsByUserId(Integer page, Integer size, String email, String visibility, LocalDate startDate, LocalDate endDate) {
-        log.info("Finding all {} blogs for {}, within {} to {}", visibility, email, startDate, endDate);
-
-        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
-
-        if (userFromSecurityContext == null) {
-            log.warn("Unauthorized user");
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized user");
-        }
-
-        Long userId = userFromSecurityContext.getId();
-
-        Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        if (startDate == null || endDate == null) {
-            startDate = LocalDate.now().minusDays(DATE_RANGE_PERIOD_FOR_BLOG_SEARCH);
-            endDate = LocalDate.now();
-        }
-
-        Instant start = DateUtil.getStartDate(startDate);
-        Instant end = DateUtil.getEndDate(endDate);
-        long days = ChronoUnit.DAYS.between(start, end);
-
-        log.info("By user id: Start date - {}, End date - {}, Difference - {}", start, end, days);
-        if (days > DATE_RANGE_PERIOD_FOR_BLOG_SEARCH) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
-        }
-
-        if (visibility == null) {
-            return blogRepository.findAllByUserIdAndCreatedDateBetween(userId, start, end, pageable);
-        }
         return blogRepository.findAllByUserIdAndVisibilityAndCreatedDateBetween(userId, visibility, start, end, pageable);
     }
 
     @Override
-    public Page<Blog> findBlogsByTitle(String title, Integer page, Integer size) {
+    public Page<Blog> findBlogsByTitle(String title, int page, int size) {
         log.info("Finding blogs by title {}", title);
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("title"));
@@ -140,7 +106,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Page<Blog> findBlogsByEmail(String email, String visibility, Integer page, Integer size) {
+    public Page<Blog> findBlogsByEmail(String email, String visibility, int page, int size) {
         log.info("Finding blogs by email {}", email);
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) {

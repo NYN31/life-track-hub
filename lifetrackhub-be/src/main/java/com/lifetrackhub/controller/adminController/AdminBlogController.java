@@ -1,5 +1,6 @@
 package com.lifetrackhub.controller.adminController;
 
+import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.BlogDto;
 import com.lifetrackhub.dto.PageDto;
 import com.lifetrackhub.dto.request.BlogCreateRequestDto;
@@ -7,7 +8,6 @@ import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.service.BlogService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,16 +20,16 @@ public class AdminBlogController extends AdminBaseController {
         this.blogService = blogService;
     }
 
-    @GetMapping("/blog/find-by-userId")
-    public PageDto<BlogDto> getBlogsByUserId(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam String email,
-            @RequestParam(required = false) String visibility,
-            @RequestParam(value = "start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-            @RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+    @GetMapping("/blog/find-all")
+    public PageDto<BlogDto> findAllBlogs(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "visibility", required = false) String visibility,
+            @RequestParam(value = "start", required = false) LocalDate startDate,
+            @RequestParam(value = "end", required = false) LocalDate endDate
     ) {
-        Page<Blog> blogs = blogService.findBlogsByUserId(page, size, email, visibility, startDate, endDate);
+        String email = Util.getUserFromSecurityContextHolder().getEmail();
+        Page<Blog> blogs = blogService.findAllBlogs(page, size, email, visibility, startDate, endDate);
         return PageDto.fromEntity(blogs, BlogDto::formEntity);
     }
 
