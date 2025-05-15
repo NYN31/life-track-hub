@@ -10,13 +10,11 @@ import java.time.LocalDate;
 public interface BlogService {
     BlogDto create(BlogCreateRequestDto request);
 
-    Page<Blog> findAll(Integer page, Integer size, String visibility, LocalDate start, LocalDate end);
+    Page<Blog> findAllBlogs(int page, int size, String email, String visibility, LocalDate startDate, LocalDate endDate);
 
-    Page<Blog> findBlogsByUserId(Integer page, Integer size, String email, String visibility, LocalDate start, LocalDate end);
-
-    Page<Blog> findBlogsByTitle(String title, Integer page, Integer size);
+    Page<Blog> findBlogsByTitle(String title, int page, int size);
 
     BlogDto findBlogBySlug(String slug);
 
-    Page<Blog> findBlogsByEmail(String email, String visibility, Integer page, Integer size);
+    Page<Blog> findBlogsByEmail(String email, String visibility, int page, int size);
 }
