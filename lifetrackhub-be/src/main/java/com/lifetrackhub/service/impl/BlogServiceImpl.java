@@ -22,7 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -70,10 +70,10 @@ public class BlogServiceImpl implements BlogService {
 
         Instant start = DateUtil.getStartDate(startDate);
         Instant end = DateUtil.getEndDate(endDate);
-        Period period = Period.between(startDate, endDate);
+        long days = ChronoUnit.DAYS.between(start, end);
 
-        log.info("Start date - {}, End date - {}, Difference - {}", start, end, period.getDays());
-        if (period.getDays() > DATE_RANGE_PERIOD_FOR_BLOG_SEARCH) {
+        log.info("Start date - {}, End date - {}, Difference - {}", start, end, days);
+        if (days > DATE_RANGE_PERIOD_FOR_BLOG_SEARCH) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
         }
 
@@ -106,10 +106,10 @@ public class BlogServiceImpl implements BlogService {
 
         Instant start = DateUtil.getStartDate(startDate);
         Instant end = DateUtil.getEndDate(endDate);
-        Period period = Period.between(startDate, endDate);
+        long days = ChronoUnit.DAYS.between(start, end);
 
-        log.info("By user id: Start date - {}, End date - {}, Difference - {}", start, end, period.getDays());
-        if (period.getDays() > DATE_RANGE_PERIOD_FOR_BLOG_SEARCH) {
+        log.info("By user id: Start date - {}, End date - {}, Difference - {}", start, end, days);
+        if (days > DATE_RANGE_PERIOD_FOR_BLOG_SEARCH) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
         }
 

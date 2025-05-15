@@ -27,8 +27,8 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -99,10 +99,10 @@ public class FileServiceImpl implements FileService {
 
         Instant start = DateUtil.getStartDate(startDate);
         Instant end = DateUtil.getEndDate(endDate);
-        Period period = Period.between(startDate, endDate);
+        long days = ChronoUnit.DAYS.between(start, end);
 
-        log.info("Start date: {} End date: {} Difference: {}", start, end, period.getDays());
-        if (period.getDays() > DATE_RANGE_PERIOD_FOR_IMAGE_SEARCH) {
+        log.info("Start date: {} End date: {} Difference: {}", start, end, days);
+        if (days > DATE_RANGE_PERIOD_FOR_IMAGE_SEARCH) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
         }
 
