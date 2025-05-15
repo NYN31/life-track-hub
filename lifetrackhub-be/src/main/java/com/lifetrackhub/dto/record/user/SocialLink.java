@@ -1,4 +1,4 @@
 package com.lifetrackhub.dto.record.user;
 
-public record SocialLink(String name, String link) {
+public record SocialLink(String socialPlatformName, String link) {
 }

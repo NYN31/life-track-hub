@@ -1,4 +1,6 @@
 package com.lifetrackhub.dto.record.user;
 
-public record Skill(String name, String description) {
+import com.lifetrackhub.constant.enumeration.Competency;
+
+public record Skill(String skillName, int skillExperienceYear, Competency skillCompetency) {
 }

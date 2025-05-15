@@ -1,5 +1,6 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.enumeration.LoginType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.dto.request.RegistrationRequestDto;
@@ -103,6 +104,8 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         user.setRole(role);
         user.setEnabled(true);
+        user.setLoginType(LoginType.CREDENTIAL);
+        user.setPremiumUser(true);
         user.setUserDetails(null);
 
         return user;

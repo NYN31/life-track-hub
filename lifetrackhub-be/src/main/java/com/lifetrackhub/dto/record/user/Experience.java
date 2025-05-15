@@ -1,4 +1,7 @@
 package com.lifetrackhub.dto.record.user;
 
-public record Experience(String name, Integer yearOfExperience, String description, String link) {
+import java.time.LocalDate;
+
+public record Experience(String organizationName, String designation, String description, LocalDate startDate,
+                         LocalDate endDate, String link) {
 }
