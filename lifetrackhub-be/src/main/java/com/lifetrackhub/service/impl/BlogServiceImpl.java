@@ -23,12 +23,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class BlogServiceImpl implements BlogService {
     private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Integer DATE_RANGE_PERIOD_FOR_BLOG_SEARCH = 30;
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
@@ -42,6 +42,7 @@ public class BlogServiceImpl implements BlogService {
     public BlogDto create(BlogCreateRequestDto request) {
         log.info("Creating new blog");
         User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+
         Blog blog = new Blog();
         blog.setTitle(request.getTitle());
         blog.setContent(request.getContent());
@@ -53,35 +54,38 @@ public class BlogServiceImpl implements BlogService {
         return BlogDto.formEntity(blog);
     }
 
-    // TODO: This is for super admin
     @Override
     public Page<Blog> findAll(Integer page, Integer size, String visibility, LocalDate startDate, LocalDate endDate) {
-        log.info("Finding all blogs");
+        // this is for both user and super admin.
+        // for user: visibility will always PUBLIC and
+        // for super admin visibility will be dynamic (PUBLIC/PRIVATE)
+        log.info("Finding all {} blogs within {} to {}", visibility, startDate, endDate);
 
-        Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
 
         if (startDate == null || endDate == null) {
-            startDate = LocalDate.now();
-            endDate = LocalDate.now().plusDays(1);
+            startDate = LocalDate.now().minusDays(DATE_RANGE_PERIOD_FOR_BLOG_SEARCH);
+            endDate = LocalDate.now();
         }
 
         Instant start = DateUtil.getStartDate(startDate);
         Instant end = DateUtil.getEndDate(endDate);
         Period period = Period.between(startDate, endDate);
 
-        log.info("Start date: " + start + " End date: " + end + " Difference: " + period.getDays());
+        log.info("Start date - {}, End date - {}, Difference - {}", start, end, period.getDays());
+        if (period.getDays() > DATE_RANGE_PERIOD_FOR_BLOG_SEARCH) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
+        }
 
         if (visibility == null) {
             return blogRepository.findAllByCreatedDateBetween(start, end, pageable);
         }
-
         return blogRepository.findAllByVisibilityAndCreatedDateBetween(visibility, start, end, pageable);
     }
 
     @Override
     public Page<Blog> findBlogsByUserId(Integer page, Integer size, String email, String visibility, LocalDate startDate, LocalDate endDate) {
-        log.info("Finding all blogs by id");
+        log.info("Finding all {} blogs for {}, within {} to {}", visibility, email, startDate, endDate);
 
         User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
 
@@ -92,36 +96,32 @@ public class BlogServiceImpl implements BlogService {
 
         Long userId = userFromSecurityContext.getId();
 
-        if (!Objects.equals(email, userFromSecurityContext.getEmail())) {
-            Optional<User> user = userRepository.findByEmail(email);
-            if (user.isPresent()) {
-                userId = user.get().getId();
-            } else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized user");
-            }
-        }
-
         Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
         Pageable pageable = PageRequest.of(page, size, sort);
 
         if (startDate == null || endDate == null) {
-            startDate = LocalDate.now();
-            endDate = LocalDate.now().plusDays(1);
+            startDate = LocalDate.now().minusDays(DATE_RANGE_PERIOD_FOR_BLOG_SEARCH);
+            endDate = LocalDate.now();
         }
 
         Instant start = DateUtil.getStartDate(startDate);
         Instant end = DateUtil.getEndDate(endDate);
+        Period period = Period.between(startDate, endDate);
+
+        log.info("By user id: Start date - {}, End date - {}, Difference - {}", start, end, period.getDays());
+        if (period.getDays() > DATE_RANGE_PERIOD_FOR_BLOG_SEARCH) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
+        }
 
         if (visibility == null) {
             return blogRepository.findAllByUserIdAndCreatedDateBetween(userId, start, end, pageable);
         }
-
         return blogRepository.findAllByUserIdAndVisibilityAndCreatedDateBetween(userId, visibility, start, end, pageable);
     }
 
     @Override
     public Page<Blog> findBlogsByTitle(String title, Integer page, Integer size) {
-        log.info("Finding blogs by title");
+        log.info("Finding blogs by title {}", title);
 
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("title"));
         return blogRepository.findByTitleContaining(title, pageRequest);
@@ -129,7 +129,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogDto findBlogBySlug(String slug) {
-        log.info("Finding blog by slug");
+        log.info("Finding blog by slug {}", slug);
 
         Optional<Blog> blog = blogRepository.findBySlug(slug);
         if (blog.isEmpty()) {
@@ -137,5 +137,19 @@ public class BlogServiceImpl implements BlogService {
         }
 
         return BlogDto.formEntity(blog.get());
+    }
+
+    @Override
+    public Page<Blog> findBlogsByEmail(String email, String visibility, Integer page, Integer size) {
+        log.info("Finding blogs by email {}", email);
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Users data not found");
+        }
+
+        Long userId = user.get().getId();
+        Pageable pageable = PageRequest.of(page, size);
+
+        return blogRepository.findAllByUserIdAndVisibility(userId, visibility, pageable);
     }
 }
