@@ -17,4 +17,6 @@ public interface BlogService {
     Page<Blog> findBlogsByTitle(String title, Integer page, Integer size);
 
     BlogDto findBlogBySlug(String slug);
+
+    Page<Blog> findBlogsByEmail(String email, String visibility, Integer page, Integer size);
 }
