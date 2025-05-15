@@ -19,7 +19,7 @@ public class PublicBlogController extends PublicBaseController {
         this.blogService = blogService;
     }
 
-    @GetMapping("/blog/find-all")
+    @GetMapping("/blog/all")
     public PageDto<BlogDto> findAll(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
@@ -31,11 +31,11 @@ public class PublicBlogController extends PublicBaseController {
         return PageDto.fromEntity(blogs, BlogDto::formEntity);
     }
 
-    @GetMapping("/blog/find-by-email/${email}")
+    @GetMapping("/blog/by-email")
     public PageDto<BlogDto> findByEmail(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "email") String email
+            @RequestParam String email
     ) {
         String visibility = Visibility.PUBLIC.name();
         Page<Blog> blogs = blogService.findBlogsByEmail(email, visibility, page, size);
