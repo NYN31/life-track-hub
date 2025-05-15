@@ -1,7 +1,5 @@
 package com.lifetrackhub.dto.record.user;
 
-import java.time.Instant;
-
-public record Education(String title, String institution, Instant graduationStartDate, Instant graduationEndDate,
-                        String result) {
+public record Education(String institutionName, String courseName, int startYear, int endYear,
+                        double result) {
 }
