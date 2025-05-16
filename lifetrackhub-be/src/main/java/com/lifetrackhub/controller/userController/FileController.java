@@ -1,4 +1,4 @@
-package com.lifetrackhub.controller;
+package com.lifetrackhub.controller.userController;
 
 import com.lifetrackhub.constant.enumeration.FileType;
 import com.lifetrackhub.dto.FileDto;
