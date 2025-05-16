@@ -1,4 +1,4 @@
-package com.lifetrackhub.controller;
+package com.lifetrackhub.controller.userController;
 
 import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.dto.request.UpdatePasswordRequestDto;
@@ -6,8 +6,6 @@ import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
