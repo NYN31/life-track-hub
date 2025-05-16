@@ -1,4 +1,5 @@
 package com.lifetrackhub.configuration;
+
 import com.lifetrackhub.service.JwtService;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.FilterChain;
@@ -32,11 +33,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @Nullable HttpServletRequest request,
             @Nullable HttpServletResponse response,
             @Nullable FilterChain filterChain) throws ServletException, IOException {
-        assert request != null;
         String accessToken = extractToken(request);
 
         if (accessToken == null) {
-            assert filterChain != null;
             filterChain.doFilter(request, response);
             return;
         }
@@ -50,8 +49,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             context.setAuthentication(null);
         }
 
-        assert filterChain != null;
         filterChain.doFilter(request, response);
+
     }
 
     private String extractToken(HttpServletRequest request) {
