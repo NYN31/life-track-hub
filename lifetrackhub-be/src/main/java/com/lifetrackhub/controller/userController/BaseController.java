@@ -1,4 +1,4 @@
-package com.lifetrackhub.controller;
+package com.lifetrackhub.controller.userController;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 

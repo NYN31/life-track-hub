@@ -1,4 +1,4 @@
-package com.lifetrackhub.controller;
+package com.lifetrackhub.controller.userController;
 
 import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.dto.request.LoginRequestDto;
