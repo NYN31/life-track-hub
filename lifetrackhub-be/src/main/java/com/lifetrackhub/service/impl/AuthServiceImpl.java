@@ -14,7 +14,6 @@ import com.lifetrackhub.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,7 +26,6 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
-    private final UserService userService;
     private final JwtService jwtService;
 
     public AuthServiceImpl(
@@ -36,8 +34,7 @@ public class AuthServiceImpl implements AuthService {
             UserService userService,
             JwtService jwtService) {
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtService = jwtService;
     }
 
@@ -58,7 +55,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponseDto login(LoginRequestDto request) {
-        User user = userService.findUserByEmail(request.getEmail());
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with email not found"));
+
+        if (!user.isEnabled()) {
+            log.warn("User with email {} is not enabled", request.getEmail());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with email " + request.getEmail() + " is disabled");
+        }
+
         if (!bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())) {
             log.warn("Wrong password for user {}", request.getEmail());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong password");
@@ -105,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
         user.setRole(role);
         user.setEnabled(true);
         user.setLoginType(LoginType.CREDENTIAL);
-        user.setPremiumUser(true);
+        user.setPremiumUser(false);
         user.setUserDetails(null);
 
         return user;
