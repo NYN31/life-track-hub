@@ -35,17 +35,7 @@ public class AdminBlogController extends AdminBaseController {
 
     @PostMapping("/blog/create")
     public BlogDto createBlog(@Valid @RequestBody BlogCreateRequestDto request) {
-        return blogService.create(request);
-    }
-
-    @GetMapping("/blog/by-title/{title}/{page}/{size}")
-    public PageDto<BlogDto> findBlogsByTitle(@PathVariable String title, @PathVariable int page, @PathVariable int size) {
-        Page<Blog> blogs = blogService.findBlogsByTitle(title, page, size);
-        return PageDto.fromEntity(blogs, BlogDto::formEntity);
-    }
-
-    @GetMapping("/blog/by-slug/{slug}")
-    public BlogDto findBlogsBySlug(@PathVariable String slug) {
-        return blogService.findBlogBySlug(slug);
+        Blog blog = blogService.create(request);
+        return BlogDto.formEntity(blog);
     }
 }

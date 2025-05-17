@@ -30,4 +30,16 @@ public class PublicBlogController extends PublicBaseController {
         Page<Blog> blogs = blogService.findAllBlogs(page, size, email, visibility, startDate, endDate);
         return PageDto.fromEntity(blogs, BlogDto::formEntity);
     }
+
+    @GetMapping("/blog/by-title/{title}/{page}/{size}")
+    public PageDto<BlogDto> findBlogsByTitle(@PathVariable String title, @PathVariable int page, @PathVariable int size) {
+        Page<Blog> blogs = blogService.findBlogsByTitle(title, page, size);
+        return PageDto.fromEntity(blogs, BlogDto::formEntity);
+    }
+
+    @GetMapping("/blog/by-slug/{slug}")
+    public BlogDto findBlogsBySlug(@PathVariable String slug) {
+        Blog blog = blogService.findBlogBySlug(slug);
+        return BlogDto.formEntity(blog);
+    }
 }
