@@ -2,12 +2,11 @@ package com.lifetrackhub.controller.superAdminController;
 
 import com.lifetrackhub.dto.BlogDto;
 import com.lifetrackhub.dto.PageDto;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.service.BlogService;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -30,5 +29,10 @@ public class SuperAdminBlogController extends SuperAdminBaseController {
     ) {
         Page<Blog> blogs = blogService.findAllBlogs(page, size, email, visibility, startDate, endDate);
         return PageDto.fromEntity(blogs, BlogDto::formEntity);
+    }
+
+    @PutMapping("/blog/delete/{slug}")
+    public CommonResponseDto softDelete(@PathVariable String slug) {
+        return blogService.softDelete(slug);
     }
 }

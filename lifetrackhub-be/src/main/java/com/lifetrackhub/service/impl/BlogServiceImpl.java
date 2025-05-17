@@ -1,10 +1,11 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.enumeration.Visibility;
 import com.lifetrackhub.constant.utils.DateUtil;
 import com.lifetrackhub.constant.utils.RandomUtil;
 import com.lifetrackhub.constant.utils.Util;
-import com.lifetrackhub.dto.BlogDto;
 import com.lifetrackhub.dto.request.BlogCreateRequestDto;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.BlogRepository;
@@ -39,7 +40,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogDto create(BlogCreateRequestDto request) {
+    public Blog create(BlogCreateRequestDto request) {
         log.info("Creating new blog");
         User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
 
@@ -50,8 +51,7 @@ public class BlogServiceImpl implements BlogService {
         blog.setSlug(request.getTitle().replace(" ", "-") + "-" + RandomUtil.randomStringOfLength(16));
         blog.setUser(userFromSecurityContext);
 
-        blog = blogRepository.save(blog);
-        return BlogDto.formEntity(blog);
+        return blogRepository.save(blog);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogDto findBlogBySlug(String slug) {
+    public Blog findBlogBySlug(String slug) {
         log.info("Finding blog by slug {}", slug);
 
         Optional<Blog> blog = blogRepository.findBySlug(slug);
@@ -102,7 +102,7 @@ public class BlogServiceImpl implements BlogService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Blog not found by the slug");
         }
 
-        return BlogDto.formEntity(blog.get());
+        return blog.get();
     }
 
     @Override
@@ -117,5 +117,19 @@ public class BlogServiceImpl implements BlogService {
         Pageable pageable = PageRequest.of(page, size);
 
         return blogRepository.findAllByUserIdAndVisibility(userId, visibility, pageable);
+    }
+
+    @Override
+    public CommonResponseDto softDelete(String slug) {
+        log.info("Soft delete a blog by slug {}", slug);
+
+        Blog blog = findBlogBySlug(slug);
+        blog.setVisibility(Visibility.DELETED.name());
+        blogRepository.save(blog);
+
+        return CommonResponseDto.builder()
+                .status(HttpStatus.OK)
+                .message("Soft delete has been successful")
+                .build();
     }
 }
