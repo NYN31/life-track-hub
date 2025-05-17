@@ -1,5 +1,7 @@
 package com.lifetrackhub.dto;
 
+import com.lifetrackhub.constant.enumeration.AccountStatus;
+import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.LoginType;
 import com.lifetrackhub.dto.blob.UserDetails;
 import com.lifetrackhub.entity.User;
@@ -25,17 +27,17 @@ public class UserDto {
 
     private String role;
 
-    private boolean enabled;
+    private LoginType loginType;
 
-    private boolean premium_user;
+    private AccountStatus accountStatus;
+
+    private AccountType accountType;
 
     private UserDetails userDetails;
 
     private Instant createdDate;
 
     private Instant lastModifiedDate;
-
-    private LoginType loginType;
 
     public static UserDto formEntity(User user) {
         UserDto dto = formEntityWithoutDetails(user);
@@ -53,9 +55,9 @@ public class UserDto {
         dto.setLastname(user.getLastname());
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRole());
-        dto.setEnabled(user.isEnabled());
+        dto.setAccountStatus(user.getAccountStatus());
         dto.setLoginType(user.getLoginType());
-        dto.setPremium_user(user.isPremiumUser());
+        dto.setAccountType(user.getAccountType());
 
         return dto;
     }

@@ -1,5 +1,7 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.enumeration.AccountStatus;
+import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.LoginType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.dto.UserDto;
@@ -10,7 +12,6 @@ import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.AuthService;
 import com.lifetrackhub.service.JwtService;
-import com.lifetrackhub.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,6 @@ public class AuthServiceImpl implements AuthService {
     public AuthServiceImpl(
             UserRepository userRepository,
             PasswordEncoder bCryptPasswordEncoder,
-            UserService userService,
             JwtService jwtService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -58,9 +58,14 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with email not found"));
 
-        if (!user.isEnabled()) {
-            log.warn("User with email {} is not enabled", request.getEmail());
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with email " + request.getEmail() + " is disabled");
+        if (user.getAccountStatus() == AccountStatus.DELETED) {
+            log.warn("User with email {} is deleted", request.getEmail());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with email " + request.getEmail() + " is deleted.");
+        }
+
+        if (user.getAccountStatus() == AccountStatus.INACTIVE) {
+            log.warn("User with email {} is inactive", request.getEmail());
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with email " + request.getEmail() + " is inactive.");
         }
 
         if (!bCryptPasswordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -80,6 +85,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User userInfo = createUser(request, String.valueOf(Role.SUPER_ADMIN));
+        userInfo.setAccountType(AccountType.PREMIUM);
         userInfo = userRepository.save(userInfo);
         log.info("Super admin user created: {}", userInfo);
 
@@ -107,9 +113,9 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         user.setRole(role);
-        user.setEnabled(true);
+        user.setAccountStatus(AccountStatus.ACTIVE);
         user.setLoginType(LoginType.CREDENTIAL);
-        user.setPremiumUser(false);
+        user.setAccountType(AccountType.STANDARD);
         user.setUserDetails(null);
 
         return user;

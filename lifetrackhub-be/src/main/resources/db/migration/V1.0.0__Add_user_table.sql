@@ -7,9 +7,9 @@ CREATE TABLE user
     email              VARCHAR(60) NOT NULL UNIQUE KEY,
     password           VARCHAR(100),
     role               VARCHAR(100),
-    enabled            BOOLEAN     NOT NULL,
+    account_status     VARCHAR(20) NOT NULL,
     login_type         VARCHAR(20) DEFAULT 'CREDENTIAL',
-    premium_user       BOOLEAN     DEFAULT FALSE,
+    account_type       VARCHAR(20) NOT NULL,
     user_details       BLOB,
 
     created_date       DATETIME    NOT NULL,
