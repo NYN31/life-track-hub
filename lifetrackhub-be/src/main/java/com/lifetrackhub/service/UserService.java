@@ -1,5 +1,7 @@
 package com.lifetrackhub.service;
 
+import com.lifetrackhub.constant.enumeration.AccountStatus;
+import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.dto.request.UpdatePasswordRequestDto;
@@ -24,11 +26,11 @@ public interface UserService {
 
     CommonResponseDto updatePassword(UpdatePasswordRequestDto dto);
 
-    Page<User> getUsers(int page, int size, String email, Role role, boolean status, boolean isPremium, LocalDate startDate, LocalDate endDate);
+    Page<User> getUsers(int page, int size, String email, Role role, AccountStatus accountStatus, AccountType accountType, LocalDate startDate, LocalDate endDate);
 
     CommonResponseDto updateRole(String email, Role role);
 
-    CommonResponseDto updateStatus(String email, boolean status);
+    CommonResponseDto updateStatus(String email, AccountStatus accountStatus);
 
-    CommonResponseDto upgradeAccount(String email, boolean isPremium);
+    CommonResponseDto upgradeAccount(String email, AccountType accountType);
 }

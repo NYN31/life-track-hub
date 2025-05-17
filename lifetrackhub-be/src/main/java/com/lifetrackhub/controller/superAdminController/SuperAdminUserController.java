@@ -1,5 +1,7 @@
 package com.lifetrackhub.controller.superAdminController;
 
+import com.lifetrackhub.constant.enumeration.AccountStatus;
+import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.dto.PageDto;
 import com.lifetrackhub.dto.UserDto;
@@ -25,11 +27,11 @@ public class SuperAdminUserController extends SuperAdminBaseController {
             @RequestParam(value = "size", defaultValue = "10") int size,
             @RequestParam(value = "email", required = false) String email,
             @RequestParam(value = "role", required = false) Role role,
-            @RequestParam(value = "status", defaultValue = "true", required = false) boolean status,
-            @RequestParam(value = "isPremium", defaultValue = "false", required = false) boolean isPremium,
+            @RequestParam(value = "accountStatus", required = false) AccountStatus accountStatus,
+            @RequestParam(value = "accountType", required = false) AccountType accountType,
             @RequestParam(value = "start", required = false) LocalDate start,
             @RequestParam(value = "end", required = false) LocalDate end) {
-        Page<User> users = userService.getUsers(page, size, email, role, status, isPremium, start, end);
+        Page<User> users = userService.getUsers(page, size, email, role, accountStatus, accountType, start, end);
         return PageDto.fromEntity(users, UserDto::formEntity);
     }
 
@@ -38,13 +40,13 @@ public class SuperAdminUserController extends SuperAdminBaseController {
         return userService.updateRole(email, role);
     }
 
-    @PutMapping("/user/update/status/{email}/{status}")
-    public CommonResponseDto updateStatus(@PathVariable String email, @PathVariable boolean status) {
-        return userService.updateStatus(email, status);
+    @PutMapping("/user/update/status/{email}/{accountStatus}")
+    public CommonResponseDto updateStatus(@PathVariable String email, @PathVariable AccountStatus accountStatus) {
+        return userService.updateStatus(email, accountStatus);
     }
 
-    @PutMapping("/user/update/upgrade-account/{email}/{isPremium}")
-    public CommonResponseDto updateAccount(@PathVariable String email, @PathVariable boolean isPremium) {
-        return userService.upgradeAccount(email, isPremium);
+    @PutMapping("/user/update/upgrade-account/{email}/{accountType}")
+    public CommonResponseDto updateAccount(@PathVariable String email, @PathVariable AccountType accountType) {
+        return userService.upgradeAccount(email, accountType);
     }
 }

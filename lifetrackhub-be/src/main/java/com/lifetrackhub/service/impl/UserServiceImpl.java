@@ -1,5 +1,7 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.enumeration.AccountStatus;
+import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.constant.utils.DateUtil;
 import com.lifetrackhub.constant.utils.Util;
@@ -123,8 +125,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> getUsers(int page, int size, String email, Role role, boolean status, boolean isPremium, LocalDate startDate, LocalDate endDate) {
-        log.info("Get users by filtered attributes - email: {}, role: {}, status: {}, isPremium: {}, start: {}, end: {}", email, role, status, isPremium, startDate, endDate);
+    public Page<User> getUsers(int page, int size, String email, Role role, AccountStatus accountStatus, AccountType accountType, LocalDate startDate, LocalDate endDate) {
+        log.info("Get users by filtered attributes - email: {}, role: {}, accountStatus: {}, accountType: {}, start: {}, end: {}", email, role, accountStatus, accountType, startDate, endDate);
         String roleName = null;
         if (role != null) {
             roleName = role.name();
@@ -136,7 +138,7 @@ public class UserServiceImpl implements UserService {
         Instant start = DateUtil.getStartDate(startDate);
         Instant end = DateUtil.getEndDate(endDate);
 
-        return userRepository.findByEmailAndRoleNameAndStatusAndIsPremiumAndCreatedDateBetween(email, roleName, status, isPremium, start, end, pageable);
+        return userRepository.findByEmailAndRoleNameAndAccountStatusAndAccountTypeAndCreatedDateBetween(email, roleName, accountStatus, accountType, start, end, pageable);
     }
 
     @Override
@@ -161,36 +163,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommonResponseDto updateStatus(String email, boolean status) {
+    public CommonResponseDto updateStatus(String email, AccountStatus accountStatus) {
         Optional<User> optional = userRepository.findByEmail(email);
         if (optional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist with the email: " + email);
         }
         User user = optional.get();
-        user.setEnabled(status);
+        user.setAccountStatus(accountStatus);
         userRepository.save(user);
 
         return CommonResponseDto
                 .builder()
                 .status(HttpStatus.OK)
-                .message("Status has been updated.")
+                .message("Account status has been updated.")
                 .build();
     }
 
     @Override
-    public CommonResponseDto upgradeAccount(String email, boolean isPremium) {
+    public CommonResponseDto upgradeAccount(String email, AccountType accountType) {
         Optional<User> optional = userRepository.findByEmail(email);
         if (optional.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist with the email: " + email);
         }
         User user = optional.get();
-        user.setPremiumUser(isPremium);
+        user.setAccountType(accountType);
         userRepository.save(user);
 
         return CommonResponseDto
                 .builder()
                 .status(HttpStatus.OK)
-                .message("Account upgraded successfully.")
+                .message("Account type upgraded successfully.")
                 .build();
     }
 }

@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.lifetrackhub.constant.enumeration.AccountStatus;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.service.JwtService;
 import com.lifetrackhub.service.UserService;
@@ -40,7 +41,7 @@ public class JwtServiceImpl implements JwtService {
     public JwtServiceImpl(@Value("${jwt.secret.key}") String secretKey, UserService userService) {
         this.algorithm = Algorithm.HMAC256(secretKey);
         this.verifier = JWT.require(algorithm)
-                .withClaim("enabled", true)
+                .withClaim("accountStatus", AccountStatus.ACTIVE.toString())
                 .withClaimPresence("userId")
                 .withClaimPresence("role")
                 .build();
@@ -58,7 +59,8 @@ public class JwtServiceImpl implements JwtService {
                     .withIssuer(issuer)
                     .withIssuedAt(Instant.now())
                     .withExpiresAt(Instant.now().plusSeconds(expirationTime))
-                    .withClaim("enabled", user.isEnabled())
+                    .withClaim("accountStatus", user.getAccountStatus().toString())
+                    .withClaim("accountType", user.getAccountType().toString())
                     .withClaim("role", Collections.singletonList(role))
                     .withClaim("userId", user.getId())
                     .sign(algorithm);

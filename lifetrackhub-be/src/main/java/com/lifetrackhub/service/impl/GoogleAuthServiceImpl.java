@@ -1,5 +1,7 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.enumeration.AccountStatus;
+import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.LoginType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.constant.utils.DecodedToken;
@@ -233,9 +235,10 @@ public class GoogleAuthServiceImpl implements GoogleAuthService {
         user.setLastname("");
         user.setEmail(userDetails.getEmail());
         user.setRole(role);
-        user.setEnabled(true);
+        user.setAccountStatus(AccountStatus.ACTIVE);
         user.setUserDetails(null);
         user.setLoginType(LoginType.GOOGLE);
+        user.setAccountType(AccountType.PREMIUM);
 
         return user;
     }
