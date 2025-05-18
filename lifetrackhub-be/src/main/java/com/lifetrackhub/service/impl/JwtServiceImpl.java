@@ -42,7 +42,6 @@ public class JwtServiceImpl implements JwtService {
         this.algorithm = Algorithm.HMAC256(secretKey);
         this.verifier = JWT.require(algorithm)
                 .withClaim("accountStatus", AccountStatus.ACTIVE.toString())
-                .withClaimPresence("userId")
                 .withClaimPresence("role")
                 .build();
         this.userService = userService;
@@ -62,7 +61,6 @@ public class JwtServiceImpl implements JwtService {
                     .withClaim("accountStatus", user.getAccountStatus().toString())
                     .withClaim("accountType", user.getAccountType().toString())
                     .withClaim("role", Collections.singletonList(role))
-                    .withClaim("userId", user.getId())
                     .sign(algorithm);
 
             log.info("Token created successfully: {}", token);
@@ -77,9 +75,10 @@ public class JwtServiceImpl implements JwtService {
     public UsernamePasswordAuthenticationToken verify(String accessToken) {
         DecodedJWT jwt = verifier.verify(accessToken);
 
-        Long userId = jwt.getClaim("userId").asLong();
+        String email = jwt.getSubject();
         Claim role = jwt.getClaim("role");
-        User user = userService.findUserById(userId);
+        log.info("email: {} & role/authorities: {}", email, role);
+        User user = userService.findUserByEmail(email);
 
         List<SimpleGrantedAuthority> authorities = role
                 .asList(String.class)
