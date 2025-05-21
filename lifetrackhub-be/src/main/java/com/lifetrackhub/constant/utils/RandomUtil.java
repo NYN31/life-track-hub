@@ -1,5 +1,6 @@
 package com.lifetrackhub.constant.utils;
 
+import java.time.Instant;
 import java.util.Random;
 import java.util.UUID;
 
@@ -24,4 +25,15 @@ public class RandomUtil {
         return UUID.randomUUID().toString();
     }
 
+    public static String randomUUIDWithTimestamp() {
+        String uuid = RandomUtil.getUUId();
+        long timestamp = Instant.now().toEpochMilli();
+
+        return timestamp + "-" + uuid;
+    }
+
+    public static Instant extractTimestampFromUUID(String resetToken) {
+        String[] tokens = resetToken.split("-", 2);
+        return Instant.ofEpochMilli(Long.parseLong(tokens[0]));
+    }
 }
