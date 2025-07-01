@@ -3,6 +3,8 @@ import * as pathname from './constants/title-and-paths';
 import PublicNavbar from './components/common/PublicNavbar';
 import LoginContainer from './pages/auth/LoginContainer';
 import RegistrationContainer from './pages/auth/RegistrationContainer';
+import BlogContainer from './pages/blog/BlogContainer';
+import BlogEditorContainer from './pages/blog/BlogEditorContainer';
 
 function App() {
   return (
@@ -31,6 +33,28 @@ function App() {
           </>
         }
       />
+
+      <Route path={pathname.BLOG_PATH}>
+        <Route
+          index
+          path=""
+          element={
+            <>
+              <PublicNavbar />
+              <BlogContainer />
+            </>
+          }
+        />
+        <Route
+          path={pathname.BLOG_EDIT_PATH}
+          element={
+            <>
+              <PublicNavbar />
+              <BlogEditorContainer />
+            </>
+          }
+        />
+      </Route>
     </Routes>
   );
 }

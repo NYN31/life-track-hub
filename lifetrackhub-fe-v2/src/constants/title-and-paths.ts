@@ -37,3 +37,15 @@ export const PROFILE_DETAILS_PATH = '/user/profile';
 
 export const PROFILE_EDIT = 'Edit';
 export const PROFILE_EDIT_PATH = '/user/profile/edit';
+
+// BLOG
+export const BLOG = 'Blog';
+export const BLOG_PATH = '/blog';
+export const BLOG_API_PATH = '/api/blog';
+
+export const BLOG_DETAILS = 'DETAILS';
+export const BLOG_DETAILS_PATH = '/blog/details';
+export const BLOG_DETAILS_API_PATH = '';
+
+export const BLOG_EDIT = 'BLOG EDIT';
+export const BLOG_EDIT_PATH = '/blog/edit';
