@@ -36,8 +36,8 @@ const Sidebar: React.FC<{
         <div key={key} className={`ml-${level * 2}`}>
           {/* Main menu or accordion trigger */}
           <div
-            className={`flex items-center justify-between px-2 py-2 cursor-pointer hover:bg-gray-800 rounded ${
-              isActive ? 'bg-gray-800 font-semibold' : ''
+            className={`flex items-center justify-between px-2 py-2 cursor-pointer hover:bg-gray-200 rounded ${
+              isActive ? 'bg-gray-200 font-semibold' : ''
             }`}
             onClick={() => (hasChildren ? toggleAccordion(item.title) : null)}
           >
@@ -91,14 +91,16 @@ const Sidebar: React.FC<{
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 text-white z-40 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-64 bg-white text-gray-900 z-40 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } md:translate-x-0 md:static md:block`}
       >
         <div className="p-4">
-          <div className="flex items-center justify-center bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-2 py-1.5 mb-6 shadow-md gap-4">
-            <SiSvgtrace />
-            <span className="text-white font-semibold text-md tracking-wide">
+          <div className="flex items-center justify-center gap-1 mb-6">
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-3 py-1.5 shadow-md">
+              <SiSvgtrace color="white"/>
+            </div>
+            <span className="text-gray-900 italic font-semibold text-md tracking-wide">
               LifeTrackHub
             </span>
           </div>
