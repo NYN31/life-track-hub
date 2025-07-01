@@ -5,6 +5,7 @@ import LoginContainer from './pages/auth/LoginContainer';
 import RegistrationContainer from './pages/auth/RegistrationContainer';
 import BlogContainer from './pages/blog/BlogContainer';
 import BlogEditorContainer from './pages/blog/BlogEditorContainer';
+import ProtectedRoute from './components/layout/ProtectedRoute';
 
 function App() {
   return (
@@ -34,26 +35,14 @@ function App() {
         }
       />
 
-      <Route path={pathname.BLOG_PATH}>
-        <Route
-          index
-          path=""
-          element={
-            <>
-              <PublicNavbar />
-              <BlogContainer />
-            </>
-          }
-        />
-        <Route
-          path={pathname.BLOG_EDIT_PATH}
-          element={
-            <>
-              <PublicNavbar />
-              <BlogEditorContainer />
-            </>
-          }
-        />
+      <Route path="" element={<ProtectedRoute />}>
+        <Route path={pathname.BLOG_PATH}>
+          <Route index element={<BlogContainer />} />
+          <Route
+            path={pathname.BLOG_CREATED_PATH}
+            element={<BlogEditorContainer />}
+          />
+        </Route>
       </Route>
     </Routes>
   );

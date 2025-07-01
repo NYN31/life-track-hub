@@ -4,4 +4,11 @@ export interface IBase {
   lastModifiedDate: string;
 }
 
+export interface SidebarItemType {
+  label: string;
+  icon?: React.ReactNode;
+  path?: string;
+  children?: SidebarItemType[];
+}
+
 export type ToastStatus = 'success' | 'error' | 'warning' | 'info';

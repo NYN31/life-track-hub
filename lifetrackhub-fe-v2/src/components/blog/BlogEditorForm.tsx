@@ -60,7 +60,7 @@ const BlogEditorForm: React.FC = () => {
   };
 
   return (
-    <div className="">
+    <>
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
         Write a New Blog
       </h2>
@@ -173,7 +173,7 @@ const BlogEditorForm: React.FC = () => {
           </button>
         </div>
       </form>
-    </div>
+    </>
   );
 };
 

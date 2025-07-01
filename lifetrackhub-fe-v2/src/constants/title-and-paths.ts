@@ -47,5 +47,5 @@ export const BLOG_DETAILS = 'DETAILS';
 export const BLOG_DETAILS_PATH = '/blog/details';
 export const BLOG_DETAILS_API_PATH = '';
 
-export const BLOG_EDIT = 'BLOG EDIT';
-export const BLOG_EDIT_PATH = '/blog/edit';
+export const BLOG_CREATED = 'Create Blog';
+export const BLOG_CREATED_PATH = '/blog/create';

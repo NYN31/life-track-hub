@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import { JWTDecoder, LoginResponse } from '../../types/auth';
 import { PROFILE_DETAILS_PATH } from '../../constants/title-and-paths';
 
 const useLoginCredentialStore = () => {
