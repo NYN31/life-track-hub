@@ -34,6 +34,16 @@ function App() {
           </>
         }
       />
+      <Route
+        index
+        path={pathname.PUBLIC_BLOG_PATH}
+        element={
+          <div className="flex flex-col gap-4 mb-6">
+            <PublicNavbar />
+            <BlogContainer />
+          </div>
+        }
+      />
 
       <Route path="" element={<ProtectedRoute />}>
         <Route path={pathname.BLOG_PATH}>
