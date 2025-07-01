@@ -10,7 +10,7 @@ const dummyBlogs = Array.from({ length: 25 }).map((_, i) => ({
   createdDate: new Date(Date.now() - i * 86400000).toISOString(),
 }));
 
-const BLOGS_PER_PAGE = 6;
+const BLOGS_PER_PAGE = 12;
 
 const BlogContainer: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -30,7 +30,7 @@ const BlogContainer: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
+    <>
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {paginatedBlogs.map(blog => (
           <BlogCard
@@ -63,7 +63,7 @@ const BlogContainer: React.FC = () => {
           Next
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
