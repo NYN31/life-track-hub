@@ -22,7 +22,7 @@ const PublicNavbar = () => {
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Banner/Logo Section - Left */}
           <div className="flex-shrink-0">
@@ -37,7 +37,7 @@ const PublicNavbar = () => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               <Link
-                to={pathname.HOME_PATH}
+                to={pathname.BLOG_PATH}
                 className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300 hover:bg-gray-100"
               >
                 Blogs

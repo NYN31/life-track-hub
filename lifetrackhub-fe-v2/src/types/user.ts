@@ -4,8 +4,10 @@ export interface IUser extends IBase {
   firstname: string;
   lastname: string;
   email: string;
-  enabled: boolean;
   role: string;
+  loginType: string;
+  accountStatus: string;
+  accountType: string;
   userDetails: IUserDetails | null;
 }
 
