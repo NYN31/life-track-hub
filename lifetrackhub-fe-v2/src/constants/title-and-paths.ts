@@ -41,7 +41,6 @@ export const PROFILE_EDIT_PATH = '/user/profile/edit';
 // BLOG
 export const BLOG = 'Blog';
 export const BLOG_PATH = '/blog';
-export const PUBLIC_BLOG_PATH = '/public/blog';
 export const BLOG_API_PATH = '/api/blog';
 
 export const BLOG_DETAILS = 'DETAILS';

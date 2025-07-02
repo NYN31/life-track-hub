@@ -8,6 +8,6 @@ export default function useAuth() {
     return true;
   } else {
     logoutClearingLocalStorage();
-    return false;
+    return true;
   }
 }
