@@ -6,8 +6,12 @@ import RegistrationContainer from './pages/auth/RegistrationContainer';
 import BlogContainer from './pages/blog/BlogContainer';
 import BlogEditorContainer from './pages/blog/BlogEditorContainer';
 import ProtectedRoute from './components/layout/ProtectedRoute';
+import DisplayBlogContainer from './pages/blog/DisplayBlogContainer';
+import useAuthCheck from './helper/hooks/useAuthCheck';
 
 function App() {
+  useAuthCheck();
+
   return (
     <Routes>
       <Route
@@ -44,6 +48,16 @@ function App() {
           </div>
         }
       />
+      <Route
+        index
+        path={pathname.PUBLIC_BLOG_DETAILS_PATH}
+        element={
+          <div className="flex flex-col gap-4 mb-6">
+            <PublicNavbar />
+            <DisplayBlogContainer />
+          </div>
+        }
+      />
 
       <Route path="" element={<ProtectedRoute />}>
         <Route path={pathname.BLOG_PATH}>
@@ -51,6 +65,10 @@ function App() {
           <Route
             path={pathname.BLOG_CREATED_PATH}
             element={<BlogEditorContainer />}
+          />
+          <Route
+            path={pathname.BLOG_DETAILS_PATH}
+            element={<DisplayBlogContainer />}
           />
         </Route>
       </Route>

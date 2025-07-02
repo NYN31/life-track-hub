@@ -9,7 +9,7 @@ const SidebarData = [
     title: data.BLOG,
     hasAccordion: [
       {
-        title: data.BLOG,
+        title: data.ALL_BLOGS,
         label: data.BLOG_PATH,
         path: data.BLOG_PATH,
         icon: <LuListTodo size={ICON_SIZE} />,

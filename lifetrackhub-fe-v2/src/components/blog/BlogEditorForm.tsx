@@ -1,45 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import MarkdownEditor from '@uiw/react-markdown-editor';
-import { BlogVisibility } from '../../types/blog';
+import { BlogFormInputs } from '../../types/blog';
 import Select from 'react-select';
-
-type TagOption = {
-  value: string;
-  label: string;
-};
-
-interface BlogFormInputs {
-  title: string;
-  visibility: BlogVisibility;
-  tags: TagOption[];
-  content: string;
-}
+import { Link } from 'react-router-dom';
+import {
+  BLOG_DETAILS_PATH,
+  PUBLIC_BLOG_DETAILS_PATH,
+} from '../../constants/title-and-paths';
+import { useDispatch, useSelector } from 'react-redux';
+import { blogContentDraft } from '../../features/blog/blogSlice';
+import useAuth from '../../helper/hooks/useAuth';
 
 const tagOptions = [
-  { value: 'react', label: 'React' },
-  { value: 'typescript', label: 'TypeScript' },
-  { value: 'javascript', label: 'JavaScript' },
-  { value: 'webdev', label: 'Web Development' },
-  { value: 'frontend', label: 'Frontend' },
+  { value: 'React', label: 'React' },
+  { value: 'TypeScript', label: 'TypeScript' },
+  { value: 'JavaScript', label: 'JavaScript' },
+  { value: 'Web Development', label: 'Web Development' },
+  { value: 'Frontend', label: 'Frontend' },
 ];
 
 const BlogEditorForm: React.FC = () => {
+  const dispatch = useDispatch();
+  const auth = useAuth();
+
+  const blogDetails = useSelector((state: any) => state.blog);
+
   const [currentTags] = useState<string[]>([]);
 
   const {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<BlogFormInputs>({
+    mode: 'all',
     defaultValues: {
-      title: '',
-      visibility: 'PUBLIC',
-      tags: [],
-      content: '',
+      title: blogDetails.title,
+      visibility: blogDetails.visibility,
+      tags: blogDetails.tags.map((tag: string) => ({ value: tag, label: tag })),
+      content: blogDetails.content,
     },
   });
+
+  const watchedValues = watch();
 
   const onSubmit: SubmitHandler<BlogFormInputs> = data => {
     // const tagList = data.tags
@@ -49,8 +54,6 @@ const BlogEditorForm: React.FC = () => {
     // console.log({ ...data, tags: tagList });
     // Submit to API or handle blog post here
 
-    console.log(data);
-
     const res = {
       ...data,
       tags: data.tags.map(tag => tag.value),
@@ -58,6 +61,30 @@ const BlogEditorForm: React.FC = () => {
 
     console.log(res);
   };
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const { title, visibility, content, tags } = watchedValues;
+      if (title && content && visibility) {
+        const newContent = {
+          title,
+          visibility,
+          content,
+          tags: tags.map(tag => tag.value),
+        };
+        dispatch(blogContentDraft(newContent));
+        localStorage.setItem('draftBlog', JSON.stringify(newContent));
+      }
+    }, 3000);
+
+    return () => clearTimeout(handler);
+  }, [
+    watchedValues.title,
+    watchedValues.content,
+    watchedValues.tags,
+    watchedValues.visibility,
+    dispatch,
+  ]);
 
   return (
     <>
@@ -152,7 +179,8 @@ const BlogEditorForm: React.FC = () => {
               <MarkdownEditor
                 {...field}
                 height="400px"
-                className="rounded border"
+                className="fixed rounded border"
+                enablePreview={true}
               />
             )}
           />
@@ -163,14 +191,29 @@ const BlogEditorForm: React.FC = () => {
           )}
         </div>
 
-        {/* Submit Button */}
-        <div className="pt-4">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Submit Blog
-          </button>
+        <div className="flex gap-4">
+          <div className="pt-4">
+            <Link
+              // onClick={() =>
+              //   navigate(auth ? BLOG_DETAILS_PATH : PUBLIC_BLOG_DETAILS_PATH)
+              // }
+              to={auth ? BLOG_DETAILS_PATH : PUBLIC_BLOG_DETAILS_PATH}
+              className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Preview
+            </Link>
+          </div>
+          {/* Submit Button */}
+          <div className="pt-4">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+            >
+              Submit Blog
+            </button>
+          </div>
         </div>
       </form>
     </>
