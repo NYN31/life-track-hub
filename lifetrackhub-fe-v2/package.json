@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "@uiw/react-markdown-editor": "^6.1.4",
+    "@uiw/react-markdown-preview": "^5.1.4",
     "axios": "^1.10.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.19.1",

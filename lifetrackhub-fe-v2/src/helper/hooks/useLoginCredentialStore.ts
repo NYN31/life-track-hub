@@ -4,6 +4,7 @@ import { BLOG_PATH } from '../../constants/title-and-paths';
 import { IJWTDecoder, ILoginResponse } from '../../types/auth';
 import { useDispatch } from 'react-redux';
 import { userLoggedIn } from '../../features/auth/authSlice';
+import { blogContentDraft } from '../../features/blog/blogSlice';
 
 const useLoginCredentialStore = () => {
   const dispatch = useDispatch();
@@ -20,9 +21,18 @@ const useLoginCredentialStore = () => {
     localStorage.setItem('email', sub);
     localStorage.setItem('role', role[0]);
 
+    const draftBlog = {
+      title: '',
+      visibility: '',
+      tags: [],
+      content: '',
+    };
+    localStorage.setItem('draftBlog', JSON.stringify(draftBlog));
+
     dispatch(
       userLoggedIn({ ...loginResponse, ...decodedJwt, email: decodedJwt.sub })
     );
+    dispatch(blogContentDraft(draftBlog));
     //successToast(SUCCESS_TITLE, LOGIN_SUCCESS_MESSAGE);
     navigate(BLOG_PATH, { replace: true });
   };

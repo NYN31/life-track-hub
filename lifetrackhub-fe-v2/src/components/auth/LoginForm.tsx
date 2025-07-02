@@ -31,7 +31,6 @@ const LoginForm: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<ILoginFormInputs> = async data => {
-    console.log('Login data:', data);
     setLoading(true);
 
     await login(data)

@@ -6,5 +6,6 @@ export const getAllLocalStoreValue = () => {
     accessToken: localStorage.getItem('accessToken'),
     email: localStorage.getItem('email'),
     role: localStorage.getItem('role'),
+    draftBlog: localStorage.getItem('draftBlog') || JSON.stringify({}),
   };
 };
