@@ -4,7 +4,6 @@ const ProfileDropdown: React.FC<{
   onLogout: () => void;
   onProfile: () => void;
 }> = ({ onLogout, onProfile }) => {
-  const fullname = localStorage.getItem('name');
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +28,7 @@ const ProfileDropdown: React.FC<{
         onClick={() => setOpen(!open)}
         className="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md"
       >
-        <span className="text-gray-700 font-medium">{fullname}</span>
+        <span className="text-gray-700 font-medium">Sajjad Hosen Noyon</span>
         <svg
           className="w-4 h-4 text-gray-500"
           fill="none"

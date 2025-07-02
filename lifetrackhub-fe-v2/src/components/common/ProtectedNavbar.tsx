@@ -20,7 +20,7 @@ const ProtectedNavbar: React.FC<{
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 border-b border-gray-300 bg-white shadow-sm z-10 h-14 px-6 flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 border-b border-gray-200 bg-white shadow z-10 h-14 px-6 flex items-center justify-between">
       <button className=" text-gray-600" onClick={onMenuClick}>
         {/* Hamburger icon */}
         <svg className="w-6 h-6" fill="none" stroke="currentColor">

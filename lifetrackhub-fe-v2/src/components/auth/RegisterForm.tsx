@@ -1,46 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { IRegisterFormInputs } from '../../types/auth';
 import { EMAIL_REGEX_V2 } from '../../constants/regex';
 import { useNavigate } from 'react-router-dom';
 import { LOGIN_PATH } from '../../constants/title-and-paths';
-import { useRegistrationMutation } from '../../features/auth/authApi';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
 
-  const [isLoading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [registration] = useRegistrationMutation();
-
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<IRegisterFormInputs>();
 
-  const onSubmit: SubmitHandler<IRegisterFormInputs> = async data => {
-    setLoading(true);
-    await registration(data)
-      .unwrap()
-      .then(() => {
-        localStorage.setItem('email', data.email);
-        navigate(LOGIN_PATH);
-      })
-      .catch(err => {
-        reset({
-          firstname: data.firstname,
-          lastname: data.lastname,
-          email: data.email,
-          password: '',
-        });
-        setErrorMessage(err.data.message);
-      })
-      .finally(() => setLoading(false));
+  const onSubmit: SubmitHandler<IRegisterFormInputs> = data => {
+    console.log('Registration data:', data);
+    // You can send this data to your backend
   };
 
   return (
@@ -141,31 +117,22 @@ const RegisterForm: React.FC = () => {
               <label htmlFor="password" className="block text-gray-700 mb-1">
                 Password
               </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  {...register('password', {
-                    required: 'Password is required',
-                    minLength: {
-                      value: 8,
-                      message: 'Password must be at least 8 characters',
-                    },
-                  })}
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                    errors.password
-                      ? 'border-red-500 focus:ring-red-200'
-                      : 'border-gray-300 focus:ring-blue-200'
-                  }`}
-                />
-
-                <span
-                  onClick={() => setShowPassword(prev => !prev)}
-                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer"
-                >
-                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
-                </span>
-              </div>
+              <input
+                id="password"
+                type="password"
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: {
+                    value: 8,
+                    message: 'Password must be at least 8 characters',
+                  },
+                })}
+                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                  errors.password
+                    ? 'border-red-500 focus:ring-red-200'
+                    : 'border-gray-300 focus:ring-blue-200'
+                }`}
+              />
               {errors.password && (
                 <p className="text-sm text-red-500 mt-1">
                   {errors.password.message}
@@ -185,19 +152,10 @@ const RegisterForm: React.FC = () => {
 
             <button
               type="submit"
-              disabled={isLoading || !isValid}
-              className={`w-full py-2 rounded-lg transition duration-200 ${
-                isLoading || !isValid
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
-              }`}
+              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"
             >
-              {isLoading ? 'Register in...' : 'Register'}
+              Register
             </button>
-
-            {errorMessage && (
-              <p className="mt-4 text-sm text-red-600">{errorMessage}</p>
-            )}
           </form>
         </div>
       </div>
