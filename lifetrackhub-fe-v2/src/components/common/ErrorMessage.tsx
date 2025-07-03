@@ -13,7 +13,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
 
   return (
     <div
-      className={`inline-block bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-md text-sm ${className}`}
+      className={`inline-block bg-red-100 border border-red-400 text-red-700 my-2 px-4 py-2 rounded-md text-sm ${className}`}
       role="alert"
     >
       {message}

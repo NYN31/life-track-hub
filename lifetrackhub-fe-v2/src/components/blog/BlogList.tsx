@@ -10,7 +10,7 @@ const BlogList: React.FC<{ results: IBlog[] }> = ({ results }) => {
 
         return (
           <BlogCard
-            key={blog.id}
+            key={blog.slug}
             title={blog.title}
             content={blog.content}
             username={username}

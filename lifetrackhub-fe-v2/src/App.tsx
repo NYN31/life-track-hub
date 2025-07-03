@@ -8,6 +8,7 @@ import BlogCreateContainer from './pages/blog/BlogCreateContainer';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import DisplayBlogContainer from './pages/blog/DisplayBlogContainer';
 import useAuthCheck from './helper/hooks/useAuthCheck';
+import BlogUpdateContainer from './pages/blog/BlogUpdateContainer';
 
 function App() {
   useAuthCheck();
@@ -60,16 +61,11 @@ function App() {
       />
 
       <Route path="" element={<ProtectedRoute />}>
-        <Route path={pathname.BLOG_PATH}>
+        <Route path="blog">
           <Route index element={<BlogContainer />} />
-          <Route
-            path={pathname.BLOG_CREATED_PATH}
-            element={<BlogCreateContainer />}
-          />
-          <Route
-            path={pathname.BLOG_DETAILS_PATH}
-            element={<DisplayBlogContainer />}
-          />
+          <Route path="create" element={<BlogCreateContainer />} />
+          <Route path="by-slug/:slug" element={<DisplayBlogContainer />} />
+          <Route path="update/:slug" element={<BlogUpdateContainer />} />
         </Route>
       </Route>
     </Routes>

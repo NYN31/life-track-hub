@@ -5,6 +5,7 @@ import com.lifetrackhub.constant.utils.DateUtil;
 import com.lifetrackhub.constant.utils.RandomUtil;
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.request.BlogCreateRequestDto;
+import com.lifetrackhub.dto.request.BlogUpdateRequestDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.entity.User;
@@ -52,6 +53,24 @@ public class BlogServiceImpl implements BlogService {
         blog.setUser(userFromSecurityContext);
 
         return blogRepository.save(blog);
+    }
+
+    @Override
+    public Blog update(BlogUpdateRequestDto request) {
+        log.info("Updating blog");
+
+        Optional<Blog> optionalBlog = blogRepository.getBlogBySlug(request.getSlug());
+        if (optionalBlog.isPresent()) {
+            Blog blog = optionalBlog.get();
+
+            blog.setTitle(request.getTitle());
+            blog.setContent(request.getContent());
+            blog.setVisibility(request.getVisibility());
+
+            return blogRepository.save(blog);
+        }
+
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Blog not found");
     }
 
     @Override
