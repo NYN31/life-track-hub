@@ -41,7 +41,7 @@ const PublicNavbar = () => {
           <div className="flex items-center space-x-4">
             {/* Blogs + Sign In/Out Buttons (Hidden on mobile) */}
             <div className="hidden md:flex items-center space-x-3">
-              <div className="hidden md:block">
+              {/* <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-8">
                   <Link
                     to={PUBLIC_BLOG_PATH}
@@ -50,7 +50,7 @@ const PublicNavbar = () => {
                     Blogs
                   </Link>
                 </div>
-              </div>
+              </div> */}
 
               <button
                 onClick={handleNavigateToLogin}
