@@ -4,7 +4,7 @@ import PublicNavbar from './components/common/PublicNavbar';
 import LoginContainer from './pages/auth/LoginContainer';
 import RegistrationContainer from './pages/auth/RegistrationContainer';
 import BlogContainer from './pages/blog/BlogContainer';
-import BlogEditorContainer from './pages/blog/BlogEditorContainer';
+import BlogCreateContainer from './pages/blog/BlogCreateContainer';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import DisplayBlogContainer from './pages/blog/DisplayBlogContainer';
 import useAuthCheck from './helper/hooks/useAuthCheck';
@@ -64,7 +64,7 @@ function App() {
           <Route index element={<BlogContainer />} />
           <Route
             path={pathname.BLOG_CREATED_PATH}
-            element={<BlogEditorContainer />}
+            element={<BlogCreateContainer />}
           />
           <Route
             path={pathname.BLOG_DETAILS_PATH}

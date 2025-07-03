@@ -122,7 +122,7 @@ const CommonSearchBox: React.FC<{
         type="button"
         disabled={!isSearchButtonEnable}
         onClick={() => handleSearch()}
-        className="w-[180px] px-4 py-2 rounded border border-teal-500 text-teal-600 hover:bg-teal-100 text-sm disabled:opacity-50"
+        className="w-[180px] px-4 py-2 rounded border border-purple-500 text-purple-600 hover:bg-purple-100 text-sm disabled:opacity-50"
       >
         Search
       </button>

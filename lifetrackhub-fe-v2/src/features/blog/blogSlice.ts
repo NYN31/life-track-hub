@@ -29,5 +29,5 @@ const blogSlice = createSlice({
   },
 });
 
-export const { blogContentDraft } = blogSlice.actions;
+export const { blogContentDraft, blogReset } = blogSlice.actions;
 export default blogSlice.reducer;

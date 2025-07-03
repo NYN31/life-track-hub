@@ -9,14 +9,22 @@ export const SUPER_ADMIN_BLOG_API_PATH = '/super-admin/api/blog';
 export const blogApi = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getBlogsByUser: builder.query({
-      query: ({ page = 0, size = 3, email, start, end }) => {
+      query: ({ page = 0, size = 9, email, start, end }) => {
         const requestParams = getValidRequestParams(
           `page=${page}&size=${size}&email=${email}&start=${start}&end=${end}`
         );
         return `${BLOG_API_PATH}/find-all?${requestParams}`;
       },
     }),
+
+    createBlog: builder.mutation({
+      query: data => ({
+        url: `${ADMIN_BLOG_API_PATH}/create`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useLazyGetBlogsByUserQuery } = blogApi;
+export const { useLazyGetBlogsByUserQuery, useCreateBlogMutation } = blogApi;
