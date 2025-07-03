@@ -29,7 +29,7 @@ import java.util.Optional;
 @Service
 public class BlogServiceImpl implements BlogService {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private static final int DATE_RANGE_PERIOD_FOR_BLOG_SEARCH = 30;
+    private static final int DATE_RANGE_PERIOD_FOR_BLOG_SEARCH = 90;
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
