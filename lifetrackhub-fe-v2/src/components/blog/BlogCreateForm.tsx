@@ -81,14 +81,14 @@ const BlogCreateForm: React.FC = () => {
     const handler = setTimeout(() => {
       const { title, visibility, content, tags } = watchedValues;
       if (title && content && visibility) {
-        const newContent = {
+        const newDraft = {
           title,
           visibility,
           content,
           tags: tags.map(tag => tag.value),
         };
-        dispatch(blogContentDraft(newContent));
-        localStorage.setItem('draftBlog', JSON.stringify(newContent));
+        dispatch(blogContentDraft(newDraft));
+        localStorage.setItem('draftBlog', JSON.stringify(newDraft));
       }
     }, 3000);
 

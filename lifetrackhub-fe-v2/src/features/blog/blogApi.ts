@@ -17,6 +17,12 @@ export const blogApi = apiSlice.injectEndpoints({
       },
     }),
 
+    getBlogBySlug: builder.query({
+      query: slug => {
+        return `${PUBLIC_BLOG_API_PATH}/by-slug/${slug}`;
+      },
+    }),
+
     createBlog: builder.mutation({
       query: data => ({
         url: `${ADMIN_BLOG_API_PATH}/create`,
@@ -24,7 +30,20 @@ export const blogApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    updateBlog: builder.mutation({
+      query: data => ({
+        url: `${ADMIN_BLOG_API_PATH}/update`,
+        method: 'POST',
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useLazyGetBlogsByUserQuery, useCreateBlogMutation } = blogApi;
+export const {
+  useLazyGetBlogsByUserQuery,
+  useGetBlogBySlugQuery,
+  useCreateBlogMutation,
+  useUpdateBlogMutation,
+} = blogApi;
