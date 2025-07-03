@@ -44,11 +44,6 @@ export const ALL_BLOGS = 'All blogs';
 export const BLOG_PATH = '/blog';
 export const PUBLIC_BLOG_PATH = '/public/blog';
 
-export const BLOG_API_PATH = '/api/blog';
-export const PUBLIC_BLOG_API_PATH = '/public/api/blog';
-export const ADMIN_BLOG_API_PATH = '/admin/api/blog'
-export const SUPER_ADMIN_BLOG_API_PATH = '/super-admin/api/blog'
-
 export const BLOG_DETAILS = 'DETAILS';
 export const BLOG_DETAILS_PATH = '/blog/by-slug';
 export const PUBLIC_BLOG_DETAILS_PATH = '/public/blog/by-slug';
@@ -56,3 +51,5 @@ export const BLOG_DETAILS_API_PATH = '';
 
 export const BLOG_CREATED = 'Create Blog';
 export const BLOG_CREATED_PATH = '/blog/create';
+
+export const BLOG_UPDATED_PATH = '/blog/update';

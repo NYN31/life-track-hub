@@ -61,7 +61,6 @@ const BlogContainer: React.FC = () => {
     setBlogContentLoading(true);
     await triggerGetBlogsByUser({
       page: pageId,
-      size: 10,
       email,
       start: getDateToString(dateRange[0]),
       end: getDateToString(dateRange[1]),
