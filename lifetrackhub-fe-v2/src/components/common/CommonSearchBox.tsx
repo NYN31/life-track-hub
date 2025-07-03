@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
 import {
   SearchDateRange,
@@ -7,90 +7,9 @@ import {
 } from '../../types/common';
 import Select from 'react-select';
 import { Controller, useForm } from 'react-hook-form';
+import { useSearchEnable } from '../../helper/hooks/useSearchEnable';
+import { useResetEnable } from '../../helper/hooks/useResetEnable';
 
-const useResetEnabled = ({
-  textFields,
-  dateFields,
-}: {
-  textFields?: SearchField[];
-  dateFields?: SearchDateRange[];
-}) => {
-  const [isResetEnable, setIsResetEnable] = useState(false);
-  useEffect(() => {
-    setIsResetEnable(false);
-    textFields?.map(field => {
-      if (field.value) {
-        setIsResetEnable(true);
-      }
-    });
-    dateFields?.map(dateField => {
-      if (dateField.date[0] && dateField.date[1]) {
-        setIsResetEnable(true);
-      }
-    });
-  }, [textFields, dateFields]);
-  return isResetEnable;
-};
-
-const useSearchEnabled = ({
-  textFields,
-  dateFields,
-}: {
-  textFields?: SearchField[];
-  dateFields?: SearchDateRange[];
-}) => {
-  const [isSearchEnable, setIsSearchEnable] = useState(false);
-  useEffect(() => {
-    setIsSearchEnable(false);
-    let hasMandatoryFields = false;
-    let isEnable = true;
-    textFields?.map(field => {
-      if (field.isMandatory) {
-        hasMandatoryFields = true;
-      }
-    });
-    dateFields?.map(dateField => {
-      if (dateField.isMandatory) {
-        hasMandatoryFields = true;
-      }
-    });
-
-    if (hasMandatoryFields) {
-      textFields?.map(field => {
-        if (field.isMandatory && !field.value) {
-          isEnable = false;
-        }
-      });
-      dateFields?.map(dateField => {
-        if (
-          dateField.isMandatory &&
-          (!dateField.date[0] || !dateField.date[1])
-        ) {
-          isEnable = false;
-        }
-      });
-      if (isEnable) {
-        setIsSearchEnable(true);
-      }
-    } else {
-      isEnable = false;
-      textFields?.map(field => {
-        if (field.value) {
-          isEnable = true;
-        }
-      });
-      dateFields?.map(dateField => {
-        if (dateField.date[0] && dateField.date[1]) {
-          isEnable = true;
-        }
-      });
-      if (isEnable) {
-        setIsSearchEnable(true);
-      }
-    }
-  }, [textFields, dateFields]);
-  return isSearchEnable;
-};
 const CommonSearchBox: React.FC<{
   textFields?: SearchField[];
   dateFields?: SearchDateRange[];
@@ -105,9 +24,8 @@ const CommonSearchBox: React.FC<{
   handleSearch,
   handleReset,
 }) => {
-  console.log(textFields, dateFields);
-  const isSearchButtonEnable = useSearchEnabled({ textFields, dateFields });
-  const isResetButtonEnable = useResetEnabled({ textFields, dateFields });
+  const isSearchButtonEnable = useSearchEnable({ textFields, dateFields });
+  const isResetButtonEnable = useResetEnable({ textFields, dateFields });
 
   const { control, reset } = useForm();
 

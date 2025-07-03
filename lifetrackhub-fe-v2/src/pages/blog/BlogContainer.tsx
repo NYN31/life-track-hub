@@ -11,10 +11,12 @@ import BlogList from '../../components/blog/BlogList';
 import Spinner from '../../components/common/Spinner';
 import CommonSearchBox from '../../components/common/CommonSearchBox';
 import ErrorMessage from '../../components/common/ErrorMessage';
+import useAuth from '../../helper/hooks/useAuth';
 
 const BlogContainer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const auth = useAuth();
 
   const queryPageNo = useQuery().get('page') || '0';
   const queryEmail = useQuery().get('email') || '';
@@ -119,29 +121,32 @@ const BlogContainer: React.FC = () => {
 
   return (
     <>
-      <div className="max-w-6xl mx-auto gap-6">
-        <CommonSearchBox
-          textFields={[
-            {
-              name: 'Email',
-              value: email,
-              setValue: setEmail,
-              isTrim: true,
-              isMandatory: false,
-            },
-          ]}
-          dateFields={[
-            {
-              name: 'Date Range (Required)',
-              date: dateRange,
-              setDateRange: setDateRange,
-              isMandatory: false,
-            },
-          ]}
-          handleSearch={handleBlogsSearch}
-          handleReset={handleReset}
-        />
-      </div>
+      {auth && (
+        <div className="max-w-6xl mx-auto gap-6">
+          <CommonSearchBox
+            textFields={[
+              {
+                name: 'Email',
+                value: email,
+                setValue: setEmail,
+                isTrim: true,
+                isMandatory: false,
+              },
+            ]}
+            dateFields={[
+              {
+                name: 'Date Range (Required)',
+                date: dateRange,
+                setDateRange: setDateRange,
+                isMandatory: false,
+              },
+            ]}
+            handleSearch={handleBlogsSearch}
+            handleReset={handleReset}
+          />
+        </div>
+      )}
+
       <BlogList results={results} />
 
       {results.length === 0 && (
