@@ -3,8 +3,8 @@ import { LOGIN_PATH } from '../../constants/title-and-paths';
 import useAuth from '../../helper/hooks/useAuth';
 import Sidebar from './Sidebar';
 import ProtectedNavbar from '../common/ProtectedNavbar';
-import SidebarData from '../../constants/Sidebar/user-sidebar-data';
 import { useState } from 'react';
+import { getSidebarDataByUserRole } from '../../helper/local-storage/get-sidebar-data';
 
 const ProtectedRoute = () => {
   const authed = useAuth();
@@ -14,10 +14,12 @@ const ProtectedRoute = () => {
     return <Navigate to={LOGIN_PATH} replace />;
   }
 
+  const sidebarData = getSidebarDataByUserRole();
+
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar
-        items={SidebarData}
+        items={sidebarData}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(false)}
       />

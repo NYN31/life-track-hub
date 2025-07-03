@@ -9,8 +9,11 @@ import {
   PUBLIC_BLOG_DETAILS_PATH,
 } from '../../constants/title-and-paths';
 import { useDispatch, useSelector } from 'react-redux';
-import { blogContentDraft } from '../../features/blog/blogSlice';
+import { blogContentDraft, blogReset } from '../../features/blog/blogSlice';
 import useAuth from '../../helper/hooks/useAuth';
+import { useCreateBlogMutation } from '../../features/blog/blogApi';
+import ErrorMessage from '../common/ErrorMessage';
+import { resetDraftBlogStorage } from '../../helper/local-storage/reset-blog-storage';
 
 const tagOptions = [
   { value: 'React', label: 'React' },
@@ -20,19 +23,24 @@ const tagOptions = [
   { value: 'Frontend', label: 'Frontend' },
 ];
 
-const BlogEditorForm: React.FC = () => {
+const BlogCreateForm: React.FC = () => {
   const dispatch = useDispatch();
   const auth = useAuth();
 
   const blogDetails = useSelector((state: any) => state.blog);
 
   const [currentTags] = useState<string[]>([]);
+  const [isLoadingBlogCreation, setLoadingBlogCreation] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const [triggerBlogCreate] = useCreateBlogMutation();
 
   const {
     register,
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<BlogFormInputs>({
     mode: 'all',
@@ -46,20 +54,27 @@ const BlogEditorForm: React.FC = () => {
 
   const watchedValues = watch();
 
-  const onSubmit: SubmitHandler<BlogFormInputs> = data => {
-    // const tagList = data.tags
-    //   .split(',')
-    //   .map(tag => tag.trim())
-    //   .filter(tag => tag !== '');
-    // console.log({ ...data, tags: tagList });
-    // Submit to API or handle blog post here
+  const onSubmit: SubmitHandler<BlogFormInputs> = async data => {
+    setLoadingBlogCreation(true);
 
-    const res = {
+    const blogData = {
       ...data,
       tags: data.tags.map(tag => tag.value),
     };
 
-    console.log(res);
+    await triggerBlogCreate(blogData)
+      .unwrap()
+      .then(res => {
+        console.log(res);
+        dispatch(blogReset());
+        resetDraftBlogStorage();
+        reset();
+        // TODO: navigate to Blog details page by-slug
+      })
+      .catch(err => {
+        setErrorMessage(err?.data?.message);
+      })
+      .finally(() => setLoadingBlogCreation(false));
   };
 
   useEffect(() => {
@@ -209,15 +224,18 @@ const BlogEditorForm: React.FC = () => {
           <div className="pt-4">
             <button
               type="submit"
+              disabled={isLoadingBlogCreation}
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
             >
               Submit Blog
             </button>
           </div>
+
+          {errorMessage && <ErrorMessage message={errorMessage} />}
         </div>
       </form>
     </>
   );
 };
 
-export default BlogEditorForm;
+export default BlogCreateForm;
