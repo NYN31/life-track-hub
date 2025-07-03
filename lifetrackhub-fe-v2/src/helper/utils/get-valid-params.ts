@@ -16,3 +16,23 @@ export const getValidRequestParams = (url: string) => {
   }
   return newUrl;
 };
+
+export function getValidParams(paramsStr: string) {
+  const allParam = paramsStr.split('&');
+  let validParams = '';
+  for (let i = 0; i < allParam.length; i++) {
+    const param = allParam[i].split('=');
+    if (param.length > 1 && param[1]) {
+      if (validParams.length > 0) validParams += '&';
+
+      validParams += `${param[0]}=${param[1]}`;
+    }
+  }
+  return validParams ? `?${validParams}` : validParams;
+}
+
+export function getUpdatedUrl(url: string) {
+  const splitUrl = url.split('?');
+  const validParams = splitUrl.length > 1 ? getValidParams(splitUrl[1]) : '';
+  return `${splitUrl[0]}${validParams}`;
+}

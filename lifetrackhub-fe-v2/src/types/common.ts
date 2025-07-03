@@ -1,3 +1,5 @@
+import { Dispatch } from 'react';
+
 export interface IBase {
   id: number;
   createdDate: string;
@@ -12,3 +14,30 @@ export interface SidebarItemType {
 }
 
 export type ToastStatus = 'success' | 'error' | 'warning' | 'info';
+
+export interface SearchField {
+  name: string;
+  value: string;
+  setValue: (value: string) => void;
+  isTrim?: boolean;
+  isMandatory: boolean;
+}
+
+export interface SearchDateRange {
+  name: string;
+  date: [Date | null, Date | null];
+  setDateRange: Dispatch<React.SetStateAction<any>>;
+  isMandatory: boolean;
+}
+
+export interface SelectDropdown {
+  name: string;
+  option: OptionType | null;
+  options: OptionType[];
+  setOption: (option: OptionType) => void;
+}
+
+export interface OptionType {
+  label: string;
+  value: string;
+}
