@@ -1,19 +1,41 @@
 import MarkdownPreview from '@uiw/react-markdown-preview';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  BLOG_CREATED_PATH,
+  BLOG_UPDATED_PATH,
+} from '../../constants/title-and-paths';
 
-const DisplayBlog = () => {
+const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
+  const { slug } = useParams();
+  const navigate = useNavigate();
+
   const blog = {
-    title: 'No title',
-    content: 'Empty',
+    title: blogData.title,
+    content: blogData.content,
     tags: [],
-    visibility: 'PUBLIC',
+    visibility: blogData.visibility,
+  };
+
+  const navigateFromBlogDetailsPage = () => {
+    if (slug) {
+      navigate(`${BLOG_UPDATED_PATH}/${slug}`);
+    } else {
+      navigate(`${BLOG_CREATED_PATH}`);
+    }
   };
 
   return (
     <div className="max-w-6xl mx-auto w-full p-4 space-y-6">
-      {/* Title */}
-      <h1 className="text-3xl font-bold">{blog.title}</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-bold">{blog.title}</h1>
+        <button
+          onClick={navigateFromBlogDetailsPage}
+          className="px-6 py-2 bg-purple-500 text-white font-semibold rounded-lg hover:bg-purple-700 transition duration-200 shadow-sm"
+        >
+          edit
+        </button>
+      </div>
 
-      {/* Visibility */}
       <div className="text-sm font-medium text-gray-500">
         Visibility:{' '}
         <span
@@ -29,7 +51,6 @@ const DisplayBlog = () => {
         </span>
       </div>
 
-      {/* Tags */}
       <div className="flex flex-wrap gap-2">
         {blog.tags.map(tag => (
           <span
@@ -41,7 +62,6 @@ const DisplayBlog = () => {
         ))}
       </div>
 
-      {/* Markdown Content Preview */}
       <div className="bg-white p-4">
         <MarkdownPreview source={blog.content} />
       </div>

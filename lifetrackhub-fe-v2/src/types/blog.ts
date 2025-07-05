@@ -5,7 +5,7 @@ export interface IBlog extends IBase {
   title: string;
   content: string;
   slug: string;
-  tag: TagOption[];
+  //tag: TagOption[];
   visibility: BlogVisibility;
   user: IUser;
 }

@@ -85,7 +85,7 @@ const BlogUpdateForm: React.FC<{
               {...field}
               height="400px"
               className="fixed rounded border"
-              enablePreview={false}
+              enablePreview={true}
             />
           )}
         />

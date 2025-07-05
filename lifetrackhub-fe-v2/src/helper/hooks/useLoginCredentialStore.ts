@@ -30,7 +30,12 @@ const useLoginCredentialStore = () => {
     localStorage.setItem('draftBlog', JSON.stringify(draftBlog));
 
     dispatch(
-      userLoggedIn({ ...loginResponse, ...decodedJwt, email: decodedJwt.sub })
+      userLoggedIn({
+        ...loginResponse,
+        ...decodedJwt,
+        role: role[0],
+        email: decodedJwt.sub,
+      })
     );
     dispatch(blogContentDraft(draftBlog));
     //successToast(SUCCESS_TITLE, LOGIN_SUCCESS_MESSAGE);

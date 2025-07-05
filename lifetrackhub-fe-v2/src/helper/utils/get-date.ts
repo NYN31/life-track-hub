@@ -13,5 +13,5 @@ export function getDateToString(date: Date | null, isEndDate = false) {
 
 export const formatHumanReadableDate = (dateStr: string): string => {
   const date = new Date(dateStr);
-  return format(date, 'do MMMM');
+  return format(date, 'do MMMM yyyy');
 };
