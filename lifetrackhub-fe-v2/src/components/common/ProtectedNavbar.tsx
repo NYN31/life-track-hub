@@ -5,8 +5,8 @@ import { LOGIN_PATH } from '../../constants/title-and-paths';
 import { logoutClearingLocalStorage } from '../../helper/local-storage/clear-local-storage';
 
 const ProtectedNavbar: React.FC<{
-  onMenuClick: () => void;
-}> = ({ onMenuClick }) => {
+  onMenuOpenClick: () => void;
+}> = ({ onMenuOpenClick }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -20,8 +20,8 @@ const ProtectedNavbar: React.FC<{
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 border-b border-gray-300 bg-white shadow-sm z-10 h-14 px-6 flex items-center justify-between">
-      <button className=" text-gray-600" onClick={onMenuClick}>
+    <header className="top-0 left-0 right-0 border-b border-gray-300 bg-white shadow-sm z-10 h-14 px-6 flex items-center justify-between md:justify-end">
+      <button className=" text-gray-600 md:hidden" onClick={onMenuOpenClick}>
         {/* Hamburger icon */}
         <svg className="w-6 h-6" fill="none" stroke="currentColor">
           <path

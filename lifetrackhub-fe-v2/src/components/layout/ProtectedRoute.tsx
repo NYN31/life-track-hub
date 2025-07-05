@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 import ProtectedNavbar from '../common/ProtectedNavbar';
 import { useState } from 'react';
 import { getSidebarDataByUserRole } from '../../helper/local-storage/get-sidebar-data';
+import Footer from '../common/Footer';
 
 const ProtectedRoute = () => {
   const authed = useAuth();
@@ -21,14 +22,16 @@ const ProtectedRoute = () => {
       <Sidebar
         items={sidebarData}
         isOpen={sidebarOpen}
-        onToggle={() => setSidebarOpen(false)}
+        onToggleSidebarClose={() => setSidebarOpen(false)}
       />
       <div className="flex-1 flex flex-col h-full">
-        <ProtectedNavbar onMenuClick={() => setSidebarOpen(true)} />
+        <ProtectedNavbar onMenuOpenClick={() => setSidebarOpen(true)} />
 
-        <main className="flex-1 overflow-y-auto bg-white pt-20 pb-8 px-8 w-full">
+        <main className="flex-1 overflow-y-auto bg-white py-8 px-8 w-full">
           <Outlet />
         </main>
+
+        <Footer />
       </div>
     </div>
   );

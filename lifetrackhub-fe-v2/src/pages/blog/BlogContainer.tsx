@@ -121,7 +121,7 @@ const BlogContainer: React.FC = () => {
   return (
     <>
       {auth && (
-        <div className="max-w-6xl mx-auto gap-6">
+        <div className="mx-auto gap-6">
           <CommonSearchBox
             textFields={[
               {
