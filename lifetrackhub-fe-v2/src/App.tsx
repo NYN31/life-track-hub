@@ -9,6 +9,7 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import DisplayBlogContainer from './pages/blog/DisplayBlogContainer';
 import useAuthCheck from './helper/hooks/useAuthCheck';
 import BlogUpdateContainer from './pages/blog/BlogUpdateContainer';
+import BlogPreviewContainer from './pages/blog/BlogPreviewContainer';
 
 function App() {
   useAuthCheck();
@@ -64,6 +65,7 @@ function App() {
         <Route path="blog">
           <Route index element={<BlogContainer />} />
           <Route path="create" element={<BlogCreateContainer />} />
+          <Route path="preview" element={<BlogPreviewContainer />} />
           <Route path="by-slug/:slug" element={<DisplayBlogContainer />} />
           <Route path="update/:slug" element={<BlogUpdateContainer />} />
         </Route>

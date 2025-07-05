@@ -1,35 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DisplayBlog from '../../components/blog/DisplayBlog';
+import { useLocation, useParams } from 'react-router-dom';
+import { useGetBlogBySlugQuery } from '../../features/blog/blogApi';
+import { extractErrorMessage } from '../../helper/utils/extract-error-message';
+import ErrorMessage from '../../components/common/ErrorMessage';
+import { IBlog } from '../../types/blog';
 
 const DisplayBlogContainer: React.FC = () => {
-  //   const { slug } = useParams(); // Or pass it as props
-  //   const [blog, setBlog] = useState<Blog | null>(null);
-  //   const [loading, setLoading] = useState(false);
+  const { slug } = useParams();
+  const location = useLocation();
+  const isBlogPreview = location.pathname.includes('/blog/preview');
 
-  //   useEffect(() => {
-  //     const fetchBlog = async () => {
-  //       try {
-  //         const res = await fetch(`/api/blogs/${slug}`);
-  //         const data = await res.json();
-  //         setBlog(data);
-  //       } catch (error) {
-  //         console.error('Error fetching blog:', error);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
+  const [currentBlog, setCurrentBlog] = useState<IBlog | null>(null);
 
-  //     if (slug) {
-  //       fetchBlog();
-  //     }
-  //   }, [slug]);
+  const { data: blogDataBySlug, error: errorBlogDataBySlug } =
+    useGetBlogBySlugQuery(slug);
 
-  //   if (loading) return <div>Loading...</div>;
-  //   if (!blog) return <div>Blog not found.</div>;
+  useEffect(() => {
+    if (blogDataBySlug) {
+      setCurrentBlog(blogDataBySlug);
+    }
+  }, [blogDataBySlug, slug, location.pathname]);
 
   return (
     <div className="flex items-center justify-center">
-      <DisplayBlog />
+      {currentBlog && <DisplayBlog blogData={currentBlog} />}
+
+      {extractErrorMessage(errorBlogDataBySlug) && !isBlogPreview && (
+        <ErrorMessage
+          message={extractErrorMessage(errorBlogDataBySlug) || ''}
+        />
+      )}
     </div>
   );
 };

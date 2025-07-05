@@ -1,18 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useGetBlogBySlugQuery,
   useUpdateBlogMutation,
 } from '../../features/blog/blogApi';
 import BlogUpdateForm from '../../components/blog/BlogUpdateForm';
 import ErrorMessage from '../../components/common/ErrorMessage';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Spinner from '../../components/common/Spinner';
 import { extractErrorMessage } from '../../helper/utils/extract-error-message';
+import {
+  BLOG_DETAILS_PATH,
+  BLOG_UPDATED_PATH,
+} from '../../constants/title-and-paths';
+import { IBlog } from '../../types/blog';
+import { FaEye } from 'react-icons/fa';
 
 const BlogUpdateContainer = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
+
   const [isLoadingBlogUpdation, setLoadingBlogUpdation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [currentBlog, setCurrentBlog] = useState<IBlog | null>(null);
 
   const { data: blogDataBySlug, error: errorBlogDataBySlug } =
     useGetBlogBySlugQuery(slug);
@@ -20,9 +29,11 @@ const BlogUpdateContainer = () => {
 
   const blogUpdateHandler = async (data: any, reset: () => void) => {
     setLoadingBlogUpdation(true);
+    setErrorMessage('');
 
     const blogData = {
       ...data,
+      slug,
       //tags: data.tags.map(tag => tag.value),
     };
 
@@ -30,7 +41,7 @@ const BlogUpdateContainer = () => {
       .unwrap()
       .then(() => {
         reset();
-        // TODO: navigate to Blog details page by-slug
+        navigate(`${BLOG_UPDATED_PATH}/${slug}`);
       })
       .catch(err => {
         setErrorMessage(err?.data?.message);
@@ -38,17 +49,40 @@ const BlogUpdateContainer = () => {
       .finally(() => setLoadingBlogUpdation(false));
   };
 
+  useEffect(() => {
+    if (blogDataBySlug) {
+      setCurrentBlog(blogDataBySlug);
+      setErrorMessage('');
+    }
+  }, [blogDataBySlug, slug]);
+
   if (isLoadingBlogUpdation) return <Spinner />;
+
+  const hasPreviewPermission = () => {
+    if (!currentBlog) return false;
+
+    return currentBlog.title && currentBlog.content && currentBlog.visibility;
+  };
 
   return (
     <div className="w-full h-full p-6 bg-white rounded-2xl shadow-md border border-gray-300">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Update Blog</h2>
+      <div className="flex items-start justify-between">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">Update Blog</h2>
+        {hasPreviewPermission() && (
+          <Link to={`${BLOG_DETAILS_PATH}/${slug}`} className="flex gap-2">
+            <span className="mt-1">
+              <FaEye />
+            </span>
+            <p>Preview</p>
+          </Link>
+        )}
+      </div>
 
-      {blogDataBySlug && (
+      {currentBlog && (
         <BlogUpdateForm
-          title={blogDataBySlug?.title || ''}
-          content={blogDataBySlug?.content || ''}
-          visibility={blogDataBySlug?.visibility || ''}
+          title={currentBlog?.title || ''}
+          content={currentBlog?.content || ''}
+          visibility={currentBlog?.visibility || 'PUBLIC'}
           updateHandler={blogUpdateHandler}
           isLoadingUpdation={isLoadingBlogUpdation}
         />

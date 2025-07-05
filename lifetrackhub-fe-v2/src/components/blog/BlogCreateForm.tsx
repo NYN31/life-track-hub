@@ -2,34 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { BlogFormInputs } from '../../types/blog';
-import Select from 'react-select';
-import { Link } from 'react-router-dom';
-import {
-  BLOG_DETAILS_PATH,
-  PUBLIC_BLOG_DETAILS_PATH,
-} from '../../constants/title-and-paths';
+//import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { blogContentDraft, blogReset } from '../../features/blog/blogSlice';
-import useAuth from '../../helper/hooks/useAuth';
 import { useCreateBlogMutation } from '../../features/blog/blogApi';
 import ErrorMessage from '../common/ErrorMessage';
 import { resetDraftBlogStorage } from '../../helper/local-storage/reset-blog-storage';
-
-const tagOptions = [
-  { value: 'React', label: 'React' },
-  { value: 'TypeScript', label: 'TypeScript' },
-  { value: 'JavaScript', label: 'JavaScript' },
-  { value: 'Web Development', label: 'Web Development' },
-  { value: 'Frontend', label: 'Frontend' },
-];
+import { Link, useNavigate } from 'react-router-dom';
+import { BLOG_DETAILS_PATH, BLOG_PATH } from '../../constants/title-and-paths';
+import { FaEye } from 'react-icons/fa';
 
 const BlogCreateForm: React.FC = () => {
   const dispatch = useDispatch();
-  const auth = useAuth();
+  const navigate = useNavigate();
 
   const blogDetails = useSelector((state: any) => state.blog);
 
-  const [currentTags] = useState<string[]>([]);
+  //const [currentTags] = useState<string[]>([]);
   const [isLoadingBlogCreation, setLoadingBlogCreation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -47,7 +36,7 @@ const BlogCreateForm: React.FC = () => {
     defaultValues: {
       title: blogDetails.title,
       visibility: blogDetails.visibility,
-      tags: blogDetails.tags.map((tag: string) => ({ value: tag, label: tag })),
+      //tags: blogDetails.tags.map((tag: string) => ({ value: tag, label: tag })),
       content: blogDetails.content,
     },
   });
@@ -56,20 +45,20 @@ const BlogCreateForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<BlogFormInputs> = async data => {
     setLoadingBlogCreation(true);
+    setErrorMessage('');
 
     const blogData = {
       ...data,
-      tags: data.tags.map(tag => tag.value),
+      //tags: data.tags.map(tag => tag.value),
     };
 
     await triggerBlogCreate(blogData)
       .unwrap()
       .then(res => {
-        console.log(res);
         dispatch(blogReset());
         resetDraftBlogStorage();
         reset();
-        // TODO: navigate to Blog details page by-slug
+        navigate(`${BLOG_DETAILS_PATH}/${res.slug}`);
       })
       .catch(err => {
         setErrorMessage(err?.data?.message);
@@ -79,18 +68,18 @@ const BlogCreateForm: React.FC = () => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      const { title, visibility, content, tags } = watchedValues;
+      const { title, visibility, content } = watchedValues;
       if (title && content && visibility) {
         const newDraft = {
           title,
           visibility,
           content,
-          tags: tags.map(tag => tag.value),
+          //tags: tags.map(tag => tag.value),
         };
         dispatch(blogContentDraft(newDraft));
         localStorage.setItem('draftBlog', JSON.stringify(newDraft));
       }
-    }, 3000);
+    }, 2000);
 
     return () => clearTimeout(handler);
   }, [
@@ -101,11 +90,25 @@ const BlogCreateForm: React.FC = () => {
     dispatch,
   ]);
 
+  const hasPreviewPermission = () => {
+    return blogDetails.title && blogDetails.content && blogDetails.visibility;
+  };
+
   return (
     <>
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Write a New Blog
-      </h2>
+      <div className="flex items-start justify-between">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">
+          Write a New Blog
+        </h2>
+        {hasPreviewPermission() && (
+          <Link to={`${BLOG_PATH}/preview`} className="flex gap-2">
+            <span className="mt-1">
+              <FaEye />
+            </span>
+            <p>Preview</p>
+          </Link>
+        )}
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Blog Title */}
@@ -147,7 +150,7 @@ const BlogCreateForm: React.FC = () => {
         </div>
 
         {/* Tags */}
-        <div>
+        {/* <div>
           <label
             htmlFor="tags"
             className="block mb-1 font-medium text-gray-700"
@@ -173,13 +176,13 @@ const BlogCreateForm: React.FC = () => {
                 value={field.value}
               />
             )}
-          />
+          /> */}
 
-          {/* Optional: display validation error */}
+        {/* Optional: display validation error
           {errors.tags && (
             <p className="text-sm text-red-500 mt-1">{errors.tags.message}</p>
           )}
-        </div>
+        </div> */}
 
         {/* Markdown Content */}
         <div>
@@ -206,33 +209,16 @@ const BlogCreateForm: React.FC = () => {
           )}
         </div>
 
-        <div className="flex gap-4">
-          <div className="pt-4">
-            <Link
-              // onClick={() =>
-              //   navigate(auth ? BLOG_DETAILS_PATH : PUBLIC_BLOG_DETAILS_PATH)
-              // }
-              to={auth ? BLOG_DETAILS_PATH : PUBLIC_BLOG_DETAILS_PATH}
-              className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Preview
-            </Link>
-          </div>
-          {/* Submit Button */}
-          <div className="pt-4">
-            <button
-              type="submit"
-              disabled={isLoadingBlogCreation}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-            >
-              Submit Blog
-            </button>
-          </div>
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isLoadingBlogCreation}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          Submit Blog
+        </button>
 
-          {errorMessage && <ErrorMessage message={errorMessage} />}
-        </div>
+        {errorMessage && <ErrorMessage message={errorMessage} />}
       </form>
     </>
   );
