@@ -14,8 +14,8 @@ type SidebarItem = {
 const Sidebar: React.FC<{
   items: SidebarItem[];
   isOpen: boolean;
-  onToggle: () => void;
-}> = ({ items, isOpen, onToggle }) => {
+  onToggleSidebarClose: () => void;
+}> = ({ items, isOpen, onToggleSidebarClose }) => {
   const location = useLocation();
   const [openItems, setOpenItems] = useState<string[]>([]);
 
@@ -86,7 +86,7 @@ const Sidebar: React.FC<{
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-          onClick={onToggle}
+          onClick={onToggleSidebarClose}
         />
       )}
 
@@ -96,14 +96,31 @@ const Sidebar: React.FC<{
         } md:translate-x-0 md:static md:block`}
       >
         <div className="p-4">
-          <div className="flex items-center justify-center gap-1 mb-6">
-            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-3 py-1.5 shadow-md">
-              <SiSvgtrace color="white"/>
+          <div className="flex items-center justify-between md:justify-center gap-1 mb-6">
+            <div className="flex gap-2">
+              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-3 py-1.5 shadow-md">
+                <SiSvgtrace color="white" />
+              </div>
+              <span className="text-gray-900 italic font-semibold text-md tracking-wide">
+                LifeTrackHub
+              </span>
             </div>
-            <span className="text-gray-900 italic font-semibold text-md tracking-wide">
-              LifeTrackHub
-            </span>
+            <button
+              className="text-gray-600 md:hidden"
+              onClick={onToggleSidebarClose}
+            >
+              {/* Close icon */}
+              <svg className="w-6 h-6" fill="none" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
+
           <nav className="space-y-2">{renderItems(items)}</nav>
         </div>
       </aside>
