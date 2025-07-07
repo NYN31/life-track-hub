@@ -6,6 +6,7 @@ const initialState = {
   tags: [],
   content: undefined,
   slug: undefined,
+  coverImagePath: undefined,
 };
 
 const blogSlice = createSlice({
@@ -13,11 +14,13 @@ const blogSlice = createSlice({
   initialState,
   reducers: {
     blogContentDraft: (state, action) => {
-      const { title, visibility, tags, content } = action.payload;
+      const { title, visibility, tags, content, coverImagePath } =
+        action.payload;
       state.title = title;
       state.visibility = visibility;
       state.tags = tags;
       state.content = content;
+      state.coverImagePath = coverImagePath;
     },
     blogReset: state => {
       state.title = undefined;
@@ -25,6 +28,7 @@ const blogSlice = createSlice({
       state.tags = [];
       state.content = undefined;
       state.slug = undefined;
+      state.coverImagePath = undefined;
     },
   },
 });
