@@ -25,6 +25,7 @@ const useLoginCredentialStore = () => {
       title: '',
       visibility: '',
       tags: [],
+      coverImagePath: '',
       content: '',
     };
     localStorage.setItem('draftBlog', JSON.stringify(draftBlog));

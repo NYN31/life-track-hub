@@ -46,7 +46,7 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {blogData.tags.split(',').map((tag: string) => (
+        {blogData.tags.map((tag: string) => (
           <span
             key={tag}
             className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold"

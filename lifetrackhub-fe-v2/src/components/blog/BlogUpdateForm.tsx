@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import MarkdownEditor from '@uiw/react-markdown-editor';
-import { BlogFormInputs, BlogVisibility, TagOption } from '../../types/blog';
+import { IBlogFormInputs, BlogVisibility, TagOption } from '../../types/blog';
 import Select from 'react-select';
 import { tagOptions } from '../../constants/tag-options';
 
@@ -28,7 +28,7 @@ const BlogUpdateForm: React.FC<{
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<BlogFormInputs>({
+  } = useForm<IBlogFormInputs>({
     mode: 'all',
     defaultValues: {
       title,
@@ -39,7 +39,7 @@ const BlogUpdateForm: React.FC<{
     },
   });
 
-  const onSubmit: SubmitHandler<BlogFormInputs> = async data => {
+  const onSubmit: SubmitHandler<IBlogFormInputs> = async data => {
     updateHandler(data, reset);
   };
 
@@ -155,13 +155,13 @@ const BlogUpdateForm: React.FC<{
       </div>
 
       {/* Submit Button */}
-      <div className="pt-4">
+      <div className="py-4">
         <button
           type="submit"
           disabled={isLoadingUpdation}
           className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
         >
-          Submit Blog
+          Update Blog
         </button>
       </div>
     </form>

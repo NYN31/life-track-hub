@@ -33,7 +33,6 @@ const BlogUpdateContainer = () => {
       ...data,
       tags: data.tags.map((tag: TagOption) => tag.value).join(','),
       slug,
-      //tags: data.tags.map(tag => tag.value),
     };
 
     await triggerBlogUpdate(blogData)

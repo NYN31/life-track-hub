@@ -5,7 +5,7 @@ export interface IBlog extends IBase {
   title: string;
   content: string;
   slug: string;
-  tag: string;
+  tags: string;
   visibility: BlogVisibility;
   coverImagePath: string;
   user: IUser;
@@ -16,7 +16,7 @@ export type TagOption = {
   label: string;
 };
 
-export interface BlogFormInputs {
+export interface IBlogFormInputs {
   title: string;
   visibility: BlogVisibility;
   tags: TagOption[];
