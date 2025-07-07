@@ -5,8 +5,9 @@ export interface IBlog extends IBase {
   title: string;
   content: string;
   slug: string;
-  //tag: TagOption[];
+  tag: string;
   visibility: BlogVisibility;
+  coverImagePath: string;
   user: IUser;
 }
 
@@ -19,6 +20,7 @@ export interface BlogFormInputs {
   title: string;
   visibility: BlogVisibility;
   tags: TagOption[];
+  coverImagePath: string;
   content: string;
 }
 
