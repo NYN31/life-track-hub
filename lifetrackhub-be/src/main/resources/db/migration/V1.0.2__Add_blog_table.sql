@@ -6,6 +6,8 @@ CREATE TABLE blog
     content            TEXT         NOT NULL,
     slug               VARCHAR(255) NOT NULL,
     visibility         VARCHAR(15)  NOT NULL,
+    cover_image_path   VARCHAR(255) NOT NULL,
+    tags               VARCHAR(255) NOT NULL,
     user_id            BIGINT       NOT NULL,
 
     created_date       DATETIME     NOT NULL,

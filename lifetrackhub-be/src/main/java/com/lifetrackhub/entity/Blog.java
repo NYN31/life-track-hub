@@ -29,6 +29,12 @@ public class Blog {
     @Column(nullable = false)
     private String visibility;
 
+    @Column(nullable = false)
+    private String coverImagePath;
+
+    @Column(nullable = false)
+    private String tags;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
