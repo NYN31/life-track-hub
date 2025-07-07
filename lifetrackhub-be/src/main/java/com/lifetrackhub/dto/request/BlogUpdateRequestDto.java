@@ -17,5 +17,11 @@ public class BlogUpdateRequestDto {
     private String visibility;
 
     @NotNull
+    private String coverImagePath;
+
+    @NotNull
+    private String tags;
+
+    @NotNull
     private String slug;
 }

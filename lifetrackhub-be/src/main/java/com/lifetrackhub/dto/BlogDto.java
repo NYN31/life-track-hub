@@ -17,6 +17,10 @@ public class BlogDto {
 
     private String visibility;
 
+    private String coverImagePath;
+
+    private String tags;
+
     private UserDto user;
 
     private Instant createdDate;
@@ -30,6 +34,8 @@ public class BlogDto {
         dto.setContent(blog.getContent());
         dto.setSlug(blog.getSlug());
         dto.setVisibility(blog.getVisibility());
+        dto.setCoverImagePath(blog.getCoverImagePath());
+        dto.setTags(blog.getTags());
         dto.setUser(UserDto.formEntityWithoutDetails(blog.getUser()));
         dto.setCreatedDate(blog.getCreatedDate());
         dto.setLastModifiedDate(blog.getLastModifiedDate());

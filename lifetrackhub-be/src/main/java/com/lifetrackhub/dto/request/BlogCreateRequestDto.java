@@ -15,4 +15,10 @@ public class BlogCreateRequestDto {
 
     @NotNull
     private String visibility;
+
+    @NotNull
+    private String coverImagePath;
+
+    @NotNull
+    private String tags;
 }

@@ -49,6 +49,8 @@ public class BlogServiceImpl implements BlogService {
         blog.setTitle(request.getTitle());
         blog.setContent(request.getContent());
         blog.setVisibility(request.getVisibility());
+        blog.setCoverImagePath(request.getCoverImagePath());
+        blog.setTags(request.getTags());
         blog.setSlug(request.getTitle().replace(" ", "-") + "-" + RandomUtil.randomStringOfLength(16));
         blog.setUser(userFromSecurityContext);
 
@@ -66,6 +68,8 @@ public class BlogServiceImpl implements BlogService {
             blog.setTitle(request.getTitle());
             blog.setContent(request.getContent());
             blog.setVisibility(request.getVisibility());
+            blog.setCoverImagePath(request.getCoverImagePath());
+            blog.setTags(request.getTags());
 
             return blogRepository.save(blog);
         }
