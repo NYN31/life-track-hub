@@ -11,13 +11,13 @@ const BlogCard: React.FC<{
   username: string;
   slug: string;
   createdDate: string;
-  coverImage?: string;
-}> = ({ title, content, username, slug, createdDate, coverImage }) => {
+  coverImagePath?: string;
+}> = ({ title, content, username, slug, createdDate, coverImagePath }) => {
   return (
     <div className="bg-white shadow-md rounded-xl p-6 border border-gray-200">
       <Link to={`${BLOG_DETAILS_PATH}/${slug}`}>
         <img
-          src={coverImage || fallbackImage}
+          src={coverImagePath || fallbackImage}
           alt={title}
           className="w-full h-48 object-cover rounded-lg mb-4"
           loading="lazy"

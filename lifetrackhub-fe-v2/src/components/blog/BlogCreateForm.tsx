@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { BlogFormInputs } from '../../types/blog';
-//import Select from 'react-select';
+import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { blogContentDraft, blogReset } from '../../features/blog/blogSlice';
 import { useCreateBlogMutation } from '../../features/blog/blogApi';
@@ -11,6 +11,7 @@ import { resetDraftBlogStorage } from '../../helper/local-storage/reset-blog-sto
 import { Link, useNavigate } from 'react-router-dom';
 import { BLOG_DETAILS_PATH, BLOG_PATH } from '../../constants/title-and-paths';
 import { FaEye } from 'react-icons/fa';
+import { tagOptions } from '../../constants/tag-options';
 
 const BlogCreateForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const BlogCreateForm: React.FC = () => {
 
   const blogDetails = useSelector((state: any) => state.blog);
 
-  //const [currentTags] = useState<string[]>([]);
+  const [currentTags] = useState<string[]>(blogDetails.tags || []);
   const [isLoadingBlogCreation, setLoadingBlogCreation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -35,8 +36,12 @@ const BlogCreateForm: React.FC = () => {
     mode: 'all',
     defaultValues: {
       title: blogDetails.title,
-      visibility: blogDetails.visibility,
-      //tags: blogDetails.tags.map((tag: string) => ({ value: tag, label: tag })),
+      visibility: blogDetails.visibility || 'PUBLIC',
+      tags: blogDetails?.tags?.map((tag: string) => ({
+        value: tag,
+        label: tag,
+      })),
+      coverImagePath: blogDetails.coverImagePath,
       content: blogDetails.content,
     },
   });
@@ -49,7 +54,7 @@ const BlogCreateForm: React.FC = () => {
 
     const blogData = {
       ...data,
-      //tags: data.tags.map(tag => tag.value),
+      tags: data.tags.map(tag => tag.value).join(','),
     };
 
     await triggerBlogCreate(blogData)
@@ -95,7 +100,7 @@ const BlogCreateForm: React.FC = () => {
   };
 
   return (
-    <>
+    <div>
       <div className="flex items-start justify-between">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">
           Write a New Blog
@@ -150,7 +155,7 @@ const BlogCreateForm: React.FC = () => {
         </div>
 
         {/* Tags */}
-        {/* <div>
+        <div>
           <label
             htmlFor="tags"
             className="block mb-1 font-medium text-gray-700"
@@ -176,13 +181,32 @@ const BlogCreateForm: React.FC = () => {
                 value={field.value}
               />
             )}
-          /> */}
-
-        {/* Optional: display validation error
+          />
           {errors.tags && (
             <p className="text-sm text-red-500 mt-1">{errors.tags.message}</p>
           )}
-        </div> */}
+        </div>
+
+        {/* Blog cover image path */}
+        <div>
+          <label
+            htmlFor="coverImagePath"
+            className="block mb-1 font-medium text-gray-700"
+          >
+            Cover Image Path <span className="text-red-500">*</span>
+          </label>
+          <input
+            id="coverImagePath"
+            {...register('coverImagePath', { required: 'Title is required' })}
+            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+            placeholder="Enter blog title"
+          />
+          {errors.coverImagePath && (
+            <p className="text-sm text-red-500 mt-1">
+              {errors.coverImagePath.message}
+            </p>
+          )}
+        </div>
 
         {/* Markdown Content */}
         <div>
@@ -210,6 +234,7 @@ const BlogCreateForm: React.FC = () => {
         </div>
 
         {/* Submit Button */}
+
         <button
           type="submit"
           disabled={isLoadingBlogCreation}
@@ -220,7 +245,7 @@ const BlogCreateForm: React.FC = () => {
 
         {errorMessage && <ErrorMessage message={errorMessage} />}
       </form>
-    </>
+    </div>
   );
 };
 

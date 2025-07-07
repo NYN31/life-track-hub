@@ -8,11 +8,8 @@ import ErrorMessage from '../../components/common/ErrorMessage';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Spinner from '../../components/common/Spinner';
 import { extractErrorMessage } from '../../helper/utils/extract-error-message';
-import {
-  BLOG_DETAILS_PATH,
-  BLOG_UPDATED_PATH,
-} from '../../constants/title-and-paths';
-import { IBlog } from '../../types/blog';
+import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
+import { IBlog, TagOption } from '../../types/blog';
 import { FaEye } from 'react-icons/fa';
 
 const BlogUpdateContainer = () => {
@@ -22,6 +19,7 @@ const BlogUpdateContainer = () => {
   const [isLoadingBlogUpdation, setLoadingBlogUpdation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentBlog, setCurrentBlog] = useState<IBlog | null>(null);
+  const [currBlogTags, setCurrBlogTags] = useState<TagOption[]>([]);
 
   const { data: blogDataBySlug, error: errorBlogDataBySlug } =
     useGetBlogBySlugQuery(slug);
@@ -33,6 +31,7 @@ const BlogUpdateContainer = () => {
 
     const blogData = {
       ...data,
+      tags: data.tags.map((tag: TagOption) => tag.value).join(','),
       slug,
       //tags: data.tags.map(tag => tag.value),
     };
@@ -41,7 +40,7 @@ const BlogUpdateContainer = () => {
       .unwrap()
       .then(() => {
         reset();
-        navigate(`${BLOG_UPDATED_PATH}/${slug}`);
+        navigate(`${BLOG_DETAILS_PATH}/${slug}`);
       })
       .catch(err => {
         setErrorMessage(err?.data?.message);
@@ -52,6 +51,11 @@ const BlogUpdateContainer = () => {
   useEffect(() => {
     if (blogDataBySlug) {
       setCurrentBlog(blogDataBySlug);
+      setCurrBlogTags(
+        blogDataBySlug.tags
+          .split(',')
+          .map((tag: string) => ({ value: tag, label: tag }))
+      );
       setErrorMessage('');
     }
   }, [blogDataBySlug, slug]);
@@ -83,6 +87,8 @@ const BlogUpdateContainer = () => {
           title={currentBlog?.title || ''}
           content={currentBlog?.content || ''}
           visibility={currentBlog?.visibility || 'PUBLIC'}
+          currTags={currBlogTags}
+          coverImagePath={currentBlog?.coverImagePath || ''}
           updateHandler={blogUpdateHandler}
           isLoadingUpdation={isLoadingBlogUpdation}
         />

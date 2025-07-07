@@ -16,6 +16,7 @@ const BlogList: React.FC<{ results: IBlog[] }> = ({ results }) => {
             username={username}
             slug={blog.slug}
             createdDate={blog.createdDate}
+            coverImagePath={blog.coverImagePath}
           />
         );
       })}
