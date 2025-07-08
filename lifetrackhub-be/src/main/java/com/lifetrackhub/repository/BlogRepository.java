@@ -19,11 +19,12 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     @Query("""
                 SELECT b FROM Blog b
                 WHERE (:userId IS NULL OR b.user.id = :userId)
+                  AND (:slug is NULL OR b.slug = :slug)
                   AND (:visibility IS NULL OR b.visibility = :visibility)
                   AND (:start IS NULL OR b.createdDate >= :start)
                   AND (:end IS NULL OR b.createdDate <= :end)
             """)
-    Page<Blog> findAllByUserIdAndVisibilityAndCreatedDateBetween(Long userId, String visibility, Instant start, Instant end, Pageable pageable);
+    Page<Blog> findAllBlogs(Long userId, String slug, String visibility, Instant start, Instant end, Pageable pageable);
 
     Page<Blog> findAllByUserIdAndVisibility(Long userId, String name, Pageable pageable);
 

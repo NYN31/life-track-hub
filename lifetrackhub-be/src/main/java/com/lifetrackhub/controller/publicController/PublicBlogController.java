@@ -1,14 +1,12 @@
 package com.lifetrackhub.controller.publicController;
 
-import com.lifetrackhub.constant.enumeration.Visibility;
 import com.lifetrackhub.dto.BlogDto;
 import com.lifetrackhub.dto.PageDto;
+import com.lifetrackhub.dto.request.BlogGetRequestDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.service.BlogService;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 @RestController
 public class PublicBlogController extends PublicBaseController {
@@ -19,15 +17,8 @@ public class PublicBlogController extends PublicBaseController {
     }
 
     @GetMapping("/blog/find-all")
-    public PageDto<BlogDto> findAllBlogs(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "email", required = false) String email,
-            @RequestParam(value = "start", required = false) LocalDate startDate,
-            @RequestParam(value = "end", required = false) LocalDate endDate
-    ) {
-        String visibility = Visibility.PUBLIC.name();
-        Page<Blog> blogs = blogService.findAllBlogs(page, size, email, visibility, startDate, endDate);
+    public PageDto<BlogDto> findAllBlogs(@RequestBody BlogGetRequestDto dto) {
+        Page<Blog> blogs = blogService.findAllBlogs(dto);
         return PageDto.fromEntity(blogs, BlogDto::formEntity);
     }
 
