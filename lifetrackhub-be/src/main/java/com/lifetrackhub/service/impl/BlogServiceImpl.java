@@ -5,6 +5,7 @@ import com.lifetrackhub.constant.utils.DateUtil;
 import com.lifetrackhub.constant.utils.RandomUtil;
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.request.BlogCreateRequestDto;
+import com.lifetrackhub.dto.request.BlogGetRequestDto;
 import com.lifetrackhub.dto.request.BlogUpdateRequestDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.Blog;
@@ -25,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -78,20 +80,21 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Page<Blog> findAllBlogs(int page, int size, String email, String visibility, LocalDate startDate, LocalDate endDate) {
-        log.info("Finding all {} blogs of {}, within {} to {}", visibility, email, startDate, endDate);
+    public Page<Blog> findAllBlogs(BlogGetRequestDto dto) {
+        log.info("Finding all {} blogs of {}, within {} to {}", dto.getVisibility(), dto.getEmail(), dto.getStart(), dto.getEnd());
 
         Long userId = null;
-        if (email != null) {
-            Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (dto.getEmail() != null) {
+            Optional<User> optionalUser = userRepository.findByEmail(dto.getEmail());
             if (optionalUser.isPresent()) {
                 userId = optionalUser.get().getId();
             }
         }
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), Sort.by(Sort.Direction.DESC, "createdDate"));
 
-        if (startDate == null || endDate == null) {
+        LocalDate startDate = dto.getStart(), endDate = dto.getEnd();
+        if (Objects.isNull(startDate) || Objects.isNull(endDate)) {
             startDate = LocalDate.now().minusDays(DATE_RANGE_PERIOD_FOR_BLOG_SEARCH);
             endDate = LocalDate.now();
         }
@@ -105,7 +108,7 @@ public class BlogServiceImpl implements BlogService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
         }
 
-        return blogRepository.findAllByUserIdAndVisibilityAndCreatedDateBetween(userId, visibility, start, end, pageable);
+        return blogRepository.findAllBlogs(userId, dto.getSlug(), dto.getVisibility(), start, end, pageable);
     }
 
     @Override
