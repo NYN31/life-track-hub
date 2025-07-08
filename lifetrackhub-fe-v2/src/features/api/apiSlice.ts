@@ -7,6 +7,8 @@ import {
 } from '@reduxjs/toolkit/query/react';
 import { logoutClearingLocalStorage } from '../../helper/local-storage/clear-local-storage';
 import { userLoggedOut } from '../auth/authSlice';
+import { resetDraftBlogStorage } from '../../helper/local-storage/reset-blog-storage';
+import { blogReset } from '../blog/blogSlice';
 
 export const API_URL = import.meta.env.VITE_SERVER_BASE_URL;
 
@@ -32,7 +34,9 @@ const baseQueryWithReauth: BaseQueryFn<
 
   if (result?.error?.status === 403) {
     api.dispatch(userLoggedOut());
+    api.dispatch(blogReset());
     logoutClearingLocalStorage();
+    resetDraftBlogStorage();
     location.reload();
   }
   return result;

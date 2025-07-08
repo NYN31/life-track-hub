@@ -18,7 +18,11 @@ const DisplayBlogContainer: React.FC = () => {
 
   useEffect(() => {
     if (blogDataBySlug) {
-      setCurrentBlog(blogDataBySlug);
+      const modifiedBlogData = {
+        ...blogDataBySlug,
+        tags: blogDataBySlug?.tags.split(',').map((tag: string) => tag),
+      };
+      setCurrentBlog(modifiedBlogData);
     }
   }, [blogDataBySlug, slug, location.pathname]);
 
