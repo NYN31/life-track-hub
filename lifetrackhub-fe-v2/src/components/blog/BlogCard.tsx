@@ -29,17 +29,20 @@ const BlogCard: React.FC<{
           {title}
         </h2>
       </Link>
-      <Link to={`${BLOG_DETAILS_PATH}/${slug}`}>
+      <div>
         <p className="text-gray-600 mb-3">
           {extractCleanTextFromMarkdown(content).slice(0, 100)}
 
           <span>{' ['}</span>
-          <span className="text-blue-500 cursor-pointer hover:underline">
-            {'See more'}
-          </span>
+          <Link
+            to={`${BLOG_DETAILS_PATH}/${slug}`}
+            className="text-blue-500 cursor-pointer hover:underline"
+          >
+            {'Read more'}
+          </Link>
           <span>{']'}</span>
         </p>
-      </Link>
+      </div>
       <div className="text-sm text-gray-500">
         By <span className="font-medium text-gray-600">{username}</span>{' '}
         &middot; <span>{formatHumanReadableDate(createdDate)}</span>

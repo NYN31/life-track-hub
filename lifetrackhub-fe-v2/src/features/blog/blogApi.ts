@@ -1,4 +1,3 @@
-import { getValidRequestParams } from '../../helper/utils/get-valid-params';
 import { apiSlice } from '../api/apiSlice';
 
 export const BLOG_API_PATH = '/api/blog';
@@ -11,12 +10,11 @@ export const blogApi = apiSlice
   .injectEndpoints({
     endpoints: builder => ({
       getBlogsByUser: builder.query({
-        query: ({ page = 0, size = 9, email, start, end }) => {
-          const requestParams = getValidRequestParams(
-            `page=${page}&size=${size}&email=${email}&start=${start}&end=${end}`
-          );
-          return `${BLOG_API_PATH}/find-all?${requestParams}`;
-        },
+        query: data => ({
+          url: `${BLOG_API_PATH}/find-all`,
+          method: 'POST',
+          body: data,
+        }),
 
         providesTags: ['Blogs'],
       }),

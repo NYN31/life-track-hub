@@ -14,12 +14,14 @@ import ErrorMessage from '../../components/common/ErrorMessage';
 import useAuth from '../../helper/hooks/useAuth';
 
 const BlogContainer: React.FC = () => {
+  const MAX_BLOG_ITEMS_IN_A_PAGE = 9;
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
 
   const queryPageNo = useQuery().get('page') || '0';
   const queryEmail = useQuery().get('email') || '';
+  const querySlug = useQuery().get('slug') || '';
   const queryStartDate = getStrToDate(useQuery().get('start') || null);
   const queryEndDate = getStrToDate(useQuery().get('end') || null);
 
@@ -30,6 +32,7 @@ const BlogContainer: React.FC = () => {
   const [totalPages, setTotalPages] = useState(-1);
 
   const [email, setEmail] = useState(queryEmail);
+  const [slug, setSlug] = useState(querySlug);
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
     queryStartDate,
     queryEndDate,
@@ -43,12 +46,15 @@ const BlogContainer: React.FC = () => {
   const updateAndPushUrl = (
     page: number,
     email: string,
+    slug: string,
     dateRange: [Date | null, Date | null]
   ) => {
     const validParams = getValidParams(
-      `page=${page}&email=${email}&start=${getDateToString(
-        dateRange[0]
-      )}&end=${getDateToString(dateRange[1])}`
+      `page=${page}&email=${email}&slug=${encodeURIComponent(
+        slug
+      )}&start=${getDateToString(dateRange[0])}&end=${getDateToString(
+        dateRange[1]
+      )}`
     );
     navigate(`${BLOG_PATH}${validParams}`);
   };
@@ -56,14 +62,17 @@ const BlogContainer: React.FC = () => {
   const handleSearch = async (
     pageId: number,
     email: string,
+    slug: string,
     dateRange: [Date | null, Date | null]
   ) => {
     setBlogContentLoading(true);
     await triggerGetBlogsByUser({
       page: pageId,
-      email,
-      start: getDateToString(dateRange[0]),
-      end: getDateToString(dateRange[1]),
+      size: MAX_BLOG_ITEMS_IN_A_PAGE,
+      slug: slug || null,
+      email: email || null,
+      start: getDateToString(dateRange[0]) || null,
+      end: getDateToString(dateRange[1]) || null,
     })
       .unwrap()
       .then(response => {
@@ -83,34 +92,43 @@ const BlogContainer: React.FC = () => {
 
   const handleNextPage = () => {
     const nextPageNo = Number(queryPageNo) + 1;
-    updateAndPushUrl(nextPageNo, queryEmail, [queryStartDate, queryEndDate]);
+    updateAndPushUrl(nextPageNo, queryEmail, querySlug, [
+      queryStartDate,
+      queryEndDate,
+    ]);
   };
 
   const handlePreviousPage = () => {
     const prevPageNo = Number(queryPageNo) - 1;
-    updateAndPushUrl(prevPageNo, queryEmail, [queryStartDate, queryEndDate]);
+    updateAndPushUrl(prevPageNo, queryEmail, querySlug, [
+      queryStartDate,
+      queryEndDate,
+    ]);
   };
 
   const handleBlogsSearch = () => {
-    updateAndPushUrl(0, email, dateRange);
+    updateAndPushUrl(0, email, slug, dateRange);
   };
 
   const handleReset = () => {
     const pageNo = 0;
     const email = '';
+    const slug = '';
     const startDate = null;
     const endDate = null;
-    updateAndPushUrl(pageNo, email, [startDate, endDate]);
+    updateAndPushUrl(pageNo, email, slug, [startDate, endDate]);
     setEmail(email);
+    setSlug(slug);
     setDateRange([startDate, endDate]);
     setResults([]);
   };
 
   useEffect(() => {
     setEmail(queryEmail);
+    setSlug(querySlug);
     setDateRange([queryStartDate, queryEndDate]);
 
-    handleSearch(Number(queryPageNo), queryEmail, [
+    handleSearch(Number(queryPageNo), queryEmail, querySlug, [
       queryStartDate,
       queryEndDate,
     ]);
@@ -128,6 +146,13 @@ const BlogContainer: React.FC = () => {
                 name: 'Email',
                 value: email,
                 setValue: setEmail,
+                isTrim: true,
+                isMandatory: false,
+              },
+              {
+                name: 'Slug',
+                value: slug,
+                setValue: setSlug,
                 isTrim: true,
                 isMandatory: false,
               },
