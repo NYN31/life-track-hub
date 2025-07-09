@@ -18,7 +18,7 @@ function App() {
     <Routes>
       <Route
         path={pathname.ROOT_PATH}
-        element={<Navigate to={pathname.LOGIN_PATH} />}
+        element={<Navigate to={pathname.BLOG_PATH} />}
       />
       <Route
         index
