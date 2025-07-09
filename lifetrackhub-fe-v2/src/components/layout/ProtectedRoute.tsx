@@ -27,7 +27,7 @@ const ProtectedRoute = () => {
       <div className="flex-1 flex flex-col h-full">
         <ProtectedNavbar onMenuOpenClick={() => setSidebarOpen(true)} />
 
-        <main className="flex-1 overflow-y-auto bg-white py-8 px-8 w-full">
+        <main className="flex-1 overflow-y-auto bg-white p-4 w-full">
           <Outlet />
         </main>
 

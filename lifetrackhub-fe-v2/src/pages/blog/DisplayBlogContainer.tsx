@@ -27,7 +27,7 @@ const DisplayBlogContainer: React.FC = () => {
   }, [blogDataBySlug, slug, location.pathname]);
 
   return (
-    <div className="flex items-center justify-center">
+    <div>
       {currentBlog && <DisplayBlog blogData={currentBlog} />}
 
       {extractErrorMessage(errorBlogDataBySlug) && !isBlogPreview && (
