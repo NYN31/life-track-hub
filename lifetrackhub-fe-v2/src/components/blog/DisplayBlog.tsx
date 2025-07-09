@@ -45,6 +45,19 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
         </span>
       </div>
 
+      <div className="text-sm font-medium text-gray-500">
+        Content Type:{' '}
+        <span
+          className={`inline-block px-2 py-1 rounded ${
+            blogData.contentType === 'PUBLISHED'
+              ? 'bg-green-100 text-green-800'
+              : 'bg-gray-100 text-gray-800'
+          }`}
+        >
+          {blogData.contentType}
+        </span>
+      </div>
+
       <div className="flex flex-wrap gap-2">
         {blogData.tags.map((tag: string) => (
           <span

@@ -47,7 +47,6 @@ const BlogCard: React.FC<{
         By <span className="font-medium text-gray-600">{username}</span>{' '}
         &middot; <span>{formatHumanReadableDate(createdDate)}</span>
       </div>
-      <div></div>
     </div>
   );
 };

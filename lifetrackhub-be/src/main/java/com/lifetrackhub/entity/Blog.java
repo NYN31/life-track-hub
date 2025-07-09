@@ -1,5 +1,6 @@
 package com.lifetrackhub.entity;
 
+import com.lifetrackhub.constant.enumeration.BlogContentType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -22,6 +23,10 @@ public class Blog {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private BlogContentType contentType;
 
     @Column(nullable = false)
     private String slug;

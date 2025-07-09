@@ -4,7 +4,8 @@ CREATE TABLE blog
 
     title              VARCHAR(255) NOT NULL,
     content            TEXT         NOT NULL,
-    slug               VARCHAR(255) NOT NULL,
+    content_type       VARCHAR(15)  NOT NULL,
+    slug               VARCHAR(255) NOT NULL UNIQUE,
     visibility         VARCHAR(15)  NOT NULL,
     cover_image_path   VARCHAR(255) NOT NULL,
     tags               VARCHAR(255) NOT NULL,

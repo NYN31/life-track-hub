@@ -1,5 +1,6 @@
 package com.lifetrackhub.dto.request;
 
+import com.lifetrackhub.constant.enumeration.BlogContentType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
@@ -24,4 +25,7 @@ public class BlogUpdateRequestDto {
 
     @NotNull
     private String slug;
+
+    @NotNull
+    private BlogContentType blogContentType;
 }

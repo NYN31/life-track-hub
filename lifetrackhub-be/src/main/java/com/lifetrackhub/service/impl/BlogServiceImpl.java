@@ -54,6 +54,7 @@ public class BlogServiceImpl implements BlogService {
         blog.setCoverImagePath(request.getCoverImagePath());
         blog.setTags(request.getTags());
         blog.setSlug(request.getTitle().replace(" ", "-") + "-" + RandomUtil.randomStringOfLength(16));
+        blog.setContentType(request.getBlogContentType());
         blog.setUser(userFromSecurityContext);
 
         return blogRepository.save(blog);
@@ -72,6 +73,7 @@ public class BlogServiceImpl implements BlogService {
             blog.setVisibility(request.getVisibility());
             blog.setCoverImagePath(request.getCoverImagePath());
             blog.setTags(request.getTags());
+            blog.setContentType(request.getBlogContentType());
 
             return blogRepository.save(blog);
         }
@@ -108,7 +110,7 @@ public class BlogServiceImpl implements BlogService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
         }
 
-        return blogRepository.findAllBlogs(userId, dto.getSlug(), dto.getVisibility(), start, end, pageable);
+        return blogRepository.findAllBlogs(userId, dto.getSlug(), dto.getVisibility(), dto.getBlogContentType(), start, end, pageable);
     }
 
     @Override

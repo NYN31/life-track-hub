@@ -51,6 +51,42 @@ const BlogCreateForm: React.FC<{
     const blogData = {
       ...data,
       tags: data.tags.map(tag => tag.value).join(','),
+      blogContentType: 'PUBLISHED',
+    };
+
+    await triggerBlogCreate(blogData)
+      .unwrap()
+      .then(res => {
+        dispatch(blogReset());
+        resetDraftBlogStorage();
+        reset();
+        navigate(`${BLOG_DETAILS_PATH}/${res.slug}`);
+      })
+      .catch(err => {
+        setErrorMessage(err?.data?.message);
+      })
+      .finally(() => setLoadingBlogCreation(false));
+  };
+
+  const draftHandler = async () => {
+    if (
+      !watchedValues.title ||
+      !watchedValues.content ||
+      !watchedValues.tags ||
+      !watchedValues.visibility ||
+      !watchedValues.coverImagePath
+    ) {
+      setErrorMessage('Please add all fields');
+      return;
+    }
+
+    setLoadingBlogCreation(true);
+    setErrorMessage('');
+
+    const blogData = {
+      ...watchedValues,
+      tags: watchedValues?.tags.map(tag => tag.value).join(','),
+      blogContentType: 'DRAFT',
     };
 
     await triggerBlogCreate(blogData)
@@ -205,14 +241,23 @@ const BlogCreateForm: React.FC<{
       </div>
 
       {/* Submit Button */}
-
-      <button
-        type="submit"
-        disabled={isLoadingBlogCreation}
-        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-      >
-        Submit Blog
-      </button>
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          onClick={() => draftHandler()}
+          disabled={isLoadingBlogCreation}
+          className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+        >
+          Draft Blog
+        </button>
+        <button
+          type="submit"
+          disabled={isLoadingBlogCreation}
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          Submit Blog
+        </button>
+      </div>
 
       {errorMessage && <ErrorMessage message={errorMessage} />}
     </form>
