@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import MarkdownEditor from '@uiw/react-markdown-editor';
 import { IBlog, IBlogFormInputs, TagOption } from '../../types/blog';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
@@ -11,6 +10,7 @@ import { resetDraftBlogStorage } from '../../helper/local-storage/reset-blog-sto
 import { useNavigate } from 'react-router-dom';
 import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
 import { tagOptions } from '../../constants/tag-options';
+import { customItemsForMarkdown } from '../../constants/blog-editor-icons';
 
 const BlogCreateForm: React.FC<{
   blogDetails: IBlog;
@@ -19,6 +19,7 @@ const BlogCreateForm: React.FC<{
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isLoadingBlogCreation, setLoadingBlogCreation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -30,6 +31,7 @@ const BlogCreateForm: React.FC<{
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<IBlogFormInputs>({
     mode: 'all',
@@ -130,6 +132,35 @@ const BlogCreateForm: React.FC<{
     dispatch,
   ]);
 
+  const insertAtCursor = (prefix: string, suffix: string = '') => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const scrollTop = textarea.scrollTop;
+    const scrollLeft = textarea.scrollLeft;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const value = textarea.value;
+    const selected = value.slice(start, end);
+
+    const newText =
+      value.slice(0, start) + prefix + selected + suffix + value.slice(end);
+
+    setValue('content', newText, { shouldDirty: true });
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+
+      // Restore cursor position
+      const cursorPos = start + prefix.length + selected.length;
+      textarea.setSelectionRange(cursorPos, cursorPos);
+
+      // Restore scroll position
+      textarea.scrollTop = scrollTop;
+      textarea.scrollLeft = scrollLeft;
+    });
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Blog Title */}
@@ -222,7 +253,42 @@ const BlogCreateForm: React.FC<{
         <label className="block mb-1 font-medium text-gray-700">
           Content (Markdown)
         </label>
+        <div className="py-4 space-y-4">
+          <div className="flex flex-wrap gap-4">
+            {customItemsForMarkdown.map(item => {
+              return (
+                <div
+                  key={item.title}
+                  onClick={() => insertAtCursor(item.prefix, item.suffix)}
+                  className="cursor-pointer"
+                >
+                  {item.icon}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         <Controller
+          name="content"
+          control={control}
+          render={({ field }) => (
+            <textarea
+              {...field}
+              ref={textareaRef}
+              id="content"
+              className="w-full h-[70vh] p-2 border rounded-lg resize-none font-mono"
+              placeholder="Write your markdown here..."
+            />
+          )}
+        />
+
+        {errors.content && (
+          <p className="text-sm text-red-500 mt-1">{errors.content.message}</p>
+        )}
+      </div>
+
+      {/* <Controller
           control={control}
           name="content"
           rules={{ required: 'Content is required' }}
@@ -234,11 +300,7 @@ const BlogCreateForm: React.FC<{
               enablePreview={true}
             />
           )}
-        />
-        {errors.content && (
-          <p className="text-sm text-red-500 mt-1">{errors.content.message}</p>
-        )}
-      </div>
+        /> */}
 
       {/* Submit Button */}
       <div className="flex gap-2">
