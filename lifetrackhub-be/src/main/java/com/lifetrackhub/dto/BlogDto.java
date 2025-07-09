@@ -1,5 +1,6 @@
 package com.lifetrackhub.dto;
 
+import com.lifetrackhub.constant.enumeration.BlogContentType;
 import com.lifetrackhub.entity.Blog;
 import lombok.Data;
 import lombok.ToString;
@@ -21,6 +22,8 @@ public class BlogDto {
 
     private String tags;
 
+    private BlogContentType contentType;
+
     private UserDto user;
 
     private Instant createdDate;
@@ -36,6 +39,7 @@ public class BlogDto {
         dto.setVisibility(blog.getVisibility());
         dto.setCoverImagePath(blog.getCoverImagePath());
         dto.setTags(blog.getTags());
+        dto.setContentType(blog.getContentType());
         dto.setUser(UserDto.formEntityWithoutDetails(blog.getUser()));
         dto.setCreatedDate(blog.getCreatedDate());
         dto.setLastModifiedDate(blog.getLastModifiedDate());

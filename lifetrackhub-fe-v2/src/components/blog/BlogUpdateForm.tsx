@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 import { IBlogFormInputs, BlogVisibility, TagOption } from '../../types/blog';
@@ -12,7 +12,8 @@ const BlogUpdateForm: React.FC<{
   currTags: TagOption[];
   coverImagePath: string;
   isLoadingUpdation: boolean;
-  updateHandler: (data: any, reset: () => void) => void;
+  updateHandler: (data: any, reset: () => void, contentType: string) => void;
+  setErrorMessage: Dispatch<React.SetStateAction<string>>;
 }> = ({
   title,
   visibility,
@@ -21,12 +22,14 @@ const BlogUpdateForm: React.FC<{
   coverImagePath,
   isLoadingUpdation,
   updateHandler,
+  setErrorMessage,
 }) => {
   const {
     register,
     control,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<IBlogFormInputs>({
     mode: 'all',
@@ -39,8 +42,35 @@ const BlogUpdateForm: React.FC<{
     },
   });
 
+  const watchedValues = watch();
+
   const onSubmit: SubmitHandler<IBlogFormInputs> = async data => {
-    updateHandler(data, reset);
+    updateHandler(data, reset, 'PUBLISHED');
+  };
+
+  const draftUpdateHandler = () => {
+    if (
+      !watchedValues.title ||
+      !watchedValues.content ||
+      !watchedValues.tags ||
+      !watchedValues.visibility ||
+      !watchedValues.coverImagePath
+    ) {
+      setErrorMessage('Please add all fields');
+      return;
+    }
+
+    updateHandler(
+      {
+        title: watchedValues.title,
+        visibility: watchedValues.visibility,
+        content: watchedValues.content,
+        tags: watchedValues.tags,
+        coverImagePath: watchedValues.coverImagePath,
+      },
+      reset,
+      'DRAFT'
+    );
   };
 
   return (
@@ -155,7 +185,15 @@ const BlogUpdateForm: React.FC<{
       </div>
 
       {/* Submit Button */}
-      <div className="py-4">
+      <div className="flex gap-2 py-4">
+        <button
+          type="submit"
+          onClick={draftUpdateHandler}
+          disabled={isLoadingUpdation}
+          className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+        >
+          Draft update
+        </button>
         <button
           type="submit"
           disabled={isLoadingUpdation}
