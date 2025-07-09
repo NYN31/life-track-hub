@@ -69,7 +69,7 @@ const BlogUpdateContainer = () => {
   };
 
   return (
-    <div className="w-full h-full p-6 bg-white rounded-2xl shadow-md border border-gray-300">
+    <div>
       <div className="flex items-start justify-between">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Update Blog</h2>
         {hasPreviewPermission() && (
