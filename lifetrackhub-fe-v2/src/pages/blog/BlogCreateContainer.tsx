@@ -15,7 +15,7 @@ const BlogCreateContainer = () => {
     return (
       blogDetails.title &&
       blogDetails.content &&
-      blogDetails.visibility &&
+      blogDetails.status &&
       blogDetails.tags &&
       blogDetails.coverImagePath
     );

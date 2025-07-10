@@ -1,13 +1,13 @@
 import React, { Dispatch, useRef } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { IBlogFormInputs, BlogVisibility, TagOption } from '../../types/blog';
+import { IBlogFormInputs, BlogStatus, TagOption } from '../../types/blog';
 import Select from 'react-select';
 import { tagOptions } from '../../constants/tag-options';
 import { customItemsForMarkdown } from '../../constants/blog-editor-icons';
 
 const BlogUpdateForm: React.FC<{
   title: string;
-  visibility: BlogVisibility;
+  status: BlogStatus;
   content: string;
   currTags: TagOption[];
   coverImagePath: string;
@@ -16,7 +16,7 @@ const BlogUpdateForm: React.FC<{
   setErrorMessage: Dispatch<React.SetStateAction<string>>;
 }> = ({
   title,
-  visibility,
+  status,
   content,
   currTags,
   coverImagePath,
@@ -38,7 +38,7 @@ const BlogUpdateForm: React.FC<{
     mode: 'all',
     defaultValues: {
       title,
-      visibility,
+      status,
       content,
       tags: currTags,
       coverImagePath,
@@ -56,7 +56,7 @@ const BlogUpdateForm: React.FC<{
       !watchedValues.title ||
       !watchedValues.content ||
       !watchedValues.tags ||
-      !watchedValues.visibility ||
+      !watchedValues.status ||
       !watchedValues.coverImagePath
     ) {
       setErrorMessage('Please add all fields');
@@ -66,7 +66,7 @@ const BlogUpdateForm: React.FC<{
     updateHandler(
       {
         title: watchedValues.title,
-        visibility: watchedValues.visibility,
+        visibility: watchedValues.status,
         content: watchedValues.content,
         tags: watchedValues.tags,
         coverImagePath: watchedValues.coverImagePath,
@@ -123,22 +123,23 @@ const BlogUpdateForm: React.FC<{
         )}
       </div>
 
-      {/* Visibility */}
+      {/* Status */}
       <div>
         <label
-          htmlFor="visibility"
+          htmlFor="status"
           className="block mb-1 font-medium text-gray-700"
         >
           Visibility
         </label>
         <select
-          id="visibility"
-          {...register('visibility')}
+          id="status"
+          {...register('status')}
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
         >
           <option value="PUBLIC">PUBLIC</option>
           <option value="PRIVATE">PRIVATE</option>
           <option value="DELETED">DELETED</option>
+          <option value="DRAFT">DRAFT</option>
         </select>
       </div>
 

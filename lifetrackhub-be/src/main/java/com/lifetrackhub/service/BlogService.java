@@ -1,5 +1,6 @@
 package com.lifetrackhub.service;
 
+import com.lifetrackhub.constant.enumeration.BlogStatus;
 import com.lifetrackhub.dto.BlogCountStatsDto;
 import com.lifetrackhub.dto.request.BlogCreateRequestDto;
 import com.lifetrackhub.dto.request.BlogGetRequestDto;
@@ -21,7 +22,7 @@ public interface BlogService {
 
     Blog findBlogBySlug(String slug);
 
-    Page<Blog> findBlogsByEmail(String email, String visibility, int page, int size);
+    Page<Blog> findBlogsByEmail(String email, BlogStatus status, int page, int size);
 
     CommonResponseDto softDelete(String slug);
 

@@ -1,6 +1,6 @@
 package com.lifetrackhub.dto.request;
 
-import com.lifetrackhub.constant.enumeration.BlogContentType;
+import com.lifetrackhub.constant.enumeration.BlogStatus;
 import lombok.Data;
 import lombok.ToString;
 
@@ -17,9 +17,7 @@ public class BlogGetRequestDto {
 
     private String email;
 
-    private String visibility = "PUBLIC";
-
-    private BlogContentType blogContentType;
+    private BlogStatus status;
 
     private LocalDate start;
 

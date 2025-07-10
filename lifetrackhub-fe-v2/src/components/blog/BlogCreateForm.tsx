@@ -37,7 +37,7 @@ const BlogCreateForm: React.FC<{
     mode: 'all',
     defaultValues: {
       title: blogDetails.title,
-      visibility: blogDetails.visibility || 'PUBLIC',
+      status: blogDetails.status || 'PUBLIC',
       tags: currentTags,
       coverImagePath: blogDetails.coverImagePath,
       content: blogDetails.content,
@@ -53,7 +53,7 @@ const BlogCreateForm: React.FC<{
     const blogData = {
       ...data,
       tags: data.tags.map(tag => tag.value).join(','),
-      blogContentType: 'PUBLISHED',
+      status: 'PUBLIC',
     };
 
     await triggerBlogCreate(blogData)
@@ -75,7 +75,7 @@ const BlogCreateForm: React.FC<{
       !watchedValues.title ||
       !watchedValues.content ||
       !watchedValues.tags ||
-      !watchedValues.visibility ||
+      !watchedValues.status ||
       !watchedValues.coverImagePath
     ) {
       setErrorMessage('Please add all fields');
@@ -88,7 +88,7 @@ const BlogCreateForm: React.FC<{
     const blogData = {
       ...watchedValues,
       tags: watchedValues?.tags.map(tag => tag.value).join(','),
-      blogContentType: 'DRAFT',
+      status: 'DRAFT',
     };
 
     await triggerBlogCreate(blogData)
@@ -107,12 +107,11 @@ const BlogCreateForm: React.FC<{
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      const { title, visibility, content, tags, coverImagePath } =
-        watchedValues;
-      if (title || content || visibility || tags || coverImagePath) {
+      const { title, status, content, tags, coverImagePath } = watchedValues;
+      if (title || content || status || tags || coverImagePath) {
         const newDraft = {
           title,
-          visibility,
+          status,
           content,
           tags: tags.map(tag => tag.value),
           coverImagePath,
@@ -127,7 +126,7 @@ const BlogCreateForm: React.FC<{
     watchedValues.title,
     watchedValues.content,
     watchedValues.tags,
-    watchedValues.visibility,
+    watchedValues.status,
     watchedValues.coverImagePath,
     dispatch,
   ]);
@@ -179,22 +178,23 @@ const BlogCreateForm: React.FC<{
         )}
       </div>
 
-      {/* Visibility */}
+      {/* Status */}
       <div>
         <label
-          htmlFor="visibility"
+          htmlFor="status"
           className="block mb-1 font-medium text-gray-700"
         >
           Visibility
         </label>
         <select
-          id="visibility"
-          {...register('visibility')}
+          id="status"
+          {...register('status')}
           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
         >
           <option value="PUBLIC">PUBLIC</option>
           <option value="PRIVATE">PRIVATE</option>
           <option value="DELETED">DELETED</option>
+          <option value="DRAFT">DRAFT</option>
         </select>
       </div>
 
@@ -287,20 +287,6 @@ const BlogCreateForm: React.FC<{
           <p className="text-sm text-red-500 mt-1">{errors.content.message}</p>
         )}
       </div>
-
-      {/* <Controller
-          control={control}
-          name="content"
-          rules={{ required: 'Content is required' }}
-          render={({ field }) => (
-            <MarkdownEditor
-              {...field}
-              height="400px"
-              className="fixed rounded border"
-              enablePreview={true}
-            />
-          )}
-        /> */}
 
       {/* Submit Button */}
       <div className="flex gap-2">

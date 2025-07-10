@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
 import { extractCleanTextFromMarkdown } from '../../helper/utils/extract-text-from-markdown';
 import fallbackImage from '../../assets/blogFallback.png';
-import { BlogContentType, BlogVisibility } from '../../types/blog';
+import { BlogStatus } from '../../types/blog';
+import { blogStatusColor } from '../../helper/utils/color-code';
 
 const BlogCard: React.FC<{
   title: string;
   content: string;
   username: string;
-  visibility: BlogVisibility;
-  contentType: BlogContentType;
+  status: BlogStatus;
   slug: string;
   createdDate: string;
   coverImagePath?: string;
@@ -19,8 +19,7 @@ const BlogCard: React.FC<{
   title,
   content,
   username,
-  visibility,
-  contentType,
+  status,
   slug,
   createdDate,
   coverImagePath,
@@ -31,7 +30,7 @@ const BlogCard: React.FC<{
         <img
           src={coverImagePath || fallbackImage}
           alt={title}
-          className="w-full h-48 object-cover rounded-lg mb-4"
+          className="w-full h-96 object-cover rounded-lg mb-4"
           loading="lazy"
         />
       </Link>
@@ -57,36 +56,19 @@ const BlogCard: React.FC<{
       </div>
 
       <div className="text-sm font-medium text-gray-500 pb-2">
-        Visibility:{' '}
+        Status:{' '}
         <span
-          className={`inline-block px-2 py-1 rounded ${
-            visibility === 'PUBLIC'
-              ? 'bg-green-100 text-green-800'
-              : visibility === 'PRIVATE'
-              ? 'bg-yellow-100 text-yellow-800'
-              : 'bg-red-100 text-red-800'
-          }`}
+          className={`inline-block px-2 py-1 rounded ${blogStatusColor[status]}`}
         >
-          {visibility}
-        </span>
-      </div>
-
-      <div className="text-sm font-medium text-gray-500">
-        Content Type:{' '}
-        <span
-          className={`inline-block px-2 py-1 rounded ${
-            contentType === 'PUBLISHED'
-              ? 'bg-green-100 text-green-800'
-              : 'bg-gray-100 text-gray-800'
-          }`}
-        >
-          {contentType}
+          {status}
         </span>
       </div>
 
       <div className="text-sm text-gray-500">
-        By <span className="font-medium text-gray-600">{username}</span>{' '}
-        &middot; <span>{formatHumanReadableDate(createdDate)}</span>
+        Author: <span className="font-medium text-gray-600">{username}</span>
+      </div>
+      <div className="text-sm text-gray-500">
+        Created Date: <span>{formatHumanReadableDate(createdDate)}</span>
       </div>
     </div>
   );

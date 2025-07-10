@@ -23,7 +23,7 @@ const useLoginCredentialStore = () => {
 
     const draftBlog = {
       title: '',
-      visibility: '',
+      status: '',
       tags: [],
       coverImagePath: '',
       content: '',

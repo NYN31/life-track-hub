@@ -1,6 +1,6 @@
 package com.lifetrackhub.dto.request;
 
-import com.lifetrackhub.constant.enumeration.BlogContentType;
+import com.lifetrackhub.constant.enumeration.BlogStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
@@ -15,14 +15,11 @@ public class BlogCreateRequestDto {
     private String content;
 
     @NotNull
-    private String visibility;
+    private BlogStatus status;
 
     @NotNull
     private String coverImagePath;
 
     @NotNull
     private String tags;
-
-    @NotNull
-    private BlogContentType blogContentType;
 }
