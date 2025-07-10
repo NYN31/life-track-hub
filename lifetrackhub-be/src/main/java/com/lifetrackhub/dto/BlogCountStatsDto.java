@@ -1,7 +1,6 @@
 package com.lifetrackhub.dto;
 
-import com.lifetrackhub.dto.response.CountByContentTypeDto;
-import com.lifetrackhub.dto.response.CountByVisibilityDto;
+import com.lifetrackhub.dto.response.CountByStatusDto;
 import lombok.*;
 
 import java.util.List;
@@ -9,11 +8,9 @@ import java.util.List;
 @Data
 @ToString
 public class BlogCountStatsDto {
-    private List<CountByVisibilityDto> visibilityCounts;
-    private List<CountByContentTypeDto> contentTypeCounts;
+    private List<CountByStatusDto> statusCounts;
 
-    public BlogCountStatsDto(List<CountByVisibilityDto> visibilityCounts, List<CountByContentTypeDto> contentTypeCounts) {
-        this.visibilityCounts = visibilityCounts;
-        this.contentTypeCounts = contentTypeCounts;
+    public BlogCountStatsDto(List<CountByStatusDto> statusCounts) {
+        this.statusCounts = statusCounts;
     }
 }

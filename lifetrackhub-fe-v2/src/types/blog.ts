@@ -6,8 +6,7 @@ export interface IBlog extends IBase {
   content: string;
   slug: string;
   tags: string;
-  visibility: BlogVisibility;
-  contentType: BlogContentType;
+  status: BlogStatus;
   coverImagePath: string;
   user: IUser;
 }
@@ -19,27 +18,19 @@ export type TagOption = {
 
 export interface IBlogFormInputs {
   title: string;
-  visibility: BlogVisibility;
+  status: BlogStatus;
   tags: TagOption[];
   coverImagePath: string;
   content: string;
 }
 
-export type BlogVisibility = 'PUBLIC' | 'PRIVATE' | 'DELETED';
+export type BlogStatus = 'PUBLIC' | 'PRIVATE' | 'DELETED' | 'DRAFT';
 
-export interface IBlogVisibilityStats {
-  visibility: BlogVisibility;
+export interface IBlogStatusStats {
+  status: BlogStatus;
   count: number;
 }
-
-export interface IBlogContentTypeStats {
-  contentType: BlogContentType;
-  count: number;
-}
-
-export type BlogContentType = 'PUBLISHED' | 'DRAFT';
 
 export interface IBlogStats {
-  contentTypeCounts: IBlogContentTypeStats[];
-  visibilityCounts: IBlogVisibilityStats[];
+  statusCounts: IBlogStatusStats[];
 }

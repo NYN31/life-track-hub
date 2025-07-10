@@ -25,7 +25,7 @@ const BlogUpdateContainer = () => {
     useGetBlogBySlugQuery(slug);
   const [triggerBlogUpdate] = useUpdateBlogMutation();
 
-  const blogUpdateHandler = async (data: any, reset: () => void, contentType: string) => {
+  const blogUpdateHandler = async (data: any, reset: () => void) => {
     setLoadingBlogUpdation(true);
     setErrorMessage('');
 
@@ -33,7 +33,6 @@ const BlogUpdateContainer = () => {
       ...data,
       tags: data.tags.map((tag: TagOption) => tag.value).join(','),
       slug,
-      blogContentType: contentType,
     };
 
     await triggerBlogUpdate(blogData)
@@ -65,7 +64,13 @@ const BlogUpdateContainer = () => {
   const hasPreviewPermission = () => {
     if (!currentBlog) return false;
 
-    return currentBlog.title && currentBlog.content && currentBlog.visibility;
+    return (
+      currentBlog.title &&
+      currentBlog.content &&
+      currentBlog.coverImagePath &&
+      currentBlog.status &&
+      currentBlog.tags
+    );
   };
 
   return (
@@ -86,7 +91,7 @@ const BlogUpdateContainer = () => {
         <BlogUpdateForm
           title={currentBlog?.title || ''}
           content={currentBlog?.content || ''}
-          visibility={currentBlog?.visibility || 'PUBLIC'}
+          status={currentBlog?.status || 'PUBLIC'}
           currTags={currBlogTags}
           coverImagePath={currentBlog?.coverImagePath || ''}
           updateHandler={blogUpdateHandler}

@@ -1,6 +1,6 @@
 package com.lifetrackhub.entity;
 
-import com.lifetrackhub.constant.enumeration.BlogContentType;
+import com.lifetrackhub.constant.enumeration.BlogStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -25,14 +25,11 @@ public class Blog {
     private String content;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private BlogContentType contentType;
-
-    @Column(nullable = false)
     private String slug;
 
     @Column(nullable = false)
-    private String visibility;
+    @Enumerated(EnumType.STRING)
+    private BlogStatus status;
 
     @Column(nullable = false)
     private String coverImagePath;

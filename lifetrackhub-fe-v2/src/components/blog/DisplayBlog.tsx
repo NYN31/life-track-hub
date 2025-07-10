@@ -6,6 +6,8 @@ import {
 } from '../../constants/title-and-paths';
 import fallback from '../../assets/blogFallback.png';
 import { extractMarkdownHeadings } from '../../helper/utils/extract-markdown-headings';
+import { blogStatusColor } from '../../helper/utils/color-code';
+import { BlogStatus } from '../../types/blog';
 
 const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
   const { slug } = useParams();
@@ -56,30 +58,13 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
           </div>
 
           <div className="text-sm font-medium text-gray-500">
-            Visibility:{' '}
+            Status:{' '}
             <span
               className={`inline-block px-2 py-1 rounded ${
-                blogData.visibility === 'PUBLIC'
-                  ? 'bg-green-100 text-green-800'
-                  : blogData.visibility === 'PRIVATE'
-                  ? 'bg-yellow-100 text-yellow-800'
-                  : 'bg-red-100 text-red-800'
+                blogStatusColor[blogData.status as BlogStatus]
               }`}
             >
-              {blogData.visibility}
-            </span>
-          </div>
-
-          <div className="text-sm font-medium text-gray-500">
-            Content Type:{' '}
-            <span
-              className={`inline-block px-2 py-1 rounded ${
-                blogData.contentType === 'PUBLISHED'
-                  ? 'bg-green-100 text-green-800'
-                  : 'bg-gray-100 text-gray-800'
-              }`}
-            >
-              {blogData.contentType}
+              {blogData.status}
             </span>
           </div>
 

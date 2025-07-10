@@ -14,8 +14,7 @@ const BlogList: React.FC<{ results: IBlog[] }> = ({ results }) => {
             title={blog.title}
             content={blog.content}
             username={username}
-            visibility={blog.visibility}
-            contentType={blog.contentType}
+            status={blog.status}
             slug={blog.slug}
             createdDate={blog.createdDate}
             coverImagePath={blog.coverImagePath}
