@@ -1,13 +1,18 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.enumeration.BlogContentType;
+import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.constant.enumeration.Visibility;
 import com.lifetrackhub.constant.utils.DateUtil;
 import com.lifetrackhub.constant.utils.RandomUtil;
 import com.lifetrackhub.constant.utils.Util;
+import com.lifetrackhub.dto.BlogCountStatsDto;
 import com.lifetrackhub.dto.request.BlogCreateRequestDto;
 import com.lifetrackhub.dto.request.BlogGetRequestDto;
 import com.lifetrackhub.dto.request.BlogUpdateRequestDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
+import com.lifetrackhub.dto.response.CountByContentTypeDto;
+import com.lifetrackhub.dto.response.CountByVisibilityDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.BlogRepository;
@@ -26,13 +31,13 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BlogServiceImpl implements BlogService {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private static final int DATE_RANGE_PERIOD_FOR_BLOG_SEARCH = 90;
+    private static final int DATE_RANGE_PERIOD_FOR_BLOG_SEARCH = 200;
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
@@ -85,12 +90,19 @@ public class BlogServiceImpl implements BlogService {
     public Page<Blog> findAllBlogs(BlogGetRequestDto dto) {
         log.info("Finding all {} blogs of {}, within {} to {}", dto.getVisibility(), dto.getEmail(), dto.getStart(), dto.getEnd());
 
+        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+
         Long userId = null;
         if (dto.getEmail() != null) {
             Optional<User> optionalUser = userRepository.findByEmail(dto.getEmail());
             if (optionalUser.isPresent()) {
                 userId = optionalUser.get().getId();
             }
+        }
+
+        if (!userFromSecurityContext.getRole().equals(Role.SUPER_ADMIN.name())) {
+            dto.setVisibility(Visibility.PUBLIC.name());
+            dto.setBlogContentType(BlogContentType.PUBLISHED);
         }
 
         Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), Sort.by(Sort.Direction.DESC, "createdDate"));
@@ -107,7 +119,7 @@ public class BlogServiceImpl implements BlogService {
 
         log.info("Start date - {}, End date - {}, Difference - {}", start, end, days);
         if (days > DATE_RANGE_PERIOD_FOR_BLOG_SEARCH) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 30 days");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 90 days");
         }
 
         return blogRepository.findAllBlogs(userId, dto.getSlug(), dto.getVisibility(), dto.getBlogContentType(), start, end, pageable);
@@ -159,5 +171,43 @@ public class BlogServiceImpl implements BlogService {
                 .status(HttpStatus.OK)
                 .message("Soft delete has been successful")
                 .build();
+    }
+
+    @Override
+    public BlogCountStatsDto getBlogCountStats() {
+        User user = Util.getUserFromSecurityContextHolder();
+        log.info("Getting blog count stats for email {}", user.getEmail());
+
+        Long userId = null;
+        if (user.getRole().equals(Role.ADMIN.name())) {
+            userId = user.getId();
+        }
+
+        List<CountByVisibilityDto> partialVisibilityCounts = blogRepository.countByVisibility(userId);
+        List<CountByContentTypeDto> partialContentTypeCounts = blogRepository.countByContentType(userId);
+
+        Map<String, Long> visibilityMap = Arrays.stream(Visibility.values())
+                .collect(Collectors.toMap(Enum::name, v -> 0L));
+
+        for (CountByVisibilityDto dto : partialVisibilityCounts) {
+            visibilityMap.put(dto.getVisibility(), dto.getCount());
+        }
+
+        List<CountByVisibilityDto> visibilityCounts = visibilityMap.entrySet().stream()
+                .map(e -> new CountByVisibilityDto(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+
+        Map<BlogContentType, Long> contentTypeMap = Arrays.stream(BlogContentType.values())
+                .collect(Collectors.toMap(v -> v, v -> 0L));
+
+        for (CountByContentTypeDto dto : partialContentTypeCounts) {
+            contentTypeMap.put(BlogContentType.valueOf(dto.getContentType()), dto.getCount());
+        }
+
+        List<CountByContentTypeDto> contentTypeCounts = contentTypeMap.entrySet().stream()
+                .map(e -> new CountByContentTypeDto(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+
+        return new BlogCountStatsDto(visibilityCounts, contentTypeCounts);
     }
 }

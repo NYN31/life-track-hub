@@ -51,6 +51,13 @@ export const blogApi = apiSlice
           { type: 'BlogBySlug', slug: arg.slug },
         ],
       }),
+
+      getBlogStats: builder.query({
+        query: () => {
+          return `${ADMIN_BLOG_API_PATH}/stats`;
+        },
+        keepUnusedDataFor: 0,
+      }),
     }),
   });
 
@@ -59,4 +66,5 @@ export const {
   useGetBlogBySlugQuery,
   useCreateBlogMutation,
   useUpdateBlogMutation,
+  useGetBlogStatsQuery,
 } = blogApi;

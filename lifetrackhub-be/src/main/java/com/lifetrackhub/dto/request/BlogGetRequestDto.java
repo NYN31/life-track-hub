@@ -19,7 +19,7 @@ public class BlogGetRequestDto {
 
     private String visibility = "PUBLIC";
 
-    private BlogContentType blogContentType = BlogContentType.PUBLISHED;
+    private BlogContentType blogContentType;
 
     private LocalDate start;
 

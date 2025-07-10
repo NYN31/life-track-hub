@@ -66,6 +66,7 @@ const BlogContainer: React.FC = () => {
     dateRange: [Date | null, Date | null]
   ) => {
     setBlogContentLoading(true);
+    setErrorMessage('');
     await triggerGetBlogsByUser({
       page: pageId,
       size: MAX_BLOG_ITEMS_IN_A_PAGE,
