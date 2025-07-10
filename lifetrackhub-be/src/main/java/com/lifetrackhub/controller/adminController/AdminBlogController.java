@@ -1,17 +1,13 @@
 package com.lifetrackhub.controller.adminController;
 
-import com.lifetrackhub.constant.utils.Util;
+import com.lifetrackhub.dto.BlogCountStatsDto;
 import com.lifetrackhub.dto.BlogDto;
-import com.lifetrackhub.dto.PageDto;
 import com.lifetrackhub.dto.request.BlogCreateRequestDto;
 import com.lifetrackhub.dto.request.BlogUpdateRequestDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.service.BlogService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 @RestController
 public class AdminBlogController extends AdminBaseController {
@@ -31,5 +27,10 @@ public class AdminBlogController extends AdminBaseController {
     public BlogDto updateBlog(@Valid @RequestBody BlogUpdateRequestDto request) {
         Blog blog = blogService.update(request);
         return BlogDto.formEntity(blog);
+    }
+
+    @GetMapping("/blog/stats")
+    public BlogCountStatsDto getBlogCountStats() {
+        return blogService.getBlogCountStats();
     }
 }

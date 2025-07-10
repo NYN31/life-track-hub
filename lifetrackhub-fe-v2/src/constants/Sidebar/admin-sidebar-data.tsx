@@ -1,6 +1,7 @@
 import * as data from '../title-and-paths';
 import { LuListTodo } from 'react-icons/lu';
 import { MdOutlineCreateNewFolder } from 'react-icons/md';
+import { IoStatsChartOutline } from 'react-icons/io5';
 
 const ICON_SIZE = 18;
 
@@ -19,6 +20,12 @@ const SidebarData = [
         label: data.BLOG_CREATED_PATH,
         path: data.BLOG_CREATED_PATH,
         icon: <MdOutlineCreateNewFolder size={ICON_SIZE} />,
+      },
+      {
+        title: data.BLOG_STATS,
+        label: data.BLOG_STATS_PATH,
+        path: data.BLOG_STATS_PATH,
+        icon: <IoStatsChartOutline size={ICON_SIZE} />,
       },
     ],
   },

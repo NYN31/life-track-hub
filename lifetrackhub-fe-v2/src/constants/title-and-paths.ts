@@ -55,3 +55,6 @@ export const BLOG_CREATED_PATH = '/blog/create';
 export const BLOG_UPDATED_PATH = '/blog/update';
 
 export const BLOG_PREVIEW_PATH = '/blog/preview';
+
+export const BLOG_STATS = 'Stats';
+export const BLOG_STATS_PATH = '/blog/stats';
