@@ -9,7 +9,6 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import DisplayBlogContainer from './pages/blog/DisplayBlogContainer';
 import useAuthCheck from './helper/hooks/useAuthCheck';
 import BlogUpdateContainer from './pages/blog/BlogUpdateContainer';
-import BlogPreviewContainer from './pages/blog/BlogPreviewContainer';
 import BlogStatsContainer from './pages/blog/BlogStatsContainer';
 import ProfileUpdateContainer from './pages/user/ProfileUpdateContainer';
 import UserProfileViewContainer from './pages/user/UserProfileViewContainer';
@@ -68,7 +67,6 @@ function App() {
         <Route path="blog">
           <Route index element={<BlogContainer />} />
           <Route path="create" element={<BlogCreateContainer />} />
-          <Route path="preview" element={<BlogPreviewContainer />} />
           <Route path="by-slug/:slug" element={<DisplayBlogContainer />} />
           <Route path="update/:slug" element={<BlogUpdateContainer />} />
           <Route path="stats" element={<BlogStatsContainer />} />

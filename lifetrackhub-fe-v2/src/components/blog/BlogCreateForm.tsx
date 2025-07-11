@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { IBlog, IBlogFormInputs, TagOption } from '../../types/blog';
 import Select from 'react-select';
@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
 import { tagOptions } from '../../constants/tag-options';
 import { customItemsForMarkdown } from '../../constants/blog-editor-icons';
+import MarkdownEditor from './MarkdownEditor';
 
 const BlogCreateForm: React.FC<{
   blogDetails: IBlog;
@@ -19,10 +20,8 @@ const BlogCreateForm: React.FC<{
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isLoadingBlogCreation, setLoadingBlogCreation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
   const [triggerBlogCreate] = useCreateBlogMutation();
 
   const {
@@ -31,10 +30,9 @@ const BlogCreateForm: React.FC<{
     handleSubmit,
     watch,
     reset,
-    setValue,
     formState: { errors },
   } = useForm<IBlogFormInputs>({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: {
       title: blogDetails.title,
       status: blogDetails.status || 'PUBLIC',
@@ -45,17 +43,15 @@ const BlogCreateForm: React.FC<{
   });
 
   const watchedValues = watch();
-
+  
+  // --- Handlers ---
   const onSubmit: SubmitHandler<IBlogFormInputs> = async data => {
     setLoadingBlogCreation(true);
     setErrorMessage('');
-
     const blogData = {
       ...data,
       tags: data.tags.map(tag => tag.value).join(','),
-      status: 'PUBLIC',
     };
-
     await triggerBlogCreate(blogData)
       .unwrap()
       .then(res => {
@@ -70,41 +66,7 @@ const BlogCreateForm: React.FC<{
       .finally(() => setLoadingBlogCreation(false));
   };
 
-  const draftHandler = async () => {
-    if (
-      !watchedValues.title ||
-      !watchedValues.content ||
-      !watchedValues.tags ||
-      !watchedValues.status ||
-      !watchedValues.coverImagePath
-    ) {
-      setErrorMessage('Please add all fields');
-      return;
-    }
-
-    setLoadingBlogCreation(true);
-    setErrorMessage('');
-
-    const blogData = {
-      ...watchedValues,
-      tags: watchedValues?.tags.map(tag => tag.value).join(','),
-      status: 'DRAFT',
-    };
-
-    await triggerBlogCreate(blogData)
-      .unwrap()
-      .then(res => {
-        dispatch(blogReset());
-        resetDraftBlogStorage();
-        reset();
-        navigate(`${BLOG_DETAILS_PATH}/${res.slug}`);
-      })
-      .catch(err => {
-        setErrorMessage(err?.data?.message);
-      })
-      .finally(() => setLoadingBlogCreation(false));
-  };
-
+  // --- Autosave Draft ---
   useEffect(() => {
     const handler = setTimeout(() => {
       const { title, status, content, tags, coverImagePath } = watchedValues;
@@ -113,14 +75,13 @@ const BlogCreateForm: React.FC<{
           title,
           status,
           content,
-          tags: tags.map(tag => tag.value),
+          tags,
           coverImagePath,
         };
         dispatch(blogContentDraft(newDraft));
         localStorage.setItem('draftBlog', JSON.stringify(newDraft));
       }
     }, 2000);
-
     return () => clearTimeout(handler);
   }, [
     watchedValues.title,
@@ -131,46 +92,20 @@ const BlogCreateForm: React.FC<{
     dispatch,
   ]);
 
-  const insertAtCursor = (prefix: string, suffix: string = '') => {
-    const textarea = textareaRef.current;
-    if (!textarea) return;
-
-    const scrollTop = textarea.scrollTop;
-    const scrollLeft = textarea.scrollLeft;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const value = textarea.value;
-    const selected = value.slice(start, end);
-
-    const newText =
-      value.slice(0, start) + prefix + selected + suffix + value.slice(end);
-
-    setValue('content', newText, { shouldDirty: true });
-
-    requestAnimationFrame(() => {
-      textarea.focus();
-
-      // Restore cursor position
-      const cursorPos = start + prefix.length + selected.length;
-      textarea.setSelectionRange(cursorPos, cursorPos);
-
-      // Restore scroll position
-      textarea.scrollTop = scrollTop;
-      textarea.scrollLeft = scrollLeft;
-    });
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Blog Title */}
       <div>
-        <label htmlFor="title" className="block mb-1 font-medium text-gray-700">
+        <label
+          htmlFor="title"
+          className="block mb-1 font-semibold text-gray-700"
+        >
           Title <span className="text-red-500">*</span>
         </label>
         <input
           id="title"
           {...register('title', { required: 'Title is required' })}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+          className="w-full px-4 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow"
           placeholder="Enter blog title"
         />
         {errors.title && (
@@ -182,14 +117,14 @@ const BlogCreateForm: React.FC<{
       <div>
         <label
           htmlFor="status"
-          className="block mb-1 font-medium text-gray-700"
+          className="block mb-1 font-semibold text-gray-700"
         >
-          Visibility
+          Status
         </label>
         <select
           id="status"
           {...register('status')}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+          className="w-full px-4 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow"
         >
           <option value="PUBLIC">PUBLIC</option>
           <option value="PRIVATE">PRIVATE</option>
@@ -200,10 +135,12 @@ const BlogCreateForm: React.FC<{
 
       {/* Tags */}
       <div>
-        <label htmlFor="tags" className="block mb-1 font-medium text-gray-700">
+        <label
+          htmlFor="tags"
+          className="block mb-1 font-semibold text-gray-700"
+        >
           Tags <span className="text-gray-500 text-sm">(Select multiple)</span>
         </label>
-
         <Controller
           name="tags"
           control={control}
@@ -219,6 +156,14 @@ const BlogCreateForm: React.FC<{
               classNamePrefix="react-select"
               onChange={selected => field.onChange(selected)}
               value={field.value}
+              styles={{
+                control: base => ({
+                  ...base,
+                  borderColor: '#a78bfa',
+                  boxShadow: 'none',
+                  '&:hover': { borderColor: '#7c3aed' },
+                }),
+              }}
             />
           )}
         />
@@ -231,15 +176,17 @@ const BlogCreateForm: React.FC<{
       <div>
         <label
           htmlFor="coverImagePath"
-          className="block mb-1 font-medium text-gray-700"
+          className="block mb-1 font-semibold text-gray-700"
         >
           Cover Image Path <span className="text-red-500">*</span>
         </label>
         <input
           id="coverImagePath"
-          {...register('coverImagePath', { required: 'Title is required' })}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-          placeholder="Enter blog title"
+          {...register('coverImagePath', {
+            required: 'Cover image path is required',
+          })}
+          className="w-full px-4 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow"
+          placeholder="Enter cover image path"
         />
         {errors.coverImagePath && (
           <p className="text-sm text-red-500 mt-1">
@@ -250,62 +197,34 @@ const BlogCreateForm: React.FC<{
 
       {/* Markdown Content */}
       <div>
-        <label className="block mb-1 font-medium text-gray-700">
+        <label className="block mb-1 font-semibold text-gray-700">
           Content (Markdown)
         </label>
-        <div className="py-4 space-y-4">
-          <div className="flex flex-wrap gap-4">
-            {customItemsForMarkdown.map(item => {
-              return (
-                <div
-                  key={item.title}
-                  onClick={() => insertAtCursor(item.prefix, item.suffix)}
-                  className="cursor-pointer"
-                >
-                  {item.icon}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
         <Controller
           name="content"
           control={control}
           render={({ field }) => (
-            <textarea
-              {...field}
-              ref={textareaRef}
-              id="content"
-              className="w-full h-[70vh] p-2 border rounded-lg resize-none font-mono"
-              placeholder="Write your markdown here..."
+            <MarkdownEditor
+              value={field.value}
+              onChange={field.onChange}
+              error={errors.content?.message}
+              customItemsForMarkdown={customItemsForMarkdown}
             />
           )}
         />
-
-        {errors.content && (
-          <p className="text-sm text-red-500 mt-1">{errors.content.message}</p>
-        )}
       </div>
 
       {/* Submit Button */}
-      <div className="flex gap-2">
-        <button
-          type="submit"
-          onClick={() => draftHandler()}
-          disabled={isLoadingBlogCreation}
-          className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
-        >
-          Draft Blog
-        </button>
-        <button
-          type="submit"
-          disabled={isLoadingBlogCreation}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-        >
-          Submit Blog
-        </button>
-      </div>
+      <button
+        type="submit"
+        disabled={isLoadingBlogCreation}
+        className="bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:from-purple-700 hover:to-purple-600 transition flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500"
+      >
+        {isLoadingBlogCreation ? (
+          <span className="animate-spin mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+        ) : null}
+        Publish Blog
+      </button>
 
       {errorMessage && <ErrorMessage message={errorMessage} />}
     </form>

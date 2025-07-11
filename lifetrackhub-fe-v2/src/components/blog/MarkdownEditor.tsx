@@ -1,61 +1,99 @@
-// import React from 'react';
+import React, { useRef, useState } from 'react';
+import { FaEye } from 'react-icons/fa';
+import { BsMarkdownFill } from 'react-icons/bs';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 
-// const MarkdownEditor:  = () => {
-//   const textareaRef = useRef<HTMLTextAreaElement>(null);
+interface MarkdownEditorProps {
+  value: string;
+  onChange: (val: string) => void;
+  error?: string;
+  customItemsForMarkdown: Array<{
+    title: string;
+    icon: React.ReactNode;
+    prefix: string;
+    suffix?: string;
+  }>;
+}
 
-//   const insertAtCursor = (prefix: string, suffix = '') => {
-//     const textarea = textareaRef.current;
-//     if (!textarea) return;
+const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
+  value,
+  onChange,
+  error,
+  customItemsForMarkdown,
+}) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isPreviewEnable, setPreviewEnable] = useState(false);
 
-//     const start = textarea.selectionStart;
-//     const end = textarea.selectionEnd;
-//     const selected = markdown.substring(start, end);
-//     const newValue =
-//       markdown.substring(0, start) +
-//       prefix +
-//       selected +
-//       suffix +
-//       markdown.substring(end);
-//     setMarkdown(newValue);
+  const togglePreview = () => {
+    setPreviewEnable(prev => !prev);
+  };
 
-//     // move cursor
-//     setTimeout(() => {
-//       textarea.focus();
-//       textarea.selectionStart = start + prefix.length;
-//       textarea.selectionEnd = end + prefix.length;
-//     }, 0);
-//   };
+  const insertAtCursor = (before: string, after: string = '') => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    const scrollTop = textarea.scrollTop;
+    const scrollLeft = textarea.scrollLeft;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selected = value.slice(start, end);
+    const newText =
+      value.slice(0, start) + before + selected + after + value.slice(end);
+    onChange(newText);
+    requestAnimationFrame(() => {
+      textarea.focus();
+      const cursorPos = start + before.length + selected.length;
+      textarea.setSelectionRange(cursorPos, cursorPos);
+      textarea.scrollTop = scrollTop;
+      textarea.scrollLeft = scrollLeft;
+    });
+  };
 
-//   const renderMarkdown = (text: string) => {
-//     // Basic formatting replacements
-//     let html = text
-//       .replace(/^###### (.*$)/gim, '<h6>$1</h6>')
-//       .replace(/^##### (.*$)/gim, '<h5>$1</h5>')
-//       .replace(/^#### (.*$)/gim, '<h4>$1</h4>')
-//       .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-//       .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-//       .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-//       .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
-//       .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-//       .replace(/__(.*?)__/gim, '<u>$1</u>')
-//       .replace(
-//         /!\[(.*?)\]\((.*?)\)/gim,
-//         "<img alt='$1' src='$2' class='max-w-full' />"
-//       )
-//       .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2' target='_blank'>$1</a>")
-//       .replace(/^\s*\n\*/gm, '<ul>\n*')
-//       .replace(/^(\*.+)\s*/gm, '<li>$1</li>')
-//       .replace(/<\/li>\s*<li>/gim, '</li>\n<li>')
-//       .replace(/\n\*([^<])/gm, '\n<li>$1')
-//       .replace(/<\/li>\n<li>/g, '</li>\n<li>')
-//       .replace(/<\/li>\n*$/gm, '</li>\n</ul>')
-//       .replace(/^\d+\.\s+(.*)/gm, '<ol><li>$1</li></ol>')
-//       .replace(/\n/g, '<br>');
+  return (
+    <div>
+      <div className="flex items-start justify-between bg-purple-50 border border-purple-200 rounded-t-lg">
+        <div className="flex flex-wrap gap-2 m-1">
+          {customItemsForMarkdown.map(item => (
+            <button
+              key={item.title}
+              type="button"
+              title={item.title}
+              onClick={() => insertAtCursor(item.prefix, item.suffix)}
+              className="p-2 rounded hover:bg-purple-200 transition border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-400"
+            >
+              {item.icon}
+            </button>
+          ))}
+        </div>
+        <div
+          className="flex flex-row gap-2 m-1 cursor-pointer"
+          onClick={togglePreview}
+        >
+          <span className="p-2 rounded hover:bg-purple-200 transition border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-400">
+            {isPreviewEnable ? (
+              <BsMarkdownFill size="20" />
+            ) : (
+              <FaEye size="20" />
+            )}
+          </span>
+        </div>
+      </div>
+      {isPreviewEnable ? (
+        <div className="w-full min-h-[350px] max-h-[600px] p-4 border border-purple-200 rounded-b-lg font-mono bg-white focus:ring-2 focus:ring-purple-400 focus:outline-none resize-y shadow">
+          <MarkdownPreview source={value} />
+        </div>
+      ) : (
+        <textarea
+          ref={textareaRef}
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          className="w-full min-h-[350px] max-h-[600px] p-4 border border-purple-200 rounded-b-lg font-mono bg-white focus:ring-2 focus:ring-purple-400 focus:outline-none resize-y shadow"
+          placeholder="Write your markdown here..."
+        />
+      )}
 
-//     return { __html: html };
-//   };
+      {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
+    </div>
+  );
+};
 
-//   return <div>MarkdownEditor</div>;
-// };
-
-// export default MarkdownEditor;
+export default MarkdownEditor;
