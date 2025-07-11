@@ -4,18 +4,18 @@ import { useDispatch } from 'react-redux';
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
-} from '../../features/user/userApi';
-import { setUser } from '../../features/user/userSlice';
-import Spinner from '../common/Spinner';
-import ErrorMessage from '../common/ErrorMessage';
-import { IExperience } from '../../types/user';
+} from '../../../features/user/userApi';
+import { setUser } from '../../../features/user/userSlice';
+import Spinner from '../../common/Spinner';
+import ErrorMessage from '../../common/ErrorMessage';
+import { IEducation } from '../../../types/user';
 import { FiTrash } from 'react-icons/fi';
 
-interface ExperienceFormValues {
-  experiences: IExperience[];
+interface EducationFormValues {
+  educations: IEducation[];
 }
 
-const ExperienceForm: React.FC = () => {
+const EducationForm: React.FC = () => {
   const dispatch = useDispatch();
   const email = localStorage.getItem('email');
   const { data, isLoading, error: fetchError } = useGetProfileQuery(email);
@@ -29,26 +29,26 @@ const ExperienceForm: React.FC = () => {
     handleSubmit,
     reset,
     formState: { errors, isDirty },
-  } = useForm<ExperienceFormValues>({
-    defaultValues: { experiences: [] },
+  } = useForm<EducationFormValues>({
+    defaultValues: { educations: [] },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'experiences',
+    name: 'educations',
   });
 
   useEffect(() => {
-    if (data && data.userDetails?.experiences) {
-      reset({ experiences: data.userDetails.experiences });
+    if (data && data.userDetails?.educations) {
+      reset({ educations: data.userDetails.educations });
     }
   }, [data, reset]);
 
-  const onSubmit = async (values: ExperienceFormValues) => {
+  const onSubmit = async (values: EducationFormValues) => {
     if (!data || !isDirty) return;
     const userDetails = {
       ...data.userDetails,
-      experiences: values.experiences,
+      educations: values.educations,
     };
     const payload = {
       ...data,
@@ -81,7 +81,7 @@ const ExperienceForm: React.FC = () => {
       className="space-y-8 max-w-2xl bg-white shadow-2xl rounded-2xl p-10 border border-purple-100 mx-auto animate-fade-in"
     >
       <h3 className="text-3xl font-extrabold mb-6 text-purple-700 text-center tracking-tight">
-        Experience
+        Education
       </h3>
       <div className="space-y-6">
         {fields.map((field, idx) => (
@@ -92,35 +92,35 @@ const ExperienceForm: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-base font-semibold text-gray-700">
-                  Organization<span className="text-red-500">*</span>
+                  Institution Name<span className="text-red-500">*</span>
                 </label>
                 <input
-                  {...register(`experiences.${idx}.organizationName`, {
-                    required: 'Organization is required',
+                  {...register(`educations.${idx}.institutionName`, {
+                    required: 'Institution is required',
                   })}
                   className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
-                  placeholder="Organization Name"
+                  placeholder="Institution Name"
                 />
-                {errors.experiences?.[idx]?.organizationName && (
+                {errors.educations?.[idx]?.institutionName && (
                   <span className="text-red-500 text-sm">
-                    {errors.experiences[idx]?.organizationName?.message}
+                    {errors.educations[idx]?.institutionName?.message}
                   </span>
                 )}
               </div>
               <div>
                 <label className="block text-base font-semibold text-gray-700">
-                  Designation<span className="text-red-500">*</span>
+                  Course Name<span className="text-red-500">*</span>
                 </label>
                 <input
-                  {...register(`experiences.${idx}.designation`, {
-                    required: 'Designation is required',
+                  {...register(`educations.${idx}.courseName`, {
+                    required: 'Course name is required',
                   })}
                   className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
-                  placeholder="Designation"
+                  placeholder="Course Name"
                 />
-                {errors.experiences?.[idx]?.designation && (
+                {errors.educations?.[idx]?.courseName && (
                   <span className="text-red-500 text-sm">
-                    {errors.experiences[idx]?.designation?.message}
+                    {errors.educations[idx]?.courseName?.message}
                   </span>
                 )}
               </div>
@@ -128,59 +128,55 @@ const ExperienceForm: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
               <div>
                 <label className="block text-base font-semibold text-gray-700">
-                  Start Date<span className="text-red-500">*</span>
+                  Start Year<span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="date"
-                  {...register(`experiences.${idx}.startDate`, {
-                    required: 'Start date is required',
+                  type="number"
+                  {...register(`educations.${idx}.startYear`, {
+                    required: 'Start year is required',
+                    valueAsNumber: true,
                   })}
                   className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
-                  placeholder="Start Date"
+                  placeholder="Start Year"
                 />
-                {errors.experiences?.[idx]?.startDate && (
+                {errors.educations?.[idx]?.startYear && (
                   <span className="text-red-500 text-sm">
-                    {errors.experiences[idx]?.startDate?.message}
+                    {errors.educations[idx]?.startYear?.message}
                   </span>
                 )}
               </div>
               <div>
                 <label className="block text-base font-semibold text-gray-700">
-                  End Date
+                  End Year
                 </label>
                 <input
-                  type="date"
-                  {...register(`experiences.${idx}.endDate`)}
+                  type="number"
+                  {...register(`educations.${idx}.endYear`, {
+                    valueAsNumber: true,
+                  })}
                   className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
-                  placeholder="End Date"
+                  placeholder="End Year"
                 />
               </div>
               <div>
                 <label className="block text-base font-semibold text-gray-700">
-                  Link
+                  Result
                 </label>
                 <input
-                  {...register(`experiences.${idx}.link`)}
+                  type="number"
+                  {...register(`educations.${idx}.result`, {
+                    valueAsNumber: true,
+                  })}
                   className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
-                  placeholder="Link (optional)"
+                  placeholder="Result"
                 />
               </div>
-            </div>
-            <div className="mt-4">
-              <label className="block text-base font-semibold text-gray-700">
-                Description
-              </label>
-              <input
-                {...register(`experiences.${idx}.description`)}
-                className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
-                placeholder="Description (optional)"
-              />
             </div>
             <button
               type="button"
               onClick={() => remove(idx)}
               className="absolute top-3 right-3 p-2 rounded-full hover:bg-red-100 transition"
-              title="Remove Experience"
+              title="Remove Education"
             >
               <FiTrash className="text-red-500 text-lg" />
             </button>
@@ -190,27 +186,26 @@ const ExperienceForm: React.FC = () => {
           type="button"
           onClick={() =>
             append({
-              organizationName: '',
-              designation: '',
-              description: '',
-              startDate: '',
-              endDate: '',
-              link: '',
+              institutionName: '',
+              courseName: '',
+              startYear: new Date().getFullYear(),
+              endYear: new Date().getFullYear(),
+              result: 0,
             })
           }
           className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl font-semibold shadow-md hover:from-green-700 hover:to-green-600 transition w-full flex items-center justify-center gap-2"
         >
-          <span>➕ Add Experience</span>
+          <span>➕ Add Education</span>
         </button>
       </div>
       <button
         type="submit"
         className={`px-8 py-3 rounded-xl w-full font-bold text-lg shadow-lg tracking-wide flex items-center justify-center gap-2 transition
-        ${
-          isSaving || !isDirty
-            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            : 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600'
-        }`}
+          ${
+            isSaving || !isDirty
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600'
+          }`}
         disabled={isSaving || !isDirty}
       >
         {isSaving ? (
@@ -218,7 +213,7 @@ const ExperienceForm: React.FC = () => {
             <Spinner /> Saving...
           </span>
         ) : (
-          <span>💾 Save Experience</span>
+          <span>💾 Save Education</span>
         )}
       </button>
       {success && (
@@ -231,4 +226,4 @@ const ExperienceForm: React.FC = () => {
   );
 };
 
-export default ExperienceForm;
+export default EducationForm;

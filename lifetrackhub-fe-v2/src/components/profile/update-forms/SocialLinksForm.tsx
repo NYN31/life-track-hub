@@ -4,10 +4,10 @@ import { useDispatch } from 'react-redux';
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
-} from '../../features/user/userApi';
-import { setUser } from '../../features/user/userSlice';
-import Spinner from '../common/Spinner';
-import ErrorMessage from '../common/ErrorMessage';
+} from '../../../features/user/userApi';
+import { setUser } from '../../../features/user/userSlice';
+import Spinner from '../../common/Spinner';
+import ErrorMessage from '../../common/ErrorMessage';
 import { FiTrash } from 'react-icons/fi';
 
 interface SocialLink {
