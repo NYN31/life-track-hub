@@ -1,7 +1,10 @@
 import React from 'react';
 import ProfileDropdown from './ProfileDropdown';
 import { useNavigate } from 'react-router-dom';
-import { LOGIN_PATH } from '../../constants/title-and-paths';
+import {
+  LOGIN_PATH,
+  PROFILE_DETAILS_PATH,
+} from '../../constants/title-and-paths';
 import { logoutClearingLocalStorage } from '../../helper/local-storage/clear-local-storage';
 
 const ProtectedNavbar: React.FC<{
@@ -15,8 +18,7 @@ const ProtectedNavbar: React.FC<{
   };
 
   const handleProfile = () => {
-    console.log('Go to profile...');
-    // Redirect to profile page
+    navigate(PROFILE_DETAILS_PATH);
   };
 
   return (

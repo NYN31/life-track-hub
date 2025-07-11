@@ -6,7 +6,7 @@ import ExperienceForm from '../../components/profile/ExperienceForm';
 import SkillsForm from '../../components/profile/SkillsForm';
 import SocialLinksForm from '../../components/profile/SocialLinksForm';
 
-const ProfileSettingsContainer = () => {
+const ProfileUpdateContainer = () => {
   const [activeTab, setActiveTab] = useState('details');
 
   const renderContent = () => {
@@ -98,4 +98,4 @@ const ProfileSettingsContainer = () => {
   );
 };
 
-export default ProfileSettingsContainer;
+export default ProfileUpdateContainer;
