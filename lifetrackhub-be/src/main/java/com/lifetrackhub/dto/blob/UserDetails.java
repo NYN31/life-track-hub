@@ -7,9 +7,9 @@ import java.util.Arrays;
 public class UserDetails {
     private String objective;
 
-    private byte[] profileImage;
+    private String profileImagePath;
 
-    private byte[] cv;
+    private String cvPdfPath;
 
     private Skill[] skills;
 
@@ -29,28 +29,28 @@ public class UserDetails {
         this.objective = objective;
     }
 
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
+    }
+
+    public String getCvPdfPath() {
+        return cvPdfPath;
+    }
+
+    public void setCvPdfPath(String cvPdfPath) {
+        this.cvPdfPath = cvPdfPath;
+    }
+
     public Skill[] getSkills() {
         return skills;
     }
 
     public void setSkills(Skill[] skills) {
         this.skills = skills;
-    }
-
-    public byte[] getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(byte[] profileImage) {
-        this.profileImage = profileImage;
-    }
-
-    public byte[] getCv() {
-        return cv;
-    }
-
-    public void setCv(byte[] cv) {
-        this.cv = cv;
     }
 
     public Experience[] getExperiences() {
