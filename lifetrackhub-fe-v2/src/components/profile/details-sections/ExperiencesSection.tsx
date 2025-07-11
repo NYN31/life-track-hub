@@ -9,7 +9,7 @@ interface ExperiencesSectionProps {
 const ExperiencesSection: React.FC<ExperiencesSectionProps> = ({ experiences }) => {
   if (!experiences || experiences.length === 0) return null;
   return (
-    <section className="bg-white rounded-2xl shadow p-6 border border-purple-100">
+    <section className="bg-white shadow-md rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100">
       <h3 className="text-xl font-bold text-purple-700 flex items-center gap-2 mb-4">
         <FiBriefcase /> Experiences
       </h3>

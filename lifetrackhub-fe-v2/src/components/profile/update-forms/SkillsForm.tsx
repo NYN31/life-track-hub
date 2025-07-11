@@ -80,7 +80,7 @@ const SkillsForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 max-w-2xl bg-white shadow-2xl rounded-2xl p-10 border border-purple-100 mx-auto animate-fade-in"
+      className="space-y-8 max-w-2xl bg-white shadow-md rounded-lg p-4 md:p-6 lg:p-10 border border-purple-100 mx-auto animate-fade-in"
     >
       <h3 className="text-3xl font-extrabold mb-6 text-purple-700 text-center tracking-tight">
         Skills

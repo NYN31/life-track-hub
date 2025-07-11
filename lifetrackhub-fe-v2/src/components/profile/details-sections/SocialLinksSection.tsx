@@ -6,10 +6,12 @@ interface SocialLinksSectionProps {
   socialLinks?: ISocialLink[];
 }
 
-const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({ socialLinks }) => {
+const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({
+  socialLinks,
+}) => {
   if (!socialLinks || socialLinks.length === 0) return null;
   return (
-    <section className="bg-white rounded-2xl shadow p-6 border border-purple-100">
+    <section className="bg-white shadow-md rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100">
       <h3 className="text-xl font-bold text-purple-700 flex items-center gap-2 mb-4">
         <FiGlobe /> Social Media
       </h3>
@@ -30,4 +32,4 @@ const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({ socialLinks }) 
   );
 };
 
-export default SocialLinksSection; 
+export default SocialLinksSection;
