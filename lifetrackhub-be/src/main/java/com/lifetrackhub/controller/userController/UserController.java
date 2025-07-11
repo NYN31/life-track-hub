@@ -27,8 +27,8 @@ public class UserController extends BaseController {
         return UserDto.formEntity(user);
     }
 
-    @GetMapping("/user/find-self-details")
-    public UserDto findSelfDetails() {
+    @GetMapping("/user/find-self-details/{email}")
+    public UserDto findSelfDetails(@PathVariable String email) {
         User user = userService.findSelfDetails();
         return UserDto.formEntity(user);
     }

@@ -2,7 +2,7 @@ package com.lifetrackhub.constant.enumeration;
 
 public enum Competency {
     BEGINNER,
-    MIDDLE,
+    INTERMEDIATE,
     ADVANCED,
     EXPERT
 }
