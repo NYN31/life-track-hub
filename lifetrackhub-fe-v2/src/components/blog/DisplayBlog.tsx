@@ -46,7 +46,7 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
             <h1 className="text-3xl font-bold">{blogData.title}</h1>
             <button
               onClick={navigateFromBlogDetailsPage}
-              className="mx-2 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-gray-200 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
+              className="mx-2 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-gray-50 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
             >
               edit
             </button>

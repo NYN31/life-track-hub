@@ -78,7 +78,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
         </div>
       </div>
       {isPreviewEnable ? (
-        <div className="w-full min-h-[350px] max-h-[600px] p-4 border border-purple-200 rounded-b-lg font-mono bg-white focus:ring-2 focus:ring-purple-400 focus:outline-none resize-y shadow">
+        <div className="w-full min-h-[350px] p-4 border border-purple-200 rounded-b-lg font-mono bg-white focus:ring-2 focus:ring-purple-400 focus:outline-none resize-y shadow">
           <MarkdownPreview source={value} />
         </div>
       ) : (
@@ -86,7 +86,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           ref={textareaRef}
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="w-full min-h-[350px] max-h-[600px] p-4 border border-purple-200 rounded-b-lg font-mono bg-white focus:ring-2 focus:ring-purple-400 focus:outline-none resize-y shadow"
+          className="w-full min-h-[400px] max-h-[600px] p-4 border border-purple-200 rounded-b-lg font-mono bg-white focus:ring-2 focus:ring-purple-400 focus:outline-none resize-none shadow"
           placeholder="Write your markdown here..."
         />
       )}
