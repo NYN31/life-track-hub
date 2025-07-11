@@ -22,7 +22,7 @@ const UserProfileViewContainer: React.FC = () => {
   const userDetails = user.userDetails as IUserDetails;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6 animate-fade-in">
+    <div className="max-w-4xl mx-auto space-y-4 animate-fade-in">
       <PersonalInfoSection user={user} userDetails={userDetails} />
       <SkillsSection skills={userDetails.skills} />
       <AchievementsSection achievements={userDetails.achievements} />

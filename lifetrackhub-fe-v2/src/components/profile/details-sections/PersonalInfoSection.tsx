@@ -9,7 +9,7 @@ interface PersonalInfoSectionProps {
 }
 
 const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ user, userDetails }) => (
-  <section className="bg-white rounded-2xl shadow-lg p-8 flex flex-col md:flex-row gap-8 border border-purple-100">
+  <section className="bg-white shadow-md rounded-lg p-4 md:p-6 lg:p-8 flex flex-col md:flex-row gap-8 border border-purple-100">
     <div className="flex-shrink-0 flex flex-col items-center justify-center">
       <img
         src={userDetails.profileImagePath || fallbackImg}
