@@ -31,7 +31,7 @@ const ProfileSettingsContainer = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">Profile Settings</h1>
-      <div className="flex border-b border-gray-200 mb-4 flex-col md:flex-row">
+      <div className="flex border-b border-gray-200 mb-4 flex-col md:flex-row items-center justify-center">
         <button
           className={`py-2 px-4 text-sm font-medium ${
             activeTab === 'details'

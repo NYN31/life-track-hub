@@ -1,226 +1,131 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import {
-  useGetProfileQuery,
-  useUpdateProfileMutation,
-} from '../../features/user/userApi';
+import { useGetProfileQuery, useUpdateProfileMutation } from '../../features/user/userApi';
 import { setUser } from '../../features/user/userSlice';
 import Spinner from '../common/Spinner';
 import { ISkill } from '../../types/user';
+import { FiTrash } from 'react-icons/fi';
 
 const COMPETENCY_OPTIONS = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT'];
 
-const SkillsForm = () => {
+interface SkillsFormValues {
+  skills: ISkill[];
+}
+
+const SkillsForm: React.FC = () => {
   const dispatch = useDispatch();
   const email = localStorage.getItem('email');
   const { data, isLoading } = useGetProfileQuery(email);
   const [updateProfile, { isLoading: isSaving }] = useUpdateProfileMutation();
+  const [success, setSuccess] = React.useState(false);
 
-  const [skills, setSkills] = useState<ISkill[]>([]);
-  const [newSkill, setNewSkill] = useState<ISkill>({
-    skillName: '',
-    skillExperienceYear: 0,
-    skillCompetency: '',
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<SkillsFormValues>({
+    defaultValues: { skills: [] },
   });
-  const [success, setSuccess] = useState(false);
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'skills',
+  });
 
   useEffect(() => {
     if (data && data.userDetails?.skills) {
-      setSkills(data.userDetails.skills);
+      reset({ skills: data.userDetails.skills });
     }
-  }, [data]);
+  }, [data, reset]);
 
-  const handleAdd = () => {
-    if (!newSkill.skillName) return;
-    setSkills([...skills, newSkill]);
-    setNewSkill({ skillName: '', skillExperienceYear: 0, skillCompetency: '' });
-  };
-
-  const handleRemove = (idx: number) => {
-    setSkills(skills.filter((_, i) => i !== idx));
-  };
-
-  const handleChange = (
-    idx: number,
-    field: keyof ISkill,
-    value: string | number
-  ) => {
-    setSkills(
-      skills.map((skill, i) =>
-        i === idx ? { ...skill, [field]: value } : skill
-      )
-    );
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (values: SkillsFormValues) => {
     if (!data) return;
-
     const userDetails = {
       ...data.userDetails,
-      skills,
+      skills: values.skills,
     };
     const payload = {
       ...data,
       userDetails,
     };
-
     await updateProfile(payload)
       .unwrap()
       .then(result => {
         dispatch(setUser(result));
         setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
       })
-      .catch()
-      .finally(() => {});
+      .catch(() => {});
   };
 
   if (isLoading) return <Spinner />;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Add Skill</h3>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Skill Name
-            </label>
-            <input
-              type="text"
-              placeholder="Skill Name"
-              value={newSkill.skillName}
-              onChange={e =>
-                setNewSkill({ ...newSkill, skillName: e.target.value })
-              }
-              className="border border-gray-300 rounded-md p-2 w-full"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Experience Year
-            </label>
-            <input
-              type="number"
-              placeholder="Experience Year"
-              value={newSkill.skillExperienceYear}
-              onChange={e =>
-                setNewSkill({
-                  ...newSkill,
-                  skillExperienceYear: Number(e.target.value),
-                })
-              }
-              className="border border-gray-300 rounded-md p-2 w-full"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Competency
-            </label>
-            <select
-              value={newSkill.skillCompetency}
-              onChange={e =>
-                setNewSkill({ ...newSkill, skillCompetency: e.target.value })
-              }
-              className="border border-gray-300 rounded-md p-2 w-full"
-            >
-              <option value="">Select Competency</option>
-              {COMPETENCY_OPTIONS.map(option => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={handleAdd}
-          className="mt-2 px-4 py-2 bg-green-600 text-white rounded-md"
-        >
-          Add
-        </button>
-      </div>
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Skills List</h3>
-        {skills.length === 0 && (
-          <p className="text-gray-500">No skills added yet.</p>
-        )}
-        <ul className="space-y-4">
-          {skills.map((skill, idx) => (
-            <li key={idx} className="border p-3 rounded-md space-y-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 max-w-2xl bg-white shadow-2xl rounded-2xl p-10 border border-purple-100 mx-auto animate-fade-in">
+      <h3 className="text-3xl font-extrabold mb-6 text-purple-700 text-center tracking-tight">Skills</h3>
+      <div className="space-y-6">
+        {fields.map((field, idx) => (
+          <div key={field.id} className="border p-5 rounded-xl bg-purple-50/30 relative">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Skill Name
-                </label>
+                <label className="block text-base font-semibold text-gray-700">Skill Name<span className="text-red-500">*</span></label>
                 <input
-                  type="text"
-                  value={skill.skillName}
-                  onChange={e => handleChange(idx, 'skillName', e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
+                  {...register(`skills.${idx}.skillName`, { required: 'Skill name is required' })}
+                  className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
                   placeholder="Skill Name"
                 />
+                {errors.skills?.[idx]?.skillName && (
+                  <span className="text-red-500 text-sm">{errors.skills[idx]?.skillName?.message}</span>
+                )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Experience Year
-                </label>
+                <label className="block text-base font-semibold text-gray-700">Experience Year<span className="text-red-500">*</span></label>
                 <input
                   type="number"
-                  value={skill.skillExperienceYear}
-                  onChange={e =>
-                    handleChange(
-                      idx,
-                      'skillExperienceYear',
-                      Number(e.target.value)
-                    )
-                  }
-                  className="border border-gray-300 rounded-md p-2 w-full"
+                  {...register(`skills.${idx}.skillExperienceYear`, { required: 'Experience year is required', valueAsNumber: true })}
+                  className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
                   placeholder="Experience Year"
                 />
+                {errors.skills?.[idx]?.skillExperienceYear && (
+                  <span className="text-red-500 text-sm">{errors.skills[idx]?.skillExperienceYear?.message}</span>
+                )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Competency
-                </label>
+                <label className="block text-base font-semibold text-gray-700">Competency<span className="text-red-500">*</span></label>
                 <select
-                  value={skill.skillCompetency}
-                  onChange={e =>
-                    handleChange(idx, 'skillCompetency', e.target.value)
-                  }
-                  className="border border-gray-300 rounded-md p-2 w-full"
+                  {...register(`skills.${idx}.skillCompetency`, { required: 'Competency is required' })}
+                  className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
                 >
                   <option value="">Select Competency</option>
                   {COMPETENCY_OPTIONS.map(option => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
+                    <option key={option} value={option}>{option}</option>
                   ))}
                 </select>
+                {errors.skills?.[idx]?.skillCompetency && (
+                  <span className="text-red-500 text-sm">{errors.skills[idx]?.skillCompetency?.message}</span>
+                )}
               </div>
-              <button
-                type="button"
-                onClick={() => handleRemove(idx)}
-                className="ml-2 px-3 py-1 bg-red-500 text-white rounded-md"
-              >
-                Remove
-              </button>
-            </li>
-          ))}
-        </ul>
+            </div>
+            <button type="button" onClick={() => remove(idx)} className="absolute top-3 right-3 p-2 rounded-full hover:bg-red-100 transition" title="Remove Skill">
+              <FiTrash className="text-red-500 text-lg" />
+            </button>
+          </div>
+        ))}
+        <button type="button" onClick={() => append({ skillName: '', skillExperienceYear: 0, skillCompetency: '' })} className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl font-semibold shadow-md hover:from-green-700 hover:to-green-600 transition w-full flex items-center justify-center gap-2">
+          <span>➕ Add Skill</span>
+        </button>
       </div>
-      <button
-        type="submit"
-        disabled={isSaving}
-        className={`px-4 py-2 bg-blue-600 text-white rounded-md w-full ${
-          isSaving
-            ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
-        }`}
-      >
-        Save Skills
+      <button type="submit" className={`px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl w-full font-bold text-lg shadow-lg transition hover:from-purple-700 hover:to-purple-600 tracking-wide flex items-center justify-center gap-2 ${isSaving ? 'bg-gray-400 cursor-not-allowed' : ''}`} disabled={isSaving}>
+        {isSaving ? (
+          <span className="flex items-center gap-2"><Spinner /> Saving...</span>
+        ) : (
+          <span>💾 Save Skills</span>
+        )}
       </button>
-      {success && <div className="text-green-600 mt-2 text-center">Saved!</div>}
+      {success && <div className="text-green-600 mt-4 text-center font-semibold animate-fade-in">Saved!</div>}
     </form>
   );
 };
