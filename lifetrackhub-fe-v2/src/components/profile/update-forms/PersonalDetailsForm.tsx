@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form';
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
-} from '../../features/user/userApi';
+} from '../../../features/user/userApi';
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../features/user/userSlice';
-import Spinner from '../common/Spinner';
-import ErrorMessage from '../common/ErrorMessage';
+import { setUser } from '../../../features/user/userSlice';
+import Spinner from '../../common/Spinner';
+import ErrorMessage from '../../common/ErrorMessage';
 
 interface PersonalDetailsFormValues {
   firstname: string;

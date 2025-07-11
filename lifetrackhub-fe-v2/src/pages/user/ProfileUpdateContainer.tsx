@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import PersonalDetailsForm from '../../components/profile/PersonalDetailsForm';
-import AchievementsForm from '../../components/profile/AchievementsForm';
-import EducationForm from '../../components/profile/EducationForm';
-import ExperienceForm from '../../components/profile/ExperienceForm';
-import SkillsForm from '../../components/profile/SkillsForm';
-import SocialLinksForm from '../../components/profile/SocialLinksForm';
+import PersonalDetailsForm from '../../components/profile/update-forms/PersonalDetailsForm';
+import AchievementsForm from '../../components/profile/update-forms/AchievementsForm';
+import EducationForm from '../../components/profile/update-forms/EducationForm';
+import ExperienceForm from '../../components/profile/update-forms/ExperienceForm';
+import SkillsForm from '../../components/profile/update-forms/SkillsForm';
+import SocialLinksForm from '../../components/profile/update-forms/SocialLinksForm';
 
 const ProfileUpdateContainer = () => {
   const [activeTab, setActiveTab] = useState('details');
