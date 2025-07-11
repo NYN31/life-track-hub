@@ -1,17 +1,8 @@
 import { useSelector } from 'react-redux';
 import BlogCreateForm from '../../components/blog/BlogCreateForm';
-import { useEffect, useState } from 'react';
-import { TagOption } from '../../types/blog';
 
 const BlogCreateContainer = () => {
   const blogDetails = useSelector((state: any) => state.blog);
-  console.log(blogDetails);
-  const [currTags, setCurrTags] = useState<TagOption[]>([]);
-  console.log(currTags);
-
-  useEffect(() => {
-    setCurrTags(blogDetails.tags);
-  }, []);
 
   return (
     <div>
@@ -19,7 +10,12 @@ const BlogCreateContainer = () => {
         Write a New Blog
       </h2>
 
-      <BlogCreateForm blogDetails={blogDetails} currentTags={currTags} />
+      {blogDetails && (
+        <BlogCreateForm
+          blogDetails={blogDetails}
+          currentTags={blogDetails.tags || []}
+        />
+      )}
     </div>
   );
 };
