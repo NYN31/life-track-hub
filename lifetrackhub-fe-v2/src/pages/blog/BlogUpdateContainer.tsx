@@ -66,7 +66,7 @@ const BlogUpdateContainer = () => {
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Update Blog</h2>
         <button
           onClick={() => navigate(`${BLOG_DETAILS_PATH}/${slug}`)}
-          className="mx-2 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-gray-200 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
+          className="mx-2 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-gray-50 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
         >
           Details
         </button>
