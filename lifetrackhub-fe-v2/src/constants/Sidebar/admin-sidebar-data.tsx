@@ -2,6 +2,7 @@ import * as data from '../title-and-paths';
 import { LuListTodo } from 'react-icons/lu';
 import { MdOutlineCreateNewFolder } from 'react-icons/md';
 import { IoStatsChartOutline } from 'react-icons/io5';
+import { FiSettings } from 'react-icons/fi';
 
 const ICON_SIZE = 18;
 
@@ -26,6 +27,17 @@ const SidebarData = [
         label: data.BLOG_STATS_PATH,
         path: data.BLOG_STATS_PATH,
         icon: <IoStatsChartOutline size={ICON_SIZE} />,
+      },
+    ],
+  },
+  {
+    title: data.SETTING,
+    hasAccordion: [
+      {
+        title: data.PROFILE_UPDATE,
+        label: data.PROFILE_UPDATE_PATH,
+        path: data.PROFILE_UPDATE_PATH,
+        icon: <FiSettings size={ICON_SIZE} />,
       },
     ],
   },

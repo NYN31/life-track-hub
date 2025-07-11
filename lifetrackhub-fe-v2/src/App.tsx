@@ -11,6 +11,7 @@ import useAuthCheck from './helper/hooks/useAuthCheck';
 import BlogUpdateContainer from './pages/blog/BlogUpdateContainer';
 import BlogPreviewContainer from './pages/blog/BlogPreviewContainer';
 import BlogStatsContainer from './pages/blog/BlogStatsContainer';
+import ProfileSettingsContainer from './pages/user/ProfileSettingsContainer';
 
 function App() {
   useAuthCheck();
@@ -71,6 +72,10 @@ function App() {
           <Route path="update/:slug" element={<BlogUpdateContainer />} />
           <Route path="stats" element={<BlogStatsContainer />} />
         </Route>
+        <Route
+          path={pathname.PROFILE_UPDATE_PATH}
+          element={<ProfileSettingsContainer />}
+        />
       </Route>
     </Routes>
   );

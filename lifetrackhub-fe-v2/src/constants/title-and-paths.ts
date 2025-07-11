@@ -30,13 +30,12 @@ export const SETTING_PATH = '/setting';
 // PROFILE
 export const PROFILE = 'Profile';
 export const PROFILE_PATH = '/profile';
-export const PROFILE_API_PATH = '/api/user';
 
 export const PROFILE_DETAILS = 'Details';
 export const PROFILE_DETAILS_PATH = '/user/profile';
 
-export const PROFILE_EDIT = 'Edit';
-export const PROFILE_EDIT_PATH = '/user/profile/edit';
+export const PROFILE_UPDATE = 'Profile Update';
+export const PROFILE_UPDATE_PATH = '/user/profile/update';
 
 // BLOG
 export const BLOG = 'Blog';
