@@ -9,46 +9,51 @@ export interface IUser extends IBase {
   accountStatus: string;
   accountType: string;
   userDetails: IUserDetails | null;
+  createdDate: string; // ISO string for Instant
+  lastModifiedDate: string; // ISO string for Instant
 }
 
 export interface IUserDetails {
   objective: string;
-  skills: ISkills[];
-  profileImage: any;
-  cv: any;
+  profileImagePath: string;
+  cvPdfPath: string;
+  skills: ISkill[];
   experiences: IExperience[];
   educations: IEducation[];
-  achivemenets: IAchievement[];
+  achievements: IAchievement[];
   socialLinks: ISocialLink[];
 }
 
-export interface ISkills {
-  name: string;
-  description: string;
+export interface ISkill {
+  skillName: string;
+  skillExperienceYear: number;
+  skillCompetency: string;
 }
 
 export interface IExperience {
-  name: string;
-  yearOfExperience: number;
+  organizationName: string;
+  designation: string;
   description: string;
+  startDate: string;
+  endDate: string;
   link: string;
 }
 
 export interface IEducation {
-  title: string;
-  institution: string;
-  graduationStartDate: string;
-  graduationEndDate: string;
-  result: string;
+  institutionName: string;
+  courseName: string;
+  startYear: number;
+  endYear: number;
+  result: number;
 }
 
 export interface IAchievement {
-  title: string;
+  achievementTitle: string;
   description: string;
   link: string;
 }
 
 export interface ISocialLink {
-  name: string;
+  socialPlatformName: string;
   link: string;
 }
