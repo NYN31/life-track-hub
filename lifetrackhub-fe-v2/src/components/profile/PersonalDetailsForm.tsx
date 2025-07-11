@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
@@ -7,43 +8,68 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../features/user/userSlice';
 import Spinner from '../common/Spinner';
 
+interface PersonalDetailsFormValues {
+  firstname: string;
+  lastname: string;
+  objective: string;
+  profileImagePath: string;
+  cvPdfPath: string;
+}
+
 const PersonalDetailsForm: React.FC = () => {
   const dispatch = useDispatch();
   const email = localStorage.getItem('email');
   const { data, isLoading } = useGetProfileQuery(email);
   const [updateProfile, { isLoading: isSaving }] = useUpdateProfileMutation();
-  const [firstname, setFirstname] = useState('');
-  const [lastname, setLastname] = useState('');
-  const [objective, setObjective] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = React.useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<PersonalDetailsFormValues>({
+    defaultValues: {
+      firstname: '',
+      lastname: '',
+      objective: '',
+      profileImagePath: '',
+      cvPdfPath: '',
+    },
+  });
 
   useEffect(() => {
     if (data) {
-      setFirstname(data.firstname || '');
-      setLastname(data.lastname || '');
-      setObjective(data.userDetails?.objective || '');
+      reset({
+        firstname: data.firstname || '',
+        lastname: data.lastname || '',
+        objective: data.userDetails?.objective || '',
+        profileImagePath: data.userDetails?.profileImagePath || '',
+        cvPdfPath: data.userDetails?.cvPdfPath || '',
+      });
     }
-  }, [data]);
+  }, [data, reset]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (values: PersonalDetailsFormValues) => {
+    if (!data) return;
     const userDetails = {
       ...data.userDetails,
-      objective,
+      objective: values.objective,
+      profileImagePath: values.profileImagePath,
+      cvPdfPath: values.cvPdfPath,
     };
     const payload = {
       ...data,
-      firstname,
-      lastname,
+      firstname: values.firstname,
+      lastname: values.lastname,
       userDetails,
     };
-
     await updateProfile(payload)
       .unwrap()
       .then(result => {
         dispatch(setUser(result));
         setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
       })
       .catch(() => {});
   };
@@ -52,69 +78,138 @@ const PersonalDetailsForm: React.FC = () => {
 
   return (
     <form
-      onSubmit={handleSubmit}
-      className="space-y-6 max-w-2xl bg-white shadow-lg rounded-xl p-8 border border-gray-100"
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-8 max-w-2xl bg-white shadow-2xl rounded-2xl p-10 border border-purple-100 mx-auto animate-fade-in"
     >
-      <h2 className="text-2xl font-bold mb-4 text-blue-700">
+      <h2 className="text-3xl font-extrabold mb-6 text-purple-700 text-center tracking-tight">
         Personal Details
       </h2>
-      <div className="space-y-2">
-        <label
-          htmlFor="firstname"
-          className="block text-sm font-semibold text-gray-700"
-        >
+      {/* Readonly fields */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label className="block text-base font-semibold text-gray-700">Email</label>
+          <input
+            value={data?.email || ''}
+            readOnly
+            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+          />
+        </div>
+        <div>
+          <label className="block text-base font-semibold text-gray-700">Role</label>
+          <input
+            value={data?.role || ''}
+            readOnly
+            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+          />
+        </div>
+        <div>
+          <label className="block text-base font-semibold text-gray-700">Account Status</label>
+          <input
+            value={data?.accountStatus || ''}
+            readOnly
+            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+          />
+        </div>
+        <div>
+          <label className="block text-base font-semibold text-gray-700">Account Type</label>
+          <input
+            value={data?.accountType || ''}
+            readOnly
+            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+          />
+        </div>
+        <div>
+          <label className="block text-base font-semibold text-gray-700">Login Type</label>
+          <input
+            value={data?.loginType || ''}
+            readOnly
+            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+          />
+        </div>
+      </div>
+      {/* Editable fields */}
+      <div className="space-y-3">
+        <label htmlFor="firstname" className="block text-base font-semibold text-gray-700">
           First Name
         </label>
         <input
-          type="text"
           id="firstname"
-          value={firstname}
-          onChange={e => setFirstname(e.target.value)}
-          className="mt-1 block w-full border border-blue-200 rounded-md shadow-sm p-2 focus:ring-2 focus:ring-blue-400"
+          {...register('firstname')}
+          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
         />
+        {errors.firstname && (
+          <span className="text-red-500 text-sm">{errors.firstname.message}</span>
+        )}
       </div>
-      <div className="space-y-2">
-        <label
-          htmlFor="lastname"
-          className="block text-sm font-semibold text-gray-700"
-        >
+      <div className="space-y-3">
+        <label htmlFor="lastname" className="block text-base font-semibold text-gray-700">
           Last Name
         </label>
         <input
-          type="text"
           id="lastname"
-          value={lastname}
-          onChange={e => setLastname(e.target.value)}
-          className="mt-1 block w-full border border-blue-200 rounded-md shadow-sm p-2 focus:ring-2 focus:ring-blue-400"
+          {...register('lastname')}
+          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
         />
+        {errors.lastname && (
+          <span className="text-red-500 text-sm">{errors.lastname.message}</span>
+        )}
       </div>
-      <div className="space-y-2">
-        <label
-          htmlFor="objective"
-          className="block text-sm font-semibold text-gray-700"
-        >
+      <div className="space-y-3">
+        <label htmlFor="objective" className="block text-base font-semibold text-gray-700">
           Objective
         </label>
         <textarea
           id="objective"
-          value={objective}
-          onChange={e => setObjective(e.target.value)}
-          className="mt-1 block w-full border border-blue-200 rounded-md shadow-sm p-2 focus:ring-2 focus:ring-blue-400"
+          {...register('objective')}
+          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
           rows={4}
         />
+        {errors.objective && (
+          <span className="text-red-500 text-sm">{errors.objective.message}</span>
+        )}
+      </div>
+      <div className="space-y-3">
+        <label htmlFor="profileImagePath" className="block text-base font-semibold text-gray-700">
+          Profile Image URL
+        </label>
+        <input
+          id="profileImagePath"
+          {...register('profileImagePath')}
+          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+        />
+        {errors.profileImagePath && (
+          <span className="text-red-500 text-sm">{errors.profileImagePath.message}</span>
+        )}
+      </div>
+      <div className="space-y-3">
+        <label htmlFor="cvPdfPath" className="block text-base font-semibold text-gray-700">
+          CV/Resume URL
+        </label>
+        <input
+          id="cvPdfPath"
+          {...register('cvPdfPath')}
+          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+        />
+        {errors.cvPdfPath && (
+          <span className="text-red-500 text-sm">{errors.cvPdfPath.message}</span>
+        )}
       </div>
       <button
         type="submit"
-        className={`px-4 py-2 bg-blue-600 text-white rounded-md w-full ${
-          isSaving
-            ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-blue-600 hover:bg-blue-700 text-white cursor-pointer'
-        }`}
+        className={`px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl w-full font-bold text-lg shadow-lg transition hover:from-purple-700 hover:to-purple-600 tracking-wide flex items-center justify-center gap-2 ${isSaving ? 'bg-gray-400 cursor-not-allowed' : ''}`}
         disabled={isSaving}
       >
-        {isSaving ? 'Saving...' : 'Save Details'}
+        {isSaving ? (
+          <span className="flex items-center gap-2"><Spinner /> Saving...</span>
+        ) : (
+          <span>💾 Save Details</span>
+        )}
       </button>
-      {success && <div className="text-green-600 mt-2 text-center">Saved!</div>}
+      {success && (
+        <div className="text-green-600 mt-4 text-center font-semibold animate-fade-in">
+          Saved!
+        </div>
+      )}
     </form>
   );
 };
