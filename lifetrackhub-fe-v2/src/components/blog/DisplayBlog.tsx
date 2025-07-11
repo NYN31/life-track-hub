@@ -1,13 +1,10 @@
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  BLOG_CREATED_PATH,
-  BLOG_UPDATED_PATH,
-} from '../../constants/title-and-paths';
+import { BLOG_UPDATED_PATH } from '../../constants/title-and-paths';
 import fallback from '../../assets/blogFallback.png';
 import { extractMarkdownHeadings } from '../../helper/utils/extract-markdown-headings';
 import { blogStatusColor } from '../../helper/utils/color-code';
-import { BlogStatus, TagOption } from '../../types/blog';
+import { BlogStatus } from '../../types/blog';
 
 const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
   const { slug } = useParams();
@@ -18,8 +15,6 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
   const navigateFromBlogDetailsPage = () => {
     if (slug) {
       navigate(`${BLOG_UPDATED_PATH}/${slug}`);
-    } else {
-      navigate(`${BLOG_CREATED_PATH}`);
     }
   };
 
@@ -51,7 +46,7 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
             <h1 className="text-3xl font-bold">{blogData.title}</h1>
             <button
               onClick={navigateFromBlogDetailsPage}
-              className="mx-2 px-6 py-2 bg-purple-300 text-gray-700 font-semibold rounded-lg hover:bg-purple-700 transition duration-200 shadow-sm"
+              className="mx-2 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-gray-200 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
             >
               edit
             </button>
@@ -69,12 +64,12 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {blogData.tags.map((tag: TagOption) => (
+            {blogData.tags.map((tag: string) => (
               <span
-                key={tag.value}
+                key={tag}
                 className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold"
               >
-                #{tag.value}
+                #{tag}
               </span>
             ))}
           </div>

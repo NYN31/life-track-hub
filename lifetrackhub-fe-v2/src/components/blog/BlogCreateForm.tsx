@@ -17,6 +17,7 @@ const BlogCreateForm: React.FC<{
   blogDetails: IBlog;
   currentTags: TagOption[];
 }> = ({ blogDetails, currentTags }) => {
+  console.log(blogDetails);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,7 +44,7 @@ const BlogCreateForm: React.FC<{
   });
 
   const watchedValues = watch();
-  
+
   // --- Handlers ---
   const onSubmit: SubmitHandler<IBlogFormInputs> = async data => {
     setLoadingBlogCreation(true);
@@ -70,7 +71,8 @@ const BlogCreateForm: React.FC<{
   useEffect(() => {
     const handler = setTimeout(() => {
       const { title, status, content, tags, coverImagePath } = watchedValues;
-      if (title || content || status || tags || coverImagePath) {
+      console.log('Tags: ', tags);
+      if (title || content || status || tags.length > 0 || coverImagePath) {
         const newDraft = {
           title,
           status,
@@ -86,7 +88,7 @@ const BlogCreateForm: React.FC<{
   }, [
     watchedValues.title,
     watchedValues.content,
-    watchedValues.tags,
+    watchedValues.tags.length,
     watchedValues.status,
     watchedValues.coverImagePath,
     dispatch,

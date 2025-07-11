@@ -14,6 +14,7 @@ const blogSlice = createSlice({
   initialState,
   reducers: {
     blogContentDraft: (state, action) => {
+      console.log('In blog slice: ', action.payload);
       const { title, status, tags, content, coverImagePath } = action.payload;
       state.title = title;
       state.status = status;
