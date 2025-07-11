@@ -7,6 +7,7 @@ import {
 } from '../../features/user/userApi';
 import { setUser } from '../../features/user/userSlice';
 import Spinner from '../common/Spinner';
+import ErrorMessage from '../common/ErrorMessage';
 import { IAchievement } from '../../types/user';
 import { FiTrash } from 'react-icons/fi';
 
@@ -17,16 +18,17 @@ interface AchievementsFormValues {
 const AchievementsForm: React.FC = () => {
   const dispatch = useDispatch();
   const email = localStorage.getItem('email');
-  const { data, isLoading } = useGetProfileQuery(email);
+  const { data, isLoading, error: fetchError } = useGetProfileQuery(email);
   const [updateProfile, { isLoading: isSaving }] = useUpdateProfileMutation();
   const [success, setSuccess] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const {
     control,
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<AchievementsFormValues>({
     defaultValues: { achievements: [] },
   });
@@ -43,7 +45,7 @@ const AchievementsForm: React.FC = () => {
   }, [data, reset]);
 
   const onSubmit = async (values: AchievementsFormValues) => {
-    if (!data) return;
+    if (!data || !isDirty) return;
     const userDetails = {
       ...data.userDetails,
       achievements: values.achievements,
@@ -57,10 +59,19 @@ const AchievementsForm: React.FC = () => {
       .then(result => {
         dispatch(setUser(result));
         setSuccess(true);
+        setErrorMessage('');
         setTimeout(() => setSuccess(false), 2000);
       })
-      .catch(() => {});
+      .catch(err => {
+        setErrorMessage(err?.data?.message || 'Failed to update profile.');
+      });
   };
+
+  React.useEffect(() => {
+    if (fetchError) {
+      setErrorMessage('Failed to fetch profile data.');
+    }
+  }, [fetchError]);
 
   if (isLoading) return <Spinner />;
 
@@ -146,11 +157,18 @@ const AchievementsForm: React.FC = () => {
       </div>
       <button
         type="submit"
-        className={`px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-xl w-full font-bold text-lg shadow-lg transition hover:from-purple-700 hover:to-purple-600 tracking-wide flex items-center justify-center gap-2 ${isSaving ? 'bg-gray-400 cursor-not-allowed' : ''}`}
-        disabled={isSaving}
+        className={`px-8 py-3 rounded-xl w-full font-bold text-lg shadow-lg tracking-wide flex items-center justify-center gap-2 transition
+          ${
+            isSaving || !isDirty
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600'
+          }`}
+        disabled={isSaving || !isDirty}
       >
         {isSaving ? (
-          <span className="flex items-center gap-2"><Spinner /> Saving...</span>
+          <span className="flex items-center gap-2">
+            <Spinner /> Saving...
+          </span>
         ) : (
           <span>💾 Save Achievements</span>
         )}
@@ -160,6 +178,7 @@ const AchievementsForm: React.FC = () => {
           Saved!
         </div>
       )}
+      {errorMessage && <ErrorMessage message={errorMessage} />}
     </form>
   );
 };
