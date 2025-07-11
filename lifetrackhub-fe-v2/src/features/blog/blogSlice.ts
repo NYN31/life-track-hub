@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   title: undefined,
-  visibility: undefined,
+  status: undefined,
   tags: [],
   content: undefined,
   slug: undefined,
@@ -14,17 +14,16 @@ const blogSlice = createSlice({
   initialState,
   reducers: {
     blogContentDraft: (state, action) => {
-      const { title, visibility, tags, content, coverImagePath } =
-        action.payload;
+      const { title, status, tags, content, coverImagePath } = action.payload;
       state.title = title;
-      state.visibility = visibility;
+      state.status = status;
       state.tags = tags;
       state.content = content;
       state.coverImagePath = coverImagePath;
     },
     blogReset: state => {
       state.title = undefined;
-      state.visibility = undefined;
+      state.status = undefined;
       state.tags = [];
       state.content = undefined;
       state.slug = undefined;

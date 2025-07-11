@@ -1,9 +1,10 @@
-import React, { Dispatch, useRef } from 'react';
+import React, { Dispatch } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { IBlogFormInputs, BlogStatus, TagOption } from '../../types/blog';
 import Select from 'react-select';
 import { tagOptions } from '../../constants/tag-options';
 import { customItemsForMarkdown } from '../../constants/blog-editor-icons';
+import MarkdownEditor from './MarkdownEditor';
 
 const BlogUpdateForm: React.FC<{
   title: string;
@@ -12,7 +13,7 @@ const BlogUpdateForm: React.FC<{
   currTags: TagOption[];
   coverImagePath: string;
   isLoadingUpdation: boolean;
-  updateHandler: (data: any, reset: () => void, contentType: string) => void;
+  updateHandler: (data: any, reset: () => void) => void;
   setErrorMessage: Dispatch<React.SetStateAction<string>>;
 }> = ({
   title,
@@ -22,20 +23,15 @@ const BlogUpdateForm: React.FC<{
   coverImagePath,
   isLoadingUpdation,
   updateHandler,
-  setErrorMessage,
 }) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
   const {
     register,
     control,
     handleSubmit,
     reset,
-    watch,
-    setValue,
     formState: { errors },
   } = useForm<IBlogFormInputs>({
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: {
       title,
       status,
@@ -45,77 +41,24 @@ const BlogUpdateForm: React.FC<{
     },
   });
 
-  const watchedValues = watch();
-
   const onSubmit: SubmitHandler<IBlogFormInputs> = async data => {
-    updateHandler(data, reset, 'PUBLISHED');
-  };
-
-  const draftUpdateHandler = () => {
-    if (
-      !watchedValues.title ||
-      !watchedValues.content ||
-      !watchedValues.tags ||
-      !watchedValues.status ||
-      !watchedValues.coverImagePath
-    ) {
-      setErrorMessage('Please add all fields');
-      return;
-    }
-
-    updateHandler(
-      {
-        title: watchedValues.title,
-        visibility: watchedValues.status,
-        content: watchedValues.content,
-        tags: watchedValues.tags,
-        coverImagePath: watchedValues.coverImagePath,
-      },
-      reset,
-      'DRAFT'
-    );
-  };
-
-  const insertAtCursor = (before: string, after: string = '') => {
-    const textarea = textareaRef.current;
-    if (!textarea) return;
-
-    const scrollTop = textarea.scrollTop;
-    const scrollLeft = textarea.scrollLeft;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const value = textarea.value;
-    const selected = value.slice(start, end);
-
-    const newText =
-      value.slice(0, start) + before + selected + after + value.slice(end);
-
-    setValue('content', newText, { shouldDirty: true });
-
-    requestAnimationFrame(() => {
-      textarea.focus();
-
-      // Restore cursor position
-      const cursorPos = start + before.length + selected.length;
-      textarea.setSelectionRange(cursorPos, cursorPos);
-
-      // Restore scroll position
-      textarea.scrollTop = scrollTop;
-      textarea.scrollLeft = scrollLeft;
-    });
+    updateHandler(data, reset);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Blog Title */}
       <div>
-        <label htmlFor="title" className="block mb-1 font-medium text-gray-700">
+        <label
+          htmlFor="title"
+          className="block mb-1 font-semibold text-gray-700"
+        >
           Title <span className="text-red-500">*</span>
         </label>
         <input
           id="title"
           {...register('title', { required: 'Title is required' })}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+          className="w-full px-4 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow"
           placeholder="Enter blog title"
         />
         {errors.title && (
@@ -127,14 +70,14 @@ const BlogUpdateForm: React.FC<{
       <div>
         <label
           htmlFor="status"
-          className="block mb-1 font-medium text-gray-700"
+          className="block mb-1 font-semibold text-gray-700"
         >
-          Visibility
+          Status <span className="text-red-500 text-sm">*</span>
         </label>
         <select
           id="status"
           {...register('status')}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
+          className="w-full px-4 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow"
         >
           <option value="PUBLIC">PUBLIC</option>
           <option value="PRIVATE">PRIVATE</option>
@@ -145,10 +88,12 @@ const BlogUpdateForm: React.FC<{
 
       {/* Tags */}
       <div>
-        <label htmlFor="tags" className="block mb-1 font-medium text-gray-700">
+        <label
+          htmlFor="tags"
+          className="block mb-1 font-semibold text-gray-700"
+        >
           Tags <span className="text-gray-500 text-sm">(Select multiple)</span>
         </label>
-
         <Controller
           name="tags"
           control={control}
@@ -157,6 +102,7 @@ const BlogUpdateForm: React.FC<{
             <Select
               {...field}
               isMulti
+              {...register('tags')}
               isSearchable={true}
               placeholder="Select tags"
               options={tagOptions}
@@ -164,6 +110,14 @@ const BlogUpdateForm: React.FC<{
               classNamePrefix="react-select"
               onChange={selected => field.onChange(selected)}
               value={field.value}
+              styles={{
+                control: base => ({
+                  ...base,
+                  borderColor: '#a78bfa',
+                  boxShadow: 'none',
+                  '&:hover': { borderColor: '#7c3aed' },
+                }),
+              }}
             />
           )}
         />
@@ -176,15 +130,17 @@ const BlogUpdateForm: React.FC<{
       <div>
         <label
           htmlFor="coverImagePath"
-          className="block mb-1 font-medium text-gray-700"
+          className="block mb-1 font-semibold text-gray-700"
         >
           Cover Image Path <span className="text-red-500">*</span>
         </label>
         <input
           id="coverImagePath"
-          {...register('coverImagePath', { required: 'Title is required' })}
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300"
-          placeholder="Enter blog title"
+          {...register('coverImagePath', {
+            required: 'Cover image path is required',
+          })}
+          className="w-full px-4 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow"
+          placeholder="Enter cover image path"
         />
         {errors.coverImagePath && (
           <p className="text-sm text-red-500 mt-1">
@@ -195,62 +151,35 @@ const BlogUpdateForm: React.FC<{
 
       {/* Markdown Content */}
       <div>
-        <label className="block mb-1 font-medium text-gray-700">
+        <label className="block mb-1 font-semibold text-gray-700">
           Content (Markdown)
         </label>
-        <div className="py-4 space-y-4">
-          <div className="flex flex-wrap gap-4">
-            {customItemsForMarkdown.map(item => {
-              return (
-                <div
-                  key={item.title}
-                  onClick={() => insertAtCursor(item.prefix, item.suffix)}
-                  className="cursor-pointer"
-                >
-                  {item.icon}
-                </div>
-              );
-            })}
-          </div>
-
-          <Controller
-            name="content"
-            control={control}
-            render={({ field }) => (
-              <textarea
-                {...field}
-                ref={textareaRef}
-                id="content"
-                className="w-full h-[70vh] p-2 border rounded-lg resize-none font-mono"
-                placeholder="Write your markdown here..."
-                //onChange={text => field.onChange(text)}
-              />
-            )}
-          />
-        </div>
-        {errors.content && (
-          <p className="text-sm text-red-500 mt-1">{errors.content.message}</p>
-        )}
+        <Controller
+          name="content"
+          control={control}
+          render={({ field }) => (
+            <MarkdownEditor
+              value={field.value}
+              onChange={field.onChange}
+              error={errors.content?.message}
+              customItemsForMarkdown={customItemsForMarkdown}
+            />
+          )}
+        />
       </div>
 
       {/* Submit Button */}
-      <div className="flex gap-2 py-4">
-        <button
-          type="submit"
-          onClick={draftUpdateHandler}
-          disabled={isLoadingUpdation}
-          className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
-        >
-          Draft update
-        </button>
-        <button
-          type="submit"
-          disabled={isLoadingUpdation}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
-        >
-          Update Blog
-        </button>
-      </div>
+
+      <button
+        type="submit"
+        disabled={isLoadingUpdation}
+        className="bg-gradient-to-r from-purple-600 to-purple-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:from-purple-700 hover:to-purple-600 transition flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500"
+      >
+        {isLoadingUpdation ? (
+          <span className="animate-spin mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+        ) : null}
+        Update Blog
+      </button>
     </form>
   );
 };

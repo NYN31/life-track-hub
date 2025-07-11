@@ -7,7 +7,7 @@ import {
 import fallback from '../../assets/blogFallback.png';
 import { extractMarkdownHeadings } from '../../helper/utils/extract-markdown-headings';
 import { blogStatusColor } from '../../helper/utils/color-code';
-import { BlogStatus } from '../../types/blog';
+import { BlogStatus, TagOption } from '../../types/blog';
 
 const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
   const { slug } = useParams();
@@ -69,12 +69,12 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            {blogData.tags.map((tag: string) => (
+            {blogData.tags.map((tag: TagOption) => (
               <span
-                key={tag}
+                key={tag.value}
                 className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold"
               >
-                #{tag}
+                #{tag.value}
               </span>
             ))}
           </div>

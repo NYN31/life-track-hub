@@ -5,12 +5,11 @@ import {
 } from '../../features/blog/blogApi';
 import BlogUpdateForm from '../../components/blog/BlogUpdateForm';
 import ErrorMessage from '../../components/common/ErrorMessage';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '../../components/common/Spinner';
 import { extractErrorMessage } from '../../helper/utils/extract-error-message';
 import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
 import { IBlog, TagOption } from '../../types/blog';
-import { FaEye } from 'react-icons/fa';
 
 const BlogUpdateContainer = () => {
   const { slug } = useParams();
@@ -61,31 +60,9 @@ const BlogUpdateContainer = () => {
 
   if (isLoadingBlogUpdation) return <Spinner />;
 
-  const hasPreviewPermission = () => {
-    if (!currentBlog) return false;
-
-    return (
-      currentBlog.title &&
-      currentBlog.content &&
-      currentBlog.coverImagePath &&
-      currentBlog.status &&
-      currentBlog.tags
-    );
-  };
-
   return (
     <div>
-      <div className="flex items-start justify-between">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Update Blog</h2>
-        {hasPreviewPermission() && (
-          <Link to={`${BLOG_DETAILS_PATH}/${slug}`} className="flex gap-2">
-            <span className="mt-1">
-              <FaEye />
-            </span>
-            <p>Preview</p>
-          </Link>
-        )}
-      </div>
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">Update Blog</h2>
 
       {currentBlog && (
         <BlogUpdateForm

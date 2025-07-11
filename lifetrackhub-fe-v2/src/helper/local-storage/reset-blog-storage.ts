@@ -1,9 +1,10 @@
 export const resetDraftBlogStorage = () => {
   const draftBlog = {
     title: '',
-    visibility: '',
+    status: '',
     tags: [],
     content: '',
+    coverImagePath: '',
   };
   localStorage.setItem('draftBlog', JSON.stringify(draftBlog));
 };
