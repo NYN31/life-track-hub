@@ -41,3 +41,10 @@ export interface OptionType {
   label: string;
   value: string;
 }
+
+export interface INavbar {
+  label: string;
+  path: string;
+  icon?: React.ReactNode;
+  children?: INavbar[];
+}
