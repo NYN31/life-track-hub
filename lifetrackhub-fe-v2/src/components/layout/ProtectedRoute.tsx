@@ -5,7 +5,6 @@ import Sidebar from './Sidebar';
 import ProtectedNavbar from '../common/ProtectedNavbar';
 import { useState } from 'react';
 import { getSidebarDataByUserRole } from '../../helper/local-storage/get-sidebar-data';
-import Footer from '../common/Footer';
 
 const ProtectedRoute = () => {
   const authed = useAuth();
@@ -30,8 +29,6 @@ const ProtectedRoute = () => {
         <main className="flex-1 overflow-y-auto bg-white p-4 w-full">
           <Outlet />
         </main>
-
-        <Footer />
       </div>
     </div>
   );

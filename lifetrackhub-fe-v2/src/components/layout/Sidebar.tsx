@@ -33,12 +33,17 @@ const Sidebar: React.FC<{
       const isActive = item.path && location.pathname === item.path;
 
       return (
-        <div key={key} className={`ml-${level * 2}`}>
+        <div key={key} className={`ml-${level * 2} w-full`}>
           {/* Main menu or accordion trigger */}
           <div
-            className={`flex items-center justify-between px-2 py-2 cursor-pointer hover:bg-gray-200 rounded ${
-              isActive ? 'bg-gray-200 font-semibold' : ''
-            }`}
+            className={`flex items-center justify-between px-3 py-2 cursor-pointer rounded-lg transition-all duration-200
+              ${
+                isActive
+                  ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-md font-semibold'
+                  : 'hover:bg-purple-50 text-gray-800'
+              }
+              ${hasChildren ? 'font-medium' : ''}
+            `}
             onClick={() => (hasChildren ? toggleAccordion(item.title) : null)}
           >
             {/* Link if direct path, otherwise plain title */}
@@ -70,7 +75,7 @@ const Sidebar: React.FC<{
                 isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
               }`}
             >
-              <div className="ml-4 space-y-1">
+              <div className="ml-4 space-y-1 border-l-2 border-purple-100 pl-2">
                 {renderItems(item.hasAccordion!, level + 1)}
               </div>
             </div>
@@ -85,28 +90,29 @@ const Sidebar: React.FC<{
       {/* Mobile toggle overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-40 z-30 md:hidden"
           onClick={onToggleSidebarClose}
         />
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-full w-64 border-r border-gray-300 bg-white text-gray-900 z-40 transform transition-transform duration-300 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } md:translate-x-0 md:static md:block`}
+        className={`fixed top-0 left-0 h-full w-64 border-r border-gray-200 bg-gradient-to-b from-white to-purple-50 text-gray-900 z-40 transform transition-transform duration-300 shadow-md
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          md:translate-x-0 md:static md:block`}
       >
-        <div className="p-4">
-          <div className="flex items-center justify-between md:justify-center gap-1 mb-6">
-            <div className="flex gap-2">
+        <div className="p-4 flex flex-col h-full">
+          {/* Logo and close button */}
+          <div className="flex items-center justify-between md:justify-center gap-1 mb-8">
+            <div className="flex gap-2 items-center">
               <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-3 py-1.5 shadow-md">
-                <SiSvgtrace color="white" />
+                <SiSvgtrace color="white" size={24} />
               </div>
-              <span className="text-gray-900 italic font-semibold text-md tracking-wide">
+              <span className="text-gray-900 italic font-bold text-lg tracking-wide hidden md:inline-block">
                 LifeTrackHub
               </span>
             </div>
             <button
-              className="text-gray-600 md:hidden"
+              className="text-gray-600 md:hidden hover:bg-purple-100 p-1 rounded"
               onClick={onToggleSidebarClose}
             >
               {/* Close icon */}
@@ -121,7 +127,14 @@ const Sidebar: React.FC<{
             </button>
           </div>
 
-          <nav className="space-y-2">{renderItems(items)}</nav>
+          <nav className="space-y-2 flex-1 overflow-y-auto custom-scrollbar pr-1">
+            {renderItems(items)}
+          </nav>
+
+          {/* Divider and footer */}
+          <div className="mt-8 border-t border-purple-200 pt-4 text-xs text-gray-400 text-center">
+            &copy; {new Date().getFullYear()} LifeTrackHub
+          </div>
         </div>
       </aside>
     </>

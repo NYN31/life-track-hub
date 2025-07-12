@@ -6,6 +6,7 @@ import {
   PUBLIC_BLOG_PATH,
   REGISTRATION_PATH,
 } from '../../constants/title-and-paths';
+import { SiSvgtrace } from 'react-icons/si';
 
 const PublicNavbar = () => {
   const navigate = useNavigate();
@@ -25,42 +26,32 @@ const PublicNavbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-sm top-0 border-b border-gray-300 z-50">
+    <nav className="bg-gradient-to-r from-white to-purple-50 shadow-md border-b border-purple-100 rounded-b-xl top-0 z-50 sticky">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Banner/Logo Section - Left */}
-          <div className="flex-shrink-0">
-            <div className="flex items-center">
-              <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg font-bold text-lg">
-                LifeTrackHub
-              </div>
+          <div className="flex gap-2 items-center">
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-3 py-1.5 shadow-md">
+              <SiSvgtrace color="white" size={24} />
             </div>
+            <span className="text-gray-900 italic font-bold text-lg tracking-wide hidden md:inline-block">
+              LifeTrackHub
+            </span>
           </div>
 
           {/* Blogs + Sign In/Out Buttons + Hamburger - Right */}
           <div className="flex items-center space-x-4">
             {/* Blogs + Sign In/Out Buttons (Hidden on mobile) */}
             <div className="hidden md:flex items-center space-x-3">
-              {/* <div className="hidden md:block">
-                <div className="ml-10 flex items-baseline space-x-8">
-                  <Link
-                    to={PUBLIC_BLOG_PATH}
-                    className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition duration-300 hover:bg-gray-100"
-                  >
-                    Blogs
-                  </Link>
-                </div>
-              </div> */}
-
               <button
                 onClick={handleNavigateToLogin}
-                className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition duration-300"
+                className="bg-white border border-purple-200 hover:bg-purple-100 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition duration-300 shadow-sm"
               >
                 Sign In
               </button>
               <button
                 onClick={handleNavigateToRegistration}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300"
+                className="bg-gradient-to-r from-purple-400 to-purple-300 hover:from-purple-600 hover:to-purple-500 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300 shadow-sm"
               >
                 Sign Up
               </button>
@@ -70,7 +61,7 @@ const PublicNavbar = () => {
             <div className="md:hidden">
               <button
                 onClick={toggleMenu}
-                className="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600 p-2"
+                className="text-gray-700 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 p-2 rounded"
                 aria-label="Toggle menu"
               >
                 {isMenuOpen ? (
@@ -86,19 +77,19 @@ const PublicNavbar = () => {
         {/* Mobile Menu (Visible when hamburger is clicked) */}
         {isMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50 rounded-lg mt-2">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white rounded-lg mt-2 shadow-md border border-purple-100">
               <Link
                 to={PUBLIC_BLOG_PATH}
-                className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium transition duration-300 hover:bg-white"
+                className="text-gray-700 hover:text-purple-600 block px-3 py-2 rounded-md text-base font-medium transition duration-300 hover:bg-purple-50"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Blogs
               </Link>
 
               {/* Mobile Sign In/Out Buttons */}
-              <div className="flex flex-col space-y-2 pt-4 border-t border-gray-200">
+              <div className="flex flex-col space-y-2 pt-4 border-t border-purple-100">
                 <button
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition duration-300 w-full text-left"
+                  className="bg-white border border-purple-200 hover:bg-purple-100 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition duration-300 w-full text-left shadow-sm"
                   onClick={() => {
                     handleNavigateToLogin();
                     setIsMenuOpen(false);
@@ -107,7 +98,7 @@ const PublicNavbar = () => {
                   Sign In
                 </button>
                 <button
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300 w-full text-left"
+                  className="bg-gradient-to-r from-purple-400 to-purple-300 hover:from-purple-600 hover:to-purple-500 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300 w-full text-left shadow-sm"
                   onClick={() => {
                     handleNavigateToRegistration();
                     setIsMenuOpen(false);
