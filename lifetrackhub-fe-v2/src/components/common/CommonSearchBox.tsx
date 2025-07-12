@@ -98,16 +98,16 @@ const CommonSearchBox: React.FC<{
             <Controller
               name={item.name}
               control={control}
-              defaultValue={item.option}
+              defaultValue={item?.option?.value && item.option}
               render={({ field }) => (
                 <Select
                   {...field}
+                  placeholder={item.name}
                   options={item.options}
                   onChange={selected => {
                     field.onChange(selected);
                     item.setOption(selected);
                   }}
-                  placeholder={item.name}
                   classNamePrefix="react-select"
                   className="text-sm"
                   styles={{
