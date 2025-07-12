@@ -12,9 +12,21 @@ import Spinner from '../../components/common/Spinner';
 import CommonSearchBox from '../../components/common/CommonSearchBox';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import useAuth from '../../helper/hooks/useAuth';
+import { FiFilter } from 'react-icons/fi';
+import { OptionType } from '../../types/common';
+
+const statusOptions: OptionType[] = [
+  { value: 'PUBLIC', label: 'PUBLIC' },
+  { value: 'PRIVATE', label: 'PRIVATE' },
+  { value: 'DELETED', label: 'DELETED' },
+  { value: 'DRAFT', label: 'DRAFT' },
+];
 
 const BlogContainer: React.FC = () => {
   const MAX_BLOG_ITEMS_IN_A_PAGE = 9;
+  const role = localStorage.getItem('role');
+  const isSuperAdmin = role === 'SUPER_ADMIN';
+
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
@@ -22,6 +34,7 @@ const BlogContainer: React.FC = () => {
   const queryPageNo = useQuery().get('page') || '0';
   const queryEmail = useQuery().get('email') || '';
   const querySlug = useQuery().get('slug') || '';
+  const queryStatus = useQuery().get('status') || '';
   const queryStartDate = getStrToDate(useQuery().get('start') || null);
   const queryEndDate = getStrToDate(useQuery().get('end') || null);
 
@@ -37,6 +50,11 @@ const BlogContainer: React.FC = () => {
     queryStartDate,
     queryEndDate,
   ]);
+  const [showFilters, setShowFilters] = useState(true);
+  const [status, setStatus] = useState<OptionType | null>({
+    value: queryStatus,
+    label: queryStatus,
+  });
 
   const [isBlogContentLoading, setBlogContentLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -47,14 +65,15 @@ const BlogContainer: React.FC = () => {
     page: number,
     email: string,
     slug: string,
+    status: string,
     dateRange: [Date | null, Date | null]
   ) => {
     const validParams = getValidParams(
       `page=${page}&email=${email}&slug=${encodeURIComponent(
         slug
-      )}&start=${getDateToString(dateRange[0])}&end=${getDateToString(
-        dateRange[1]
-      )}`
+      )}&status=${status}&start=${getDateToString(
+        dateRange[0]
+      )}&end=${getDateToString(dateRange[1])}`
     );
     navigate(`${BLOG_PATH}${validParams}`);
   };
@@ -63,6 +82,7 @@ const BlogContainer: React.FC = () => {
     pageId: number,
     email: string,
     slug: string,
+    status: string,
     dateRange: [Date | null, Date | null]
   ) => {
     setBlogContentLoading(true);
@@ -72,6 +92,7 @@ const BlogContainer: React.FC = () => {
       size: MAX_BLOG_ITEMS_IN_A_PAGE,
       slug: slug || null,
       email: email || null,
+      status: status || null,
       start: getDateToString(dateRange[0]) || null,
       end: getDateToString(dateRange[1]) || null,
     })
@@ -93,7 +114,7 @@ const BlogContainer: React.FC = () => {
 
   const handleNextPage = () => {
     const nextPageNo = Number(queryPageNo) + 1;
-    updateAndPushUrl(nextPageNo, queryEmail, querySlug, [
+    updateAndPushUrl(nextPageNo, queryEmail, querySlug, queryStatus, [
       queryStartDate,
       queryEndDate,
     ]);
@@ -101,14 +122,14 @@ const BlogContainer: React.FC = () => {
 
   const handlePreviousPage = () => {
     const prevPageNo = Number(queryPageNo) - 1;
-    updateAndPushUrl(prevPageNo, queryEmail, querySlug, [
+    updateAndPushUrl(prevPageNo, queryEmail, querySlug, queryStatus, [
       queryStartDate,
       queryEndDate,
     ]);
   };
 
   const handleBlogsSearch = () => {
-    updateAndPushUrl(0, email, slug, dateRange);
+    updateAndPushUrl(0, email, slug, status?.value || '', dateRange);
   };
 
   const handleReset = () => {
@@ -117,9 +138,11 @@ const BlogContainer: React.FC = () => {
     const slug = '';
     const startDate = null;
     const endDate = null;
-    updateAndPushUrl(pageNo, email, slug, [startDate, endDate]);
+    const status = { value: '', label: '' };
+    updateAndPushUrl(pageNo, email, slug, status?.value, [startDate, endDate]);
     setEmail(email);
     setSlug(slug);
+    setStatus(status);
     setDateRange([startDate, endDate]);
     setResults([]);
   };
@@ -127,9 +150,10 @@ const BlogContainer: React.FC = () => {
   useEffect(() => {
     setEmail(queryEmail);
     setSlug(querySlug);
+    setStatus({ value: queryStatus, label: queryStatus });
     setDateRange([queryStartDate, queryEndDate]);
 
-    handleSearch(Number(queryPageNo), queryEmail, querySlug, [
+    handleSearch(Number(queryPageNo), queryEmail, querySlug, queryStatus, [
       queryStartDate,
       queryEndDate,
     ]);
@@ -139,7 +163,20 @@ const BlogContainer: React.FC = () => {
 
   return (
     <>
-      {auth && (
+      <h1 className="text-3xl font-bold text-gray-800">Blogs</h1>
+      <div className="flex items-center justify-end max-w-5xl mx-auto mb-4">
+        <button
+          className={`p-2 rounded-full border border-purple-200 hover:bg-purple-50 transition`}
+          onClick={() => setShowFilters(v => !v)}
+          aria-label="Toggle filters"
+        >
+          <FiFilter
+            size={22}
+            className={showFilters ? 'text-purple-600' : 'text-gray-400'}
+          />
+        </button>
+      </div>
+      {auth && showFilters && (
         <div className="mx-auto gap-6">
           <CommonSearchBox
             textFields={[
@@ -158,6 +195,18 @@ const BlogContainer: React.FC = () => {
                 isMandatory: false,
               },
             ]}
+            selectDropdowns={
+              isSuperAdmin
+                ? [
+                    {
+                      name: 'Status',
+                      option: status,
+                      options: statusOptions,
+                      setOption: setStatus,
+                    },
+                  ]
+                : undefined
+            }
             dateFields={[
               {
                 name: 'Date Range (Required)',
@@ -186,7 +235,9 @@ const BlogContainer: React.FC = () => {
           hasPrevious={hasPrevious}
           hasNext={hasNext}
           totalPages={totalPages}
-          onPageChange={page => updateAndPushUrl(page, email, slug, dateRange)}
+          onPageChange={page =>
+            updateAndPushUrl(page, email, slug, status?.value || '', dateRange)
+          }
         />
       )}
 
