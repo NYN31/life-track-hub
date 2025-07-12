@@ -17,7 +17,6 @@ const BlogCreateForm: React.FC<{
   blogDetails: IBlog;
   currentTags: TagOption[];
 }> = ({ blogDetails, currentTags }) => {
-  console.log(blogDetails);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -97,7 +96,7 @@ const BlogCreateForm: React.FC<{
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 bg-white shadow-md rounded-lg p-4 md:p-6 lg:p-10 border border-purple-100 animate-fade-in"
+      className="space-y-8 bg-white shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 animate-fade-in"
     >
       {/* Blog Title */}
       <div>

@@ -40,13 +40,13 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
         </div>
       </div>
 
-      <div className="md:w-3/4 order-2 md:order-1 h-screen md:border-r md:border-gray-300">
+      <div className="md:w-3/4 order-2 md:order-1 h-screen md:border-r md:border-gray-300 md:pr-4">
         <div className="flex flex-col gap-y-4 h-full overflow-y-auto scrollbar-hide">
           <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold">{blogData.title}</h1>
             <button
               onClick={navigateFromBlogDetailsPage}
-              className="mx-2 px-6 py-2 bg-blue-500 hover:bg-blue-700 text-gray-50 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
+              className="px-6 py-2 bg-blue-500 hover:bg-blue-700 text-gray-50 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
             >
               edit
             </button>
@@ -85,7 +85,7 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
             />
           </div>
 
-          <div className="bg-white p-4">
+          <div className="bg-white p-4 border border-purple-100 shadow-sm rounded-lg md:6 lg:8">
             <MarkdownPreview source={blogData.content} />
           </div>
         </div>

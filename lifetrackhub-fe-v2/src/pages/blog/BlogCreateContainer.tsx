@@ -5,8 +5,8 @@ const BlogCreateContainer = () => {
   const blogDetails = useSelector((state: any) => state.blog);
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">
+    <div className="border border-purple-100 shadow-sm rounded-lg p-4 md:p-6 lg:p-8">
+      <h2 className="mx-auto text-2xl font-bold mb-6 text-gray-800">
         Write a New Blog
       </h2>
 

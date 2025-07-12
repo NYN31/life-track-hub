@@ -15,11 +15,11 @@ const BlogStatsDashboard: React.FC<{ stats: IBlogStats }> = ({ stats }) => {
   return (
     <section>
       <h2 className="text-xl font-semibold text-gray-700 mb-4">Visibility</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {statusCounts.map(({ status, count }) => (
           <div
             key={status}
-            className="flex items-center p-4 bg-white border rounded-lg shadow hover:shadow-md transition"
+            className="flex items-center p-4 bg-white border rounded-lg shadow-sm hover:shadow-md transition justify-center"
           >
             <div className="p-3 bg-gray-100 rounded-full mr-4">
               {statusIcon[status]}
