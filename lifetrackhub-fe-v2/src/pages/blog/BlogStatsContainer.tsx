@@ -17,7 +17,7 @@ const BlogStatsContainer = () => {
   }, [data]);
 
   return (
-    <div className="mx-auto space-y-8">
+    <div className="border border-purple-100 shadow-sm rounded-lg p-4 md:p-6 lg:p-8">
       {/* Heading */}
       <h1 className="text-3xl font-bold text-gray-800 mb-4">
         📊 Blog Statistics

@@ -162,9 +162,9 @@ const BlogContainer: React.FC = () => {
   if (isBlogContentLoading) return <Spinner />;
 
   return (
-    <div className="border border-purple-100 shadow-sm rounded-lg p-4 md:6 lg:8">
+    <div className="border border-purple-100 shadow-sm rounded-lg p-4 md:p-6 lg:p-8">
       <h1 className="text-3xl font-bold text-gray-800">Blogs</h1>
-      <div className="flex items-center justify-end max-w-5xl mx-auto mb-4">
+      <div className="flex items-center justify-end mb-4">
         <button
           className={`p-2 rounded-full border border-purple-200 hover:bg-purple-50 transition`}
           onClick={() => setShowFilters(v => !v)}
@@ -177,7 +177,7 @@ const BlogContainer: React.FC = () => {
         </button>
       </div>
       {auth && showFilters && (
-        <div className="mx-auto gap-6">
+        <div className="gap-6">
           <CommonSearchBox
             textFields={[
               {

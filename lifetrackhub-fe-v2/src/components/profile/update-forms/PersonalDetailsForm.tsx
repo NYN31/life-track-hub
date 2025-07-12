@@ -90,7 +90,7 @@ const PersonalDetailsForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 max-w-2xl bg-white shadow-md rounded-lg p-4 md:p-6 lg:p-10 border border-purple-100 mx-auto animate-fade-in"
+      className="space-y-8 bg-white shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 animate-fade-in"
     >
       <h2 className="text-3xl font-extrabold mb-6 text-purple-700 text-center tracking-tight">
         Personal Details

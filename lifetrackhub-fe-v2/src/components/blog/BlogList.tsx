@@ -4,7 +4,7 @@ import BlogCard from './BlogCard';
 
 const BlogList: React.FC<{ results: IBlog[] }> = ({ results }) => {
   return (
-    <div className="mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+    <div className="grid grid-cols-1 gap-3 md:gap-6">
       {results.map(blog => {
         const username = blog.user.firstname + ' ' + blog.user.lastname;
         const authorImage = blog.user.userDetails?.profileImagePath;
