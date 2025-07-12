@@ -44,12 +44,12 @@ const BlogCard: React.FC<{
     : [];
 
   return (
-    <div className="bg-white shadow-sm rounded-lg p-4 md:p-6 border border-purple-100 hover:shadow-md transition duration-200 flex flex-col h-full">
+    <div className="bg-white shadow-sm rounded-lg p-2 md:p3 lg:p-4 border border-purple-100 hover:shadow-md transition duration-200 flex flex-col h-full">
       <Link to={`${BLOG_DETAILS_PATH}/${slug}`} className="block group">
         <img
           src={coverImagePath || fallbackImage}
           alt={title}
-          className="w-full h-56 object-cover rounded-xl mb-4 group-hover:opacity-90 transition"
+          className="w-full h-56 object-cover rounded-lg mb-4 group-hover:opacity-90 transition"
           loading="lazy"
         />
       </Link>
@@ -86,7 +86,7 @@ const BlogCard: React.FC<{
                 {getInitials(firstname, lastname)}
               </div>
             )}
-            <span className="text-gray-700 font-medium text-sm">{username}</span>
+            <span className="text-gray-700 font-medium text-sm line-clamp-1">{username}</span>
           </div>
           <span
             className={`inline-block px-2 py-1 rounded text-xs font-semibold ${blogStatusColor[status]}`}
