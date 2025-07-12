@@ -24,11 +24,11 @@ const UserProfileViewContainer: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-4 animate-fade-in">
       <PersonalInfoSection user={user} userDetails={userDetails} />
-      <SkillsSection skills={userDetails.skills} />
-      <AchievementsSection achievements={userDetails.achievements} />
-      <EducationsSection educations={userDetails.educations} />
-      <ExperiencesSection experiences={userDetails.experiences} />
-      <SocialLinksSection socialLinks={userDetails.socialLinks} />
+      <SkillsSection skills={userDetails?.skills} />
+      <AchievementsSection achievements={userDetails?.achievements} />
+      <EducationsSection educations={userDetails?.educations} />
+      <ExperiencesSection experiences={userDetails?.experiences} />
+      <SocialLinksSection socialLinks={userDetails?.socialLinks} />
     </div>
   );
 };
