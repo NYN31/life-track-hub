@@ -30,11 +30,11 @@ const CommonSearchBox: React.FC<{
   const { control, reset } = useForm();
 
   return (
-    <div className="w-full max-w-5xl mx-auto mb-8">
-      <div className="bg-white border border-purple-200 rounded-xl shadow-md p-6 flex flex-wrap gap-6 items-end">
+    <div className="w-full max-w-5xl mx-auto mb-3 md:mb-4">
+      <div className="bg-white border border-purple-200 rounded-lg shadow-sm p-2 lg:p-6 flex flex-wrap gap-2 lg:gap-6 items-end">
         {/* Text Inputs */}
         {textFields?.map((item, index) => (
-          <div key={index} className="flex flex-col w-[220px]">
+          <div key={index} className="flex flex-col w-full lg:w-[220px]">
             <label className="mb-1 font-semibold text-gray-700 text-sm">
               {item.name}
             </label>
@@ -62,7 +62,7 @@ const CommonSearchBox: React.FC<{
 
         {/* Date Range Pickers */}
         {dateFields?.map((item, index) => (
-          <div key={index} className="flex flex-col w-[220px]">
+          <div key={index} className="flex flex-col w-full lg:w-[220px]">
             <label className="mb-1 font-semibold text-gray-700 text-sm">
               {item.name}
             </label>
@@ -91,7 +91,7 @@ const CommonSearchBox: React.FC<{
 
         {/* Select Dropdowns */}
         {selectDropdowns?.map(item => (
-          <div key={item.name} className="flex flex-col w-[220px]">
+          <div key={item.name} className="flex flex-col w-full lg:w-[220px]">
             <label className="mb-1 font-semibold text-gray-700 text-sm">
               {item.name}
             </label>
@@ -125,12 +125,12 @@ const CommonSearchBox: React.FC<{
         ))}
 
         {/* Buttons */}
-        <div className="flex gap-3 mt-4">
+        <div className="flex gap-3 mt-4 items-start justify-between w-full lg:w-auto">
           <button
             type="button"
             disabled={!isSearchButtonEnable}
             onClick={() => handleSearch()}
-            className="px-6 py-2 rounded-lg bg-gradient-to-r from-purple-400 to-purple-300 text-white font-semibold shadow hover:from-purple-700 hover:to-purple-600 transition text-sm disabled:bg-gray-300 disabled:text-gray-500"
+            className="px-6 py-2 order-2 lg:order-1 rounded-lg bg-gradient-to-r from-purple-400 to-purple-300 text-white font-semibold shadow hover:from-purple-700 hover:to-purple-600 transition text-sm disabled:bg-gray-300 disabled:text-gray-500"
           >
             Search
           </button>
@@ -141,7 +141,7 @@ const CommonSearchBox: React.FC<{
               reset();
               handleReset();
             }}
-            className="px-6 py-2 rounded-lg border border-gray-400 text-gray-600 bg-white font-semibold shadow hover:bg-gray-100 transition text-sm disabled:bg-gray-200 disabled:text-gray-400"
+            className="px-6 py-2 order-1 lg:order-2 rounded-lg border border-gray-400 text-gray-600 bg-white font-semibold shadow hover:bg-gray-100 transition text-sm disabled:bg-gray-200 disabled:text-gray-400"
           >
             Reset
           </button>
