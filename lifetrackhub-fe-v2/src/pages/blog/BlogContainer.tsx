@@ -186,6 +186,7 @@ const BlogContainer: React.FC = () => {
           hasPrevious={hasPrevious}
           hasNext={hasNext}
           totalPages={totalPages}
+          onPageChange={page => updateAndPushUrl(page, email, slug, dateRange)}
         />
       )}
 
