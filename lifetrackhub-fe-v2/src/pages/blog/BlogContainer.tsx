@@ -162,7 +162,7 @@ const BlogContainer: React.FC = () => {
   if (isBlogContentLoading) return <Spinner />;
 
   return (
-    <>
+    <div className="border border-purple-100 shadow-sm rounded-lg p-4 md:6 lg:8">
       <h1 className="text-3xl font-bold text-gray-800">Blogs</h1>
       <div className="flex items-center justify-end max-w-5xl mx-auto mb-4">
         <button
@@ -242,7 +242,7 @@ const BlogContainer: React.FC = () => {
       )}
 
       {errorMessage && <ErrorMessage message={errorMessage} />}
-    </>
+    </div>
   );
 };
 

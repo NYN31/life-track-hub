@@ -1,16 +1,36 @@
-import React from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ProfileDropdown from './ProfileDropdown';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   LOGIN_PATH,
   PROFILE_DETAILS_PATH,
 } from '../../constants/title-and-paths';
 import { logoutClearingLocalStorage } from '../../helper/local-storage/clear-local-storage';
+import { FiMenu, FiX } from 'react-icons/fi';
+import { SiSvgtrace } from 'react-icons/si';
+import { INavbar } from '../../types/common';
 
-const ProtectedNavbar: React.FC<{
-  onMenuOpenClick: () => void;
-}> = ({ onMenuOpenClick }) => {
+const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  console.log(openDropdown, dropdownRefs);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (openDropdown) {
+        const ref = dropdownRefs.current[openDropdown];
+        if (ref && !ref.contains(event.target as Node)) {
+          setOpenDropdown(null);
+        }
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [openDropdown]);
 
   const handleLogout = () => {
     logoutClearingLocalStorage();
@@ -21,27 +41,169 @@ const ProtectedNavbar: React.FC<{
     navigate(PROFILE_DETAILS_PATH);
   };
 
-  return (
-    <header className="sticky top-0 left-0 right-0 z-30 h-16 px-4 md:px-8 flex items-center justify-between bg-gradient-to-r from-white to-purple-50 shadow-sm border-b border-purple-200">
-      <button
-        className="text-gray-700 md:hidden p-2 rounded hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200"
-        onClick={onMenuOpenClick}
-        aria-label="Open sidebar menu"
-      >
-        {/* Hamburger icon */}
-        <svg className="w-7 h-7" fill="none" stroke="currentColor">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </button>
+  const handleNavClick = (path: string) => {
+    setMobileMenuOpen(false);
+    setOpenDropdown(null);
+    navigate(path);
+  };
 
-      <div className="flex-1 flex justify-end items-center">
-        <ProfileDropdown onLogout={handleLogout} onProfile={handleProfile} />
+  return (
+    <header className="sticky top-0 left-0 right-0 z-10 h-16 px-4 md:px-6 lg:px-8 bg-gradient-to-r from-white to-purple-50 shadow-sm border-b border-purple-200">
+      <div className="flex items-center justify-between max-w-5xl mx-auto">
+        {/* Logo */}
+        <div className="flex gap-2 items-center">
+          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-3 py-1.5 shadow-md">
+            <SiSvgtrace color="white" size={24} />
+          </div>
+          <span className="text-gray-900 italic font-bold text-lg tracking-wide hidden md:inline-block">
+            LifeTrackHub
+          </span>
+          {/* Mobile Hamburger */}
+          <div className="md:hidden flex">
+            <button
+              className="text-gray-700 p-2 rounded hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200"
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="Open navigation menu"
+            >
+              {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-4 flex-1 justify-center">
+          {items.map(item => (
+            <div key={item.label} className="relative">
+              {item.children ? (
+                <>
+                  <button
+                    className={`flex items-center gap-1 px-3 py-2 rounded-lg font-medium transition hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 ${
+                      openDropdown === item.label ? 'bg-purple-100' : ''
+                    }`}
+                    onClick={() =>
+                      setOpenDropdown(
+                        openDropdown === item.label ? null : item.label
+                      )
+                    }
+                    type="button"
+                    aria-haspopup="false"
+                    aria-expanded={openDropdown === item.label}
+                  >
+                    <span>{item.label}</span>
+                    <svg
+                      className="w-4 h-4 ml-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                  {openDropdown === item.label && (
+                    <div
+                      ref={el => {
+                        dropdownRefs.current[item.label] = el;
+                        return undefined;
+                      }}
+                      className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-purple-100 z-20 animate-fade-in"
+                    >
+                      {item.children.map(child => (
+                        <button
+                          key={child.label}
+                          className={`w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-purple-50 transition ${
+                            location.pathname === child.path
+                              ? 'bg-purple-100 font-semibold'
+                              : ''
+                          }`}
+                          onClick={() => handleNavClick(child.path)}
+                        >
+                          {child.icon && child.icon}
+                          <span>{child.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <button
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 ${
+                    location.pathname === item?.path
+                      ? 'bg-purple-100 font-semibold'
+                      : ''
+                  }`}
+                  onClick={() => handleNavClick(item.path)}
+                >
+                  <span>{item.label}</span>
+                </button>
+              )}
+            </div>
+          ))}
+        </nav>
+        {/* Profile Dropdown */}
+        <div className="ml-4 mt-1">
+          <ProfileDropdown onLogout={handleLogout} onProfile={handleProfile} />
+        </div>
       </div>
+      {/* Mobile Nav Drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-black bg-opacity-30 flex flex-col">
+          <div className="bg-white border-b border-purple-100 shadow-md rounded-b-xl p-4 flex flex-col gap-2 animate-fade-in">
+            {/* Mobile Hamburger */}
+            <div className="md:hidden flex justify-end">
+              <button
+                className="text-gray-700 p-2 rounded hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200"
+                onClick={() => setMobileMenuOpen(v => !v)}
+                aria-label="Open navigation menu"
+              >
+                {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+              </button>
+            </div>
+            {items.map(item => (
+              <div key={item.label} className="mb-2">
+                {item.children ? (
+                  <>
+                    <div className="flex items-center gap-2 font-semibold text-purple-700 mb-1">
+                      <span>{item.label}</span>
+                    </div>
+                    <div className="pl-4 flex flex-col gap-1">
+                      {item.children.map(child => (
+                        <button
+                          key={child.label}
+                          className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left hover:bg-purple-50 transition ${
+                            location.pathname === child.path
+                              ? 'bg-purple-100 font-semibold'
+                              : ''
+                          }`}
+                          onClick={() => handleNavClick(child.path)}
+                        >
+                          {child.icon && child.icon}
+                          <span>{child.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <button
+                    className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left hover:bg-purple-50 transition w-full ${
+                      location.pathname === item?.path
+                        ? 'bg-purple-100 font-semibold'
+                        : ''
+                    }`}
+                    onClick={() => handleNavClick(item.path)}
+                  >
+                    <span>{item.label}</span>
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </header>
   );
 };
