@@ -1,6 +1,5 @@
 package com.lifetrackhub.dto;
 
-import com.lifetrackhub.constant.enumeration.BlogContentType;
 import com.lifetrackhub.constant.enumeration.BlogStatus;
 import com.lifetrackhub.entity.Blog;
 import lombok.Data;
@@ -22,8 +21,6 @@ public class BlogDto {
     private String coverImagePath;
 
     private String tags;
-
-    private BlogContentType contentType;
 
     private UserDto user;
 
