@@ -6,17 +6,42 @@ import {
   PROFILE_DETAILS_PATH,
 } from '../../constants/title-and-paths';
 import { logoutClearingLocalStorage } from '../../helper/local-storage/clear-local-storage';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
 import { SiSvgtrace } from 'react-icons/si';
 import { INavbar } from '../../types/common';
+
+const THEME_KEY = 'theme';
+
+const getInitialTheme = () => {
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem(THEME_KEY);
+    if (stored) return stored;
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches)
+      return 'dark';
+  }
+  return 'light';
+};
 
 const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [theme, setTheme] = useState<'light' | 'dark'>(
+    getInitialTheme() as 'light' | 'dark'
+  );
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  console.log(openDropdown, dropdownRefs);
+
+  // Apply theme to html element
+  useEffect(() => {
+    const html = document.documentElement;
+    if (theme === 'dark') {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
+    localStorage.setItem(THEME_KEY, theme);
+  }, [theme]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -48,20 +73,28 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
   };
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-10 h-16 px-4 md:px-6 lg:px-8 bg-gradient-to-r from-white to-purple-50 shadow-sm border-b border-purple-200">
-      <div className="flex items-center justify-between max-w-5xl mx-auto">
+    <header className="sticky top-0 left-0 right-0 z-10 h-16 px-4 md:px-6 lg:px-8 bg-gradient-to-r from-white to-purple-50 dark:from-gray-900 dark:to-gray-800 shadow-sm border-b border-purple-200 dark:border-gray-700">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
         {/* Logo */}
         <div className="flex gap-2 items-center">
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-3 py-1.5 shadow-md">
             <SiSvgtrace color="white" size={24} />
           </div>
-          <span className="text-gray-900 italic font-bold text-lg tracking-wide hidden md:inline-block">
+          <span className="text-gray-900 dark:text-gray-100 italic font-bold text-lg tracking-wide hidden md:inline-block">
             LifeTrackHub
           </span>
+          {/* Theme Toggle */}
+          <button
+            className="ml-3 p-2 rounded-full border border-purple-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-purple-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition"
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            aria-label="Toggle dark mode"
+          >
+            {theme === 'dark' ? <FiSun size={18} /> : <FiMoon size={18} />}
+          </button>
           {/* Mobile Hamburger */}
           <div className="md:hidden flex">
             <button
-              className="text-gray-700 p-2 rounded hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200"
+              className="text-gray-700 dark:text-gray-200 p-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-200 dark:focus:ring-gray-600"
               onClick={() => setMobileMenuOpen(v => !v)}
               aria-label="Open navigation menu"
             >
@@ -69,16 +102,17 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
             </button>
           </div>
         </div>
-
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-4 flex-1 justify-center">
+        <nav className="hidden md:flex items-center gap-4 flex-1 justify-center dark:text-white">
           {items.map(item => (
             <div key={item.label} className="relative">
               {item.children ? (
                 <>
                   <button
-                    className={`flex items-center gap-1 px-3 py-2 rounded-lg font-medium transition hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 ${
-                      openDropdown === item.label ? 'bg-purple-100' : ''
+                    className={`flex items-center gap-1 px-3 py-2 rounded-lg font-medium transition hover:bg-purple-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-200 dark:focus:ring-gray-600 ${
+                      openDropdown === item.label
+                        ? 'bg-purple-100 dark:bg-gray-700'
+                        : ''
                     }`}
                     onClick={() =>
                       setOpenDropdown(
@@ -110,14 +144,14 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
                         dropdownRefs.current[item.label] = el;
                         return undefined;
                       }}
-                      className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-purple-100 z-20 animate-fade-in"
+                      className="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-lg shadow-lg border border-purple-100 dark:border-gray-700 z-20 animate-fade-in"
                     >
                       {item.children.map(child => (
                         <button
                           key={child.label}
-                          className={`w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-purple-50 transition ${
+                          className={`w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-purple-50 dark:hover:bg-gray-800 transition ${
                             location.pathname === child.path
-                              ? 'bg-purple-100 font-semibold'
+                              ? 'bg-purple-100 dark:bg-gray-800 font-semibold'
                               : ''
                           }`}
                           onClick={() => handleNavClick(child.path)}
@@ -131,9 +165,9 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
                 </>
               ) : (
                 <button
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200 ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition hover:bg-purple-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-200 dark:focus:ring-gray-600 ${
                     location.pathname === item?.path
-                      ? 'bg-purple-100 font-semibold'
+                      ? 'bg-purple-100 dark:bg-gray-800 font-semibold'
                       : ''
                   }`}
                   onClick={() => handleNavClick(item.path)}
@@ -152,11 +186,11 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
       {/* Mobile Nav Drawer */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-black bg-opacity-30 flex flex-col">
-          <div className="bg-white border-b border-purple-100 shadow-md rounded-b-xl p-4 flex flex-col gap-2 animate-fade-in">
+          <div className="bg-white dark:bg-gray-900 border-b border-purple-100 dark:border-gray-700 shadow-md rounded-b-xl p-4 flex flex-col gap-2 animate-fade-in">
             {/* Mobile Hamburger */}
             <div className="md:hidden flex justify-end">
               <button
-                className="text-gray-700 p-2 rounded hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-200"
+                className="text-gray-700 dark:text-gray-200 p-2 rounded hover:bg-purple-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-200 dark:focus:ring-gray-600"
                 onClick={() => setMobileMenuOpen(v => !v)}
                 aria-label="Open navigation menu"
               >
@@ -167,16 +201,16 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
               <div key={item.label} className="mb-2">
                 {item.children ? (
                   <>
-                    <div className="flex items-center gap-2 font-semibold text-purple-700 mb-1">
+                    <div className="flex items-center gap-2 font-semibold text-purple-700 dark:text-purple-200 mb-1">
                       <span>{item.label}</span>
                     </div>
                     <div className="pl-4 flex flex-col gap-1">
                       {item.children.map(child => (
                         <button
                           key={child.label}
-                          className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left hover:bg-purple-50 transition ${
+                          className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-100 hover:bg-purple-50 dark:hover:bg-gray-700 transition ${
                             location.pathname === child.path
-                              ? 'bg-purple-100 font-semibold'
+                              ? 'bg-purple-100 dark:bg-gray-700 font-semibold'
                               : ''
                           }`}
                           onClick={() => handleNavClick(child.path)}
@@ -189,9 +223,9 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
                   </>
                 ) : (
                   <button
-                    className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left hover:bg-purple-50 transition w-full ${
+                    className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-100 hover:bg-purple-50 dark:hover:bg-gray-700 transition w-full ${
                       location.pathname === item?.path
-                        ? 'bg-purple-100 font-semibold'
+                        ? 'bg-purple-100 dark:bg-gray-800 font-semibold'
                         : ''
                     }`}
                     onClick={() => handleNavClick(item.path)}

@@ -29,7 +29,7 @@ export const userApi = apiSlice
           { type: 'UserByEmail', email: arg.slug },
         ],
       }),
-      
+
       getUserByEmail: builder.query({
         query: email => `${PROFILE_USER_API_PATH}/find-by-email/${email}`,
         providesTags: (_result, _error, arg) => [
@@ -40,4 +40,8 @@ export const userApi = apiSlice
     overrideExisting: false,
   });
 
-export const { useGetProfileQuery, useUpdateProfileMutation, useGetUserByEmailQuery } = userApi;
+export const {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+  useGetUserByEmailQuery,
+} = userApi;

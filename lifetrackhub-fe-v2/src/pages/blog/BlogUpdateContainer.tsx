@@ -63,10 +63,10 @@ const BlogUpdateContainer = () => {
   return (
     <div className="border border-purple-100 shadow-sm rounded-lg p-4 md:p-6 lg:p-8">
       <div className="flex items-start justify-between">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Update Blog</h2>
+        <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-200">Update Blog</h2>
         <button
           onClick={() => navigate(`${BLOG_DETAILS_PATH}/${slug}`)}
-          className="px-6 py-2 bg-blue-500 hover:bg-blue-700 text-gray-50 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
+          className="px-6 py-2 bg-purple-500 hover:bg-purple-600 text-gray-50 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
         >
           Details
         </button>

@@ -39,12 +39,10 @@ const BlogCard: React.FC<{
   lastname = '',
 }) => {
   // tags: comma-separated string
-  const tagList = tags
-    ? tags.split(',').filter(tag => tag.trim() !== '')
-    : [];
+  const tagList = tags ? tags.split(',').filter(tag => tag.trim() !== '') : [];
 
   return (
-    <div className="bg-white shadow-sm rounded-lg p-2 md:p3 lg:p-4 border border-purple-100 hover:shadow-md transition duration-200 flex flex-col h-full">
+    <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-2 md:p3 lg:p-4 border border-purple-100 dark:border-gray-700 hover:shadow-md transition duration-200 flex flex-col h-full">
       <Link to={`${BLOG_DETAILS_PATH}/${slug}`} className="block group">
         <img
           src={coverImagePath || fallbackImage}
@@ -55,7 +53,7 @@ const BlogCard: React.FC<{
       </Link>
       <div className="flex flex-col flex-1">
         <Link to={`${BLOG_DETAILS_PATH}/${slug}`}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2 hover:text-purple-600 transition line-clamp-1">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-purple-600 dark:hover:text-purple-300 transition line-clamp-1">
             {title}
           </h2>
         </Link>
@@ -63,13 +61,13 @@ const BlogCard: React.FC<{
           {tagList.map(tag => (
             <span
               key={tag}
-              className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold shadow-sm"
+              className="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 rounded-full text-xs font-semibold shadow-sm"
             >
               #{tag}
             </span>
           ))}
         </div>
-        <p className="text-gray-600 mb-4 text-sm line-clamp-3">
+        <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm line-clamp-3">
           {extractCleanTextFromMarkdown(content).slice(0, 120)}
           {content.length > 120 && '...'}
         </p>
@@ -86,7 +84,9 @@ const BlogCard: React.FC<{
                 {getInitials(firstname, lastname)}
               </div>
             )}
-            <span className="text-gray-700 font-medium text-sm line-clamp-1">{username}</span>
+            <span className="text-gray-700 dark:text-gray-200 font-medium text-sm line-clamp-1">
+              {username}
+            </span>
           </div>
           <span
             className={`inline-block px-2 py-1 rounded text-xs font-semibold ${blogStatusColor[status]}`}
@@ -94,7 +94,7 @@ const BlogCard: React.FC<{
             {status}
           </span>
         </div>
-        <div className="text-xs text-gray-400 mt-2">
+        <div className="text-sm text-gray-400 mt-2">
           {formatHumanReadableDate(createdDate)}
         </div>
       </div>

@@ -90,61 +90,61 @@ const PersonalDetailsForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 bg-white shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 animate-fade-in"
+      className="space-y-8 bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
     >
-      <h2 className="text-3xl font-extrabold mb-6 text-purple-700 text-center tracking-tight">
+      <h2 className="text-3xl font-extrabold mb-6 text-purple-700 dark:text-purple-300 text-center tracking-tight">
         Personal Details
       </h2>
       {/* Readonly fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div>
-          <label className="block text-base font-semibold text-gray-700">
+          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
             Email
           </label>
           <input
             value={data?.email || ''}
             readOnly
-            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
           />
         </div>
         <div>
-          <label className="block text-base font-semibold text-gray-700">
+          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
             Role
           </label>
           <input
             value={data?.role || ''}
             readOnly
-            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
           />
         </div>
         <div>
-          <label className="block text-base font-semibold text-gray-700">
+          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
             Account Status
           </label>
           <input
             value={data?.accountStatus || ''}
             readOnly
-            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
           />
         </div>
         <div>
-          <label className="block text-base font-semibold text-gray-700">
+          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
             Account Type
           </label>
           <input
             value={data?.accountType || ''}
             readOnly
-            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
           />
         </div>
         <div>
-          <label className="block text-base font-semibold text-gray-700">
+          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
             Login Type
           </label>
           <input
             value={data?.loginType || ''}
             readOnly
-            className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 bg-gray-100 text-gray-700 cursor-not-allowed"
+            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
           />
         </div>
       </div>
@@ -152,17 +152,17 @@ const PersonalDetailsForm: React.FC = () => {
       <div className="space-y-3">
         <label
           htmlFor="firstname"
-          className="block text-base font-semibold text-gray-700"
+          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
         >
           First Name
         </label>
         <input
           id="firstname"
           {...register('firstname')}
-          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
         />
         {errors.firstname && (
-          <span className="text-red-500 text-sm">
+          <span className="text-red-500 dark:text-red-400 text-sm">
             {errors.firstname.message}
           </span>
         )}
@@ -170,17 +170,17 @@ const PersonalDetailsForm: React.FC = () => {
       <div className="space-y-3">
         <label
           htmlFor="lastname"
-          className="block text-base font-semibold text-gray-700"
+          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
         >
           Last Name
         </label>
         <input
           id="lastname"
           {...register('lastname')}
-          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
         />
         {errors.lastname && (
-          <span className="text-red-500 text-sm">
+          <span className="text-red-500 dark:text-red-400 text-sm">
             {errors.lastname.message}
           </span>
         )}
@@ -188,18 +188,18 @@ const PersonalDetailsForm: React.FC = () => {
       <div className="space-y-3">
         <label
           htmlFor="objective"
-          className="block text-base font-semibold text-gray-700"
+          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
         >
           Objective
         </label>
         <textarea
           id="objective"
           {...register('objective')}
-          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
           rows={4}
         />
         {errors.objective && (
-          <span className="text-red-500 text-sm">
+          <span className="text-red-500 dark:text-red-400 text-sm">
             {errors.objective.message}
           </span>
         )}
@@ -207,17 +207,17 @@ const PersonalDetailsForm: React.FC = () => {
       <div className="space-y-3">
         <label
           htmlFor="profileImagePath"
-          className="block text-base font-semibold text-gray-700"
+          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
         >
           Profile Image URL
         </label>
         <input
           id="profileImagePath"
           {...register('profileImagePath')}
-          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
         />
         {errors.profileImagePath && (
-          <span className="text-red-500 text-sm">
+          <span className="text-red-500 dark:text-red-400 text-sm">
             {errors.profileImagePath.message}
           </span>
         )}
@@ -225,17 +225,17 @@ const PersonalDetailsForm: React.FC = () => {
       <div className="space-y-3">
         <label
           htmlFor="cvPdfPath"
-          className="block text-base font-semibold text-gray-700"
+          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
         >
           CV/Resume URL
         </label>
         <input
           id="cvPdfPath"
           {...register('cvPdfPath')}
-          className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
         />
         {errors.cvPdfPath && (
-          <span className="text-red-500 text-sm">
+          <span className="text-red-500 dark:text-red-400 text-sm">
             {errors.cvPdfPath.message}
           </span>
         )}
@@ -245,8 +245,8 @@ const PersonalDetailsForm: React.FC = () => {
         className={`px-8 py-3 rounded-xl w-full font-bold text-lg shadow-lg tracking-wide flex items-center justify-center gap-2 transition
           ${
             isSaving || !isDirty
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600'
+              ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-700 dark:to-purple-600 text-white hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-800 dark:hover:to-purple-700'
           }`}
         disabled={isSaving || !isDirty}
       >
@@ -259,7 +259,7 @@ const PersonalDetailsForm: React.FC = () => {
         )}
       </button>
       {success && (
-        <div className="text-green-600 mt-4 text-center font-semibold animate-fade-in">
+        <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">
           Saved!
         </div>
       )}

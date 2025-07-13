@@ -78,67 +78,67 @@ const AchievementsForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 bg-white shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 animate-fade-in"
+      className="space-y-8 bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
     >
-      <h3 className="text-3xl font-extrabold mb-6 text-purple-700 text-center tracking-tight">
+      <h3 className="text-3xl font-extrabold mb-6 text-purple-700 dark:text-purple-300 text-center tracking-tight">
         Achievements
       </h3>
       <div className="space-y-6">
         {fields.map((field, idx) => (
           <div
             key={field.id}
-            className="border p-5 rounded-xl bg-purple-50/30 relative"
+            className="border p-5 rounded-xl bg-purple-50/30 dark:bg-gray-900 border-purple-200 dark:border-gray-700 relative"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-base font-semibold text-gray-700">
+                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
                   Title<span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register(`achievements.${idx}.achievementTitle`, {
                     required: 'Title is required',
                   })}
-                  className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                   placeholder="Title"
                 />
                 {errors.achievements?.[idx]?.achievementTitle && (
-                  <span className="text-red-500 text-sm">
+                  <span className="text-red-500 dark:text-red-400 text-sm">
                     {errors.achievements[idx]?.achievementTitle?.message}
                   </span>
                 )}
               </div>
               <div>
-                <label className="block text-base font-semibold text-gray-700">
+                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
                   Description<span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register(`achievements.${idx}.description`, {
                     required: 'Description is required',
                   })}
-                  className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                   placeholder="Description"
                 />
                 {errors.achievements?.[idx]?.description && (
-                  <span className="text-red-500 text-sm">
+                  <span className="text-red-500 dark:text-red-400 text-sm">
                     {errors.achievements[idx]?.description?.message}
                   </span>
                 )}
               </div>
             </div>
             <div className="mt-4">
-              <label className="block text-base font-semibold text-gray-700">
+              <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
                 Link
               </label>
               <input
                 {...register(`achievements.${idx}.link`)}
-                className="mt-1 block w-full border border-purple-200 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
+                className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
                 placeholder="Link (optional)"
               />
             </div>
             <button
               type="button"
               onClick={() => remove(idx)}
-              className="absolute top-3 right-3 p-2 rounded-full hover:bg-red-100 transition"
+              className="absolute top-3 right-3 p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900 transition"
               title="Remove Achievement"
             >
               <FiTrash className="text-red-500 text-lg" />
@@ -150,7 +150,7 @@ const AchievementsForm: React.FC = () => {
           onClick={() =>
             append({ achievementTitle: '', description: '', link: '' })
           }
-          className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-xl font-semibold shadow-md hover:from-green-700 hover:to-green-600 transition w-full flex items-center justify-center gap-2"
+          className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 dark:from-green-700 dark:to-green-600 text-white rounded-xl font-semibold shadow-md hover:from-green-700 hover:to-green-600 dark:hover:from-green-800 dark:hover:to-green-700 transition w-full flex items-center justify-center gap-2"
         >
           <span>➕ Add Achievement</span>
         </button>
@@ -160,8 +160,8 @@ const AchievementsForm: React.FC = () => {
         className={`px-8 py-3 rounded-xl w-full font-bold text-lg shadow-lg tracking-wide flex items-center justify-center gap-2 transition
           ${
             isSaving || !isDirty
-              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600'
+              ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-700 dark:to-purple-600 text-white hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-800 dark:hover:to-purple-700'
           }`}
         disabled={isSaving || !isDirty}
       >
@@ -174,7 +174,7 @@ const AchievementsForm: React.FC = () => {
         )}
       </button>
       {success && (
-        <div className="text-green-600 mt-4 text-center font-semibold animate-fade-in">
+        <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">
           Saved!
         </div>
       )}

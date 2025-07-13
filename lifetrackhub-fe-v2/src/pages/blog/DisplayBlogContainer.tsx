@@ -27,7 +27,7 @@ const DisplayBlogContainer: React.FC = () => {
   }, [blogDataBySlug, slug, location.pathname]);
 
   return (
-    <div className="border border-purple-100 shadow-sm rounded-lg p-4 md:p-6 lg:p-8">
+    <div className="border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900">
       {currentBlog && <DisplayBlog blogData={currentBlog} />}
 
       {extractErrorMessage(errorBlogDataBySlug) && !isBlogPreview && (
