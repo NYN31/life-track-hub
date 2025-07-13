@@ -9,39 +9,15 @@ import { logoutClearingLocalStorage } from '../../helper/local-storage/clear-loc
 import { FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
 import { SiSvgtrace } from 'react-icons/si';
 import { INavbar } from '../../types/common';
-
-const THEME_KEY = 'theme';
-
-const getInitialTheme = () => {
-  if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem(THEME_KEY);
-    if (stored) return stored;
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches)
-      return 'dark';
-  }
-  return 'light';
-};
+import useToggleTheme from '../../helper/hooks/useToggleTheme';
 
 const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [theme, setTheme] = useState<'light' | 'dark'>(
-    getInitialTheme() as 'light' | 'dark'
-  );
+  const [theme, setTheme] = useToggleTheme();
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-
-  // Apply theme to html element
-  useEffect(() => {
-    const html = document.documentElement;
-    if (theme === 'dark') {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
-    localStorage.setItem(THEME_KEY, theme);
-  }, [theme]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -83,14 +59,6 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
           <span className="text-gray-900 dark:text-gray-100 italic font-bold text-lg tracking-wide hidden md:inline-block">
             LifeTrackHub
           </span>
-          {/* Theme Toggle */}
-          <button
-            className="ml-3 p-2 rounded-full border border-purple-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-purple-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            aria-label="Toggle dark mode"
-          >
-            {theme === 'dark' ? <FiSun size={18} /> : <FiMoon size={18} />}
-          </button>
           {/* Mobile Hamburger */}
           <div className="md:hidden flex">
             <button
@@ -178,6 +146,14 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
             </div>
           ))}
         </nav>
+        {/* Theme Toggle */}
+        <button
+          className="ml-3 p-2 rounded-full border border-purple-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-purple-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition"
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          aria-label="Toggle dark mode"
+        >
+          {theme === 'dark' ? <FiSun size={18} /> : <FiMoon size={18} />}
+        </button>
         {/* Profile Dropdown */}
         <div className="ml-4 mt-1">
           <ProfileDropdown onLogout={handleLogout} onProfile={handleProfile} />
