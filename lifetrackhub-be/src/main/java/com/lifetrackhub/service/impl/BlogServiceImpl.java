@@ -65,18 +65,22 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog update(BlogUpdateRequestDto request) {
         log.info("Updating blog");
-
+        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
         Optional<Blog> optionalBlog = blogRepository.getBlogBySlug(request.getSlug());
         if (optionalBlog.isPresent()) {
             Blog blog = optionalBlog.get();
 
-            blog.setTitle(request.getTitle());
-            blog.setContent(request.getContent());
-            blog.setStatus(request.getStatus());
-            blog.setCoverImagePath(request.getCoverImagePath());
-            blog.setTags(request.getTags());
+            if (blog.getUser().getId().equals(userFromSecurityContext.getId())) {
+                blog.setTitle(request.getTitle());
+                blog.setContent(request.getContent());
+                blog.setStatus(request.getStatus());
+                blog.setCoverImagePath(request.getCoverImagePath());
+                blog.setTags(request.getTags());
 
-            return blogRepository.save(blog);
+                return blogRepository.save(blog);
+            } else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only update your blogs");
+            }
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Blog not found");

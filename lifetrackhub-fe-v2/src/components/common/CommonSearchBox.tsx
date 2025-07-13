@@ -9,6 +9,8 @@ import Select from 'react-select';
 import { Controller, useForm } from 'react-hook-form';
 import { useSearchEnable } from '../../helper/hooks/useSearchEnable';
 import { useResetEnable } from '../../helper/hooks/useResetEnable';
+import { getCustomSelectStyles } from '../../helper/utils/get-custom-select-styles';
+import useDarkMode from '../../helper/hooks/ueDarkMode';
 
 const CommonSearchBox: React.FC<{
   textFields?: SearchField[];
@@ -24,18 +26,20 @@ const CommonSearchBox: React.FC<{
   handleSearch,
   handleReset,
 }) => {
+  const isDark = useDarkMode();
+
   const isSearchButtonEnable = useSearchEnable({ textFields, dateFields });
   const isResetButtonEnable = useResetEnable({ textFields, dateFields });
 
   const { control, reset } = useForm();
 
   return (
-    <div className="w-full max-w-5xl mx-auto mb-3 md:mb-4">
-      <div className="bg-white border border-purple-200 rounded-lg shadow-sm p-2 lg:p-6 flex flex-wrap gap-2 lg:gap-6 items-end">
+    <div className="w-full mb-3 md:mb-4">
+      <div className="bg-white dark:bg-gray-800 border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-2 lg:p-6 flex flex-wrap gap-2 lg:gap-6 items-end">
         {/* Text Inputs */}
         {textFields?.map((item, index) => (
           <div key={index} className="flex flex-col w-full lg:w-[220px]">
-            <label className="mb-1 font-semibold text-gray-700 text-sm">
+            <label className="mb-1 font-semibold text-gray-700 text-sm dark:text-gray-200">
               {item.name}
             </label>
             <Controller
@@ -53,7 +57,7 @@ const CommonSearchBox: React.FC<{
                     item.setValue(val);
                   }}
                   placeholder={item.name}
-                  className="w-full px-3 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow-sm text-sm bg-white"
+                  className="w-full px-3 py-2 border border-purple-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow-sm text-sm bg-white dark:bg-gray-900 dark:text-gray-100"
                 />
               )}
             />
@@ -63,7 +67,7 @@ const CommonSearchBox: React.FC<{
         {/* Date Range Pickers */}
         {dateFields?.map((item, index) => (
           <div key={index} className="flex flex-col w-full lg:w-[220px]">
-            <label className="mb-1 font-semibold text-gray-700 text-sm">
+            <label className="mb-1 font-semibold text-gray-700 text-sm dark:text-gray-200">
               {item.name}
             </label>
             <Controller
@@ -82,7 +86,7 @@ const CommonSearchBox: React.FC<{
                     field.onChange([startDate, endDate]);
                     item.setDateRange([startDate, endDate]);
                   }}
-                  className="w-full px-3 py-2 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow-sm text-sm bg-white"
+                  className="w-full px-3 py-2 border border-purple-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-400 focus:outline-none shadow-sm text-sm bg-white dark:bg-gray-900 dark:text-gray-100"
                 />
               )}
             />
@@ -92,7 +96,7 @@ const CommonSearchBox: React.FC<{
         {/* Select Dropdowns */}
         {selectDropdowns?.map(item => (
           <div key={item.name} className="flex flex-col w-full lg:w-[220px]">
-            <label className="mb-1 font-semibold text-gray-700 text-sm">
+            <label className="mb-1 font-semibold text-gray-700 text-sm dark:text-gray-200">
               {item.name}
             </label>
             <Controller
@@ -109,15 +113,8 @@ const CommonSearchBox: React.FC<{
                     item.setOption(selected);
                   }}
                   classNamePrefix="react-select"
-                  className="text-sm"
-                  styles={{
-                    control: base => ({
-                      ...base,
-                      borderColor: '#a78bfa',
-                      boxShadow: 'none',
-                      '&:hover': { borderColor: '#7c3aed' },
-                    }),
-                  }}
+                  className="text-sm react-select-container dark:react-select-dark"
+                  styles={getCustomSelectStyles(isDark)}
                 />
               )}
             />

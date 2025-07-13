@@ -26,7 +26,7 @@ const PublicNavbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-white to-purple-50 shadow-md border-b border-purple-100 rounded-b-xl top-0 z-50 sticky">
+    <nav className="bg-gradient-to-r from-white to-purple-50 dark:from-gray-900 dark:to-gray-800 shadow-md border-b border-purple-100 dark:border-gray-700 top-0 z-50 sticky">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Banner/Logo Section - Left */}
@@ -34,7 +34,7 @@ const PublicNavbar = () => {
             <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-3 py-1.5 shadow-md">
               <SiSvgtrace color="white" size={24} />
             </div>
-            <span className="text-gray-900 italic font-bold text-lg tracking-wide hidden md:inline-block">
+            <span className="text-gray-900 dark:text-gray-100 italic font-bold text-lg tracking-wide hidden md:inline-block">
               LifeTrackHub
             </span>
           </div>
