@@ -23,7 +23,7 @@ const statusOptions: OptionType[] = [
 ];
 
 const BlogContainer: React.FC = () => {
-  const MAX_BLOG_ITEMS_IN_A_PAGE = 6;
+  const MAX_BLOG_ITEMS_IN_A_PAGE = 10;
   const role = localStorage.getItem('role');
   const isSuperAdmin = role === 'SUPER_ADMIN';
 
@@ -50,7 +50,7 @@ const BlogContainer: React.FC = () => {
     queryStartDate,
     queryEndDate,
   ]);
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
   const [status, setStatus] = useState<OptionType | null>({
     value: queryStatus,
     label: queryStatus,
