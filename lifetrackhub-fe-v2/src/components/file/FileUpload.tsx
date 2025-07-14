@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { useUploadFileMutation } from '../../features/file/fileApi';
-import { FileType } from '../../types/file';
+import ErrorMessage from '../common/ErrorMessage';
+import { extractErrorMessage } from '../../helper/utils/extract-error-message';
 
 interface FileUploadProps {
   onUploadSuccess: () => void;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
-  const [fileType, setFileType] = useState<FileType>('IMG');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadFile, { isLoading, isSuccess, isError, error, reset }] =
     useUploadFileMutation();
@@ -29,7 +29,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedFile) return;
-    await uploadFile({ file: selectedFile, fileType }).unwrap();
+    await uploadFile({ file: selectedFile }).unwrap();
     setSelectedFile(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
     onUploadSuccess();
@@ -38,22 +38,12 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 flex flex-col gap-4 w-full max-w-md mx-auto"
+      className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow p-6 flex flex-col gap-4 w-full max-w-md mx-auto border border-purple-100 dark:border-purple-700"
     >
       <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
         Upload File
       </h2>
-      <div className="flex flex-col gap-2">
-        <label className="text-gray-700 dark:text-gray-200">File Type</label>
-        <select
-          className="border rounded px-3 py-2 dark:bg-gray-700 dark:text-gray-100"
-          value={fileType}
-          onChange={e => setFileType(e.target.value as FileType)}
-        >
-          <option value="IMG">Image</option>
-          <option value="PDF">PDF</option>
-        </select>
-      </div>
+
       <div className="flex flex-col gap-2">
         <label className="text-gray-700 dark:text-gray-200">Select File</label>
         <input
@@ -69,6 +59,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
           </span>
         )}
       </div>
+
       <button
         type="submit"
         disabled={!selectedFile || isLoading}
@@ -81,11 +72,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
           File uploaded successfully!
         </div>
       )}
-      {isError && (
-        <div className="bg-red-100 text-red-800 px-4 py-2 rounded">
-          {String(error)}
-        </div>
-      )}
+      {isError && <ErrorMessage message={extractErrorMessage(error) || ''} />}
     </form>
   );
 };

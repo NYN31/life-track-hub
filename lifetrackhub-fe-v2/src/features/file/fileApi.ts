@@ -27,22 +27,20 @@ export const fileApi = apiSlice
         providesTags: ['File'],
       }),
 
-      uploadFile: builder.mutation<FileDto, { file: File; fileType: FileType }>(
-        {
-          query: ({ file, fileType }) => {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('fileType', fileType);
-            return {
-              url: `${FILE_ADMIN_USER_API_PATH}/upload`,
-              method: 'POST',
-              body: formData,
-            };
-          },
+      uploadFile: builder.mutation<FileDto, { file: File }>({
+        query: ({ file }) => {
+          const formData = new FormData();
+          formData.append('file', file);
+          //formData.append('fileType', fileType);
+          return {
+            url: `${FILE_ADMIN_USER_API_PATH}/uploads`,
+            method: 'POST',
+            body: formData,
+          };
+        },
 
-          invalidatesTags: ['File'],
-        }
-      ),
+        invalidatesTags: ['File'],
+      }),
     }),
   });
 

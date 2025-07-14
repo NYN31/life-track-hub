@@ -35,6 +35,7 @@ export interface SelectDropdown {
   option: OptionType | null;
   options: OptionType[];
   setOption: (option: OptionType) => void;
+  isMandatory?: boolean;
 }
 
 export interface OptionType {

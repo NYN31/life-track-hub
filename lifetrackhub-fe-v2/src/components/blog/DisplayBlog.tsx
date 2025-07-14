@@ -44,7 +44,7 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
         </div>
       </div>
 
-      <div className="md:w-3/4 order-2 md:order-1 h-screen md:border-r md:border-gray-300 dark:md:border-gray-600 md:pr-4">
+      <div className="md:w-3/4 order-2 md:order-1 h-screen md:border-r md:border-gray-300 dark:md:border-gray-700 md:pr-4">
         <div className="flex flex-col gap-y-4 h-full overflow-y-auto scrollbar-hide">
           <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold dark:text-gray-100">
@@ -93,10 +93,10 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
             />
           </div>
 
-          <div className="bg-white dark:bg-gray-900 p-4 border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg md:6 lg:8">
+          <div className="bg-white dark:bg-gray-800 p-4 border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg md:6 lg:8">
             <MarkdownPreview
               source={blogData.content}
-              className="dark:bg-gray-900 dark:text-gray-100"
+              className="wmde-markdown-var"
             />
           </div>
         </div>

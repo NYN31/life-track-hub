@@ -163,7 +163,9 @@ const BlogContainer: React.FC = () => {
 
   return (
     <div className="border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Blogs</h1>
+      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+        Blogs
+      </h1>
       <div className="flex items-center justify-end mb-4">
         <button
           className={`p-2 rounded-full border border-purple-200 dark:border-gray-700 hover:bg-purple-50 dark:hover:bg-gray-800 transition`}
@@ -172,7 +174,11 @@ const BlogContainer: React.FC = () => {
         >
           <FiFilter
             size={22}
-            className={showFilters ? 'text-purple-600 dark:text-purple-300' : 'text-gray-400 dark:text-gray-500'}
+            className={
+              showFilters
+                ? 'text-purple-600 dark:text-purple-300'
+                : 'text-gray-400 dark:text-gray-500'
+            }
           />
         </button>
       </div>
@@ -203,6 +209,7 @@ const BlogContainer: React.FC = () => {
                       option: status,
                       options: statusOptions,
                       setOption: setStatus,
+                      isMandatory: false,
                     },
                   ]
                 : undefined

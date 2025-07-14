@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react';
-import { SearchDateRange, SearchField } from '../../types/common';
+import {
+  SearchDateRange,
+  SearchField,
+  SelectDropdown,
+} from '../../types/common';
 
 export const useResetEnable = ({
   textFields,
   dateFields,
+  selectDropdowns,
 }: {
   textFields?: SearchField[];
   dateFields?: SearchDateRange[];
+  selectDropdowns?: SelectDropdown[];
 }) => {
   const [isResetEnable, setIsResetEnable] = useState(false);
+  console.log(isResetEnable);
+  console.log(selectDropdowns);
   useEffect(() => {
     setIsResetEnable(false);
     textFields?.map(field => {
@@ -21,6 +29,11 @@ export const useResetEnable = ({
         setIsResetEnable(true);
       }
     });
-  }, [textFields, dateFields]);
+    selectDropdowns?.map(dropdown => {
+      if (dropdown?.option) {
+        setIsResetEnable(true);
+      }
+    });
+  }, [textFields, dateFields, selectDropdowns]);
   return isResetEnable;
 };

@@ -28,14 +28,22 @@ const CommonSearchBox: React.FC<{
 }) => {
   const isDark = useDarkMode();
 
-  const isSearchButtonEnable = useSearchEnable({ textFields, dateFields });
-  const isResetButtonEnable = useResetEnable({ textFields, dateFields });
+  const isSearchButtonEnable = useSearchEnable({
+    textFields,
+    dateFields,
+    selectDropdowns,
+  });
+  const isResetButtonEnable = useResetEnable({
+    textFields,
+    dateFields,
+    selectDropdowns,
+  });
 
   const { control, reset } = useForm();
 
   return (
     <div className="w-full mb-3 md:mb-4">
-      <div className="bg-white dark:bg-gray-800 border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-2 lg:p-6 flex flex-wrap gap-2 lg:gap-6 items-end">
+      <div className="bg-gray-50 dark:bg-gray-800 border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-2 lg:p-6 flex flex-wrap gap-2 lg:gap-6 items-end">
         {/* Text Inputs */}
         {textFields?.map((item, index) => (
           <div key={index} className="flex flex-col w-full lg:w-[220px]">
@@ -127,7 +135,7 @@ const CommonSearchBox: React.FC<{
             type="button"
             disabled={!isSearchButtonEnable}
             onClick={() => handleSearch()}
-            className="px-6 py-2 order-2 lg:order-1 rounded-lg bg-gradient-to-r from-purple-400 to-purple-300 text-white font-semibold shadow hover:from-purple-700 hover:to-purple-600 transition text-sm disabled:bg-gray-300 disabled:text-gray-500"
+            className="px-6 py-2 order-2 lg:order-1 rounded-lg bg-gradient-to-r from-purple-400 to-purple-300 text-white font-semibold shadow hover:from-purple-700 hover:to-purple-600 transition text-sm disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
           >
             Search
           </button>
@@ -138,7 +146,7 @@ const CommonSearchBox: React.FC<{
               reset();
               handleReset();
             }}
-            className="px-6 py-2 order-1 lg:order-2 rounded-lg border border-gray-400 text-gray-600 bg-white font-semibold shadow hover:bg-gray-100 transition text-sm disabled:bg-gray-200 disabled:text-gray-400"
+            className="px-6 py-2 order-1 lg:order-2 rounded-lg border border-gray-400 text-gray-600 bg-white font-semibold shadow hover:bg-gray-100 transition text-sm disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
           >
             Reset
           </button>
