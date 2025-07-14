@@ -55,3 +55,7 @@ export const BLOG_UPDATED_PATH = '/blog/update';
 
 export const BLOG_STATS = 'Stats';
 export const BLOG_STATS_PATH = '/blog/stats';
+
+// FILE
+export const FILE = 'File';
+export const FILE_PATH = '/files';
