@@ -12,6 +12,7 @@ import BlogUpdateContainer from './pages/blog/BlogUpdateContainer';
 import BlogStatsContainer from './pages/blog/BlogStatsContainer';
 import ProfileUpdateContainer from './pages/user/ProfileUpdateContainer';
 import UserProfileViewContainer from './pages/user/UserProfileViewContainer';
+import FileContainer from './pages/file/FileContainer';
 
 function App() {
   useAuthCheck();
@@ -74,6 +75,9 @@ function App() {
         <Route path="user">
           <Route path="profile/update" element={<ProfileUpdateContainer />} />
           <Route path="profile" element={<UserProfileViewContainer />} />
+        </Route>
+        <Route path="files">
+          <Route index element={<FileContainer />} />
         </Route>
       </Route>
     </Routes>

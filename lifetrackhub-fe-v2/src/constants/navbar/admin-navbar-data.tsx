@@ -4,9 +4,12 @@ import {
   BLOG_STATS_PATH,
   PROFILE_UPDATE_PATH,
   PROFILE_DETAILS_PATH,
+  FILE,
+  FILE_PATH,
 } from '../../constants/title-and-paths';
 import { LuListTodo } from 'react-icons/lu';
 import { MdOutlineCreateNewFolder } from 'react-icons/md';
+import { MdOutlineFilePresent } from 'react-icons/md';
 import { IoStatsChartOutline } from 'react-icons/io5';
 import { GoPerson } from 'react-icons/go';
 import { LiaUserEditSolid } from 'react-icons/lia';
@@ -50,5 +53,10 @@ export const ADMIN_NAV_ITEMS = [
         icon: <LiaUserEditSolid size={ICON_SIZE} />,
       },
     ],
+  },
+  {
+    label: FILE,
+    path: FILE_PATH,
+    icon: <MdOutlineFilePresent size={ICON_SIZE} />,
   },
 ];
