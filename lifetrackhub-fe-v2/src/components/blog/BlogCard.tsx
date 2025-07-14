@@ -42,7 +42,7 @@ const BlogCard: React.FC<{
   const tagList = tags ? tags.split(',').filter(tag => tag.trim() !== '') : [];
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-2 md:p3 lg:p-4 border border-purple-100 dark:border-gray-700 hover:shadow-md transition duration-200 flex flex-col h-full">
+    <div className="bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-2 md:p3 lg:p-4 border border-purple-100 dark:border-gray-700 hover:shadow-md transition duration-200 flex flex-col h-full">
       <Link to={`${BLOG_DETAILS_PATH}/${slug}`} className="block group">
         <img
           src={coverImagePath || fallbackImage}

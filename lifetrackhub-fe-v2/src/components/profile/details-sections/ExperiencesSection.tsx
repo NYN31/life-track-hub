@@ -11,7 +11,7 @@ const ExperiencesSection: React.FC<ExperiencesSectionProps> = ({
 }) => {
   if (!experiences || experiences.length === 0) return null;
   return (
-    <section className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700">
+    <section className="bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700">
       <h3 className="text-xl font-bold text-purple-700 dark:text-purple-300 flex items-center gap-2 mb-4">
         <FiBriefcase /> Experiences
       </h3>

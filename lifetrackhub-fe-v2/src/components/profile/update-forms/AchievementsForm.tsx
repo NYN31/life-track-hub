@@ -78,7 +78,7 @@ const AchievementsForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 bg-white dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
+      className="space-y-8 bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
     >
       <h3 className="text-3xl font-extrabold mb-6 text-purple-700 dark:text-purple-300 text-center tracking-tight">
         Achievements
@@ -87,7 +87,7 @@ const AchievementsForm: React.FC = () => {
         {fields.map((field, idx) => (
           <div
             key={field.id}
-            className="border p-5 rounded-xl bg-purple-50/30 dark:bg-gray-900 border-purple-200 dark:border-gray-700 relative"
+            className="border p-5 rounded-xl bg-white dark:bg-gray-900 border-purple-200 dark:border-gray-700 relative"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>

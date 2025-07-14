@@ -12,7 +12,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   user,
   userDetails,
 }) => (
-  <section className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 md:p-6 lg:p-8 flex flex-col md:flex-row gap-8 border border-purple-100 dark:border-gray-700">
+  <section className="bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg p-4 md:p-6 lg:p-8 flex flex-col md:flex-row gap-8 border border-purple-100 dark:border-gray-700">
     <div className="flex-shrink-0 flex flex-col items-center justify-center">
       <img
         src={userDetails?.profileImagePath || fallbackImg}

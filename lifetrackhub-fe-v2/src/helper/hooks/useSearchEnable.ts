@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react';
-import { SearchDateRange, SearchField } from '../../types/common';
+import {
+  SearchDateRange,
+  SearchField,
+  SelectDropdown,
+} from '../../types/common';
 
 export const useSearchEnable = ({
   textFields,
   dateFields,
+  selectDropdowns,
 }: {
   textFields?: SearchField[];
   dateFields?: SearchDateRange[];
+  selectDropdowns?: SelectDropdown[];
 }) => {
   const [isSearchEnable, setIsSearchEnable] = useState(false);
+  console.log(isSearchEnable);
+  console.log(selectDropdowns);
   useEffect(() => {
     setIsSearchEnable(false);
     let hasMandatoryFields = false;
@@ -20,6 +28,11 @@ export const useSearchEnable = ({
     });
     dateFields?.map(dateField => {
       if (dateField.isMandatory) {
+        hasMandatoryFields = true;
+      }
+    });
+    selectDropdowns?.map(dropdown => {
+      if (dropdown.isMandatory) {
         hasMandatoryFields = true;
       }
     });
@@ -38,6 +51,11 @@ export const useSearchEnable = ({
           isEnable = false;
         }
       });
+      selectDropdowns?.map(dropDown => {
+        if (dropDown.isMandatory && !dropDown.option) {
+          isEnable = false;
+        }
+      });
       if (isEnable) {
         setIsSearchEnable(true);
       }
@@ -53,10 +71,15 @@ export const useSearchEnable = ({
           isEnable = true;
         }
       });
+      selectDropdowns?.map(dropdown => {
+        if (dropdown?.option) {
+          isEnable = true;
+        }
+      });
       if (isEnable) {
         setIsSearchEnable(true);
       }
     }
-  }, [textFields, dateFields]);
+  }, [textFields, dateFields, selectDropdowns]);
   return isSearchEnable;
 };
