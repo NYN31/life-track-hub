@@ -43,7 +43,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={handlePreviousPage}
         disabled={!hasPrevious}
-        className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-100 text-gray-500 hover:bg-purple-300 hover:text-purple-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
+        className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-100 text-gray-500 hover:bg-purple-300 hover:text-purple-700 transition disabled:bg-gray-300 disabled:dark:bg-gray-400 disabled:cursor-not-allowed"
         aria-label="Previous page"
       >
         &larr;
@@ -66,7 +66,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={handleNextPage}
         disabled={!hasNext}
-        className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-100 text-gray-500 hover:bg-purple-300 hover:text-purple-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
+        className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-100 text-gray-500 hover:bg-purple-300 hover:text-purple-700 transition disabled:bg-gray-300 disabled:dark:bg-gray-400 disabled:cursor-not-allowed"
         aria-label="Next page"
       >
         &rarr;
