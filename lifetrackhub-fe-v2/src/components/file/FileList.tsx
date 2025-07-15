@@ -94,7 +94,7 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="mt-8">
+    <div className="">
       <div className="flex items-center justify-end mb-4">
         <button
           className={`p-2 rounded-full border border-purple-200 dark:border-gray-700 hover:bg-purple-50 dark:hover:bg-gray-800 transition`}
