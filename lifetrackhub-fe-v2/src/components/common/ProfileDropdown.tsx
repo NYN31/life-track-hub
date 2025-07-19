@@ -66,7 +66,7 @@ const ProfileDropdown: React.FC<{
             <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-indigo-400 text-white font-bold text-xl shadow-inner">
               {initials}
             </span>
-            <div className="flex flex-col">
+            <div className="flex flex-col truncate">
               <span className="font-semibold text-gray-800 dark:text-gray-200 truncate">
                 {fullname}
               </span>

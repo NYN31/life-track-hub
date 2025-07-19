@@ -10,8 +10,8 @@ export interface FileDto {
   lastModifiedDate: string;
 }
 
-export interface PageDto<FileDto> {
-  content: FileDto[];
+export interface PageDto<T> {
+  content: T[];
   pageNumber: number;
   hasNext: boolean;
   hasPrevious: boolean;

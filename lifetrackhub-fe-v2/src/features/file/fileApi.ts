@@ -33,7 +33,7 @@ export const fileApi = apiSlice
           formData.append('file', file);
           //formData.append('fileType', fileType);
           return {
-            url: `${FILE_ADMIN_USER_API_PATH}/uploads`,
+            url: `${FILE_ADMIN_USER_API_PATH}/upload`,
             method: 'POST',
             body: formData,
           };
