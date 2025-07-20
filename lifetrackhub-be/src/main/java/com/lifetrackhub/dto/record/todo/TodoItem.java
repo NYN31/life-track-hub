@@ -1,4 +1,4 @@
 package com.lifetrackhub.dto.record.todo;
 
-public record TodoItem(String text, boolean completed) {
+public record TodoItem(String todoItemId, String text, boolean completed) {
 }

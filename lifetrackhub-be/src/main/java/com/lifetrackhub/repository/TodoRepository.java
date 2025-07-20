@@ -6,7 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-    Page<Todo> findAllByUserId(Long userId, Pageable pageable);
+    Page<Todo> findAllByEmail(String email, Pageable pageable);
+
+    Optional<Todo> findByEmail(String email);
 }

@@ -1,5 +1,6 @@
 package com.lifetrackhub.dto;
 
+import com.lifetrackhub.constant.enumeration.TodoStatus;
 import com.lifetrackhub.dto.record.todo.TodoItem;
 import com.lifetrackhub.entity.Todo;
 import jakarta.validation.constraints.NotNull;
@@ -15,13 +16,13 @@ public class TodoDto {
     private Long id;
 
     @NotNull
-    private Long userId;
+    private String email;
 
     @NotNull
     @Length(min = 3, max = 255)
     private String title;
 
-    private Boolean done;
+    private TodoStatus todoStatus;
 
     private TodoItem[] todoItems;
 
@@ -33,9 +34,9 @@ public class TodoDto {
         TodoDto dto = new TodoDto();
 
         dto.setId(todo.getId());
-        dto.setUserId(todo.getUserId());
+        dto.setEmail(todo.getEmail());
         dto.setTitle(todo.getTitle());
-        dto.setDone(todo.isDone());
+        dto.setTodoStatus(todo.getStatus());
         dto.setTodoItems(todo.getTodoItems().getTodoItems());
         dto.setCreatedDate(todo.getCreatedDate());
         dto.setLastModifiedDate(todo.getLastModifiedDate());

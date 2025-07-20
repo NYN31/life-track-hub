@@ -15,8 +15,7 @@ export const useResetEnable = ({
   selectDropdowns?: SelectDropdown[];
 }) => {
   const [isResetEnable, setIsResetEnable] = useState(false);
-  console.log(isResetEnable);
-  console.log(selectDropdowns);
+
   useEffect(() => {
     setIsResetEnable(false);
     textFields?.map(field => {
