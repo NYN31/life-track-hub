@@ -13,5 +13,6 @@ CREATE TABLE blog
     created_date       DATETIME     NOT NULL,
     last_modified_date DATETIME     NOT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES user (id) on DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user (id) on DELETE CASCADE,
+    INDEX(slug)
 )

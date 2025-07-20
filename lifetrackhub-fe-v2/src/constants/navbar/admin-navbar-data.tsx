@@ -6,6 +6,8 @@ import {
   PROFILE_DETAILS_PATH,
   FILE,
   FILE_PATH,
+  TODO,
+  TODO_PATH,
 } from '../../constants/title-and-paths';
 import { LuListTodo } from 'react-icons/lu';
 import { MdOutlineCreateNewFolder } from 'react-icons/md';
@@ -58,5 +60,10 @@ export const ADMIN_NAV_ITEMS = [
     label: FILE,
     path: FILE_PATH,
     icon: <MdOutlineFilePresent size={ICON_SIZE} />,
+  },
+  {
+    label: TODO,
+    path: TODO_PATH,
+    icon: <LuListTodo />,
   },
 ];

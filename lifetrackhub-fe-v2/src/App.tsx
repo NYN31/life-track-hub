@@ -13,6 +13,7 @@ import BlogStatsContainer from './pages/blog/BlogStatsContainer';
 import ProfileUpdateContainer from './pages/user/ProfileUpdateContainer';
 import UserProfileViewContainer from './pages/user/UserProfileViewContainer';
 import FileContainer from './pages/file/FileContainer';
+import TodoContainer from './pages/todo/TodoContainer';
 
 function App() {
   useAuthCheck();
@@ -78,6 +79,9 @@ function App() {
         </Route>
         <Route path="files">
           <Route index element={<FileContainer />} />
+        </Route>
+        <Route path="todos">
+          <Route index element={<TodoContainer />} />
         </Route>
       </Route>
     </Routes>

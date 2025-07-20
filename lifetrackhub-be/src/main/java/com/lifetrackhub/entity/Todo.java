@@ -1,5 +1,6 @@
 package com.lifetrackhub.entity;
 
+import com.lifetrackhub.constant.enumeration.TodoStatus;
 import com.lifetrackhub.converter.TodoItemsConverter;
 import com.lifetrackhub.dto.blob.TodoItems;
 import jakarta.persistence.*;
@@ -22,13 +23,15 @@ public class Todo {
     private Long id;
 
     @NotNull
-    private Long userId;
+    private String email;
 
     @NotNull
     @Length(min = 3, max = 255)
     private String title;
 
-    private boolean done;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private TodoStatus status;
 
     @Convert(converter = TodoItemsConverter.class)
     private TodoItems todoItems;

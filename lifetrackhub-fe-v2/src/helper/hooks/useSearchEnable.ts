@@ -15,8 +15,7 @@ export const useSearchEnable = ({
   selectDropdowns?: SelectDropdown[];
 }) => {
   const [isSearchEnable, setIsSearchEnable] = useState(false);
-  console.log(isSearchEnable);
-  console.log(selectDropdowns);
+
   useEffect(() => {
     setIsSearchEnable(false);
     let hasMandatoryFields = false;

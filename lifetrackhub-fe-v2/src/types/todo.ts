@@ -1,28 +1,23 @@
 import { IBase } from './common';
 
-export interface ITodoResponse {
-  content: ITodoItemsResponse[];
-  hasNext: boolean;
-  hasPrevious: boolean;
-  pageNumber: number;
-  totalPages: number;
-}
-
-export interface ITodoItemsRequest {
-  userId: number | null;
+export interface ITodoRequestDto {
+  email: string;
   title: string;
-  done: boolean;
+  todoStatus: TodoStatus;
   todoItems: ITodoItems[];
 }
 
-export interface ITodoItemsResponse extends IBase {
-  userId: number;
+export interface ITodoResponseDto extends IBase {
+  email: string;
   title: string;
-  done: boolean;
+  todoStatus: TodoStatus
   todoItems: ITodoItems[];
 }
 
 export interface ITodoItems {
+  todoItemId: string;
   text: string;
   completed: boolean;
 }
+
+export type TodoStatus = 'IN_PROGRESS' | 'DONE'; 

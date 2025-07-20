@@ -1,5 +1,6 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.enumeration.TodoStatus;
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.TodoDto;
 import com.lifetrackhub.dto.blob.TodoItems;
@@ -30,33 +31,39 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Page<Todo> findAllByUserId(Long userId, Integer page, Integer size) {
-        validateUserWithUserId(userId);
+    public Page<Todo> findAllTodosByEmail(String email, Integer page, Integer size) {
+        validateUserWithUserId(email);
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("lastModifiedDate").descending());
-        return todoRepository.findAllByUserId(userId, pageRequest);
+        return todoRepository.findAllByEmail(email, pageRequest);
     }
 
     @Override
-    public Todo findTodoById(Long id) {
-        return todoRepository
-                .findById(id)
+    public Todo findTodoByEmail(String email) {
+        User user = Util.getUserFromSecurityContextHolder();
+        log.info("Find todo by email: {}", email);
+
+        if (!user.getEmail().equals(email)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User does not belong to this email");
+        }
+
+        return todoRepository.findByEmail(user.getEmail())
                 .orElseThrow(
                         () -> new ResponseStatusException(
                                 HttpStatus.NOT_FOUND,
-                                "Todo does not exist by id: " + id)
+                                "Todo does not exist by id: " + user.getEmail()
+                        )
                 );
     }
 
     @Override
     public TodoDto addTodo(TodoDto dto) {
         log.info("Adding new todo: {}", dto);
-        validateUserWithUserId(dto.getUserId());
+        validateUserWithUserId(dto.getEmail());
 
         Todo todo = new Todo();
-        todo.setUserId(dto.getUserId());
+        todo.setEmail(dto.getEmail());
         todo.setTitle(dto.getTitle());
-        todo.setDone(dto.getDone());
-
+        todo.setStatus(TodoStatus.IN_PROGRESS);
         TodoItems todoItems = new TodoItems();
         todoItems.setTodoItems(dto.getTodoItems());
         todo.setTodoItems(todoItems);
@@ -70,18 +77,17 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public TodoDto updateTodo(TodoDto dto) {
         log.info("Updating todo: {}", dto);
-        validateUserWithUserId(dto.getUserId());
+        validateUserWithUserId(dto.getEmail());
 
         Optional<Todo> optional = todoRepository.findById(dto.getId());
-        if(optional.isEmpty()) {
+        if (optional.isEmpty()) {
             log.warn("Todo with id {} not found", dto.getId());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo with id " + dto.getId() + " not found");
         }
 
         Todo todo = optional.get();
         todo.setTitle(dto.getTitle());
-        todo.setDone(dto.getDone());
-
+        todo.setStatus(dto.getTodoStatus());
         TodoItems todoItems = new TodoItems();
         todoItems.setTodoItems(dto.getTodoItems());
         todo.setTodoItems(todoItems);
@@ -93,17 +99,17 @@ public class TodoServiceImpl implements TodoService {
 
     }
 
-    private void validateUserWithUserId(Long userId) {
+    private void validateUserWithUserId(String email) {
         User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
 
-        if (userId == null) {
-            log.warn("User id is null");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User id is null");
+        if (email == null) {
+            log.warn("User email is null");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User email is null");
         }
 
-        if (userFromSecurityContext == null || !Objects.equals(userId, userFromSecurityContext.getId())) {
-            log.warn("Unauthorized user id passed in");
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized user id passed in");
+        if (userFromSecurityContext == null || !Objects.equals(email, userFromSecurityContext.getEmail())) {
+            log.warn("Unauthorized user email passed in");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized user email passed in");
         }
     }
 }

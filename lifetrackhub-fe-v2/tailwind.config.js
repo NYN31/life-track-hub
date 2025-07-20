@@ -3,7 +3,11 @@ export default {
   darkMode: 'class', // Enable dark mode via class strategy
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        base: '12px',
+      }
+    },
   },
   plugins: [],
 };

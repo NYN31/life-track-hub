@@ -16,17 +16,17 @@ public class TodoController extends BaseController {
         this.todoService = todoService;
     }
 
-    @GetMapping("/todo/by-user-id/{userId}/{page}/{size}")
-    public PageDto<TodoDto> findAllByUserId(@PathVariable Long userId,
-                                            @PathVariable Integer page,
-                                            @PathVariable Integer size) {
-        Page<Todo> todos = todoService.findAllByUserId(userId, page, size);
+    @GetMapping("/todo/all/by-email/{email}/{page}/{size}")
+    public PageDto<TodoDto> findAllTodosByEmail(@PathVariable String email,
+                                                 @PathVariable Integer page,
+                                                 @PathVariable Integer size) {
+        Page<Todo> todos = todoService.findAllTodosByEmail(email, page, size);
         return PageDto.fromEntity(todos, TodoDto::formEntity);
     }
 
-    @GetMapping("/todo/by-id/{id}")
-    public TodoDto findTodoById(@PathVariable Long id) {
-        Todo todo = todoService.findTodoById(id);
+    @GetMapping("/todo/by-email/{email}")
+    public TodoDto findTodoByEmail(@PathVariable String email) {
+        Todo todo = todoService.findTodoByEmail(email);
         return TodoDto.formEntity(todo);
     }
 
