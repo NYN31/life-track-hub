@@ -6,7 +6,7 @@ import { tagOptions } from '../../constants/tag-options';
 import { customItemsForMarkdown } from '../../constants/blog-editor-icons';
 import MarkdownEditor from './MarkdownEditor';
 import { getCustomSelectStyles } from '../../helper/utils/get-custom-select-styles';
-import useDarkMode from '../../helper/hooks/ueDarkMode';
+import useDarkMode from '../../helper/hooks/useDarkMode';
 
 const BlogUpdateForm: React.FC<{
   title: string;

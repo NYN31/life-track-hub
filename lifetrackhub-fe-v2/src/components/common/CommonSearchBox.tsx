@@ -10,7 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useSearchEnable } from '../../helper/hooks/useSearchEnable';
 import { useResetEnable } from '../../helper/hooks/useResetEnable';
 import { getCustomSelectStyles } from '../../helper/utils/get-custom-select-styles';
-import useDarkMode from '../../helper/hooks/ueDarkMode';
+import useDarkMode from '../../helper/hooks/useDarkMode';
 
 const CommonSearchBox: React.FC<{
   textFields?: SearchField[];

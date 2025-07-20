@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import { useOnClickOutside } from '../../helper/hooks/useOnClickOutside';
 
 const ProfileDropdown: React.FC<{
   onLogout: () => void;
@@ -7,6 +8,9 @@ const ProfileDropdown: React.FC<{
   const fullname = localStorage.getItem('name') || '';
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  useOnClickOutside(dropdownRef, () => {
+    setOpen(false);
+  });
 
   // Get initials for avatar
   const initials = fullname
@@ -15,21 +19,6 @@ const ProfileDropdown: React.FC<{
     .join('')
     .toUpperCase()
     .slice(0, 2);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>

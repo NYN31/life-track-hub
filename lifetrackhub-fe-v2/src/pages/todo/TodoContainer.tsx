@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TodoAddForm from '../../components/todo/TodoAddForm';
 import TodoList from '../../components/todo/TodoList';
@@ -21,6 +21,7 @@ import { RootState } from '../../app/store';
 import Spinner from '../../components/common/Spinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import { extractErrorMessage } from '../../helper/utils/extract-error-message';
+import { useOnClickOutside } from '../../helper/hooks/useOnClickOutside';
 
 const PAGE_SIZE = 6;
 
@@ -34,6 +35,11 @@ const TodoContainer: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const updateModalRef = React.useRef<HTMLFormElement>(null);
+  useOnClickOutside(updateModalRef, () => {
+    setIsUpdateModalOpen(false);
+    setEditingTodo(null);
+    dispatch(resetTodoState());
+  });
 
   // API hooks
   const { data, isLoading, isError, error, refetch } = useGetTodosByEmailQuery(
@@ -110,22 +116,6 @@ const TodoContainer: React.FC = () => {
     };
     setEditingTodo(newTodo);
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        updateModalRef.current &&
-        !updateModalRef.current.contains(event.target as Node)
-      ) {
-        setIsUpdateModalOpen(false);
-        setEditingTodo(null);
-        dispatch(resetTodoState());
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   if (isLoading) return <Spinner />;
 
