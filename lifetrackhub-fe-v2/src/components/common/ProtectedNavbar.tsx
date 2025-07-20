@@ -162,7 +162,7 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
       {/* Mobile Nav Drawer */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-black bg-opacity-30 flex flex-col">
-          <div className="bg-white dark:bg-gray-900 border-b border-purple-100 dark:border-gray-700 shadow-md rounded-b-xl p-4 flex flex-col gap-2 animate-fade-in">
+          <div className="bg-white dark:bg-gray-900 border-b border-purple-100 dark:border-gray-700 shadow-lg rounded-b-lg p-4 flex flex-col gap-2 animate-fade-in">
             {/* Mobile Hamburger */}
             <div className="md:hidden flex justify-end">
               <button
@@ -177,14 +177,14 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
               <div key={item.label} className="mb-2">
                 {item.children ? (
                   <>
-                    <div className="flex items-center gap-2 font-semibold text-purple-700 dark:text-purple-200 mb-1">
+                    <div className="flex items-center gap-2 font-semibold text-gray-800 dark:text-purple-200 mb-1">
                       <span>{item.label}</span>
                     </div>
                     <div className="pl-4 flex flex-col gap-1">
                       {item.children.map(child => (
                         <button
                           key={child.label}
-                          className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-100 hover:bg-purple-50 dark:hover:bg-gray-700 transition ${
+                          className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-900 dark:text-white hover:bg-purple-50 dark:hover:bg-gray-700 transition ${
                             location.pathname === child.path
                               ? 'bg-purple-100 dark:bg-gray-700 font-semibold'
                               : ''
@@ -199,7 +199,7 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
                   </>
                 ) : (
                   <button
-                    className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-100 hover:bg-purple-50 dark:hover:bg-gray-700 transition w-full ${
+                    className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-900 dark:text-gray-50 hover:bg-purple-50 dark:hover:bg-gray-700 transition w-full ${
                       location.pathname === item?.path
                         ? 'bg-purple-100 dark:bg-gray-800 font-semibold'
                         : ''

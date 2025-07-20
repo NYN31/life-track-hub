@@ -73,7 +73,7 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
       <form
         ref={ref}
         onSubmit={handleSubmit}
-        className="bg-white dark:bg-gray-900 shadow-lg rounded-lg p-4 md:p-6 lg:p-8 flex flex-col gap-6 border border-gray-50 dark:border-gray-700 overflow-y-auto max-h-[65vh] scrollbar-hide"
+        className="bg-white dark:bg-gray-900 shadow-xl dark:shadow-gray-800 rounded-lg p-4 md:p-6 lg:p-8 flex flex-col gap-6 border border-gray-300 dark:border-gray-700 overflow-y-auto max-h-[65vh] scrollbar-hide"
       >
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2 text-center">
           Update Todo
@@ -84,12 +84,12 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
             type="text"
             value={title}
             onChange={e => setTitle(e.target.value)}
-            className="flex-1 py-2 border border-none bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-2xl focus:outline-none"
+            className="flex-1 py-2 border border-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-2xl focus:outline-none"
             placeholder="Enter todo title"
             required
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <input
             type="text"
             value={input}
