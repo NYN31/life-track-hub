@@ -12,7 +12,7 @@ import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
 import { tagOptions } from '../../constants/tag-options';
 import { customItemsForMarkdown } from '../../constants/blog-editor-icons';
 import MarkdownEditor from './MarkdownEditor';
-import useDarkMode from '../../helper/hooks/ueDarkMode';
+import useDarkMode from '../../helper/hooks/useDarkMode';
 import { getCustomSelectStyles } from '../../helper/utils/get-custom-select-styles';
 
 const BlogCreateForm: React.FC<{
