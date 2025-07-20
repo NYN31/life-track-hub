@@ -39,8 +39,8 @@ export const getCustomSelectStyles = (isDark: boolean) => {
           ? '#374151' // hover bg in dark
           : '#f3f4f6' // hover bg in light
         : isDark
-        ? '#1f2937' // default bg in dark
-        : '#fff', // default bg in light
+          ? '#1f2937' // default bg in dark
+          : '#fff', // default bg in light
       color: isDark ? '#f9fafb' : '#111827',
       cursor: 'pointer',
     }),

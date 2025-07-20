@@ -10,7 +10,7 @@ export interface ITodoRequestDto {
 export interface ITodoResponseDto extends IBase {
   email: string;
   title: string;
-  todoStatus: TodoStatus
+  todoStatus: TodoStatus;
   todoItems: ITodoItems[];
 }
 
@@ -20,4 +20,4 @@ export interface ITodoItems {
   completed: boolean;
 }
 
-export type TodoStatus = 'IN_PROGRESS' | 'DONE'; 
+export type TodoStatus = 'IN_PROGRESS' | 'DONE';

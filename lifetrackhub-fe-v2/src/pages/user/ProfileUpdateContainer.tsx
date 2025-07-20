@@ -30,7 +30,9 @@ const ProfileUpdateContainer = () => {
 
   return (
     <div className="border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">Profile Settings</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">
+        Profile Settings
+      </h1>
       <div className="flex border-b border-gray-200 dark:border-gray-700 mb-4 flex-col md:flex-row items-center justify-center">
         <button
           className={`py-2 px-4 text-sm font-medium ${
