@@ -6,7 +6,7 @@ export default {
     extend: {
       fontSize: {
         base: '12px',
-      }
+      },
     },
   },
   plugins: [],

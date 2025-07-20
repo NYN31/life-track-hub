@@ -65,7 +65,10 @@ const LoginForm: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             {/* Email */}
             <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700 dark:text-gray-200 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 dark:text-gray-200 mb-1"
+              >
                 Email
               </label>
               <input
@@ -93,7 +96,10 @@ const LoginForm: React.FC = () => {
 
             {/* Password */}
             <div className="mb-4">
-              <label htmlFor="password" className="block text-gray-700 dark:text-gray-200 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-gray-700 dark:text-gray-200 mb-1"
+              >
                 Password
               </label>
               <div className="relative">
@@ -151,7 +157,9 @@ const LoginForm: React.FC = () => {
             </button>
 
             {errorMessage && (
-              <p className="mt-4 text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
+              <p className="mt-4 text-sm text-red-600 dark:text-red-400">
+                {errorMessage}
+              </p>
             )}
           </form>
         </div>

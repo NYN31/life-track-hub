@@ -6,4 +6,4 @@ const fileSlice = createSlice({
   reducers: {},
 });
 
-export default fileSlice.reducer; 
+export default fileSlice.reducer;

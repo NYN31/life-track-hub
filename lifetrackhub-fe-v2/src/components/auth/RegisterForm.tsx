@@ -64,7 +64,10 @@ const RegisterForm: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             {/* First Name */}
             <div className="mb-4">
-              <label htmlFor="firstname" className="block text-gray-700 dark:text-gray-200 mb-1">
+              <label
+                htmlFor="firstname"
+                className="block text-gray-700 dark:text-gray-200 mb-1"
+              >
                 First Name
               </label>
               <input
@@ -88,7 +91,10 @@ const RegisterForm: React.FC = () => {
 
             {/* Last Name */}
             <div className="mb-4">
-              <label htmlFor="lastname" className="block text-gray-700 dark:text-gray-200 mb-1">
+              <label
+                htmlFor="lastname"
+                className="block text-gray-700 dark:text-gray-200 mb-1"
+              >
                 Last Name
               </label>
               <input
@@ -110,7 +116,10 @@ const RegisterForm: React.FC = () => {
 
             {/* Email */}
             <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700 dark:text-gray-200 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 dark:text-gray-200 mb-1"
+              >
                 Email
               </label>
               <input
@@ -138,7 +147,10 @@ const RegisterForm: React.FC = () => {
 
             {/* Password */}
             <div className="mb-6">
-              <label htmlFor="password" className="block text-gray-700 dark:text-gray-200 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-gray-700 dark:text-gray-200 mb-1"
+              >
                 Password
               </label>
               <div className="relative">
@@ -196,7 +208,9 @@ const RegisterForm: React.FC = () => {
             </button>
 
             {errorMessage && (
-              <p className="mt-4 text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
+              <p className="mt-4 text-sm text-red-600 dark:text-red-400">
+                {errorMessage}
+              </p>
             )}
           </form>
         </div>
