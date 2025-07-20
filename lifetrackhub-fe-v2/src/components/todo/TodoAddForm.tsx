@@ -42,20 +42,20 @@ const TodoAddForm: React.FC<TodoAddFormProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-md rounded-xl p-4 md:p-6 lg:p-8 mt-8 flex flex-col gap-4 border border-gray-200 dark:border-gray-700">
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2 text-center">
+    <div className="bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg p-2 md:p-6 lg:p-8 mt-4 flex flex-col gap-4 border border-gray-200 dark:border-gray-700">
+      <h2 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2 text-center">
         Add Todo Items
       </h2>
       <form onSubmit={handleAdd} className="flex gap-2">
-        <div className="flex-1 flex flex-col gap-y-2">
+        <div className="flex-1 flex flex-col overflow-x-auto gap-y-2">
           <input
             type="text"
             value={title}
             onChange={e => handleAddTitle(e)}
-            className="flex-1 py-2 border border-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-2xl focus:outline-none"
+            className="flex-1 py-2 border border-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-xl md:text-2xl focus:outline-none"
             placeholder="Enter todo title"
           />
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 m-1">
             <input
               type="text"
               value={todo}
