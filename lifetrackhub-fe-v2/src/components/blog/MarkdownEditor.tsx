@@ -81,7 +81,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
         <div className="w-full min-h-[350px] p-4 border border-purple-200 dark:border-gray-700 rounded-b-lg font-mono bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-400 focus:outline-none resize-y shadow">
           <MarkdownPreview
             source={value}
-            className="dark:bg-gray-900 dark:text-gray-100"
+            className=" markdown-body dark:bg-gray-900 dark:text-gray-100"
           />
         </div>
       ) : (
