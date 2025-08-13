@@ -93,10 +93,10 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
             />
           </div>
 
-          <div className="bg-white dark:bg-gray-800 p-4 border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg md:6 lg:8">
+          <div className="shadow-sm rounded-lg md:6 lg:8">
             <MarkdownPreview
               source={blogData.content}
-              className="wmde-markdown-var"
+              className="wmde-markdown-var markdown-body"
             />
           </div>
         </div>
