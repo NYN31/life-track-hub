@@ -1,12 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  padding: 0;
+@layer base {
+  body {
+    @apply font-sans text-gray-800 leading-relaxed; /* Inter font by default */
+    font-size: 14px; /* Base font size */
+    line-height: 1.5; /* Base line height */
+    margin: 0;
+    padding: 0;
+  }
+  h1 {
+    @apply text-4xl font-bold text-gray-800 dark:text-gray-100;
+  }
+  h2 {
+    @apply text-3xl font-bold text-purple-700 dark:text-purple-300;
+  }
+  h3 {
+    @apply text-2xl font-bold text-purple-700 dark:text-purple-300;
+  }
+  h4 {
+    @apply text-xl font-bold text-purple-700 dark:text-purple-300;
+  }
+  p {
+    @apply text-base text-gray-700 dark:text-gray-300;
+  }
+  ul,
+  ol {
+    @apply list-disc pl-5 text-gray-700 dark:text-gray-300;
+  }
+  li {
+    @apply mb-2; /* Space between list items */
+  }
+  img {
+    @apply max-w-full h-auto rounded-lg shadow-sm; /* Responsive images */
+  }
+  code {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-1 py-0.5 rounded; /* Code blocks */
+  }
+  pre {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded overflow-x-auto; /* Preformatted text */
+  }
+  blockquote {
+    @apply border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic text-gray-600 dark:text-gray-400; /* Blockquotes */
+  }
+
+  /* buttons Styles */
+
+  .btn-primary {
+    @apply mt-4 inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-400 dark:to-purple-500 text-white rounded-lg font-medium text-sm shadow hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-600 dark:hover:to-purple-700 transition;
+  }
+
+  /* Common Styles */
+
+  .common-box-container {
+    @apply space-y-4 bg-gray-50 dark:bg-gray-900 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border  border-purple-100 dark:border-gray-700;
+  }
+
+  .common-box {
+    @apply bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg p-2 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700;
+  }
+
+  .link-view {
+    @apply text-purple-600 dark:text-purple-300 hover:underline text-xs flex items-center gap-1 mt-1;
+  }
+
+  .active-tab {
+    @apply border-b-2 border-purple-600 text-purple-600 dark:text-purple-300;
+  }
+
+  .inactive-tab {
+    @apply text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100;
+  }
+
+  /* Profile Styles */
+
+  .user-account-properties {
+    @apply bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium;
+  }
 }
 
+# scrollbar styles
+
+/* Hide scrollbar for all browsers */
 .scrollbar-hide {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
@@ -15,8 +93,7 @@ body {
   display: none; /* Chrome, Safari, Opera */
 }
 
-# fix markdown preview 
-.markdown-body ul {
+# fix markdown preview .markdown-body ul {
   list-style: disc;
   padding-left: 1.5rem; /* Indent bullets */
 }
