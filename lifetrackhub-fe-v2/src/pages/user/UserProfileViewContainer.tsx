@@ -22,10 +22,8 @@ const UserProfileViewContainer: React.FC = () => {
   const userDetails = user.userDetails as IUserDetails;
 
   return (
-    <div className="space-y-4 border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
-        Profile Details
-      </h1>
+    <div className="common-box-container">
+      <h1>Profile Details</h1>
 
       <PersonalInfoSection user={user} userDetails={userDetails} />
       <SkillsSection skills={userDetails?.skills} />

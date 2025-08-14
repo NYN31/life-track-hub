@@ -29,7 +29,7 @@ const ProfileDropdown: React.FC<{
         <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-indigo-400 text-white font-bold text-lg shadow-inner">
           {initials}
         </span>
-        <span className="text-gray-700 dark:text-gray-50 font-medium max-w-[100px] truncate hidden sm:block">
+        <span className="text-gray-700 dark:text-gray-50 font-medium max-w-[100px] truncate hidden lg:block">
           {fullname}
         </span>
         <svg

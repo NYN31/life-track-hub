@@ -50,13 +50,13 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
 
   return (
     <header className="sticky top-0 left-0 right-0 z-10 h-16 px-4 bg-gradient-to-r from-white to-purple-50 dark:from-gray-900 dark:to-gray-800 shadow-sm border-b border-purple-200 dark:border-gray-700">
-      <div className="flex items-center justify-between max-w-7xl mx-auto">
+      <div className="flex items-center justify-between max-w-6xl mx-auto">
         {/* Logo */}
         <div className="flex gap-2 items-center">
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg px-3 py-1.5 shadow-md">
             <SiSvgtrace color="white" size={24} />
           </div>
-          <span className="text-gray-900 dark:text-gray-100 italic font-bold text-lg tracking-wide hidden md:inline-block">
+          <span className="text-gray-900 dark:text-gray-100 italic font-bold text-lg tracking-wide hidden lg:inline-block">
             LifeTrackHub
           </span>
           {/* Mobile Hamburger */}
@@ -146,17 +146,22 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
             </div>
           ))}
         </nav>
-        {/* Theme Toggle */}
-        <button
-          className="ml-3 p-2 rounded-full border border-purple-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-purple-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition"
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          aria-label="Toggle dark mode"
-        >
-          {theme === 'dark' ? <FiSun size={18} /> : <FiMoon size={18} />}
-        </button>
-        {/* Profile Dropdown */}
-        <div className="ml-4 mt-1">
-          <ProfileDropdown onLogout={handleLogout} onProfile={handleProfile} />
+        <div className="flex items-center">
+          {/* Theme Toggle */}
+          <button
+            className="ml-3 p-2 rounded-full border border-purple-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-purple-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition"
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            aria-label="Toggle dark mode"
+          >
+            {theme === 'dark' ? <FiSun size={18} /> : <FiMoon size={18} />}
+          </button>
+          {/* Profile Dropdown */}
+          <div className="ml-4 mt-1">
+            <ProfileDropdown
+              onLogout={handleLogout}
+              onProfile={handleProfile}
+            />
+          </div>
         </div>
       </div>
       {/* Mobile Nav Drawer */}
