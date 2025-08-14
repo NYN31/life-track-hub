@@ -25,7 +25,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
           href={userDetails?.cvPdfPath}
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-primary"
+          className="btn-primary mt-4"
           download
         >
           <FiDownload /> Download CV/Resume

@@ -10,6 +10,8 @@ import Spinner from '../../common/Spinner';
 import ErrorMessage from '../../common/ErrorMessage';
 import { IAchievement } from '../../../types/user';
 import { FiTrash } from 'react-icons/fi';
+import OnClickAddButton from '../../common/button/OnClickAddButton';
+import OnSubmitButton from '../../common/button/OnSubmitButton';
 
 interface AchievementsFormValues {
   achievements: IAchievement[];
@@ -80,9 +82,7 @@ const AchievementsForm: React.FC = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-8 bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
     >
-      <h3 className="text-3xl font-extrabold mb-6 text-purple-700 dark:text-purple-300 text-center tracking-tight">
-        Achievements
-      </h3>
+      <h3 className="text-center tracking-tight">Achievements</h3>
       <div className="space-y-6">
         {fields.map((field, idx) => (
           <div
@@ -145,34 +145,20 @@ const AchievementsForm: React.FC = () => {
             </button>
           </div>
         ))}
-        <button
-          type="button"
-          onClick={() =>
+      </div>
+      <div className="flex justify-between items-center">
+        <OnClickAddButton
+          text="Add New Achievement"
+          handleClick={() =>
             append({ achievementTitle: '', description: '', link: '' })
           }
-          className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 dark:from-green-700 dark:to-green-600 text-white rounded-xl font-semibold shadow-md hover:from-green-700 hover:to-green-600 dark:hover:from-green-800 dark:hover:to-green-700 transition w-full flex items-center justify-center gap-2"
-        >
-          <span>➕ Add Achievement</span>
-        </button>
+        />
+        <OnSubmitButton
+          text="Submit Achievements"
+          isSaving={isSaving}
+          isDirty={isDirty}
+        />
       </div>
-      <button
-        type="submit"
-        className={`px-8 py-3 rounded-xl w-full font-bold text-lg shadow-lg tracking-wide flex items-center justify-center gap-2 transition
-          ${
-            isSaving || !isDirty
-              ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-              : 'bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-700 dark:to-purple-600 text-white hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-800 dark:hover:to-purple-700'
-          }`}
-        disabled={isSaving || !isDirty}
-      >
-        {isSaving ? (
-          <span className="flex items-center gap-2">
-            <Spinner /> Saving...
-          </span>
-        ) : (
-          <span>💾 Save Achievements</span>
-        )}
-      </button>
       {success && (
         <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">
           Saved!
