@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../../features/user/userSlice';
 import Spinner from '../../common/Spinner';
 import ErrorMessage from '../../common/ErrorMessage';
+import OnSubmitButton from '../../common/button/OnSubmitButton';
 
 interface PersonalDetailsFormValues {
   firstname: string;
@@ -240,24 +241,13 @@ const PersonalDetailsForm: React.FC = () => {
           </span>
         )}
       </div>
-      <button
-        type="submit"
-        className={`px-8 py-3 rounded-xl w-full font-bold text-lg shadow-lg tracking-wide flex items-center justify-center gap-2 transition
-          ${
-            isSaving || !isDirty
-              ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-              : 'bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-700 dark:to-purple-600 text-white hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-800 dark:hover:to-purple-700'
-          }`}
-        disabled={isSaving || !isDirty}
-      >
-        {isSaving ? (
-          <span className="flex items-center gap-2">
-            <Spinner /> Saving...
-          </span>
-        ) : (
-          <span>💾 Save Details</span>
-        )}
-      </button>
+      <div className="flex justify-end">
+        <OnSubmitButton
+          text="Submit Personal Details"
+          isSaving={isSaving}
+          isDirty={isDirty}
+        />
+      </div>
       {success && (
         <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">
           Saved!
