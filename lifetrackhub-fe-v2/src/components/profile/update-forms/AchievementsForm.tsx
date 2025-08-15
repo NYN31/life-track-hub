@@ -9,9 +9,10 @@ import { setUser } from '../../../features/user/userSlice';
 import Spinner from '../../common/Spinner';
 import ErrorMessage from '../../common/ErrorMessage';
 import { IAchievement } from '../../../types/user';
-import { FiTrash } from 'react-icons/fi';
 import OnClickAddButton from '../../common/button/OnClickAddButton';
 import OnSubmitButton from '../../common/button/OnSubmitButton';
+import OnClickTrashIcon from '../../common/button/OnClickTrashIcon';
+import SuccessMessage from '../../common/SuccessMessage';
 
 interface AchievementsFormValues {
   achievements: IAchievement[];
@@ -35,6 +36,7 @@ const AchievementsForm: React.FC = () => {
     defaultValues: { achievements: [] },
   });
 
+  console.log(errors);
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'achievements',
@@ -80,72 +82,87 @@ const AchievementsForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
+      className="space-y-8 common-box animate-fade-in"
     >
       <h3 className="text-center tracking-tight">Achievements</h3>
       <div className="space-y-6">
         {fields.map((field, idx) => (
-          <div
-            key={field.id}
-            className="border p-5 rounded-xl bg-white dark:bg-gray-900 border-purple-200 dark:border-gray-700 relative"
-          >
+          <div key={field.id} className="common-box-container relative">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
+                <label className="form-label">
                   Title<span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register(`achievements.${idx}.achievementTitle`, {
                     required: 'Title is required',
+                    minLength: {
+                      value: 3,
+                      message: 'Title must be at least 3 characters long',
+                    },
+                    maxLength: {
+                      value: 100,
+                      message: 'Title cannot exceed 100 characters',
+                    },
                   })}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  className="form-input-field"
                   placeholder="Title"
                 />
                 {errors.achievements?.[idx]?.achievementTitle && (
-                  <span className="text-red-500 dark:text-red-400 text-sm">
+                  <span className="form-field-error">
                     {errors.achievements[idx]?.achievementTitle?.message}
                   </span>
                 )}
               </div>
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-                  Description<span className="text-red-500">*</span>
-                </label>
+                <label className="form-label">Link</label>
                 <input
-                  {...register(`achievements.${idx}.description`, {
-                    required: 'Description is required',
+                  {...register(`achievements.${idx}.link`, {
+                    maxLength: {
+                      value: 100,
+                      message: 'Link cannot exceed 100 characters',
+                    },
                   })}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-                  placeholder="Description"
+                  className="form-input-field"
+                  placeholder="Link (optional)"
                 />
-                {errors.achievements?.[idx]?.description && (
-                  <span className="text-red-500 dark:text-red-400 text-sm">
-                    {errors.achievements[idx]?.description?.message}
-                  </span>
-                )}
               </div>
+              <div></div>
             </div>
             <div className="mt-4">
-              <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-                Link
+              <label className="form-label">
+                Description{' '}
+                <span className="text-sm text-gray-500">
+                  (markdown allowed)
+                </span>
+                <span className="text-red-500">*</span>
               </label>
-              <input
-                {...register(`achievements.${idx}.link`)}
-                className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-                placeholder="Link (optional)"
+              <textarea
+                {...register(`achievements.${idx}.description`, {
+                  required: 'Description is required',
+                  minLength: {
+                    value: 10,
+                    message: 'Description must be at least 10 characters long',
+                  },
+                  maxLength: {
+                    value: 300,
+                    message: 'Description cannot exceed 300 characters',
+                  },
+                })}
+                className="form-input-field h-24 scrollbar-hide"
+                placeholder="Description"
               />
+              {errors.achievements?.[idx]?.description && (
+                <span className="form-field-error">
+                  {errors.achievements[idx]?.description?.message}
+                </span>
+              )}
             </div>
-            <button
-              type="button"
-              onClick={() => remove(idx)}
-              className="absolute top-3 right-3 p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900 transition"
-              title="Remove Achievement"
-            >
-              <FiTrash className="text-red-500 text-lg" />
-            </button>
+            <OnClickTrashIcon handleRemover={() => remove(idx)} />
           </div>
         ))}
       </div>
+
       <div className="flex justify-between items-center">
         <OnClickAddButton
           text="Add New Achievement"
@@ -153,17 +170,10 @@ const AchievementsForm: React.FC = () => {
             append({ achievementTitle: '', description: '', link: '' })
           }
         />
-        <OnSubmitButton
-          text="Submit Achievements"
-          isSaving={isSaving}
-          isDirty={isDirty}
-        />
+        <OnSubmitButton text="Submit" isSaving={isSaving} isDirty={isDirty} />
       </div>
-      {success && (
-        <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">
-          Saved!
-        </div>
-      )}
+
+      {success && <SuccessMessage />}
       {errorMessage && <ErrorMessage message={errorMessage} />}
     </form>
   );

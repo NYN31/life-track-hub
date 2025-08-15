@@ -42,6 +42,7 @@ export interface IExperience {
 export interface IEducation {
   institutionName: string;
   courseName: string;
+  isPresent: boolean;
   startYear: number;
   endYear: number;
   result: number;

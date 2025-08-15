@@ -9,9 +9,9 @@ import { setUser } from '../../../features/user/userSlice';
 import Spinner from '../../common/Spinner';
 import ErrorMessage from '../../common/ErrorMessage';
 import { ISkill } from '../../../types/user';
-import { FiTrash } from 'react-icons/fi';
 import OnClickAddButton from '../../common/button/OnClickAddButton';
 import OnSubmitButton from '../../common/button/OnSubmitButton';
+import OnClickTrashIcon from '../../common/button/OnClickTrashIcon';
 
 const COMPETENCY_OPTIONS = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT'];
 
@@ -82,63 +82,76 @@ const SkillsForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
+      className="space-y-8 common-box animate-fade-in"
     >
-      <h3 className="text-3xl font-extrabold mb-6 text-purple-700 dark:text-purple-300 text-center tracking-tight">
-        Skills
-      </h3>
+      <h3 className="text-center tracking-tight">Skills</h3>
+
       <div className="space-y-6">
         {fields.map((field, idx) => (
-          <div
-            key={field.id}
-            className="border p-5 rounded-xl bg-white dark:bg-gray-900 border-purple-200 dark:border-gray-700 relative"
-          >
+          <div key={field.id} className="common-box-container relative">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
+                <label className="form-label">
                   Skill Name<span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register(`skills.${idx}.skillName`, {
                     required: 'Skill name is required',
+                    minLength: {
+                      value: 3,
+                      message: 'Skill name must be at least 3 characters long',
+                    },
+                    maxLength: {
+                      value: 100,
+                      message: 'Skill name cannot exceed 100 characters',
+                    },
                   })}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  className="form-input-field"
                   placeholder="Skill Name"
                 />
                 {errors.skills?.[idx]?.skillName && (
-                  <span className="text-red-500 dark:text-red-400 text-sm">
+                  <span className="form-field-error">
                     {errors.skills[idx]?.skillName?.message}
                   </span>
                 )}
               </div>
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
+                <label className="form-label">
                   Experience Year<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
+                  step="any"
                   {...register(`skills.${idx}.skillExperienceYear`, {
                     required: 'Experience year is required',
                     valueAsNumber: true,
+                    min: {
+                      value: 0,
+                      message: 'Experience year must have minimum 0',
+                    },
+                    max: {
+                      value: 50,
+                      message: 'Experience year should not exceed 50 years',
+                    },
                   })}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  className="form-input-field"
                   placeholder="Experience Year"
                 />
                 {errors.skills?.[idx]?.skillExperienceYear && (
-                  <span className="text-red-500 dark:text-red-400 text-sm">
+                  <span className="form-field-error">
                     {errors.skills[idx]?.skillExperienceYear?.message}
                   </span>
                 )}
               </div>
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
+                <label className="form-label">
                   Competency<span className="text-red-500">*</span>
                 </label>
                 <select
                   {...register(`skills.${idx}.skillCompetency`, {
                     required: 'Competency is required',
                   })}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  className="form-input-field"
                 >
                   <option value="">Select Competency</option>
                   {COMPETENCY_OPTIONS.map(option => (
@@ -148,20 +161,13 @@ const SkillsForm: React.FC = () => {
                   ))}
                 </select>
                 {errors.skills?.[idx]?.skillCompetency && (
-                  <span className="text-red-500 dark:text-red-400 text-sm">
+                  <span className="form-field-error">
                     {errors.skills[idx]?.skillCompetency?.message}
                   </span>
                 )}
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => remove(idx)}
-              className="absolute top-3 right-3 p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900 transition"
-              title="Remove Skill"
-            >
-              <FiTrash className="text-red-500 text-lg" />
-            </button>
+            <OnClickTrashIcon handleRemover={() => remove(idx)} />
           </div>
         ))}
       </div>
@@ -176,11 +182,7 @@ const SkillsForm: React.FC = () => {
             })
           }
         />
-        <OnSubmitButton
-          text="Submit Skills"
-          isSaving={isSaving}
-          isDirty={isDirty}
-        />
+        <OnSubmitButton text="Submit" isSaving={isSaving} isDirty={isDirty} />
       </div>
       {success && (
         <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">

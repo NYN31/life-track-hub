@@ -38,9 +38,9 @@ const ProfileUpdateContainer = () => {
   };
 
   return (
-    <div className="common-box-container">
+    <div className="common-box-container space-y-4">
       <h1>Profile Settings</h1>
-      <div className="flex border-b border-gray-200 dark:border-gray-700 mb-4 flex-col md:flex-row items-center justify-center">
+      <div className="tabs">
         {profileUpdaterFormTabs.map(tab => (
           <button
             key={tab.name}

@@ -106,3 +106,26 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
 };
 
 export default DisplayBlog;
+
+
+/*
+Software Engineer from Exabyting
+<li>work one </li>
+<li> hello ek </li>
+<li> lkjads </li>
+
+Intern trainee
+<li> work </li>
+<li> sleep </li>
+
+Software Engineer from Exabyting
+- work one
+- hello ek
+- lkjads
+
+Intern trainee
+- work
+- sleep
+
+
+*/

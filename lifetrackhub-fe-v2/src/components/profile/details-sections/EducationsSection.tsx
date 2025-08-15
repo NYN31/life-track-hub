@@ -22,7 +22,8 @@ const EducationsSection: React.FC<EducationsSectionProps> = ({
               {edu.courseName} @ {edu.institutionName}
             </div>
             <div className="text-gray-600 dark:text-gray-300 text-sm">
-              {edu.startYear} - {edu.endYear} | Result: {edu.result}
+              {edu.startYear} - {edu.isPresent ? 'Present' : edu.endYear} |
+              Result: {edu.result}
             </div>
           </li>
         ))}

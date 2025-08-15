@@ -1,4 +1,5 @@
 import React from 'react';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 import { IUser, IUserDetails } from '../../../types/user';
 import { FiDownload, FiMail, FiUser } from 'react-icons/fi';
 import fallbackImg from '../../../assets/blogFallback.png';
@@ -52,9 +53,15 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
         </span>
       </div>
       {userDetails?.objective && (
-        <div className="mt-4 text-gray-700 dark:text-gray-400 font-medium">
-          <span className="font-semibold text-purple-300">Objective:</span>
-          {userDetails?.objective}
+        <div className="mt-4">
+          <span className="font-semibold text-purple-700 dark:text-purple-300">
+            Objective
+          </span>
+
+          <MarkdownPreview
+            source={userDetails?.objective}
+            className="wmde-markdown-var markdown-body text-sm"
+          />
         </div>
       )}
     </div>

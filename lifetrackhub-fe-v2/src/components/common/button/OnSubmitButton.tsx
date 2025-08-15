@@ -24,7 +24,7 @@ const OnSubmitButton: React.FC<OnSubmitButtonProps> = ({
           <Spinner /> Saving...
         </span>
       ) : (
-        <span>💾 {text}</span>
+        <span className='line-clamp-1'>💾 {text}</span>
       )}
     </button>
   );
