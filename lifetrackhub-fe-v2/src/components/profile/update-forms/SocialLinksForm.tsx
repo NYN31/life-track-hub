@@ -9,6 +9,8 @@ import { setUser } from '../../../features/user/userSlice';
 import Spinner from '../../common/Spinner';
 import ErrorMessage from '../../common/ErrorMessage';
 import { FiTrash } from 'react-icons/fi';
+import OnSubmitButton from '../../common/button/OnSubmitButton';
+import OnClickAddButton from '../../common/button/OnClickAddButton';
 
 interface SocialLink {
   socialPlatformName: string;
@@ -139,32 +141,18 @@ const SocialLinksForm: React.FC = () => {
             </button>
           </div>
         ))}
-        <button
-          type="button"
-          onClick={() => append({ socialPlatformName: '', link: '' })}
-          className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 dark:from-green-700 dark:to-green-600 text-white rounded-xl font-semibold shadow-md hover:from-green-700 hover:to-green-600 dark:hover:from-green-800 dark:hover:to-green-700 transition w-full flex items-center justify-center gap-2"
-        >
-          <span>➕ Add Social Link</span>
-        </button>
       </div>
-      <button
-        type="submit"
-        className={`px-8 py-3 rounded-xl w-full font-bold text-lg shadow-lg tracking-wide flex items-center justify-center gap-2 transition
-        ${
-          isSaving || !isDirty
-            ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-            : 'bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-700 dark:to-purple-600 text-white hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-800 dark:hover:to-purple-700'
-        }`}
-        disabled={isSaving || !isDirty}
-      >
-        {isSaving ? (
-          <span className="flex items-center gap-2">
-            <Spinner /> Saving...
-          </span>
-        ) : (
-          <span>💾 Save Social Links</span>
-        )}
-      </button>
+      <div className="flex justify-between items-center">
+        <OnClickAddButton
+          text="Add New Social Link"
+          handleClick={() => append({ socialPlatformName: '', link: '' })}
+        />
+        <OnSubmitButton
+          text="Submit Social Links"
+          isSaving={isSaving}
+          isDirty={isDirty}
+        />
+      </div>
       {success && (
         <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">
           Saved!
