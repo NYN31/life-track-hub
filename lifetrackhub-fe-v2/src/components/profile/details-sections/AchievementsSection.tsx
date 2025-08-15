@@ -1,4 +1,5 @@
 import React from 'react';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 import { FiAward, FiGlobe } from 'react-icons/fi';
 import { IAchievement } from '../../../types/user';
 
@@ -21,7 +22,12 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             <div className="font-semibold dark:text-gray-200">
               {ach.achievementTitle}
             </div>
-            <p className="text-sm">{ach.description}</p>
+            {ach.description && (
+              <MarkdownPreview
+                source={ach.description}
+                className="bg-gray-50 dark:bg-gray-800 text-sm"
+              />
+            )}
             {ach.link && (
               <a
                 href={ach.link}

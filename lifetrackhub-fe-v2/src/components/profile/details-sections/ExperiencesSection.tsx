@@ -1,4 +1,5 @@
 import React from 'react';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 import { FiBriefcase, FiGlobe } from 'react-icons/fi';
 import { IExperience } from '../../../types/user';
 
@@ -24,7 +25,12 @@ const ExperiencesSection: React.FC<ExperiencesSectionProps> = ({
             <div className="text-gray-600 dark:text-gray-400 text-sm">
               {exp.startDate} - {exp.endDate || 'Present'}
             </div>
-            {exp.description && <p className="text-sm">{exp.description}</p>}
+            {exp.description && (
+              <MarkdownPreview
+                source={exp.description}
+                className="bg-gray-50 dark:bg-gray-800 text-sm"
+              />
+            )}
             {exp.link && (
               <a
                 href={exp.link}

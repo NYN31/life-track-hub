@@ -58,8 +58,9 @@
   }
 
   .btn-submit {
-    @apply px-8 py-3 rounded-xl font-bold text-lg shadow-lg tracking-wide flex items-center justify-center gap-2 transition;
+    @apply px-3 md:px-6 py-3 rounded-xl font-bold text-sm md:text-base shadow-lg tracking-wide flex items-center justify-center gap-2 transition;
   }
+
   .btn-submit-disabled {
     @apply btn-submit bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed;
   }
@@ -71,7 +72,7 @@
   /* Common Styles */
 
   .common-box-container {
-    @apply space-y-4 bg-gray-50 dark:bg-gray-900 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border  border-purple-100 dark:border-gray-700;
+    @apply bg-gray-50 dark:bg-gray-900 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border  border-purple-100 dark:border-gray-700;
   }
 
   .common-box {
@@ -82,6 +83,10 @@
     @apply text-purple-600 dark:text-purple-300 hover:underline text-xs flex items-center gap-1 mt-1;
   }
 
+  .tabs {
+    @apply flex border-b border-gray-200 dark:border-gray-700 mb-4 flex-col md:flex-row items-center justify-center;
+  }
+
   .active-tab {
     @apply border-b-2 border-purple-600 text-purple-600 dark:text-purple-300;
   }
@@ -90,6 +95,23 @@
     @apply text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100;
   }
 
+  /* Form Styles*/
+
+  .form-label {
+    @apply block text-base font-semibold text-gray-700 dark:text-gray-200;
+  }
+
+  .form-input-field {
+    @apply mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+  }
+
+  .form-readonly-input-field {
+    @apply mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 cursor-not-allowed;
+  }
+
+  .form-field-error {
+    @apply text-red-500 dark:text-red-400 text-sm;
+  }
   /* Profile Styles */
 
   .user-account-properties {
@@ -97,7 +119,7 @@
   }
 }
 
-# scrollbar styles
+/* scrollbar styles */
 
 /* Hide scrollbar for all browsers */
 .scrollbar-hide {
@@ -108,7 +130,9 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
-# fix markdown preview .markdown-body ul {
+/* fix markdown preview */
+
+.markdown-body ul {
   list-style: disc;
   padding-left: 1.5rem; /* Indent bullets */
 }
@@ -119,5 +143,19 @@
 }
 
 .wmde-markdown-var {
-  @apply bg-gray-700 text-gray-800 dark:bg-gray-900 dark:text-gray-50;
+  @apply bg-gray-500 text-gray-800 dark:bg-gray-900 dark:text-gray-50 rounded-lg;
+}
+
+/* Style date picker icon for dark mode */
+.dark input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Inverts color so it's visible */
+}
+
+/* Optional: add cursor pointer for better UX */
+input[type='date']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+input[type='checkbox'] {
+  accent-color: #9333ea; /* Tailwind's purple-600 hex */
 }

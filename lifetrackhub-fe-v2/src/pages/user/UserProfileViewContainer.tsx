@@ -22,7 +22,7 @@ const UserProfileViewContainer: React.FC = () => {
   const userDetails = user.userDetails as IUserDetails;
 
   return (
-    <div className="common-box-container">
+    <div className="common-box-container space-y-4">
       <h1>Profile Details</h1>
 
       <PersonalInfoSection user={user} userDetails={userDetails} />

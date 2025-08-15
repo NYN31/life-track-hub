@@ -20,11 +20,7 @@ const OnClickAddButton: React.FC<OnClickAddButtonProps> = ({
         <FaPlus />
       </button>
 
-      <span className="text-xl">{text}</span>
-
-      <span className="text-gray-500 dark:text-gray-400 text-sm">
-        (Optional)
-      </span>
+      <span className="text-sm md:text-md lg:text-lg line-clamp-1">{text}</span>
     </div>
   );
 };

@@ -9,9 +9,9 @@ import { setUser } from '../../../features/user/userSlice';
 import Spinner from '../../common/Spinner';
 import ErrorMessage from '../../common/ErrorMessage';
 import { IExperience } from '../../../types/user';
-import { FiTrash } from 'react-icons/fi';
 import OnClickAddButton from '../../common/button/OnClickAddButton';
 import OnSubmitButton from '../../common/button/OnSubmitButton';
+import OnClickTrashIcon from '../../common/button/OnClickTrashIcon';
 
 interface ExperienceFormValues {
   experiences: IExperience[];
@@ -80,48 +80,60 @@ const ExperienceForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
+      className="space-y-8 common-box animate-fade-in"
     >
-      <h3 className="text-3xl font-extrabold mb-6 text-purple-700 dark:text-purple-300 text-center tracking-tight">
-        Experience
-      </h3>
+      <h3 className="text-center tracking-tight">Experience</h3>
       <div className="space-y-6">
         {fields.map((field, idx) => (
-          <div
-            key={field.id}
-            className="border p-5 rounded-xl bg-white dark:bg-gray-900 border-purple-200 dark:border-gray-700 relative"
-          >
+          <div key={field.id} className="common-box-container relative">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
+                <label className="form-label">
                   Organization<span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register(`experiences.${idx}.organizationName`, {
-                    required: 'Organization is required',
+                    required: 'Organization name is required',
+                    minLength: {
+                      value: 3,
+                      message:
+                        'Organization name must be at least 3 characters long',
+                    },
+                    maxLength: {
+                      value: 100,
+                      message: 'Organization name cannot exceed 100 characters',
+                    },
                   })}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  className="form-input-field"
                   placeholder="Organization Name"
                 />
                 {errors.experiences?.[idx]?.organizationName && (
-                  <span className="text-red-500 dark:text-red-400 text-sm">
+                  <span className="form-field-error">
                     {errors.experiences[idx]?.organizationName?.message}
                   </span>
                 )}
               </div>
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
+                <label className="form-label">
                   Designation<span className="text-red-500">*</span>
                 </label>
                 <input
                   {...register(`experiences.${idx}.designation`, {
                     required: 'Designation is required',
+                    minLength: {
+                      value: 3,
+                      message: 'Designation must be at least 3 characters long',
+                    },
+                    maxLength: {
+                      value: 100,
+                      message: 'Designation cannot exceed 100 characters',
+                    },
                   })}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  className="form-input-field"
                   placeholder="Designation"
                 />
                 {errors.experiences?.[idx]?.designation && (
-                  <span className="text-red-500 dark:text-red-400 text-sm">
+                  <span className="form-field-error">
                     {errors.experiences[idx]?.designation?.message}
                   </span>
                 )}
@@ -129,7 +141,7 @@ const ExperienceForm: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
+                <label className="form-label">
                   Start Date<span className="text-red-500">*</span>
                 </label>
                 <input
@@ -137,55 +149,62 @@ const ExperienceForm: React.FC = () => {
                   {...register(`experiences.${idx}.startDate`, {
                     required: 'Start date is required',
                   })}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  className="form-input-field"
                   placeholder="Start Date"
                 />
                 {errors.experiences?.[idx]?.startDate && (
-                  <span className="text-red-500 dark:text-red-400 text-sm">
+                  <span className="form-field-error">
                     {errors.experiences[idx]?.startDate?.message}
                   </span>
                 )}
               </div>
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-                  End Date
-                </label>
+                <label className="form-label">End Date</label>
                 <input
                   type="date"
                   {...register(`experiences.${idx}.endDate`)}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  className="form-input-field"
                   placeholder="End Date"
                 />
               </div>
               <div>
-                <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-                  Link
-                </label>
+                <label className="form-label">Link</label>
                 <input
-                  {...register(`experiences.${idx}.link`)}
-                  className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                  {...register(`experiences.${idx}.link`, {
+                    maxLength: {
+                      value: 100,
+                      message: 'Link cannot exceed 100 characters',
+                    },
+                  })}
+                  className="form-input-field"
                   placeholder="Link (optional)"
                 />
               </div>
             </div>
             <div className="mt-4">
-              <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-                Description
+              <label className="form-label">
+                Description{' '}
+                <span className="text-sm text-gray-500">
+                  (markdown allowed)
+                </span>
               </label>
-              <input
-                {...register(`experiences.${idx}.description`)}
-                className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+              <textarea
+                {...register(`experiences.${idx}.description`, {
+                  maxLength: {
+                    value: 300,
+                    message: 'Description cannot exceed 300 characters',
+                  },
+                })}
+                className="form-input-field h-24 scrollbar-hide"
                 placeholder="Description (optional)"
               />
+              {errors.experiences?.[idx]?.description && (
+                <span className="form-field-error">
+                  {errors.experiences[idx]?.description?.message}
+                </span>
+              )}
             </div>
-            <button
-              type="button"
-              onClick={() => remove(idx)}
-              className="absolute top-3 right-3 p-2 rounded-full hover:bg-red-100 dark:hover:bg-red-900 transition"
-              title="Remove Experience"
-            >
-              <FiTrash className="text-red-500 text-lg" />
-            </button>
+            <OnClickTrashIcon handleRemover={() => remove(idx)} />
           </div>
         ))}
       </div>
@@ -203,11 +222,7 @@ const ExperienceForm: React.FC = () => {
             })
           }
         />
-        <OnSubmitButton
-          text="Submit Experiences"
-          isSaving={isSaving}
-          isDirty={isDirty}
-        />
+        <OnSubmitButton text="Submit" isSaving={isSaving} isDirty={isDirty} />
       </div>
       {success && (
         <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">

@@ -9,6 +9,7 @@ import { setUser } from '../../../features/user/userSlice';
 import Spinner from '../../common/Spinner';
 import ErrorMessage from '../../common/ErrorMessage';
 import OnSubmitButton from '../../common/button/OnSubmitButton';
+import SuccessMessage from '../../common/SuccessMessage';
 
 interface PersonalDetailsFormValues {
   firstname: string;
@@ -25,6 +26,17 @@ const PersonalDetailsForm: React.FC = () => {
   const [updateProfile, { isLoading: isSaving }] = useUpdateProfileMutation();
   const [success, setSuccess] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+
+  let readOnlyValues = [
+    {
+      fieldName: 'Email',
+      value: data?.email,
+    },
+    { fieldName: 'Role', value: data?.role },
+    { fieldName: 'Account Status', value: data?.accountStatus },
+    { fieldName: 'Account Type', value: data?.accountType },
+    { fieldName: 'Login Type', value: data?.loginType },
+  ];
 
   const {
     register,
@@ -91,168 +103,130 @@ const PersonalDetailsForm: React.FC = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
+      className="space-y-8 common-box animate-fade-in"
     >
-      <h2 className="text-3xl font-extrabold mb-6 text-purple-700 dark:text-purple-300 text-center tracking-tight">
-        Personal Details
-      </h2>
-      {/* Readonly fields */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-            Email
-          </label>
-          <input
-            value={data?.email || ''}
-            readOnly
-            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
-          />
-        </div>
-        <div>
-          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-            Role
-          </label>
-          <input
-            value={data?.role || ''}
-            readOnly
-            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
-          />
-        </div>
-        <div>
-          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-            Account Status
-          </label>
-          <input
-            value={data?.accountStatus || ''}
-            readOnly
-            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
-          />
-        </div>
-        <div>
-          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-            Account Type
-          </label>
-          <input
-            value={data?.accountType || ''}
-            readOnly
-            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
-          />
-        </div>
-        <div>
-          <label className="block text-base font-semibold text-gray-700 dark:text-gray-200">
-            Login Type
-          </label>
-          <input
-            value={data?.loginType || ''}
-            readOnly
-            className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 cursor-not-allowed"
-          />
-        </div>
-      </div>
+      <h3 className="text-center tracking-tight">Personal Details</h3>
+
       {/* Editable fields */}
-      <div className="space-y-3">
-        <label
-          htmlFor="firstname"
-          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
-        >
-          First Name
-        </label>
-        <input
-          id="firstname"
-          {...register('firstname')}
-          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-        />
-        {errors.firstname && (
-          <span className="text-red-500 dark:text-red-400 text-sm">
-            {errors.firstname.message}
-          </span>
-        )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label htmlFor="firstname" className="form-label">
+            First Name<span className="text-red-500">*</span>
+          </label>
+          <input
+            id="firstname"
+            {...register('firstname', {
+              required: 'Firstname should be required',
+              minLength: {
+                value: 3,
+                message: 'Firstname must be at least 3 characters long',
+              },
+              maxLength: {
+                value: 40,
+                message: 'Description cannot exceed 40 characters',
+              },
+            })}
+            className="form-input-field"
+          />
+          {errors.firstname && (
+            <span className="form-field-error">{errors.firstname.message}</span>
+          )}
+        </div>
+        <div>
+          <label htmlFor="lastname" className="form-label">
+            Last Name
+          </label>
+          <input
+            id="lastname"
+            {...register('lastname')}
+            className="form-input-field"
+          />
+          {errors.lastname && (
+            <span className="form-field-error">{errors.lastname.message}</span>
+          )}
+        </div>
       </div>
-      <div className="space-y-3">
-        <label
-          htmlFor="lastname"
-          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
-        >
-          Last Name
-        </label>
-        <input
-          id="lastname"
-          {...register('lastname')}
-          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-        />
-        {errors.lastname && (
-          <span className="text-red-500 dark:text-red-400 text-sm">
-            {errors.lastname.message}
-          </span>
-        )}
-      </div>
-      <div className="space-y-3">
-        <label
-          htmlFor="objective"
-          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
-        >
-          Objective
+      <div>
+        <label htmlFor="objective" className="form-label">
+          Objective{' '}
+          <span className="text-sm text-gray-500">(markdown allowed)</span>
         </label>
         <textarea
           id="objective"
-          {...register('objective')}
-          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+          {...register('objective', {
+            maxLength: {
+              value: 1000,
+              message: 'Description cannot exceed 1000 characters',
+            },
+          })}
+          className="form-input-field h-24 scrollbar-hide"
           rows={4}
         />
         {errors.objective && (
-          <span className="text-red-500 dark:text-red-400 text-sm">
-            {errors.objective.message}
-          </span>
+          <span className="form-field-error">{errors.objective.message}</span>
         )}
       </div>
-      <div className="space-y-3">
-        <label
-          htmlFor="profileImagePath"
-          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
-        >
-          Profile Image URL
-        </label>
-        <input
-          id="profileImagePath"
-          {...register('profileImagePath')}
-          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-        />
-        {errors.profileImagePath && (
-          <span className="text-red-500 dark:text-red-400 text-sm">
-            {errors.profileImagePath.message}
-          </span>
-        )}
-      </div>
-      <div className="space-y-3">
-        <label
-          htmlFor="cvPdfPath"
-          className="block text-base font-semibold text-gray-700 dark:text-gray-200"
-        >
-          CV/Resume URL
-        </label>
-        <input
-          id="cvPdfPath"
-          {...register('cvPdfPath')}
-          className="mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-        />
-        {errors.cvPdfPath && (
-          <span className="text-red-500 dark:text-red-400 text-sm">
-            {errors.cvPdfPath.message}
-          </span>
-        )}
-      </div>
-      <div className="flex justify-end">
-        <OnSubmitButton
-          text="Submit Personal Details"
-          isSaving={isSaving}
-          isDirty={isDirty}
-        />
-      </div>
-      {success && (
-        <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">
-          Saved!
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {' '}
+        <div>
+          <label htmlFor="profileImagePath" className="form-label">
+            Profile Image URL
+          </label>
+          <input
+            id="profileImagePath"
+            {...register('profileImagePath', {
+              maxLength: {
+                value: 150,
+                message: 'Profile image path cannot exceed 150 characters',
+              },
+            })}
+            className="form-input-field"
+          />
+          {errors.profileImagePath && (
+            <span className="form-field-error">
+              {errors.profileImagePath.message}
+            </span>
+          )}
         </div>
-      )}
+        <div>
+          <label htmlFor="cvPdfPath" className="form-label">
+            CV/Resume URL
+          </label>
+          <input
+            id="cvPdfPath"
+            {...register('cvPdfPath', {
+              maxLength: {
+                value: 150,
+                message: 'Cv PDF path cannot exceed 150 characters',
+              },
+            })}
+            className="form-input-field"
+          />
+          {errors.cvPdfPath && (
+            <span className="form-field-error">{errors.cvPdfPath.message}</span>
+          )}
+        </div>
+      </div>
+
+      {/* Readonly fields */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        {readOnlyValues.map(inputField => (
+          <div>
+            <label className="form-label">{inputField.fieldName}</label>
+            <input
+              value={inputField.value || ''}
+              readOnly
+              className="form-readonly-input-field"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-end">
+        <OnSubmitButton text="Submit" isSaving={isSaving} isDirty={isDirty} />
+      </div>
+
+      {success && <SuccessMessage />}
       {errorMessage && <ErrorMessage message={errorMessage} />}
     </form>
   );
