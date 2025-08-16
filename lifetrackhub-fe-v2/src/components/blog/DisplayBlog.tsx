@@ -6,6 +6,7 @@ import { extractMarkdownHeadings } from '../../helper/utils/extract-markdown-hea
 import { blogStatusColor } from '../../helper/utils/color-code';
 import { BlogStatus } from '../../types/blog';
 import { useSelector } from 'react-redux';
+import { FaRegEdit } from 'react-icons/fa';
 
 const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
   const { slug } = useParams();
@@ -24,9 +25,7 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
     <div className="flex flex-col md:flex-row gap-6 md:h-screen">
       <div className="md:w-1/4 hidden md:block md:order-2 ">
         <div className="md:pl-4 h-full overflow-y-auto scrollbar-hide">
-          <h2 className="text-xl font-semibold mb-2 dark:text-gray-200">
-            Headings
-          </h2>
+          <h3>Headings</h3>
           <ul className="space-y-2 text-sm dark:text-gray-200">
             {headings.map((heading, index) => {
               return (
@@ -47,15 +46,13 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
       <div className="md:w-3/4 order-2 md:order-1 h-screen md:border-r md:border-gray-300 dark:md:border-gray-700 md:pr-4">
         <div className="flex flex-col gap-y-4 h-full overflow-y-auto scrollbar-hide">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold dark:text-gray-100">
-              {blogData.title}
-            </h1>
+            <h1>{blogData.title}</h1>
             {auth.email === blogData.user.email && (
               <button
                 onClick={navigateFromBlogDetailsPage}
-                className="px-6 py-2 bg-purple-500 hover:bg-purple-600 text-gray-50 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
+                className="btn-primary"
               >
-                edit
+                <FaRegEdit size={18} /> Edit Blog
               </button>
             )}
           </div>
@@ -106,26 +103,3 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
 };
 
 export default DisplayBlog;
-
-
-/*
-Software Engineer from Exabyting
-<li>work one </li>
-<li> hello ek </li>
-<li> lkjads </li>
-
-Intern trainee
-<li> work </li>
-<li> sleep </li>
-
-Software Engineer from Exabyting
-- work one
-- hello ek
-- lkjads
-
-Intern trainee
-- work
-- sleep
-
-
-*/

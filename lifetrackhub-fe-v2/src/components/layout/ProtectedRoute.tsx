@@ -15,10 +15,10 @@ const ProtectedRoute = () => {
   const navbarData = getNavbarDataByUserRole();
 
   return (
-    <div className="h-screen flex flex-col bg-white dark:bg-gray-900">
+    <div className="h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
       <ProtectedNavbar items={navbarData} />
-      <main className="flex-1 flex justify-center overflow-y-auto my-0 md:my-2 dark:bg-gray-900 scrollbar-hide">
-        <div className="flex-1  mx-auto max-w-6xl">
+      <main className="flex-1 flex justify-center overflow-y-auto m-1 lg:m-2 bg-gray-50 dark:bg-gray-900 scrollbar-hide">
+        <div className="flex-1 mx-auto max-w-6xl lg:rounded-lg">
           <Outlet />
         </div>
       </main>

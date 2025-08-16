@@ -12,8 +12,8 @@ import Spinner from '../../components/common/Spinner';
 import CommonSearchBox from '../../components/common/CommonSearchBox';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import useAuth from '../../helper/hooks/useAuth';
-import { FiFilter } from 'react-icons/fi';
 import { OptionType } from '../../types/common';
+import OnClickFilterIcon from '../../components/common/button/OnClickFilterIcon';
 
 const statusOptions: OptionType[] = [
   { value: 'PUBLIC', label: 'PUBLIC' },
@@ -162,26 +162,14 @@ const BlogContainer: React.FC = () => {
   if (isBlogContentLoading) return <Spinner />;
 
   return (
-    <div className="border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
-        Blogs
-      </h1>
-      <div className="flex items-center justify-end mb-4">
-        <button
-          className={`p-2 rounded-full border border-purple-200 dark:border-gray-700 hover:bg-purple-50 dark:hover:bg-gray-800 transition`}
-          onClick={() => setShowFilters(v => !v)}
-          aria-label="Toggle filters"
-        >
-          <FiFilter
-            size={22}
-            className={
-              showFilters
-                ? 'text-purple-600 dark:text-purple-300'
-                : 'text-gray-400 dark:text-gray-500'
-            }
-          />
-        </button>
-      </div>
+    <div className="common-box-container">
+      <h1>Blogs</h1>
+
+      <OnClickFilterIcon
+        showFilter={showFilters}
+        showFilterHandler={() => setShowFilters(v => !v)}
+      />
+
       {auth && showFilters && (
         <div className="gap-6">
           <CommonSearchBox

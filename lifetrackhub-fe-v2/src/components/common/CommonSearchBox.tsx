@@ -43,7 +43,7 @@ const CommonSearchBox: React.FC<{
 
   return (
     <div className="w-full mb-3 md:mb-4">
-      <div className="bg-gray-50 dark:bg-gray-800 border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-2 lg:p-6 flex flex-wrap gap-2 lg:gap-6 items-end">
+      <div className="common-box flex flex-wrap gap-2 lg:gap-4 items-end">
         {/* Text Inputs */}
         {textFields?.map((item, index) => (
           <div key={index} className="flex flex-col w-full lg:w-[220px]">
