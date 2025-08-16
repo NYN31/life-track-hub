@@ -14,6 +14,7 @@ import { customItemsForMarkdown } from '../../constants/blog-editor-icons';
 import MarkdownEditor from './MarkdownEditor';
 import useDarkMode from '../../helper/hooks/useDarkMode';
 import { getCustomSelectStyles } from '../../helper/utils/get-custom-select-styles';
+import OnSubmitButton from '../common/button/OnSubmitButton';
 
 const BlogCreateForm: React.FC<{
   blogDetails: IBlog;
@@ -23,9 +24,8 @@ const BlogCreateForm: React.FC<{
   const navigate = useNavigate();
   const isDark = useDarkMode();
 
-  const [isLoadingBlogCreation, setLoadingBlogCreation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [triggerBlogCreate] = useCreateBlogMutation();
+  const [triggerBlogCreate, { isLoading: isSaving }] = useCreateBlogMutation();
 
   const {
     register,
@@ -33,7 +33,7 @@ const BlogCreateForm: React.FC<{
     handleSubmit,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<IBlogFormInputs>({
     mode: 'onChange',
     defaultValues: {
@@ -49,7 +49,8 @@ const BlogCreateForm: React.FC<{
 
   // --- Handlers ---
   const onSubmit: SubmitHandler<IBlogFormInputs> = async data => {
-    setLoadingBlogCreation(true);
+    if (!data || !isDirty) return;
+
     setErrorMessage('');
     const blogData = {
       ...data,
@@ -65,8 +66,7 @@ const BlogCreateForm: React.FC<{
       })
       .catch(err => {
         setErrorMessage(err?.data?.message);
-      })
-      .finally(() => setLoadingBlogCreation(false));
+      });
   };
 
   // --- Autosave Draft ---
@@ -98,41 +98,48 @@ const BlogCreateForm: React.FC<{
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700 animate-fade-in"
+      className="common-box space-y-6 animate-fade-in"
     >
       {/* Blog Title */}
-      <div>
-        <label
-          htmlFor="title"
-          className="block mb-1 font-semibold text-gray-700 dark:text-gray-200"
-        >
+      <div className="space-y-2">
+        <label htmlFor="title" className="form-label">
           Title <span className="text-red-500">*</span>
         </label>
         <input
           id="title"
-          {...register('title', { required: 'Title is required' })}
-          className="w-full px-4 py-2 border border-purple-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none shadow bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+          {...register('title', {
+            required: 'Title is required',
+            minLength: {
+              value: 3,
+              message: 'Title must be at least 3 characters long',
+            },
+            maxLength: {
+              value: 255,
+              message: 'Title must not exceed 255 characters',
+            },
+            pattern: {
+              value: /^[a-zA-Z0-9\s.,!?'"-]+$/,
+              message:
+                'Title can only contain letters, numbers, and basic punctuation (.,!?\'"-)',
+            },
+          })}
+          className="form-input-field"
           placeholder="Enter blog title"
         />
         {errors.title && (
-          <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-            {errors.title.message}
-          </p>
+          <p className="form-field-error">{errors.title.message}</p>
         )}
       </div>
 
       {/* Status */}
-      <div>
-        <label
-          htmlFor="status"
-          className="block mb-1 font-semibold text-gray-700 dark:text-gray-200"
-        >
-          Status
+      <div className="space-y-2">
+        <label htmlFor="status" className="form-label">
+          Status <span className="text-red-500 text-sm">*</span>
         </label>
         <select
           id="status"
           {...register('status')}
-          className="w-full px-4 py-2 border border-purple-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none shadow bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+          className="form-input-field"
         >
           <option value="PUBLIC">PUBLIC</option>
           <option value="PRIVATE">PRIVATE</option>
@@ -142,11 +149,8 @@ const BlogCreateForm: React.FC<{
       </div>
 
       {/* Tags */}
-      <div>
-        <label
-          htmlFor="tags"
-          className="block mb-1 font-semibold text-gray-700 dark:text-gray-200"
-        >
+      <div className="space-y-2">
+        <label htmlFor="tags" className="form-label">
           Tags <span className="text-gray-500 text-sm">(Select multiple)</span>
         </label>
         {/* The Select component should be styled for dark mode via its styles prop or a custom class if possible */}
@@ -170,65 +174,78 @@ const BlogCreateForm: React.FC<{
           )}
         />
         {errors.tags && (
-          <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-            {errors.tags.message}
-          </p>
+          <p className="form-field-error">{errors.tags.message}</p>
         )}
       </div>
 
       {/* Blog cover image path */}
-      <div>
-        <label
-          htmlFor="coverImagePath"
-          className="block mb-1 font-semibold text-gray-700 dark:text-gray-200"
-        >
+      <div className="space-y-2">
+        <label htmlFor="coverImagePath" className="form-label">
           Cover Image Path <span className="text-red-500">*</span>
         </label>
         <input
           id="coverImagePath"
           {...register('coverImagePath', {
             required: 'Cover image path is required',
+            minLength: {
+              value: 5,
+              message: 'Cover image path must be at least 5 characters long',
+            },
+            maxLength: {
+              value: 500,
+              message: 'Cover image path must not exceed 500 characters',
+            },
           })}
-          className="w-full px-4 py-2 border border-purple-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none shadow bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+          className="form-input-field"
           placeholder="Enter cover image path"
         />
         {errors.coverImagePath && (
-          <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-            {errors.coverImagePath.message}
-          </p>
+          <p className="form-field-error">{errors.coverImagePath.message}</p>
         )}
       </div>
 
       {/* Markdown Content */}
-      <div>
-        <label className="block mb-1 font-semibold text-gray-700 dark:text-gray-200">
-          Content (Markdown)
+      <div className="space-y-2">
+        <label className="form-label">
+          Content <span className="text-sm text-gray-500">(Markdown)</span>
+          <span className="text-red-500">*</span>
         </label>
         <Controller
           name="content"
           control={control}
+          rules={{
+            required: 'Content is required',
+            minLength: {
+              value: 50,
+              message: 'Content must be at least 50 characters long',
+            },
+            maxLength: {
+              value: 10000,
+              message: 'Content cannot exceed 10000 characters',
+            },
+          }}
           render={({ field }) => (
             <MarkdownEditor
               value={field.value}
               onChange={field.onChange}
-              error={errors.content?.message}
               customItemsForMarkdown={customItemsForMarkdown}
             />
           )}
         />
+
+        {errors.content && (
+          <p className="form-field-error">{errors.content.message}</p>
+        )}
       </div>
 
       {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={isLoadingBlogCreation}
-        className="bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-700 dark:to-purple-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-800 dark:hover:to-purple-700 transition flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500 dark:disabled:bg-gray-700 dark:disabled:text-gray-400"
-      >
-        {isLoadingBlogCreation ? (
-          <span className="animate-spin mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
-        ) : null}
-        Publish Blog
-      </button>
+
+      <OnSubmitButton
+        text="Publish Blog"
+        isSaving={isSaving}
+        isDirty={isDirty}
+        hasError={Object.keys(errors).length > 0}
+      />
 
       {errorMessage && <ErrorMessage message={errorMessage} />}
     </form>

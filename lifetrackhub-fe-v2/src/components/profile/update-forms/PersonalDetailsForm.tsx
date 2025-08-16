@@ -223,7 +223,12 @@ const PersonalDetailsForm: React.FC = () => {
       </div>
 
       <div className="flex justify-end">
-        <OnSubmitButton text="Submit" isSaving={isSaving} isDirty={isDirty} />
+        <OnSubmitButton
+          text="Submit"
+          isSaving={isSaving}
+          isDirty={isDirty}
+          hasError={Object.keys(errors).length > 0}
+        />
       </div>
 
       {success && <SuccessMessage />}

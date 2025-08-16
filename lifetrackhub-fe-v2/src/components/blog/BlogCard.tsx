@@ -42,8 +42,8 @@ const BlogCard: React.FC<{
   const tagList = tags ? tags.split(',').filter(tag => tag.trim() !== '') : [];
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-2 md:p3 lg:p-4 border border-purple-100 dark:border-gray-700 hover:shadow-md transition duration-200 flex flex-col h-full">
-      <Link to={`${BLOG_DETAILS_PATH}/${slug}`} className="block group">
+    <div className="common-box hover:shadow-md transition duration-200 flex flex-col h-full">
+      <Link to={`${BLOG_DETAILS_PATH}/${slug}`} className="inline-block group">
         <img
           src={coverImagePath || fallbackImage}
           alt={title}
@@ -51,12 +51,11 @@ const BlogCard: React.FC<{
           loading="lazy"
         />
       </Link>
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 space-y-2">
         <Link to={`${BLOG_DETAILS_PATH}/${slug}`}>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2 hover:text-purple-600 dark:hover:text-purple-300 transition line-clamp-1">
-            {title}
-          </h2>
+          <h2 className="line-clamp-1">{title}</h2>
         </Link>
+
         <div className="flex flex-wrap gap-2 mb-2">
           {tagList.map(tag => (
             <span

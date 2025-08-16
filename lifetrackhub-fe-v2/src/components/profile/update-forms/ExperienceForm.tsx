@@ -222,7 +222,12 @@ const ExperienceForm: React.FC = () => {
             })
           }
         />
-        <OnSubmitButton text="Submit" isSaving={isSaving} isDirty={isDirty} />
+        <OnSubmitButton
+          text="Submit"
+          isSaving={isSaving}
+          isDirty={isDirty}
+          hasError={Object.keys(errors).length > 0}
+        />
       </div>
       {success && (
         <div className="text-green-600 dark:text-green-400 mt-4 text-center font-semibold animate-fade-in">

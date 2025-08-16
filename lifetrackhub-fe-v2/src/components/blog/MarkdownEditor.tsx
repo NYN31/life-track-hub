@@ -6,7 +6,6 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 interface MarkdownEditorProps {
   value: string;
   onChange: (val: string) => void;
-  error?: string;
   customItemsForMarkdown: Array<{
     title: string;
     icon: React.ReactNode;
@@ -18,7 +17,6 @@ interface MarkdownEditorProps {
 const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   value,
   onChange,
-  error,
   customItemsForMarkdown,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -50,7 +48,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
 
   return (
     <div>
-      <div className="flex items-start justify-between bg-purple-50 dark:bg-gray-900 border border-purple-200 dark:border-purple-700 rounded-t-lg">
+      <div className="flex items-start justify-between form-input-field">
         <div className="flex flex-wrap gap-2 m-1">
           {customItemsForMarkdown.map(item => (
             <button
@@ -58,7 +56,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
               type="button"
               title={item.title}
               onClick={() => insertAtCursor(item.prefix, item.suffix)}
-              className="p-2 rounded dark:text-gray-200 hover:bg-purple-200 dark:hover:bg-gray-700 transition border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="btn-icon"
             >
               {item.icon}
             </button>
@@ -68,7 +66,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           className="flex flex-row gap-2 m-1 cursor-pointer"
           onClick={togglePreview}
         >
-          <span className="p-2 dark:text-gray-200 rounded hover:bg-purple-200 dark:hover:bg-gray-700 transition border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-400">
+          <span className="btn-icon">
             {isPreviewEnable ? (
               <BsMarkdownFill size="20" />
             ) : (
@@ -78,10 +76,10 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
         </div>
       </div>
       {isPreviewEnable ? (
-        <div className="w-full min-h-[350px] p-4 border border-purple-200 dark:border-gray-700 rounded-b-lg font-mono bg-white dark:bg-gray-900 focus:ring-2 focus:ring-purple-400 focus:outline-none resize-y shadow">
+        <div className="w-full min-h-[350px] form-input-field overflow-auto">
           <MarkdownPreview
             source={value}
-            className=" markdown-body dark:bg-gray-900 dark:text-gray-100"
+            className="markdown-body dark:bg-gray-900 dark:text-gray-100"
           />
         </div>
       ) : (
@@ -89,12 +87,10 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           ref={textareaRef}
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="w-full min-h-[400px] max-h-[600px] p-4 border border-purple-200 dark:border-gray-700 rounded-b-lg font-mono bg-white focus:ring-2 focus:ring-purple-400 focus:outline-none resize-none shadow dark:bg-gray-900 dark:text-gray-100"
+          className="form-input-field w-full min-h-[400px] max-h-[600px] scrollbar-hide"
           placeholder="Write your markdown here..."
         />
       )}
-
-      {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
     </div>
   );
 };

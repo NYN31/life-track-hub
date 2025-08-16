@@ -10,22 +10,22 @@ import Spinner from '../../components/common/Spinner';
 import { extractErrorMessage } from '../../helper/utils/extract-error-message';
 import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
 import { IBlog, TagOption } from '../../types/blog';
+import { MdOutlineImageSearch } from 'react-icons/md';
 
 const BlogUpdateContainer = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const [isLoadingBlogUpdation, setLoadingBlogUpdation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentBlog, setCurrentBlog] = useState<IBlog | null>(null);
   const [currBlogTags, setCurrBlogTags] = useState<TagOption[]>([]);
 
   const { data: blogDataBySlug, error: errorBlogDataBySlug } =
     useGetBlogBySlugQuery(slug);
-  const [triggerBlogUpdate] = useUpdateBlogMutation();
+  const [triggerBlogUpdate, { isLoading: isLoadingBlogUpdation }] =
+    useUpdateBlogMutation();
 
   const blogUpdateHandler = async (data: any, reset: () => void) => {
-    setLoadingBlogUpdation(true);
     setErrorMessage('');
 
     const blogData = {
@@ -42,8 +42,7 @@ const BlogUpdateContainer = () => {
       })
       .catch(err => {
         setErrorMessage(err?.data?.message);
-      })
-      .finally(() => setLoadingBlogUpdation(false));
+      });
   };
 
   useEffect(() => {
@@ -61,16 +60,14 @@ const BlogUpdateContainer = () => {
   if (isLoadingBlogUpdation) return <Spinner />;
 
   return (
-    <div className="border border-purple-100 shadow-sm rounded-lg p-4 md:p-6 lg:p-8">
+    <div className="common-box-container animate-fade-in">
       <div className="flex items-start justify-between">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-200">
-          Update Blog
-        </h2>
+        <h1>Update Blog</h1>
         <button
           onClick={() => navigate(`${BLOG_DETAILS_PATH}/${slug}`)}
-          className="px-6 py-2 bg-purple-500 hover:bg-purple-600 text-gray-50 font-semibold rounded-lg transition duration-200 shadow-sm uppercase"
+          className="btn-primary"
         >
-          Details
+          <MdOutlineImageSearch size="18" /> Details
         </button>
       </div>
 
@@ -82,7 +79,7 @@ const BlogUpdateContainer = () => {
           currTags={currBlogTags}
           coverImagePath={currentBlog?.coverImagePath || ''}
           updateHandler={blogUpdateHandler}
-          isLoadingUpdation={isLoadingBlogUpdation}
+          isSaving={isLoadingBlogUpdation}
           setErrorMessage={setErrorMessage}
         />
       )}

@@ -170,7 +170,12 @@ const AchievementsForm: React.FC = () => {
             append({ achievementTitle: '', description: '', link: '' })
           }
         />
-        <OnSubmitButton text="Submit" isSaving={isSaving} isDirty={isDirty} />
+        <OnSubmitButton
+          text="Submit"
+          isSaving={isSaving}
+          isDirty={isDirty}
+          hasError={Object.keys(errors).length > 0}
+        />
       </div>
 
       {success && <SuccessMessage />}

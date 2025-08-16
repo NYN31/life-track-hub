@@ -17,11 +17,9 @@ const BlogStatsContainer = () => {
   }, [data]);
 
   return (
-    <div className="border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900">
+    <div className="common-box-container">
       {/* Heading */}
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-4">
-        📊 Blog Statistics
-      </h1>
+      <h1>📊 Blog Statistics</h1>
 
       {blogStatsData && <BlogStatsDashboard stats={blogStatsData} />}
 
