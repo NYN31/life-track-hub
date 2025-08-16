@@ -74,6 +74,18 @@
     @apply transition border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-400;
   }
 
+  .btn-pagination-arrow {
+    @apply px-[10px] py-2 rounded-lg bg-gray-100 dark:bg-gray-100 text-gray-500 hover:bg-purple-300 hover:text-purple-700 transition disabled:bg-gray-300 border border-gray-300 disabled:dark:bg-gray-400 disabled:cursor-not-allowed;
+  }
+
+  .btn-pagination-selected {
+    @apply px-[14px] py-2 rounded-lg font-semibold transition border-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white border-purple-500 shadow;
+  }
+
+  .btn-pagination-not-selected {
+    @apply px-4 py-2 rounded-lg font-semibold transition border-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-50 border-gray-200 hover:bg-purple-50 hover:border-purple-400;
+  }
+
   /* Common Styles */
 
   .common-box-container {
