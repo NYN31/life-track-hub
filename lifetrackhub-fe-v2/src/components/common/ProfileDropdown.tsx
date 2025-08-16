@@ -64,7 +64,7 @@ const ProfileDropdown: React.FC<{
               </span>
             </div>
           </div>
-          <ul className="">
+          <ul className="list-none p-0 m-0">
             <li>
               <button
                 onClick={() => {

@@ -1,4 +1,6 @@
 import React from 'react';
+import { MdOutlineKeyboardArrowRight } from 'react-icons/md';
+import { MdOutlineKeyboardArrowLeft } from 'react-icons/md';
 
 interface PaginationProps {
   handlePreviousPage: () => void;
@@ -39,24 +41,24 @@ const Pagination: React.FC<PaginationProps> = ({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="mt-10 flex justify-center items-center gap-2 select-none">
+    <div className="mt-10 flex justify-center items-center gap-1 md:gap-2 select-none">
       <button
         onClick={handlePreviousPage}
         disabled={!hasPrevious}
-        className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-100 text-gray-500 hover:bg-purple-300 hover:text-purple-700 transition disabled:bg-gray-300 disabled:dark:bg-gray-400 disabled:cursor-not-allowed"
+        className="btn-pagination-arrow"
         aria-label="Previous page"
       >
-        &larr;
+        <MdOutlineKeyboardArrowLeft size={20} />
       </button>
       {getPageNumbers().map(page => (
         <button
           key={page}
           onClick={() => onPageChange && onPageChange(page)}
-          className={`px-4 py-2 rounded-lg font-semibold transition border-2 ${
+          className={
             page === currentPageNo
-              ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white border-purple-500 shadow'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-50 border-gray-200 hover:bg-purple-50 hover:border-purple-400'
-          }`}
+              ? 'btn-pagination-selected'
+              : 'btn-pagination-not-selected'
+          }
           disabled={page === currentPageNo}
           aria-current={page === currentPageNo ? 'page' : undefined}
         >
@@ -66,10 +68,10 @@ const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={handleNextPage}
         disabled={!hasNext}
-        className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-100 text-gray-500 hover:bg-purple-300 hover:text-purple-700 transition disabled:bg-gray-300 disabled:dark:bg-gray-400 disabled:cursor-not-allowed"
+        className="btn-pagination-arrow"
         aria-label="Next page"
       >
-        &rarr;
+        <MdOutlineKeyboardArrowRight size={20} />
       </button>
     </div>
   );
