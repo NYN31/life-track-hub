@@ -36,7 +36,6 @@ const AchievementsForm: React.FC = () => {
     defaultValues: { achievements: [] },
   });
 
-  console.log(errors);
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'achievements',

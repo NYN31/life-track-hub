@@ -31,16 +31,18 @@ const ExperiencesSection: React.FC<ExperiencesSectionProps> = ({
                 className="bg-gray-50 dark:bg-gray-800 text-sm"
               />
             )}
-            {exp.link && (
-              <a
-                href={exp.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link-view"
-              >
-                <FiGlobe /> View
-              </a>
-            )}
+            <div className="inline-block mt-2">
+              {exp.link && (
+                <a
+                  href={exp.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-view"
+                >
+                  <FiGlobe /> View
+                </a>
+              )}
+            </div>
           </li>
         ))}
       </ul>

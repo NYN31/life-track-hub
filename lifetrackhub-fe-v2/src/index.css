@@ -163,8 +163,11 @@
   padding-left: 1.5rem;
 }
 
+/* .wmde-markdown-var .wmde-markdown {
+  @apply bg-gray-200 text-gray-900 dark:bg-gray-900 dark:text-gray-50;
+} */
 .wmde-markdown-var {
-  @apply bg-gray-500 text-gray-800 dark:bg-gray-900 dark:text-gray-50 rounded-lg;
+  @apply bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-50 rounded-lg;
 }
 
 /* Style date picker icon for dark mode */
