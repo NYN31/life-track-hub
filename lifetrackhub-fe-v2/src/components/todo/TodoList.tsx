@@ -1,6 +1,8 @@
 import React from 'react';
 import ErrorMessage from '../common/ErrorMessage';
 import { ITodoResponseDto } from '../../types/todo';
+import OnClickButton from '../common/button/OnClickButton';
+import { FaRegEdit } from 'react-icons/fa';
 
 type TodoListProps = {
   todos: ITodoResponseDto[];
@@ -17,17 +19,17 @@ const TodoList: React.FC<TodoListProps> = ({ todos, onEdit }) => {
       {todos.map(todo => (
         <div
           key={todo.id}
-          className="bg-gray-50 dark:bg-gray-800 shadow-sm rounded-lg p-2 md:p3 lg:p-4 border border-purple-100 dark:border-gray-700 hover:shadow-md transition duration-200 flex flex-col"
+          className="common-box flex flex-col p-2 md:p3 lg:p-4"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div
-              className={`w-3 h-3 rounded-full ${
-                todo.todoStatus === 'DONE' ? 'bg-green-400' : 'bg-yellow-400'
-              } border-2 border-white shadow`}
-            ></div>
-            <h3 className="text-xl font-extrabold text-gray-800 dark:text-gray-100 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors truncate">
-              {todo.title}
-            </h3>
+            <div>
+              <div
+                className={`w-3 h-3 rounded-full ${
+                  todo.todoStatus === 'DONE' ? 'bg-green-400' : 'bg-yellow-400'
+                } border-2 border-white shadow`}
+              ></div>
+            </div>
+            <h3 className="line-clamp-2">{todo.title}</h3>
           </div>
           <div className="flex flex-wrap gap-2 mb-4">
             <span
@@ -39,13 +41,13 @@ const TodoList: React.FC<TodoListProps> = ({ todos, onEdit }) => {
             >
               {todo.todoStatus}
             </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+            <span className="info-box">
               Created:{' '}
               {todo.createdDate
                 ? new Date(todo.createdDate).toLocaleString()
                 : '-'}
             </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+            <span className="info-box">
               Last Modified:{' '}
               {todo.lastModifiedDate
                 ? new Date(todo.lastModifiedDate).toLocaleString()
@@ -53,12 +55,11 @@ const TodoList: React.FC<TodoListProps> = ({ todos, onEdit }) => {
             </span>
           </div>
           <div className="flex justify-end mt-auto">
-            <button
-              onClick={() => onEdit(todo)}
-              className="bg-gradient-to-r from-purple-600 to-purple-500 text-white font-bold py-2 px-6 rounded-xl shadow-md hover:purple-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400"
-            >
-              Edit
-            </button>
+            <OnClickButton
+              action={() => onEdit(todo)}
+              text={'Edit'}
+              icon={<FaRegEdit size={18} />}
+            />
           </div>
         </div>
       ))}
