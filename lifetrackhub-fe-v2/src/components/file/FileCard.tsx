@@ -41,6 +41,7 @@ const FileCard: React.FC<FileCardProps> = ({ file }) => {
             <FiGlobe /> View
           </a>
 
+          {/* TODO: will implement download functionality later */}
           {/* <OnClickTrashIcon
             handleRemover={() => {}}
             absolute={false}

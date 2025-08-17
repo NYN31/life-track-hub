@@ -116,14 +116,14 @@ const PersonalDetailsForm: React.FC = () => {
           <input
             id="firstname"
             {...register('firstname', {
-              required: 'Firstname should be required',
+              required: 'First name should be required',
               minLength: {
                 value: 3,
-                message: 'Firstname must be at least 3 characters long',
+                message: 'First name must be at least 3 characters long',
               },
               maxLength: {
                 value: 40,
-                message: 'Description cannot exceed 40 characters',
+                message: 'First name cannot exceed 40 characters',
               },
             })}
             className="form-input-field"
