@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { LOGIN_PATH } from '../../constants/title-and-paths';
 import { useRegistrationMutation } from '../../features/auth/authApi';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import OnSubmitButton from '../common/button/OnSubmitButton';
 
 const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
@@ -44,18 +45,16 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="flex justify-center p-4 md:p-20">
-        <div className="w-full max-w-lg p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
-          <h2 className="text-2xl font-semibold text-center text-gray-800 dark:text-gray-100 mb-6">
-            Register
-          </h2>
+        <div className="common-box p-2 md:p-4 lg:p-6 xl:p-8 w-full max-w-lg">
+          <h2 className="text-center">Register</h2>
 
           <div className="flex items-center justify-center text-sm text-gray-500 dark:text-gray-300 mt-4 mb-4">
             <span>Already have an account?</span>&nbsp;
             <span
               onClick={() => navigate(LOGIN_PATH)}
-              className="text-blue-600 dark:text-blue-400 underline cursor-pointer"
+              className="link-view underline cursor-pointer"
             >
               Sign In
             </span>
@@ -64,94 +63,73 @@ const RegisterForm: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             {/* First Name */}
             <div className="mb-4">
-              <label
-                htmlFor="firstname"
-                className="block text-gray-700 dark:text-gray-200 mb-1"
-              >
-                First Name
+              <label htmlFor="firstname" className="form-label">
+                First Name <span className="text-red-500">*</span>
               </label>
               <input
                 id="firstname"
                 type="text"
                 {...register('firstname', {
-                  required: 'First name is required',
+                  required: 'First name should be required',
+                  minLength: {
+                    value: 3,
+                    message: 'First name must be at least 3 characters long',
+                  },
+                  maxLength: {
+                    value: 40,
+                    message: 'First name cannot exceed 40 characters',
+                  },
                 })}
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 ${
-                  errors.firstname
-                    ? 'border-red-500 focus:ring-red-200 dark:focus:ring-red-400'
-                    : 'border-gray-300 focus:ring-blue-200 dark:border-gray-700 dark:focus:ring-blue-400'
-                }`}
+                className="form-input-field"
               />
               {errors.firstname && (
-                <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-                  {errors.firstname.message}
-                </p>
+                <p className="form-field-error">{errors.firstname.message}</p>
               )}
             </div>
 
             {/* Last Name */}
             <div className="mb-4">
-              <label
-                htmlFor="lastname"
-                className="block text-gray-700 dark:text-gray-200 mb-1"
-              >
+              <label htmlFor="lastname" className="form-label">
                 Last Name
               </label>
               <input
                 id="lastname"
                 type="text"
                 {...register('lastname', { required: 'Last name is required' })}
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 ${
-                  errors.lastname
-                    ? 'border-red-500 focus:ring-red-200 dark:focus:ring-red-400'
-                    : 'border-gray-300 focus:ring-blue-200 dark:border-gray-700 dark:focus:ring-blue-400'
-                }`}
+                className="form-input-field"
               />
               {errors.lastname && (
-                <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-                  {errors.lastname.message}
-                </p>
+                <p className="form-field-error">{errors.lastname.message}</p>
               )}
             </div>
 
             {/* Email */}
             <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 dark:text-gray-200 mb-1"
-              >
-                Email
+              <label htmlFor="email" className="form-label">
+                Email <span className="text-red-500">*</span>
               </label>
               <input
                 id="email"
                 type="email"
                 {...register('email', {
                   required: 'Email is required',
+
                   pattern: {
                     value: EMAIL_REGEX_V2,
                     message: 'Enter a valid email',
                   },
                 })}
-                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 ${
-                  errors.email
-                    ? 'border-red-500 focus:ring-red-200 dark:focus:ring-red-400'
-                    : 'border-gray-300 focus:ring-blue-200 dark:border-gray-700 dark:focus:ring-blue-400'
-                }`}
+                className="form-input-field"
               />
               {errors.email && (
-                <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-                  {errors.email.message}
-                </p>
+                <p className="form-field-error">{errors.email.message}</p>
               )}
             </div>
 
             {/* Password */}
             <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-gray-700 dark:text-gray-200 mb-1"
-              >
-                Password
+              <label htmlFor="password" className="form-label">
+                Password <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <input
@@ -164,11 +142,7 @@ const RegisterForm: React.FC = () => {
                       message: 'Password must be at least 8 characters',
                     },
                   })}
-                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700 ${
-                    errors.password
-                      ? 'border-red-500 focus:ring-red-200 dark:focus:ring-red-400'
-                      : 'border-gray-300 focus:ring-blue-200 dark:border-gray-700 dark:focus:ring-blue-400'
-                  }`}
+                  className="form-input-field"
                 />
 
                 <span
@@ -179,36 +153,32 @@ const RegisterForm: React.FC = () => {
                 </span>
               </div>
               {errors.password && (
-                <p className="text-sm text-red-500 dark:text-red-400 mt-1">
-                  {errors.password.message}
-                </p>
+                <p className="form-field-error">{errors.password.message}</p>
               )}
             </div>
 
-            <p className="flex text-sm text-gray-500 dark:text-gray-300 mt-4 mb-2">
+            <p className="flex flex-wrap text-sm text-gray-500 dark:text-gray-300 my-4">
               <span>By registering in, you agree to our</span>&nbsp;
               <span
                 onClick={() => navigate('/')}
-                className="text-blue-600 dark:text-blue-400 underline cursor-pointer"
+                className="link-view underline cursor-pointer"
               >
                 Terms and Conditions
               </span>
             </p>
 
-            <button
-              type="submit"
-              disabled={isLoading || !isValid}
-              className={`w-full py-2 rounded-lg transition duration-200 ${
-                isLoading || !isValid
-                  ? 'bg-gray-400 dark:bg-gray-700 cursor-not-allowed text-white dark:text-gray-400'
-                  : 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white cursor-pointer'
-              }`}
-            >
-              {isLoading ? 'Register in...' : 'Register'}
-            </button>
+            {/* Submit */}
+            <div className="flex justify-end">
+              <OnSubmitButton
+                text="Register"
+                isSaving={isLoading}
+                isDirty={true}
+                hasError={!isValid}
+              />
+            </div>
 
             {errorMessage && (
-              <p className="mt-4 text-sm text-red-600 dark:text-red-400">
+              <p className="form-field-error text-sm text-center mt-4">
                 {errorMessage}
               </p>
             )}
