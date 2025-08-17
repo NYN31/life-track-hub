@@ -11,6 +11,7 @@ import { extractErrorMessage } from '../../helper/utils/extract-error-message';
 import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
 import { IBlog, TagOption } from '../../types/blog';
 import { MdOutlineImageSearch } from 'react-icons/md';
+import OnClickButton from '../../components/common/button/OnClickButton';
 
 const BlogUpdateContainer = () => {
   const { slug } = useParams();
@@ -63,12 +64,12 @@ const BlogUpdateContainer = () => {
     <div className="common-box-container animate-fade-in">
       <div className="flex items-start justify-between">
         <h1>Update Blog</h1>
-        <button
-          onClick={() => navigate(`${BLOG_DETAILS_PATH}/${slug}`)}
-          className="btn-primary"
-        >
-          <MdOutlineImageSearch size="18" /> Details
-        </button>
+
+        <OnClickButton
+          action={() => navigate(`${BLOG_DETAILS_PATH}/${slug}`)}
+          text="Details Blog"
+          icon={<MdOutlineImageSearch size={18} />}
+        />
       </div>
 
       {currentBlog && (

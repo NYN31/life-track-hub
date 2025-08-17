@@ -13,13 +13,13 @@
     padding: 0;
   }
   h1 {
-    @apply my-4 text-4xl font-bold text-gray-800 dark:text-gray-100;
+    @apply my-4 text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-100;
   }
   h2 {
-    @apply text-3xl font-bold text-purple-700 dark:text-purple-300;
+    @apply text-2xl md:text-3xl font-bold text-purple-700 dark:text-purple-300;
   }
   h3 {
-    @apply text-2xl font-bold text-purple-700 dark:text-purple-300;
+    @apply text-xl md:text-2xl font-bold text-purple-700 dark:text-purple-300;
   }
   h4 {
     @apply text-xl font-bold text-purple-700 dark:text-purple-300;
@@ -50,15 +50,15 @@
   /* buttons Styles */
 
   .btn-primary {
-    @apply inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-600 dark:to-purple-700 text-white rounded-lg font-medium shadow hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-600 dark:hover:to-purple-700 transition;
+    @apply inline-flex items-center gap-3 px-3 md:px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-600 dark:to-purple-700 text-white rounded-lg font-medium shadow hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-600 dark:hover:to-purple-700 transition;
   }
 
   .btn-add {
-    @apply inline-flex items-center gap-3 p-3 bg-gradient-to-r from-green-600 to-green-500 dark:from-green-400 dark:to-green-500 text-white rounded-lg font-medium text-sm shadow hover:from-green-700 hover:to-green-600 dark:hover:from-green-600 dark:hover:to-green-700 transition;
+    @apply inline-flex items-center gap-3 p-3 md:p-4 bg-gradient-to-r from-green-600 to-green-500 dark:from-green-400 dark:to-green-500 text-white rounded-lg font-medium text-sm shadow hover:from-green-700 hover:to-green-600 dark:hover:from-green-600 dark:hover:to-green-700 transition;
   }
 
   .btn-submit {
-    @apply px-3 md:px-6 py-3 rounded-xl font-bold text-sm md:text-base shadow-lg tracking-wide flex items-center justify-center gap-3 transition;
+    @apply px-3 md:px-4 py-2 rounded-lg font-bold text-sm md:text-base shadow-lg tracking-wide flex items-center justify-center gap-3 transition;
   }
 
   .btn-submit-disabled {
@@ -112,6 +112,10 @@
     @apply text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100;
   }
 
+  .info-box {
+    @apply text-xs text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 border border-gray-500 px-2 py-1 rounded-full;
+  }
+
   /* Form Styles*/
 
   .form-label {
@@ -119,11 +123,11 @@
   }
 
   .form-input-field {
-    @apply mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+    @apply mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-2 md:p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
   }
 
   .form-readonly-input-field {
-    @apply mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 cursor-not-allowed;
+    @apply mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-2 md:p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 cursor-not-allowed;
   }
 
   .form-field-error {

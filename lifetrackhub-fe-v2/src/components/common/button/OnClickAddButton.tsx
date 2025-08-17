@@ -2,12 +2,12 @@ import React from 'react';
 import { FaPlus } from 'react-icons/fa';
 
 interface OnClickAddButtonProps {
-  text: string;
-  handleClick: () => void;
+  text?: string;
+  handleClick?: () => void;
 }
 
 const OnClickAddButton: React.FC<OnClickAddButtonProps> = ({
-  text,
+  text = '',
   handleClick,
 }) => {
   return (

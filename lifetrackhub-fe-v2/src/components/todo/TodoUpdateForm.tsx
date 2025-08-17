@@ -1,6 +1,8 @@
 import React, { forwardRef, useState } from 'react';
 import { ITodoItems, ITodoResponseDto, TodoStatus } from '../../types/todo';
-import { RiDeleteBin6Line } from 'react-icons/ri';
+import OnClickTrashIcon from '../common/button/OnClickTrashIcon';
+import OnClickAddButton from '../common/button/OnClickAddButton';
+import OnSubmitButton from '../common/button/OnSubmitButton';
 
 type TodoUpdateFormProps = {
   editTodo: ITodoResponseDto;
@@ -20,8 +22,7 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
     );
     const [input, setInput] = useState('');
 
-    const handleAdd = (e: React.FormEvent) => {
-      e.preventDefault();
+    const handleAdd = () => {
       if (input.trim()) {
         setTodoItems([
           ...todoItems,
@@ -73,42 +74,44 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
       <form
         ref={ref}
         onSubmit={handleSubmit}
-        className="bg-white dark:bg-gray-900 shadow-xl dark:shadow-gray-800 rounded-lg p-4 md:p-6 lg:p-8 flex flex-col gap-6 border border-gray-300 dark:border-gray-700 overflow-y-auto max-h-[65vh] scrollbar-hide"
+        className="common-box-container gap-6 overflow-y-auto max-h-[65vh] scrollbar-hide"
       >
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2 text-center">
-          Update Todo
-        </h2>
+        <h2 className="text-center">Update Todo</h2>
         <div className="flex flex-col gap-2">
           <input
             id="title"
             type="text"
             value={title}
             onChange={e => setTitle(e.target.value)}
-            className="flex-1 py-2 border border-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-2xl focus:outline-none"
+            className="flex-1 px-1 md:px-2 py-2 border border-none bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-4xl focus:outline-none"
             placeholder="Enter todo title"
             required
           />
         </div>
-        <div className="flex flex-col sm:flex-row gap-2">
+
+        <div className="flex flex-row gap-2">
           <input
             type="text"
+            name="todo item"
             value={input}
             onChange={e => setInput(e.target.value)}
-            className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            className="form-input-field flex-1 p-2 md:p-4 m-1"
             placeholder="Enter todo item"
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleAdd();
+              }
+            }}
           />
-          <button
-            onClick={handleAdd}
-            className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-500 dark:from-green-700 dark:to-green-600 text-white rounded-xl font-semibold shadow-md hover:from-green-700 hover:to-green-600 dark:hover:from-green-800 dark:hover:to-green-700 transition flex items-center justify-center gap-2"
-          >
-            Add
-          </button>
+
+          <OnClickAddButton handleClick={handleAdd} />
         </div>
-        <ul className="mt-4 space-y-2">
+        <div className="space-y-2">
           {todoItems.map(item => (
-            <li
+            <div
               key={item.todoItemId}
-              className="flex items-center justify-between bg-gray-100 dark:bg-gray-700 rounded px-3 py-2 gap-2"
+              className="mx-1.5 my-2 flex items-center justify-between bg-gray-100 dark:bg-gray-700 rounded px-3 py-2 gap-2"
             >
               <input
                 type="checkbox"
@@ -124,25 +127,23 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
                 }
                 className="flex-1 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none"
               />
-              <button
-                type="button"
-                onClick={() => handleDelete(item.todoItemId)}
-                className="ml-2 text-red-500 hover:text-red-700 font-bold"
-                title="Delete"
-              >
-                <RiDeleteBin6Line size={20} />
-              </button>
-            </li>
+
+              <OnClickTrashIcon
+                handleRemover={() => handleDelete(item.todoItemId)}
+                absolute={false}
+                title="Remove Todo Item"
+              />
+            </div>
           ))}
-        </ul>
+        </div>
+
         <div className="flex gap-4 mt-4 justify-center">
-          <button
-            type="submit"
-            className="bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-700 dark:to-purple-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-800 dark:hover:to-purple-700 transition flex items-center gap-2 self-end"
-            disabled={todoItems.length === 0}
-          >
-            Update
-          </button>
+          <OnSubmitButton
+            text="Update"
+            isSaving={false}
+            isDirty={true}
+            hasError={todoItems.length === 0 || !title.trim()}
+          />
           <button
             type="button"
             onClick={onCancel}

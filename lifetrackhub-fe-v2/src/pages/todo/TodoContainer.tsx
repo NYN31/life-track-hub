@@ -50,7 +50,7 @@ const TodoContainer: React.FC = () => {
     },
     { skip: !safeEmail }
   );
-  const [addTodo] = useAddTodoMutation();
+  const [addTodo, { isLoading: isLoadingTodoAdd }] = useAddTodoMutation();
   const [updateTodo] = useUpdateTodoMutation();
 
   const handleAddTitleLocal = (title: string) => {
@@ -128,16 +128,15 @@ const TodoContainer: React.FC = () => {
   const totalPages = data?.totalPages ?? 1;
 
   return (
-    <div className="border border-purple-100 dark:border-gray-700 shadow-sm rounded-lg p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 flex align-center justify-center">
-        Todo
-      </h1>
+    <div className="common-box-container">
+      <h1>Todo Management</h1>
       <TodoAddForm
         onAddTitleLocal={handleAddTitleLocal}
         onAddLocal={handleAddLocal}
         onSubmit={handleSubmit}
         localTodos={localTodos.todos as ITodoItems[]}
         onDeleteLocal={handleDeleteLocal}
+        isLoadingTodoAdd={isLoadingTodoAdd}
       />
 
       {isError || errorMessage ? (

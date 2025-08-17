@@ -7,6 +7,7 @@ import { blogStatusColor } from '../../helper/utils/color-code';
 import { BlogStatus } from '../../types/blog';
 import { useSelector } from 'react-redux';
 import { FaRegEdit } from 'react-icons/fa';
+import OnClickButton from '../common/button/OnClickButton';
 
 const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
   const { slug } = useParams();
@@ -48,12 +49,11 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
           <div className="flex items-center justify-between">
             <h1>{blogData.title}</h1>
             {auth.email === blogData.user.email && (
-              <button
-                onClick={navigateFromBlogDetailsPage}
-                className="btn-primary"
-              >
-                <FaRegEdit size={18} /> Edit Blog
-              </button>
+              <OnClickButton
+                action={navigateFromBlogDetailsPage}
+                text="Edit Blog"
+                icon={<FaRegEdit size={18} />}
+              />
             )}
           </div>
 
