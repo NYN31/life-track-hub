@@ -9,10 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import { getValidParams } from '../../helper/utils/get-valid-params';
 import useQuery from '../../helper/hooks/useQuery';
 import FileCard from './FileCard';
-import { FiFilter } from 'react-icons/fi';
 import CommonSearchBox from '../common/CommonSearchBox';
 import { OptionType } from '../../types/common';
 import { extractErrorMessage } from '../../helper/utils/extract-error-message';
+import OnClickFilterIcon from '../common/button/OnClickFilterIcon';
 
 const imageOptions: OptionType[] = [
   { value: 'IMG', label: 'Image' },
@@ -35,7 +35,7 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
   );
   const { data, isLoading, isError, error, refetch } = useGetFilesQuery({
     page: Number(queryPageNo),
-    size: 10,
+    size: 12,
     fileType: queryFileType as FileType,
   });
   const [results, setResults] = useState<FileDto[]>([]);
@@ -96,20 +96,10 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
   return (
     <div className="">
       <div className="flex items-center justify-end mb-4">
-        <button
-          className={`p-2 rounded-full border border-purple-200 dark:border-gray-700 hover:bg-purple-50 dark:hover:bg-gray-800 transition`}
-          onClick={() => setShowFilters(v => !v)}
-          aria-label="Toggle filters"
-        >
-          <FiFilter
-            size={22}
-            className={
-              showFilters
-                ? 'text-purple-600 dark:text-purple-300'
-                : 'text-gray-400 dark:text-gray-500'
-            }
-          />
-        </button>
+        <OnClickFilterIcon
+          showFilter={showFilters}
+          showFilterHandler={() => setShowFilters(v => !v)}
+        />
       </div>
 
       {showFilters && (
@@ -130,7 +120,7 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {results.map((file: FileDto) => (
           <FileCard key={file.filePath} file={file} />
         ))}

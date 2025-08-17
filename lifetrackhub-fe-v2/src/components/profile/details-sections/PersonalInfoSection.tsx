@@ -33,7 +33,7 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
         </a>
       )}
     </div>
-    <div className="flex-1 space-y-2 border-l-2 border-purple-300 pl-4">
+    <div className="flex-1 space-y-2 border-purple-300 md:pl-4">
       <h2 className="text-3xl flex items-center gap-2">
         <FiUser /> {user?.firstname} {user?.lastname}
       </h2>

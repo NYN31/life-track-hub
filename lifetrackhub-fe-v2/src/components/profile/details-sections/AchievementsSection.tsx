@@ -25,19 +25,21 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             {ach.description && (
               <MarkdownPreview
                 source={ach.description}
-                className="bg-gray-50 dark:bg-gray-800 text-sm"
+                className="bg-gray-100 dark:bg-gray-800 text-sm"
               />
             )}
-            {ach.link && (
-              <a
-                href={ach.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link-view"
-              >
-                <FiGlobe /> View
-              </a>
-            )}
+            <div className="inline-block mt-2">
+              {ach.link && (
+                <a
+                  href={ach.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-view"
+                >
+                  <FiGlobe /> View
+                </a>
+              )}
+            </div>
           </li>
         ))}
       </ul>
