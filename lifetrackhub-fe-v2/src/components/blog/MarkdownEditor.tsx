@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { FaEye } from 'react-icons/fa';
 import { BsMarkdownFill } from 'react-icons/bs';
-import MarkdownPreview from '@uiw/react-markdown-preview';
+import MarkdownRenderer from './MarkdownRenderer';
 
 interface MarkdownEditorProps {
   value: string;
@@ -77,10 +77,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
       </div>
       {isPreviewEnable ? (
         <div className="w-full min-h-[350px] form-input-field overflow-auto">
-          <MarkdownPreview
-            source={value}
-            className="markdown-body dark:bg-gray-900 dark:text-gray-100"
-          />
+          <MarkdownRenderer content={value} />
         </div>
       ) : (
         <textarea

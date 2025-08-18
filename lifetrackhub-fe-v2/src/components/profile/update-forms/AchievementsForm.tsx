@@ -131,9 +131,6 @@ const AchievementsForm: React.FC = () => {
             <div className="mt-4">
               <label className="form-label">
                 Description{' '}
-                <span className="text-sm text-gray-500">
-                  (markdown allowed)
-                </span>
                 <span className="text-red-500">*</span>
               </label>
               <textarea

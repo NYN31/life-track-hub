@@ -7,7 +7,7 @@ const BlogList: React.FC<{ results: IBlog[] }> = ({ results }) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-6">
       {results.map(blog => {
         const username = blog.user.firstname + ' ' + blog.user.lastname;
-        const authorImage = blog.user.userDetails?.profileImagePath;
+        const authorImage = blog.user.profileImagePath;
         return (
           <BlogCard
             key={blog.slug}

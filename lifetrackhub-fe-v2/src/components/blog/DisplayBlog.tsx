@@ -1,4 +1,3 @@
-import MarkdownPreview from '@uiw/react-markdown-preview';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BLOG_UPDATED_PATH } from '../../constants/title-and-paths';
 import fallback from '../../assets/blogFallback.png';
@@ -8,6 +7,7 @@ import { BlogStatus } from '../../types/blog';
 import { useSelector } from 'react-redux';
 import { FaRegEdit } from 'react-icons/fa';
 import OnClickButton from '../common/button/OnClickButton';
+import MarkdownRenderer from './MarkdownRenderer';
 
 const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
   const { slug } = useParams();
@@ -46,8 +46,27 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
 
       <div className="md:w-3/4 order-2 md:order-1 h-screen md:border-r md:border-gray-300 dark:md:border-gray-700 md:pr-4">
         <div className="flex flex-col gap-y-4 h-full overflow-y-auto scrollbar-hide">
+          {/* Blog Author Info */}
           <div className="flex items-center justify-between">
-            <h1>{blogData.title}</h1>
+            <div className="flex items-center gap-4">
+              <img
+                src={blogData.user?.profileImagePath || fallback}
+                alt="Author"
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <div>
+                <h3 className="text-lg font-semibold dark:text-gray-200">
+                  {blogData.user.firstname} {blogData.user.lastname}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {new Date(blogData.createdDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </p>
+              </div>
+            </div>
             {auth.email === blogData.user.email && (
               <OnClickButton
                 action={navigateFromBlogDetailsPage}
@@ -56,6 +75,8 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
               />
             )}
           </div>
+
+          <h1>{blogData.title}</h1>
 
           <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
             Status:{' '}
@@ -90,11 +111,9 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
             />
           </div>
 
+          {/* Blog Content */}
           <div className="shadow-sm rounded-lg md:6 lg:8">
-            <MarkdownPreview
-              source={blogData.content}
-              className="wmde-markdown-var markdown-body"
-            />
+            <MarkdownRenderer content={blogData.content} />
           </div>
         </div>
       </div>

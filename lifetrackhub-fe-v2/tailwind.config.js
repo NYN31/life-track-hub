@@ -43,5 +43,5 @@ export default {
       '4xl-max': { max: '1850px' },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 };

@@ -91,7 +91,7 @@ public class FileServiceImpl implements FileService {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        int DATE_RANGE_PERIOD_FOR_IMAGE_SEARCH = 30;
+        int DATE_RANGE_PERIOD_FOR_IMAGE_SEARCH = 300;
         if (startDate == null || endDate == null) {
             startDate = LocalDate.now().minusDays(DATE_RANGE_PERIOD_FOR_IMAGE_SEARCH);
             endDate = LocalDate.now();

@@ -148,8 +148,7 @@ const PersonalDetailsForm: React.FC = () => {
       </div>
       <div>
         <label htmlFor="objective" className="form-label">
-          Objective{' '}
-          <span className="text-sm text-gray-500">(markdown allowed)</span>
+          Objective
         </label>
         <textarea
           id="objective"

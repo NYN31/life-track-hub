@@ -7,7 +7,7 @@ import fallbackImage from '../../assets/blogFallback.png';
 import { BlogStatus } from '../../types/blog';
 import { blogStatusColor } from '../../helper/utils/color-code';
 
-const getInitials = (firstname: string, lastname: string) => {
+export const getInitials = (firstname: string, lastname: string) => {
   return (
     (firstname?.[0] || '').toUpperCase() + (lastname?.[0] || '').toUpperCase()
   );

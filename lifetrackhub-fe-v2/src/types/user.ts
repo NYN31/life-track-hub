@@ -8,6 +8,7 @@ export interface IUser extends IBase {
   loginType: string;
   accountStatus: string;
   accountType: string;
+  profileImagePath?: string;
   userDetails: IUserDetails | null;
   createdDate: string; // ISO string for Instant
   lastModifiedDate: string; // ISO string for Instant
