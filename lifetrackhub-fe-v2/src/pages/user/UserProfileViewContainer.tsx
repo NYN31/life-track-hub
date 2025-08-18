@@ -9,8 +9,14 @@ import AchievementsSection from '../../components/profile/details-sections/Achie
 import EducationsSection from '../../components/profile/details-sections/EducationsSection';
 import ExperiencesSection from '../../components/profile/details-sections/ExperiencesSection';
 import SocialLinksSection from '../../components/profile/details-sections/SocialLinksSection';
+import OnClickButton from '../../components/common/button/OnClickButton';
+import { PROFILE_UPDATE_PATH } from '../../constants/title-and-paths';
+import { useNavigate } from 'react-router-dom';
+import { FaRegEdit } from 'react-icons/fa';
+
 
 const UserProfileViewContainer: React.FC = () => {
+  const navigate = useNavigate();
   const email = localStorage.getItem('email');
   const { data, isLoading, error } = useGetUserByEmailQuery(email);
 
@@ -23,7 +29,15 @@ const UserProfileViewContainer: React.FC = () => {
 
   return (
     <div className="common-box-container space-y-4">
-      <h1>Profile Details</h1>
+      <div className="flex items-center justify-between ">
+        <h1>Profile Details</h1>
+
+        <OnClickButton
+          action={() => navigate(`${PROFILE_UPDATE_PATH}`)}
+          text="Profile Update"
+          icon={<FaRegEdit size="18" />}
+        />
+      </div>
 
       <PersonalInfoSection user={user} userDetails={userDetails} />
       <SkillsSection skills={userDetails?.skills} />

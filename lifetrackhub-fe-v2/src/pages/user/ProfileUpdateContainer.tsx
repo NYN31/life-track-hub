@@ -5,6 +5,10 @@ import EducationForm from '../../components/profile/update-forms/EducationForm';
 import ExperienceForm from '../../components/profile/update-forms/ExperienceForm';
 import SkillsForm from '../../components/profile/update-forms/SkillsForm';
 import SocialLinksForm from '../../components/profile/update-forms/SocialLinksForm';
+import OnClickButton from '../../components/common/button/OnClickButton';
+import { useNavigate } from 'react-router-dom';
+import { PROFILE_DETAILS_PATH } from '../../constants/title-and-paths';
+import { IoPersonOutline } from 'react-icons/io5';
 
 const profileUpdaterFormTabs = [
   { name: 'details', label: 'Personal Details' },
@@ -16,6 +20,7 @@ const profileUpdaterFormTabs = [
 ];
 
 const ProfileUpdateContainer = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('details');
 
   const renderContent = () => {
@@ -39,7 +44,15 @@ const ProfileUpdateContainer = () => {
 
   return (
     <div className="common-box-container space-y-4">
-      <h1>Profile Settings</h1>
+      <div className="flex items-center justify-between ">
+        <h1>Profile Settings</h1>
+
+        <OnClickButton
+          action={() => navigate(`${PROFILE_DETAILS_PATH}`)}
+          text="Profile Overview"
+          icon={<IoPersonOutline size="18" />}
+        />
+      </div>
       <div className="tabs">
         {profileUpdaterFormTabs.map(tab => (
           <button

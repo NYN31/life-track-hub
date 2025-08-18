@@ -79,7 +79,7 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
                   <button
                     className={`flex items-center gap-1 px-3 py-2 rounded-lg font-medium transition hover:bg-purple-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-200 dark:focus:ring-gray-600 ${
                       openDropdown === item.label
-                        ? 'bg-purple-100 dark:bg-gray-700'
+                        ? 'bg-purple-300 dark:bg-gray-500'
                         : ''
                     }`}
                     onClick={() =>
@@ -117,9 +117,9 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
                       {item.children.map(child => (
                         <button
                           key={child.label}
-                          className={`w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-purple-50 dark:hover:bg-gray-800 transition ${
+                          className={`w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-purple-100 dark:hover:bg-gray-800 transition ${
                             location.pathname === child.path
-                              ? 'bg-purple-100 dark:bg-gray-800 font-semibold'
+                              ? 'bg-purple-200 dark:bg-gray-700 dark:text-gray-50 font-semibold'
                               : ''
                           }`}
                           onClick={() => handleNavClick(child.path)}
@@ -135,7 +135,7 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
                 <button
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition hover:bg-purple-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-200 dark:focus:ring-gray-600 ${
                     location.pathname === item?.path
-                      ? 'bg-purple-100 dark:bg-gray-800 font-semibold'
+                      ? 'bg-purple-200 dark:bg-gray-700 dark:text-gray-50 font-semibold'
                       : ''
                   }`}
                   onClick={() => handleNavClick(item.path)}
@@ -167,7 +167,7 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
       {/* Mobile Nav Drawer */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-40 bg-black bg-opacity-30 flex flex-col">
-          <div className="bg-white dark:bg-gray-900 border-b border-purple-100 dark:border-gray-700 shadow-lg rounded-b-lg p-4 flex flex-col gap-2 animate-fade-in">
+          <div className="bg-gray-50 dark:bg-gray-800 border-b border-purple-100 dark:border-gray-700 shadow-lg rounded-b-lg p-3 flex flex-col gap-1 animate-fade-in">
             {/* Mobile Hamburger */}
             <div className="md:hidden flex justify-end">
               <button
@@ -179,7 +179,7 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
               </button>
             </div>
             {items.map(item => (
-              <div key={item.label} className="mb-2">
+              <div key={item.label} className="">
                 {item.children ? (
                   <>
                     <div className="flex items-center gap-2 font-semibold text-gray-800 dark:text-purple-200 mb-1">
@@ -189,9 +189,9 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
                       {item.children.map(child => (
                         <button
                           key={child.label}
-                          className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-900 dark:text-white hover:bg-purple-50 dark:hover:bg-gray-700 transition ${
+                          className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-900 dark:text-white hover:bg-purple-100 dark:hover:bg-gray-700 transition ${
                             location.pathname === child.path
-                              ? 'bg-purple-100 dark:bg-gray-700 font-semibold'
+                              ? 'bg-purple-200 dark:bg-gray-700 dark:text-gray-50 font-semibold'
                               : ''
                           }`}
                           onClick={() => handleNavClick(child.path)}
@@ -204,9 +204,9 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
                   </>
                 ) : (
                   <button
-                    className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-900 dark:text-gray-50 hover:bg-purple-50 dark:hover:bg-gray-700 transition w-full ${
+                    className={`flex items-center gap-2 px-2 py-2 rounded-lg text-left text-gray-900 dark:text-gray-50 hover:bg-purple-100 dark:hover:bg-gray-700 transition w-full ${
                       location.pathname === item?.path
-                        ? 'bg-purple-100 dark:bg-gray-800 font-semibold'
+                        ? 'bg-purple-200 dark:bg-gray-700 dark:text-gray-50 font-semibold'
                         : ''
                     }`}
                     onClick={() => handleNavClick(item.path)}

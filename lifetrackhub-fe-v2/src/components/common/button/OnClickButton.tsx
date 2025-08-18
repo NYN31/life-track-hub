@@ -1,4 +1,5 @@
 import React from 'react';
+import { IoHelpCircleOutline } from 'react-icons/io5';
 
 interface OnClickButtonProps {
   color?: string;
@@ -43,7 +44,11 @@ const OnClickButton: React.FC<OnClickButtonProps> = ({
         'Loading...'
       ) : (
         <div className="flex items-center gap-2">
-          {icon && <span className="inline-block">{icon}</span>}{' '}
+          {icon ? (
+            <span className="inline-block">{icon}</span>
+          ) : (
+            <IoHelpCircleOutline size="20" />
+          )}{' '}
           <span className="hidden md:block">{text}</span>{' '}
         </div>
       )}
