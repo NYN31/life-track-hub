@@ -1,7 +1,7 @@
 import React from 'react';
-import MarkdownPreview from '@uiw/react-markdown-preview';
 import { FiBriefcase, FiGlobe } from 'react-icons/fi';
 import { IExperience } from '../../../types/user';
+import { lineBreakInsert } from '../../../helper/utils/line-break';
 
 interface ExperiencesSectionProps {
   experiences?: IExperience[];
@@ -25,10 +25,12 @@ const ExperiencesSection: React.FC<ExperiencesSectionProps> = ({
             <div className="text-gray-600 dark:text-gray-400 text-sm">
               {exp.startDate} - {exp.endDate || 'Present'}
             </div>
-            {exp.description && (
-              <MarkdownPreview
-                source={exp.description}
+            {exp.description && lineBreakInsert(exp.description) && (
+              <p
                 className="bg-gray-50 dark:bg-gray-800 text-sm"
+                dangerouslySetInnerHTML={{
+                  __html: lineBreakInsert(exp.description),
+                }}
               />
             )}
             <div className="inline-block mt-2">

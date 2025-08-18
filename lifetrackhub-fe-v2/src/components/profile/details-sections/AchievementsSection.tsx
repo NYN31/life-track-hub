@@ -1,7 +1,7 @@
 import React from 'react';
-import MarkdownPreview from '@uiw/react-markdown-preview';
 import { FiAward, FiGlobe } from 'react-icons/fi';
 import { IAchievement } from '../../../types/user';
+import { lineBreakInsert } from '../../../helper/utils/line-break';
 
 interface AchievementsSectionProps {
   achievements?: IAchievement[];
@@ -22,10 +22,12 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({
             <div className="font-semibold dark:text-gray-200">
               {ach.achievementTitle}
             </div>
-            {ach.description && (
-              <MarkdownPreview
-                source={ach.description}
-                className="bg-gray-100 dark:bg-gray-800 text-sm"
+            {ach.description && lineBreakInsert(ach.description) && (
+              <p
+                className="bg-gray-50 dark:bg-gray-800 text-sm"
+                dangerouslySetInnerHTML={{
+                  __html: lineBreakInsert(ach.description),
+                }}
               />
             )}
             <div className="inline-block mt-2">

@@ -89,11 +89,11 @@
   /* Common Styles */
 
   .common-box-container {
-    @apply bg-gray-50 dark:bg-gray-900 shadow-sm rounded-lg p-2 md:p-6 lg:p-8 border  border-purple-100 dark:border-gray-700;
+    @apply bg-white dark:bg-gray-900 shadow-sm rounded-lg p-2 md:p-6 lg:p-8 border  border-purple-100 dark:border-gray-700;
   }
 
   .common-box {
-    @apply bg-gray-100 dark:bg-gray-800 shadow-md rounded-lg p-2 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700;
+    @apply bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg p-2 md:p-6 lg:p-8 border border-purple-100 dark:border-gray-700;
   }
 
   .link-view {
@@ -123,7 +123,7 @@
   }
 
   .form-input-field {
-    @apply mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-2 md:p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+    @apply mt-1 block w-full border border-purple-200 dark:border-gray-700 rounded-lg shadow-sm p-2 md:p-3 focus:ring-2 focus:ring-purple-400 dark:focus:ring-purple-600 focus:outline-none transition bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
   }
 
   .form-readonly-input-field {
@@ -138,6 +138,10 @@
   .user-account-properties {
     @apply bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium;
   }
+
+  .blog-content img {
+  @apply max-w-[400px] w-full h-auto rounded-lg block mx-auto;
+}
 }
 
 /* scrollbar styles */

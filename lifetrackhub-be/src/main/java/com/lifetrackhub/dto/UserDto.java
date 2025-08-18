@@ -11,6 +11,7 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Data
 @ToString
@@ -32,6 +33,8 @@ public class UserDto {
     private AccountStatus accountStatus;
 
     private AccountType accountType;
+
+    private String profileImagePath;
 
     private UserDetails userDetails;
 
@@ -58,6 +61,12 @@ public class UserDto {
         dto.setAccountStatus(user.getAccountStatus());
         dto.setLoginType(user.getLoginType());
         dto.setAccountType(user.getAccountType());
+        dto.setProfileImagePath(
+                Optional.ofNullable(user.getUserDetails())
+                        .map(UserDetails::getProfileImagePath)
+                        .orElse(null)
+
+        );
 
         return dto;
     }

@@ -184,9 +184,6 @@ const ExperienceForm: React.FC = () => {
             <div className="mt-4">
               <label className="form-label">
                 Description{' '}
-                <span className="text-sm text-gray-500">
-                  (markdown allowed)
-                </span>
               </label>
               <textarea
                 {...register(`experiences.${idx}.description`, {

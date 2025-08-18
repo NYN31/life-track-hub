@@ -1,8 +1,8 @@
 import React from 'react';
-import MarkdownPreview from '@uiw/react-markdown-preview';
 import { IUser, IUserDetails } from '../../../types/user';
 import { FiDownload, FiMail, FiUser } from 'react-icons/fi';
 import fallbackImg from '../../../assets/blogFallback.png';
+import { lineBreakInsert } from '../../../helper/utils/line-break';
 
 interface PersonalInfoSectionProps {
   user: IUser;
@@ -58,10 +58,15 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
             Objective
           </span>
 
-          <MarkdownPreview
-            source={userDetails?.objective}
-            className="wmde-markdown-var markdown-body text-sm"
-          />
+          {userDetails?.objective &&
+            lineBreakInsert(userDetails?.objective) && (
+              <p
+                className="bg-gray-50 dark:bg-gray-900 text-sm"
+                dangerouslySetInnerHTML={{
+                  __html: lineBreakInsert(userDetails?.objective),
+                }}
+              />
+            )}
         </div>
       )}
     </div>

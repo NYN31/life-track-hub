@@ -14,8 +14,6 @@ export const extractMarkdownHeadings = (markdown: string) => {
       .replace(/-+/g, '-') // Collapse multiple hyphens
       .replace(/^-+|-+$/g, ''); // Trim hyphens from start/end
 
-    //id = encodeURIComponent(id);
-
     headings.push({ level, text, id });
   }
 
