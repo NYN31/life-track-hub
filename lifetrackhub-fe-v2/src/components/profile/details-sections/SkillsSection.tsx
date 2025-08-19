@@ -17,10 +17,10 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
         {skills.map((skill, idx) => (
           <span
             key={idx}
-            className="bg-purple-50 border border-purple-200 text-purple-700 p-1 md:p-2 rounded-lg text-sm font-medium shadow-sm w-full sm:w-auto"
+            className="bg-purple-50 dark:bg-gray-600 border border-purple-200 dark:border-gray-500 text-purple-700 dark:text-gray-50 p-1 md:p-2 rounded-lg text-sm font-medium shadow-sm w-full sm:w-auto"
           >
             {skill.skillName}{' '}
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-purple-200">
               ({skill.skillCompetency}, {skill.skillExperienceYear} yrs)
             </span>
           </span>

@@ -62,7 +62,7 @@ const BlogUpdateContainer = () => {
 
   return (
     <div className="common-box-container animate-fade-in">
-      <div className="flex items-start justify-between">
+      <div className="flex items-center justify-between">
         <h1>Update Blog</h1>
 
         <OnClickButton

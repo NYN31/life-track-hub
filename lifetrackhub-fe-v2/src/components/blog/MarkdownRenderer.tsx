@@ -35,7 +35,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
 
   return (
     <div
-      className="blog-content prose max-w-none dark:prose-invert"
+      className="blog-content prose max-w-full dark:prose-invert"
       dangerouslySetInnerHTML={{ __html: safeHtml }}
     />
   );
