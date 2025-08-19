@@ -16,7 +16,7 @@ const AboutContainer = () => {
             href={aboutData.contactLinks.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-100 hover:text-gray-900"
+            className="text-gray-700 hover:text-gray-900 dark:text-gray-200 dark:hover:text-gray-50"
           >
             <FaGithub size={24} />
           </a>

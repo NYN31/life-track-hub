@@ -55,7 +55,7 @@ const TodoAddForm: React.FC<TodoAddFormProps> = ({
             name="todo title"
             value={title}
             onChange={e => handleAddTitle(e)}
-            className="flex-1 px-1 md:px-2 py-2 border border-none bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-xl md:text-2xl focus:outline-none"
+            className="flex-1 px-1 md:px-2 py-2 border border-none bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-xl md:text-2xl focus:outline-none"
             placeholder="Enter todo title"
           />
           <div className="flex flex-row gap-2">
@@ -78,7 +78,7 @@ const TodoAddForm: React.FC<TodoAddFormProps> = ({
         {localTodos.map(todo => (
           <div
             key={todo.todoItemId}
-            className="mx-1.5 my-2 flex items-center justify-between bg-gray-200 dark:bg-gray-900 rounded px-3 py-2"
+            className="mx-1.5 my-2 flex items-center justify-between bg-gray-200 dark:bg-gray-700 rounded px-3 py-2"
           >
             <span className="text-gray-800 dark:text-gray-100">
               {todo.text}

@@ -83,7 +83,7 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
             type="text"
             value={title}
             onChange={e => setTitle(e.target.value)}
-            className="flex-1 px-1 md:px-2 py-2 border border-none bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-4xl focus:outline-none"
+            className="flex-1 px-1 md:px-2 py-2 border border-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-4xl focus:outline-none"
             placeholder="Enter todo title"
             required
           />
@@ -95,7 +95,7 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
             name="todo item"
             value={input}
             onChange={e => setInput(e.target.value)}
-            className="form-input-field flex-1 p-2 md:p-4 m-1"
+            className="form-input-field"
             placeholder="Enter todo item"
             onKeyDown={e => {
               if (e.key === 'Enter') {
@@ -107,11 +107,11 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
 
           <OnClickAddButton handleClick={handleAdd} />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 mt-2">
           {todoItems.map(item => (
             <div
               key={item.todoItemId}
-              className="mx-1.5 my-2 flex items-center justify-between bg-gray-100 dark:bg-gray-700 rounded px-3 py-2 gap-2"
+              className="flex items-center justify-between bg-gray-200 dark:bg-gray-700 rounded px-3 py-2 gap-2"
             >
               <input
                 type="checkbox"
@@ -125,7 +125,7 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
                 onChange={e =>
                   handleItemChange(item.todoItemId, e.target.value)
                 }
-                className="flex-1 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none"
+                className="flex-1 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none"
               />
 
               <OnClickTrashIcon

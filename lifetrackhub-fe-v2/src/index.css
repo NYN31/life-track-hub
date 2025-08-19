@@ -113,7 +113,7 @@
   }
 
   .info-box {
-    @apply text-xs text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 border border-gray-500 px-2 py-1 rounded-full;
+    @apply text-xs text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-2 py-1 rounded-full;
   }
 
   /* Form Styles*/
@@ -172,6 +172,10 @@
 
   .blog-content p {
     @apply text-gray-700 dark:text-gray-300 mb-4; /* Paragraphs in blog content */
+  }
+
+  .blog-content p code {
+    @apply border-purple-400 italic text-purple-500 mb-4; /* Blockquotes in blog content */
   }
 
   .blog-content blockquote {
