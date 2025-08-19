@@ -6,6 +6,7 @@ import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.response.FileResponseDto;
 import com.lifetrackhub.entity.File;
 import com.lifetrackhub.repository.FileRepository;
+import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.FileService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ public class FileServiceImpl implements FileService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final FileRepository fileRepository;
+    private final UserRepository userRepository;
 
     @Value("${upload.image.dir}")
     private String uploadImageDir;
@@ -44,8 +46,9 @@ public class FileServiceImpl implements FileService {
     @Value("${upload.pdf.dir}")
     private String uploadPdfDir;
 
-    public FileServiceImpl(FileRepository fileRepository) {
+    public FileServiceImpl(FileRepository fileRepository, UserRepository userRepository) {
         this.fileRepository = fileRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -86,7 +89,7 @@ public class FileServiceImpl implements FileService {
     public Page<File> getFiles(int page, int size, FileType fileType, LocalDate startDate, LocalDate endDate) {
         log.info("Getting files from {} to {}", startDate, endDate);
 
-        Long userId = Util.getUserFromSecurityContextHolder().getId();
+        Long userId = Util.getUserFromSecurityContextHolder(userRepository).get().getId();
 
         Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -137,7 +140,7 @@ public class FileServiceImpl implements FileService {
     }
 
     private File createAndSaveFile(String originalName, Path path, String previewUrl, String extension) {
-        Long userId = Util.getUserFromSecurityContextHolder().getId();
+        Long userId = Util.getUserFromSecurityContextHolder(userRepository).get().getId();
 
         File file = new File();
         file.setUserId(userId);

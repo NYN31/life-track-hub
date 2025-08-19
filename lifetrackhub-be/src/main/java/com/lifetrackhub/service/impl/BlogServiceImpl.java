@@ -48,7 +48,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog create(BlogCreateRequestDto request) {
         log.info("Creating new blog");
-        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+        User userFromSecurityContext = Util.getUserFromSecurityContextHolder(userRepository).get();
 
         Blog blog = new Blog();
         blog.setTitle(request.getTitle());
@@ -65,7 +65,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog update(BlogUpdateRequestDto request) {
         log.info("Updating blog");
-        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+        User userFromSecurityContext = Util.getUserFromSecurityContextHolder(userRepository).get();
         Optional<Blog> optionalBlog = blogRepository.getBlogBySlug(request.getSlug());
         if (optionalBlog.isPresent()) {
             Blog blog = optionalBlog.get();
@@ -90,17 +90,23 @@ public class BlogServiceImpl implements BlogService {
     public Page<Blog> findAllBlogs(BlogGetRequestDto dto) {
         log.info("Finding all {} blogs of {}, within {} to {}", dto.getStatus(), dto.getEmail(), dto.getStart(), dto.getEnd());
 
-        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+        Optional<User> userFromSecurityContextOpt = Util.getUserFromSecurityContextHolder(userRepository);
 
         Long userId = null;
         if (dto.getEmail() != null) {
-            Optional<User> optionalUser = userRepository.findByEmail(dto.getEmail());
-            if (optionalUser.isPresent()) {
-                userId = optionalUser.get().getId();
-            }
+            userId = userRepository.findByEmail(dto.getEmail())
+                    .map(User::getId)
+                    .orElse(null);
         }
 
-        if (!userFromSecurityContext.getRole().equals(Role.SUPER_ADMIN.name())) {
+        // If user is logged in and not SUPER_ADMIN, force status to PUBLIC
+        userFromSecurityContextOpt.ifPresent(user -> {
+            if (!Role.SUPER_ADMIN.name().equals(user.getRole())) {
+                dto.setStatus(BlogStatus.PUBLIC);
+            }
+        });
+
+        if (userFromSecurityContextOpt.isEmpty()) {
             dto.setStatus(BlogStatus.PUBLIC);
         }
 
@@ -174,7 +180,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogCountStatsDto getBlogCountStats() {
-        User user = Util.getUserFromSecurityContextHolder();
+        User user = Util.getUserFromSecurityContextHolder(userRepository).get();
         log.info("Getting blog count stats for email {}", user.getEmail());
 
         Long userId = null;

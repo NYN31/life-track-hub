@@ -1,11 +1,15 @@
 import React from 'react';
 import { formatHumanReadableDate } from '../../helper/utils/get-date';
 import { Link } from 'react-router-dom';
-import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
+import {
+  BLOG_DETAILS_PATH,
+  PUBLIC_BLOG_DETAILS_PATH,
+} from '../../constants/title-and-paths';
 import { extractCleanTextFromMarkdown } from '../../helper/utils/extract-text-from-markdown';
 import fallbackImage from '../../assets/blogFallback.png';
 import { BlogStatus } from '../../types/blog';
 import { blogStatusColor } from '../../helper/utils/color-code';
+import useAuth from '../../helper/hooks/useAuth';
 
 export const getInitials = (firstname: string, lastname: string) => {
   return (
@@ -40,10 +44,14 @@ const BlogCard: React.FC<{
 }) => {
   // tags: comma-separated string
   const tagList = tags ? tags.split(',').filter(tag => tag.trim() !== '') : [];
+  const auth = useAuth();
 
   return (
     <div className="common-box hover:shadow-md transition duration-200 flex flex-col h-full">
-      <Link to={`${BLOG_DETAILS_PATH}/${slug}`} className="inline-block group">
+      <Link
+        to={`${auth ? BLOG_DETAILS_PATH : PUBLIC_BLOG_DETAILS_PATH}/${slug}`}
+        className="inline-block group"
+      >
         <img
           src={coverImagePath || fallbackImage}
           alt={title}

@@ -16,7 +16,7 @@ public class PublicBlogController extends PublicBaseController {
         this.blogService = blogService;
     }
 
-    @GetMapping("/blog/find-all")
+    @PostMapping("/blog/find-all")
     public PageDto<BlogDto> findAllBlogs(@RequestBody BlogGetRequestDto dto) {
         Page<Blog> blogs = blogService.findAllBlogs(dto);
         return PageDto.fromEntity(blogs, BlogDto::formEntity);

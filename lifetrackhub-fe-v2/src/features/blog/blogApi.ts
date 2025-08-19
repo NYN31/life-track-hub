@@ -11,7 +11,7 @@ export const blogApi = apiSlice
     endpoints: builder => ({
       getBlogsByUser: builder.query({
         query: data => ({
-          url: `${BLOG_API_PATH}/find-all`,
+          url: `${PUBLIC_BLOG_API_PATH}/find-all`,
           method: 'POST',
           body: data,
         }),
