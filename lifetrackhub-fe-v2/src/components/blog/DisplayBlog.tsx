@@ -93,7 +93,7 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
             {blogData.tags.map((tag: string) => (
               <span
                 key={tag}
-                className="px-3 py-1 bg-purple-100 dark:bg-purple-600 text-purple-700 dark:text-purple-100 rounded-full text-sm font-medium"
+                className="px-3 py-1 bg-gray-100 dark:bg-gray-200 text-purple-700 dark:text-purple-900 rounded-full text-sm font-medium"
               >
                 #{tag}
               </span>

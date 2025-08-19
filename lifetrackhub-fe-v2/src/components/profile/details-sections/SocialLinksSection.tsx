@@ -22,7 +22,7 @@ const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({
             href={link.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-2 py-1 bg-purple-50 border border-purple-200 text-purple-700 rounded-lg font-semibold shadow-sm hover:bg-purple-100 hover:text-purple-900 transition"
+            className="flex items-center gap-2 px-2 py-1 bg-purple-50 dark:bg-gray-600 border border-purple-200 dark:border-gray-500 text-purple-700 dark:text-gray-50 rounded-lg font-semibold shadow-sm hover:bg-purple-100 hover:text-purple-900 transition"
           >
             <FiGlobe /> {link.socialPlatformName}
           </a>

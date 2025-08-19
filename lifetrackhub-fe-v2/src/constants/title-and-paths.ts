@@ -16,6 +16,11 @@ export const TODO = 'Todo';
 export const TODO_PATH = '/todos';
 export const TODO_API_PATH = '/api/todo';
 
+// ABOUT
+export const ABOUT = 'About';
+export const ABOUT_PATH = '/about';
+export const PUBLIC_ABOUT_PATH = '/public/about';
+
 // SETTING
 export const SETTING = 'Setting';
 export const SETTING_PATH = '/setting';
