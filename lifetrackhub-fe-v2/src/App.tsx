@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import * as pathname from './constants/title-and-paths';
-import PublicNavbar from './components/common/PublicNavbar';
 import LoginContainer from './pages/auth/LoginContainer';
 import RegistrationContainer from './pages/auth/RegistrationContainer';
 import BlogContainer from './pages/blog/BlogContainer';
@@ -14,6 +13,8 @@ import ProfileUpdateContainer from './pages/user/ProfileUpdateContainer';
 import UserProfileViewContainer from './pages/user/UserProfileViewContainer';
 import FileContainer from './pages/file/FileContainer';
 import TodoContainer from './pages/todo/TodoContainer';
+import AboutContainer from './pages/about/AboutContainer';
+import PublicRoute from './components/layout/PublicRoute';
 
 function App() {
   useAuthCheck();
@@ -24,48 +25,18 @@ function App() {
         path={pathname.ROOT_PATH}
         element={<Navigate to={pathname.BLOG_PATH} />}
       />
-      <Route
-        index
-        path={pathname.LOGIN_PATH}
-        element={
-          <>
-            <PublicNavbar />
-            <LoginContainer />
-          </>
-        }
-      />
-      <Route
-        index
-        path={pathname.REGISTRATION_PATH}
-        element={
-          <>
-            <PublicNavbar />
-            <RegistrationContainer />
-          </>
-        }
-      />
-      <Route
-        index
-        path={pathname.PUBLIC_BLOG_PATH}
-        element={
-          <div className="flex flex-col gap-4 mb-6">
-            <PublicNavbar />
-            <BlogContainer />
-          </div>
-        }
-      />
-      <Route
-        index
-        path={pathname.PUBLIC_BLOG_DETAILS_PATH}
-        element={
-          <div className="flex flex-col gap-4 mb-6">
-            <PublicNavbar />
-            <DisplayBlogContainer />
-          </div>
-        }
-      />
+
+      <Route path="auth" element={<PublicRoute />}>
+        <Route path="sign-in" element={<LoginContainer />} />
+        <Route path="sign-up" element={<RegistrationContainer />} />
+      </Route>
+
+      <Route path="public" element={<PublicRoute />}>
+        <Route path="about" element={<AboutContainer />} />
+      </Route>
 
       <Route path="" element={<ProtectedRoute />}>
+        <Route path={pathname.ABOUT_PATH} element={<AboutContainer />} />
         <Route path="blog">
           <Route index element={<BlogContainer />} />
           <Route path="create" element={<BlogCreateContainer />} />

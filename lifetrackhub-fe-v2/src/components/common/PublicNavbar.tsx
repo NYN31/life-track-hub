@@ -1,5 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { LOGIN_PATH, REGISTRATION_PATH } from '../../constants/title-and-paths';
+import {
+  LOGIN_PATH,
+  REGISTRATION_PATH,
+  PUBLIC_ABOUT_PATH,
+} from '../../constants/title-and-paths';
 import { SiSvgtrace } from 'react-icons/si';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import useToggleTheme from '../../helper/hooks/useToggleTheme';
@@ -35,6 +39,13 @@ const PublicNavbar = () => {
           <div className="flex items-center space-x-4">
             {/* Blogs + Sign In/Out Buttons (Hidden on mobile) */}
             <div className="md:flex items-center space-x-3">
+              {/* About Link */}
+              <button
+                onClick={() => navigate(PUBLIC_ABOUT_PATH)}
+                className="text-gray-700 dark:text-gray-200 hover:text-purple-600 dark:hover:text-purple-400 transition"
+              >
+                About
+              </button>
               {/* Theme Toggle */}
               <button
                 className="ml-3 p-2 rounded-full border border-purple-100 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-purple-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition"
