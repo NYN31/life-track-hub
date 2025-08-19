@@ -33,6 +33,10 @@ function App() {
 
       <Route path="public" element={<PublicRoute />}>
         <Route path="about" element={<AboutContainer />} />
+        <Route path="blog">
+          <Route index element={<BlogContainer />} />
+          <Route path="by-slug/:slug" element={<DisplayBlogContainer />} />
+        </Route>
       </Route>
 
       <Route path="" element={<ProtectedRoute />}>

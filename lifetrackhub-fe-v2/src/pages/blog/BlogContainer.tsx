@@ -4,7 +4,7 @@ import { getDateToString, getStrToDate } from '../../helper/utils/get-date';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IBlog } from '../../types/blog';
 import { getValidParams } from '../../helper/utils/get-valid-params';
-import { BLOG_PATH } from '../../constants/title-and-paths';
+import { BLOG_PATH, PUBLIC_BLOG_PATH } from '../../constants/title-and-paths';
 import { useLazyGetBlogsByUserQuery } from '../../features/blog/blogApi';
 import Pagination from '../../components/common/Pagination';
 import BlogList from '../../components/blog/BlogList';
@@ -75,7 +75,11 @@ const BlogContainer: React.FC = () => {
         dateRange[0]
       )}&end=${getDateToString(dateRange[1])}`
     );
-    navigate(`${BLOG_PATH}${validParams}`);
+    if (auth) {
+      navigate(`${BLOG_PATH}${validParams}`);
+    } else {
+      navigate(`${PUBLIC_BLOG_PATH}${validParams}`);
+    }
   };
 
   const handleSearch = async (
@@ -165,10 +169,12 @@ const BlogContainer: React.FC = () => {
     <div className="common-box-container">
       <h1>Blogs</h1>
 
-      <OnClickFilterIcon
-        showFilter={showFilters}
-        showFilterHandler={() => setShowFilters(v => !v)}
-      />
+      {auth && (
+        <OnClickFilterIcon
+          showFilter={showFilters}
+          showFilterHandler={() => setShowFilters(v => !v)}
+        />
+      )}
 
       {auth && showFilters && (
         <div className="gap-6">

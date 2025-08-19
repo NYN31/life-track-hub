@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findSelfDetails() {
-        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+        User userFromSecurityContext = Util.getUserFromSecurityContextHolder(userRepository).get();
 
         return findUserById(userFromSecurityContext.getId());
     }
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(UserDto dto) {
         String email = dto.getEmail();
-        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+        User userFromSecurityContext = Util.getUserFromSecurityContextHolder(userRepository).get();
 
         if (!Objects.equals(email, userFromSecurityContext.getEmail())) {
             log.warn("User email {} is unauthorized", email);
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResponseDto updatePassword(UpdatePasswordRequestDto dto) {
-        User user = Util.getUserFromSecurityContextHolder();
+        User user = Util.getUserFromSecurityContextHolder(userRepository).get();
 
         if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Old password does not match.");

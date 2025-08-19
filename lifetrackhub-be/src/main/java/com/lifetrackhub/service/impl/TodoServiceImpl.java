@@ -7,6 +7,7 @@ import com.lifetrackhub.dto.blob.TodoItems;
 import com.lifetrackhub.entity.Todo;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.TodoRepository;
+import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.TodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +25,12 @@ import java.util.Optional;
 public class TodoServiceImpl implements TodoService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    private final UserRepository userRepository;
     private final TodoRepository todoRepository;
 
-    public TodoServiceImpl(TodoRepository todoRepository) {
+    public TodoServiceImpl(UserRepository userRepository, TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public Todo findTodoByEmail(String email) {
-        User user = Util.getUserFromSecurityContextHolder();
+        User user = Util.getUserFromSecurityContextHolder(userRepository).get();
         log.info("Find todo by email: {}", email);
 
         if (!user.getEmail().equals(email)) {
@@ -100,7 +103,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     private void validateUserWithUserId(String email) {
-        User userFromSecurityContext = Util.getUserFromSecurityContextHolder();
+        User userFromSecurityContext = Util.getUserFromSecurityContextHolder(userRepository).get();
 
         if (email == null) {
             log.warn("User email is null");
