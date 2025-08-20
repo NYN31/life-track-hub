@@ -1,1 +1,0 @@
-export const BANNAR_NAME = 'LIFETRACKHUB';
