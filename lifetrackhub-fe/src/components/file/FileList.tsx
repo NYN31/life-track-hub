@@ -60,8 +60,6 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
     },
   ] = useDeleteFileMutation();
 
-  //console.log(isDeleteFileLoading, deleteFileError, isDeleteSuccess);
-
   const [results, setResults] = useState<FileDto[]>([]);
   const [hasNext, setHasNext] = useState(false);
   const [hasPrevious, setHasPrevious] = useState(false);
@@ -109,12 +107,10 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
   };
 
   const handleFileDelete = async (filePath: string) => {
-    console.log(filePath);
     setSuccessMessage('');
     await triggerDeleteFile(filePath)
       .unwrap()
       .then(res => {
-        console.log(res);
         refetch();
         setSuccessMessage(res.message);
       });
@@ -127,7 +123,6 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
     refetch();
   }, [reloadKey, refetch, location.search]);
 
-  console.log(isLoading, isDeleteFileLoading);
   if (isLoading || isDeleteFileLoading) return <Spinner />;
 
   return (
