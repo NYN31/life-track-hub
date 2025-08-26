@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useGetFilesQuery } from '../../features/file/fileApi';
+import {
+  useDeleteFileMutation,
+  useGetFilesQuery,
+} from '../../features/file/fileApi';
 import { FileDto, FileType } from '../../types/file';
 import Pagination from '../common/Pagination';
 import Spinner from '../common/Spinner';
@@ -13,6 +16,7 @@ import CommonSearchBox from '../common/CommonSearchBox';
 import { OptionType } from '../../types/common';
 import { extractErrorMessage } from '../../helper/utils/extract-error-message';
 import OnClickFilterIcon from '../common/button/OnClickFilterIcon';
+import SuccessMessage from '../common/SuccessMessage';
 
 const imageOptions: OptionType[] = [
   { value: 'IMG', label: 'Image' },
@@ -33,11 +37,31 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
   const [fileType, setFileType] = useState<OptionType | null>(
     queryFileType ? { label: queryFileType, value: queryFileType } : null
   );
-  const { data, isLoading, isError, error, refetch } = useGetFilesQuery({
+
+  const [successMessage, setSuccessMessage] = useState('');
+  //const [errorMessage, setErrorMessage] = useState('');
+  const {
+    data,
+    isLoading,
+    isError: isErrorInGettingFiles,
+    error: filesError,
+    refetch,
+  } = useGetFilesQuery({
     page: Number(queryPageNo),
-    size: 12,
+    size: 10,
     fileType: queryFileType as FileType,
   });
+  const [
+    triggerDeleteFile,
+    {
+      isLoading: isDeleteFileLoading,
+      error: deleteFileError,
+      isSuccess: isDeleteSuccess,
+    },
+  ] = useDeleteFileMutation();
+
+  //console.log(isDeleteFileLoading, deleteFileError, isDeleteSuccess);
+
   const [results, setResults] = useState<FileDto[]>([]);
   const [hasNext, setHasNext] = useState(false);
   const [hasPrevious, setHasPrevious] = useState(false);
@@ -84,6 +108,18 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
     setResults([]);
   };
 
+  const handleFileDelete = async (filePath: string) => {
+    console.log(filePath);
+    setSuccessMessage('');
+    await triggerDeleteFile(filePath)
+      .unwrap()
+      .then(res => {
+        console.log(res);
+        refetch();
+        setSuccessMessage(res.message);
+      });
+  };
+
   useEffect(() => {
     setFileType(
       queryFileType ? { label: queryFileType, value: queryFileType } : null
@@ -91,7 +127,8 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
     refetch();
   }, [reloadKey, refetch, location.search]);
 
-  if (isLoading) return <Spinner />;
+  console.log(isLoading, isDeleteFileLoading);
+  if (isLoading || isDeleteFileLoading) return <Spinner />;
 
   return (
     <div className="">
@@ -120,11 +157,19 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {results.map((file: FileDto) => (
-          <FileCard key={file.filePath} file={file} />
-        ))}
-      </div>
+      {results.length === 0 ? (
+        <ErrorMessage message="No files found" />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          {results.map((file: FileDto) => (
+            <FileCard
+              key={file.filePath}
+              file={file}
+              fileDeleteHandler={handleFileDelete}
+            />
+          ))}
+        </div>
+      )}
 
       <Pagination
         handlePreviousPage={handlePreviousPage}
@@ -137,8 +182,13 @@ const FileList: React.FC<FileListProps> = ({ reloadKey }) => {
           updateAndPushUrl(String(page), fileType?.value || '')
         }
       />
-
-      {isError && <ErrorMessage message={extractErrorMessage(error) || ''} />}
+      {isDeleteSuccess && <SuccessMessage message={successMessage} />}
+      {isErrorInGettingFiles ||
+        (deleteFileError && (
+          <ErrorMessage
+            message={extractErrorMessage(filesError || deleteFileError) || ''}
+          />
+        ))}
     </div>
   );
 };

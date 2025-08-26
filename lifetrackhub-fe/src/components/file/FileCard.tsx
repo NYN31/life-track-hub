@@ -1,14 +1,15 @@
 import React from 'react';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { FileDto } from '../../types/file';
-//import OnClickTrashIcon from '../common/button/OnClickTrashIcon';
 import { FiGlobe } from 'react-icons/fi';
+import OnClickTrashIcon from '../common/button/OnClickTrashIcon';
 
 interface FileCardProps {
   file: FileDto;
+  fileDeleteHandler: (filePath: string) => {};
 }
 
-const FileCard: React.FC<FileCardProps> = ({ file }) => {
+const FileCard: React.FC<FileCardProps> = ({ file, fileDeleteHandler }) => {
   return (
     <div key={file.filePath} className="common-box flex flex-col items-center">
       {file.fileType === 'IMG' ? (
@@ -42,12 +43,12 @@ const FileCard: React.FC<FileCardProps> = ({ file }) => {
           </a>
 
           {/* TODO: will implement download functionality later */}
-          {/* <OnClickTrashIcon
-            handleRemover={() => {}}
+          <OnClickTrashIcon
+            handleRemover={() => fileDeleteHandler(file.filePath)}
             absolute={false}
             title="Image Delete"
             text="Delete"
-          /> */}
+          />
         </div>
       </div>
     </div>
