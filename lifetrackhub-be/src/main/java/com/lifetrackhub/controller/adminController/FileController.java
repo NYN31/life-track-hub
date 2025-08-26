@@ -1,8 +1,9 @@
-package com.lifetrackhub.controller.userController;
+package com.lifetrackhub.controller.adminController;
 
 import com.lifetrackhub.constant.enumeration.FileType;
 import com.lifetrackhub.dto.FileDto;
 import com.lifetrackhub.dto.PageDto;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.File;
 import com.lifetrackhub.service.FileService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 
 @RestController
-public class FileController extends BaseController {
+public class FileController extends AdminBaseController {
     private final FileService fileService;
 
     public FileController(FileService fileService) {
@@ -38,5 +39,10 @@ public class FileController extends BaseController {
     ) {
         Page<File> files = fileService.getFiles(page, size, fileType, startDate, endDate);
         return PageDto.fromEntity(files, FileDto::formEntity);
+    }
+
+    @DeleteMapping("file/delete")
+    public CommonResponseDto deleteFile(@RequestParam String filePath) {
+        return fileService.deleteFileByFilePath(filePath);
     }
 }

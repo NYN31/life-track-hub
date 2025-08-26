@@ -1,10 +1,13 @@
 package com.lifetrackhub.service.impl;
 
+import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.FileType;
 import com.lifetrackhub.constant.utils.DateUtil;
 import com.lifetrackhub.constant.utils.Util;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.dto.response.FileResponseDto;
 import com.lifetrackhub.entity.File;
+import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.FileRepository;
 import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.FileService;
@@ -19,12 +22,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,6 +51,9 @@ public class FileServiceImpl implements FileService {
     @Value("${upload.pdf.dir}")
     private String uploadPdfDir;
 
+    @Value("${upload.file.max.limit.in.a.day}")
+    private Long fileMaxLimit;
+
     public FileServiceImpl(FileRepository fileRepository, UserRepository userRepository) {
         this.fileRepository = fileRepository;
         this.userRepository = userRepository;
@@ -54,6 +62,25 @@ public class FileServiceImpl implements FileService {
     @Override
     public File uploadFile(MultipartFile file, HttpServletRequest request) {
         log.info("File original file name {}", file.getOriginalFilename());
+
+        Long userId = Util.getUserFromSecurityContext(userRepository).getId();
+        AccountType accountType = Util.getUserFromSecurityContext(userRepository).getAccountType();
+
+        Instant startDate = DateUtil.getStartDate(LocalDate.now());
+        Instant endDate = DateUtil.getEndDate(LocalDate.now());
+        long todayUploadCount = fileRepository.countByUserIdAndCreatedDateBetween(
+                userId,
+                startDate,
+                endDate
+        );
+        log.info("Total uploaded file count today: {}", todayUploadCount);
+
+        if (accountType.equals(AccountType.STANDARD) && todayUploadCount >= fileMaxLimit) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "You can upload a maximum of 5 files per day."
+            );
+        }
 
         String originalName = file.getOriginalFilename();
         if (originalName == null || originalName.trim().isEmpty()) {
@@ -89,7 +116,7 @@ public class FileServiceImpl implements FileService {
     public Page<File> getFiles(int page, int size, FileType fileType, LocalDate startDate, LocalDate endDate) {
         log.info("Getting files from {} to {}", startDate, endDate);
 
-        Long userId = Util.getUserFromSecurityContextHolder(userRepository).get().getId();
+        Long userId = Util.getUserFromSecurityContext(userRepository).getId();
 
         Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -110,6 +137,26 @@ public class FileServiceImpl implements FileService {
         }
 
         return fileRepository.findAllByUserIdAndFileTypeAndCreatedDateBetween(userId, fileType, start, end, pageable);
+    }
+
+    @Override
+    @Transactional
+    public CommonResponseDto deleteFileByFilePath(String filePath) {
+        log.info("Deleting file {}", filePath);
+        Optional<File> optionalFile = fileRepository.findByFilePath(filePath);
+
+        if (optionalFile.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "File not found in database");
+        }
+
+        Path path = Paths.get(filePath);
+        removeFileFromDisk(path);
+        fileRepository.deleteByFilePath(filePath);
+
+        return CommonResponseDto.builder()
+                .status(HttpStatus.OK)
+                .message("File deleted successfully")
+                .build();
     }
 
     private Path getFilePath(String extension) {
@@ -140,7 +187,7 @@ public class FileServiceImpl implements FileService {
     }
 
     private File createAndSaveFile(String originalName, Path path, String previewUrl, String extension) {
-        Long userId = Util.getUserFromSecurityContextHolder(userRepository).get().getId();
+        Long userId = Util.getUserFromSecurityContext(userRepository).getId();
 
         File file = new File();
         file.setUserId(userId);
@@ -194,6 +241,23 @@ public class FileServiceImpl implements FileService {
             return Files.readAllBytes(Path.of(file.getFilePath()));
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    private void removeFileFromDisk(Path path) {
+        try {
+            if (Files.exists(path)) {
+                Files.delete(path);
+                log.info("File deleted from disk: {}", path);
+            } else {
+                log.warn("File not found in disk: {}", path);
+            }
+        } catch (Exception e) {
+            log.error("Error while removing file from disk: {}", path, e);
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Failed to delete file from disk."
+            );
         }
     }
 }
