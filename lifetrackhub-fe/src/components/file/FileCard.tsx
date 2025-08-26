@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import { FileDto } from '../../types/file';
 import { FiGlobe } from 'react-icons/fi';
 import OnClickTrashIcon from '../common/button/OnClickTrashIcon';
+import ConfirmDialog from '../common/ConfirmDialog';
 
 interface FileCardProps {
   file: FileDto;
@@ -10,8 +11,10 @@ interface FileCardProps {
 }
 
 const FileCard: React.FC<FileCardProps> = ({ file, fileDeleteHandler }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div key={file.filePath} className="common-box flex flex-col items-center">
+    <div key={file.filePath} className="common-box flex flex-col">
       {file.fileType === 'IMG' ? (
         <img
           src={file.previewUrl}
@@ -32,7 +35,7 @@ const FileCard: React.FC<FileCardProps> = ({ file, fileDeleteHandler }) => {
           {new Date(file.createdDate).toLocaleString()}
         </div>
 
-        <div className="flex flex-col items-center gap-2 mt-2">
+        <div className="flex flex-row gap-4 mt-2">
           <a
             href={file.previewUrl}
             target="_blank"
@@ -42,15 +45,19 @@ const FileCard: React.FC<FileCardProps> = ({ file, fileDeleteHandler }) => {
             <FiGlobe /> View
           </a>
 
-          {/* TODO: will implement download functionality later */}
           <OnClickTrashIcon
-            handleRemover={() => fileDeleteHandler(file.filePath)}
+            handleRemover={() => setIsOpen(true)}
             absolute={false}
             title="Image Delete"
-            text="Delete"
           />
         </div>
       </div>
+      <ConfirmDialog
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        proceedAction={() => fileDeleteHandler(file.filePath)}
+        actionName="Delete"
+      />
     </div>
   );
 };
