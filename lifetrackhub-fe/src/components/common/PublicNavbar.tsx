@@ -23,7 +23,7 @@ const PublicNavbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-white to-purple-50 dark:from-gray-900 dark:to-gray-800 shadow-md border-b border-purple-100 dark:border-gray-700 top-0 z-50 sticky">
+    <nav className="bg-gray-50 dark:bg-gray-800 shadow-md border-b border-purple-100 dark:border-gray-700 top-0 z-50 sticky">
       <div className="max-w-6xl mx-auto px-2 xl:px-0">
         <div className="flex justify-between items-center h-16">
           {/* Banner/Logo Section - Left */}

@@ -2,7 +2,7 @@ import { apiSlice } from '../api/apiSlice';
 import { FileDto, PageDto, FileType } from '../../types/file';
 import { getValidRequestParams } from '../../helper/utils/get-valid-params';
 
-export const FILE_ADMIN_USER_API_PATH = '/api/file';
+export const FILE_ADMIN_USER_API_PATH = '/admin/api/file';
 
 export const fileApi = apiSlice
   .enhanceEndpoints({ addTagTypes: ['File'] })
@@ -41,7 +41,28 @@ export const fileApi = apiSlice
 
         invalidatesTags: ['File'],
       }),
+
+      deleteFile: builder.mutation({
+        query: filePath => {
+          const params = new URLSearchParams({
+            filePath: filePath,
+          });
+
+          return {
+            url: `${FILE_ADMIN_USER_API_PATH}/delete?${getValidRequestParams(
+              params.toString()
+            )}`,
+            method: 'DELETE',
+          };
+        },
+
+        invalidatesTags: ['File'],
+      }),
     }),
   });
 
-export const { useGetFilesQuery, useUploadFileMutation } = fileApi;
+export const {
+  useGetFilesQuery,
+  useUploadFileMutation,
+  useDeleteFileMutation,
+} = fileApi;

@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import * as pathname from './constants/title-and-paths';
 import LoginContainer from './pages/auth/LoginContainer';
 import RegistrationContainer from './pages/auth/RegistrationContainer';
 import BlogContainer from './pages/blog/BlogContainer';
@@ -21,10 +20,7 @@ function App() {
 
   return (
     <Routes>
-      <Route
-        path={pathname.ROOT_PATH}
-        element={<Navigate to={pathname.BLOG_PATH} />}
-      />
+      <Route path="/" element={<Navigate to="/auth/sign-in" />} />
 
       <Route path="auth" element={<PublicRoute />}>
         <Route path="sign-in" element={<LoginContainer />} />
@@ -40,7 +36,7 @@ function App() {
       </Route>
 
       <Route path="" element={<ProtectedRoute />}>
-        <Route path={pathname.ABOUT_PATH} element={<AboutContainer />} />
+        <Route path="about" element={<AboutContainer />} />
         <Route path="blog">
           <Route index element={<BlogContainer />} />
           <Route path="create" element={<BlogCreateContainer />} />

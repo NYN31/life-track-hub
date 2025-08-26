@@ -56,6 +56,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
         {selectedFile && (
           <span className="text-sm text-gray-600 dark:text-gray-300">
             <span className="font-bold">File name:</span> {selectedFile.name}
+            <br />
+            <span className="font-bold">Max file size:</span> 5MB
           </span>
         )}
       </div>
