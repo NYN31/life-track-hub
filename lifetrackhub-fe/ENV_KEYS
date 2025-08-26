@@ -1,1 +1,2 @@
-VITE_SERVER_BASE_URL=Add application base URL
+VITE_SERVER_BASE_URL=Add application base URL (String)
+VITE_FILE_SIZE=File size in MB (Number)
