@@ -96,6 +96,19 @@ const BlogContainer: React.FC = () => {
   ) => {
     setBlogContentLoading(true);
     setErrorMessage('');
+
+    if (!auth) {
+      keywords = '';
+      slug = '';
+      email = '';
+      status = 'PUBLIC';
+      dateRange = [null, null];
+    }
+
+    if (auth && role === ROLE.ADMIN) {
+      status = 'PUBLIC';
+    }
+
     await triggerGetBlogsByUser({
       page: pageId,
       size: MAX_BLOG_ITEMS_IN_A_PAGE,
