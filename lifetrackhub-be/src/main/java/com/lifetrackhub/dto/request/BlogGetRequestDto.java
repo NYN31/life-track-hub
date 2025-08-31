@@ -17,6 +17,8 @@ public class BlogGetRequestDto {
 
     private String email;
 
+    private String keywords;
+
     private BlogStatus status;
 
     private LocalDate start;

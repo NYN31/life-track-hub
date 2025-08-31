@@ -1,6 +1,6 @@
 CREATE TABLE user
 (
-    id                 BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id                 BIGINT       NOT NULL AUTO_INCREMENT,
 
     firstname          VARCHAR(40)  NOT NULL,
     lastname           VARCHAR(40),
@@ -15,5 +15,7 @@ CREATE TABLE user
     created_date       DATETIME     NOT NULL,
     last_modified_date DATETIME     NOT NULL,
 
-    INDEX (email)
+    PRIMARY KEY (id),
+    INDEX (firstname),
+    UNIQUE KEY (email)
 );

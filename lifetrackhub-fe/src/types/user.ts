@@ -59,3 +59,9 @@ export interface ISocialLink {
   socialPlatformName: string;
   link: string;
 }
+
+export const ROLE = {
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+};

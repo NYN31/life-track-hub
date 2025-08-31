@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,7 +36,7 @@ import java.util.stream.Collectors;
 @Service
 public class BlogServiceImpl implements BlogService {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private static final int DATE_RANGE_PERIOD_FOR_BLOG_SEARCH = 200;
+    private static final int DATE_RANGE_PERIOD_FOR_BLOG_SEARCH = 365;
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
@@ -65,12 +66,19 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog update(BlogUpdateRequestDto request) {
         log.info("Updating blog");
-        User userFromSecurityContext = Util.getUserFromSecurityContextHolder(userRepository).get();
+        Optional<User> optionalUser = Util.getUserFromSecurityContextHolder(userRepository);
+        if (optionalUser.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not logged in");
+        }
+        User userFromSecurityContext = optionalUser.get();
+
         Optional<Blog> optionalBlog = blogRepository.getBlogBySlug(request.getSlug());
         if (optionalBlog.isPresent()) {
             Blog blog = optionalBlog.get();
 
-            if (blog.getUser().getId().equals(userFromSecurityContext.getId())) {
+            if (userFromSecurityContext.getRole().equals(Role.SUPER_ADMIN.name()) ||
+                    blog.getUser().getId().equals(userFromSecurityContext.getId())
+            ) {
                 blog.setTitle(request.getTitle());
                 blog.setContent(request.getContent());
                 blog.setStatus(request.getStatus());
@@ -91,6 +99,10 @@ public class BlogServiceImpl implements BlogService {
         log.info("Finding all {} blogs of {}, within {} to {}", dto.getStatus(), dto.getEmail(), dto.getStart(), dto.getEnd());
 
         Optional<User> userFromSecurityContextOpt = Util.getUserFromSecurityContextHolder(userRepository);
+        if (userFromSecurityContextOpt.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not logged in");
+        }
+        User user = userFromSecurityContextOpt.get();
 
         Long userId = null;
         if (dto.getEmail() != null) {
@@ -99,18 +111,15 @@ public class BlogServiceImpl implements BlogService {
                     .orElse(null);
         }
 
-        // If user is logged in and not SUPER_ADMIN, force status to PUBLIC
-        userFromSecurityContextOpt.ifPresent(user -> {
-            if (!Role.SUPER_ADMIN.name().equals(user.getRole())) {
-                dto.setStatus(BlogStatus.PUBLIC);
-            }
-        });
+        String currentStatus = Optional.ofNullable(dto.getStatus())
+                .map(Enum::name)
+                .orElse(null);
 
-        if (userFromSecurityContextOpt.isEmpty()) {
-            dto.setStatus(BlogStatus.PUBLIC);
+        if (!Role.SUPER_ADMIN.name().equals(user.getRole())) {
+            currentStatus = BlogStatus.PUBLIC.name();
         }
 
-        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), Sort.by(Sort.Direction.DESC, "createdDate"));
+        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize());
 
         LocalDate startDate = dto.getStart(), endDate = dto.getEnd();
         if (Objects.isNull(startDate) || Objects.isNull(endDate)) {
@@ -124,10 +133,15 @@ public class BlogServiceImpl implements BlogService {
 
         log.info("Start date - {}, End date - {}, Difference - {}", start, end, days);
         if (days > DATE_RANGE_PERIOD_FOR_BLOG_SEARCH) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date range should be in between 90 days");
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Date range should be in between " + DATE_RANGE_PERIOD_FOR_BLOG_SEARCH + " days"
+            );
         }
 
-        return blogRepository.findAllBlogs(userId, dto.getSlug(), dto.getStatus(), start, end, pageable);
+        log.info("User Id - {}, Keywords - {}, Status - {}", userId, dto.getKeywords(), currentStatus);
+
+        return blogRepository.findAllBlogs(userId, dto.getKeywords(), dto.getSlug(), currentStatus, start, end, pageable);
     }
 
     @Override

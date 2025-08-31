@@ -19,15 +19,31 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
 
     Page<Blog> findByTitleContaining(String title, Pageable pageable);
 
-    @Query("""
-                SELECT b FROM Blog b
-                WHERE (:userId IS NULL OR b.user.id = :userId)
-                  AND (:slug is NULL OR b.slug = :slug)
-                  AND (:status IS NULL OR b.status = :status)
-                  AND (:start IS NULL OR b.createdDate >= :start)
-                  AND (:end IS NULL OR b.createdDate <= :end)
-            """)
-    Page<Blog> findAllBlogs(Long userId, String slug, BlogStatus status, Instant start, Instant end, Pageable pageable);
+    @Query(value = """
+            SELECT *
+            FROM blog b
+            WHERE (:userId IS NULL OR b.user_id = :userId)
+              AND (:slug IS NULL OR b.slug = :slug)
+              AND (:status IS NULL OR b.status = :status)
+              AND (:start IS NULL OR b.created_date >= :start)
+              AND (:end IS NULL OR b.created_date <= :end)
+              AND (:keyword IS NULL
+                   OR MATCH(b.title, b.tags) AGAINST(:keyword IN NATURAL LANGUAGE MODE))
+            ORDER BY MATCH(b.title, b.tags) AGAINST(:keyword IN NATURAL LANGUAGE MODE) DESC
+            """,
+            countQuery = """
+                    SELECT COUNT(*)
+                    FROM blog b
+                    WHERE (:userId IS NULL OR b.user_id = :userId)
+                      AND (:slug IS NULL OR b.slug = :slug)
+                      AND (:status IS NULL OR b.status = :status)
+                      AND (:start IS NULL OR b.created_date >= :start)
+                      AND (:end IS NULL OR b.created_date <= :end)
+                      AND (:keyword IS NULL
+                           OR MATCH(b.title, b.tags) AGAINST(:keyword IN NATURAL LANGUAGE MODE))
+                    """,
+            nativeQuery = true)
+    Page<Blog> findAllBlogs(Long userId, String keyword, String slug, String status, Instant start, Instant end, Pageable pageable);
 
     Page<Blog> findAllByUserIdAndStatus(Long userId, BlogStatus status, Pageable pageable);
 

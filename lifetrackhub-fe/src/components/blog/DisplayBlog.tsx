@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { FaRegEdit } from 'react-icons/fa';
 import OnClickButton from '../common/button/OnClickButton';
 import MarkdownRenderer from './MarkdownRenderer';
+import { ROLE } from '../../types/user';
 
 const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
   const { slug } = useParams();
@@ -67,7 +68,8 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
                 </p>
               </div>
             </div>
-            {auth.email === blogData.user.email && (
+            {(auth.email === blogData.user.email ||
+              auth.role === ROLE.SUPER_ADMIN) && (
               <OnClickButton
                 action={navigateFromBlogDetailsPage}
                 text="Edit Blog"
