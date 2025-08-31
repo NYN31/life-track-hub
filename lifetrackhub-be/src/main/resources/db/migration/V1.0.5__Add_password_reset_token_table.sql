@@ -11,5 +11,6 @@ CREATE TABLE password_reset_token
     last_modified_date DATETIME     NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES user (id) on DELETE CASCADE,
-    INDEX              idx_password_reset_token (token)
+
+    index (user_id)
 );

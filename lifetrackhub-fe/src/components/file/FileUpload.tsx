@@ -94,12 +94,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
       </div>
 
       {isSuccess && <SuccessMessage message="File uploaded successfully!" />}
-      {isError ||
-        (fileSizeError && (
-          <ErrorMessage
-            message={extractErrorMessage(error) || fileSizeError || ''}
-          />
-        ))}
+      {(isError || fileSizeError) && (
+        <ErrorMessage
+          message={extractErrorMessage(error) || fileSizeError || ''}
+        />
+      )}
     </form>
   );
 };

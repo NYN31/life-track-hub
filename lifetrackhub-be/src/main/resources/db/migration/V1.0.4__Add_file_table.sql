@@ -1,6 +1,6 @@
 CREATE TABLE file
 (
-    id                 BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id                 BIGINT       NOT NULL AUTO_INCREMENT,
 
     user_id            BIGINT       NOT NULL,
     file_type          VARCHAR(15)  NOT NULL,
@@ -11,5 +11,11 @@ CREATE TABLE file
     created_date       DATETIME     NOT NULL,
     last_modified_date DATETIME     NOT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES user (id) on DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user (id) on DELETE CASCADE,
+
+    PRIMARY KEY (id),
+    UNIQUE KEY (file_path),
+    INDEX (user_id),
+    INDEX (preview_url),
+    INDEX (created_date)
 );

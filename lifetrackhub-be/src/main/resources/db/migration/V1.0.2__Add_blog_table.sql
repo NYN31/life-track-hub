@@ -1,10 +1,10 @@
 CREATE TABLE blog
 (
-    id                 BIGINT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id                 BIGINT       NOT NULL AUTO_INCREMENT,
 
     title              VARCHAR(255) NOT NULL,
     content            TEXT         NOT NULL,
-    slug               VARCHAR(255) NOT NULL UNIQUE,
+    slug               VARCHAR(255) NOT NULL,
     status             VARCHAR(25)  NOT NULL,
     cover_image_path   VARCHAR(255) NOT NULL,
     tags               VARCHAR(255) NOT NULL,
@@ -14,5 +14,10 @@ CREATE TABLE blog
     last_modified_date DATETIME     NOT NULL,
 
     FOREIGN KEY (user_id) REFERENCES user (id) on DELETE CASCADE,
-    INDEX(slug)
+
+    PRIMARY KEY (id),
+    UNIQUE KEY (slug),
+    INDEX (user_id),
+    INDEX (created_date),
+    FULLTEXT INDEX (title, tags)
 )
