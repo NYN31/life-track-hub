@@ -14,7 +14,6 @@ interface OnClickButtonProps {
 }
 
 const OnClickButton: React.FC<OnClickButtonProps> = ({
-  color = '#9333ea', // default Tailwind purple
   text = '',
   width = 'auto',
   cursor = 'pointer',
@@ -30,11 +29,10 @@ const OnClickButton: React.FC<OnClickButtonProps> = ({
     <button
       onClick={action}
       disabled={isDisabled}
-      className={`btn-primary ${
+      className={`btn-secondary  ${
         isDisabled ? 'opacity-50 cursor-not-allowed' : ''
       }`}
       style={{
-        backgroundColor: color,
         width,
         cursor,
         borderRadius,

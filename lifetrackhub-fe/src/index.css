@@ -106,7 +106,7 @@
   /* Profile Styles */
 
   .user-account-properties {
-    @apply bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-medium;
+    @apply bg-purple-100 text-gray-900 px-3 py-1 rounded-full text-xs font-medium;
   }
 }
 
@@ -115,6 +115,10 @@
 
   .btn-primary {
     @apply inline-flex items-center gap-3 px-3 md:px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-500 dark:from-purple-600 dark:to-purple-700 text-white rounded-lg font-medium shadow hover:from-purple-700 hover:to-purple-600 dark:hover:from-purple-600 dark:hover:to-purple-700 transition;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-3 px-3 md:px-4 py-2 bg-teal-300 text-gray-900 rounded-lg font-medium shadow hover:bg-teal-400 dark:bg-teal-400 dark:hover:bg-teal-300 transition;
   }
 
   .btn-add {
