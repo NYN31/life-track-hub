@@ -7,7 +7,7 @@ import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.BlogCountStatsDto;
 import com.lifetrackhub.dto.request.BlogCreateRequestDto;
 import com.lifetrackhub.dto.request.SelfBlogSearchRequestDto;
-import com.lifetrackhub.dto.request.BlogGetRequestDto;
+import com.lifetrackhub.dto.request.BlogSearchRequestDto;
 import com.lifetrackhub.dto.request.BlogUpdateRequestDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.dto.response.CountByStatusDto;
@@ -102,7 +102,31 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Page<Blog> findAllBlogs(BlogGetRequestDto dto) {
+    public Page<Blog> findBlogsForUnauthenticatedUser(BlogSearchRequestDto dto) {
+        log.info("Finding all {} blogs of {}, within {} to {} for unauthenticated user", dto.getStatus(), dto.getEmail(), dto.getStart(), dto.getEnd());
+
+        DateRangePageRequest dateRangePageRequest =
+                BlogSearchHelper.buildDateRangePageRequest(
+                        dto.getPage(),
+                        dto.getSize(),
+                        null,
+                        null,
+                        DATE_RANGE_PERIOD_FOR_BLOG_SEARCH
+                );
+
+        return blogRepository.findAllBlogs(
+                null,
+                null,
+                null,
+                BlogStatus.PUBLIC.name(),
+                dateRangePageRequest.getStart(),
+                dateRangePageRequest.getEnd(),
+                dateRangePageRequest.getPageable()
+        );
+    }
+
+    @Override
+    public Page<Blog> findAllBlogs(BlogSearchRequestDto dto) {
         log.info("Finding all {} blogs of {}, within {} to {}", dto.getStatus(), dto.getEmail(), dto.getStart(), dto.getEnd());
 
         Optional<User> userFromSecurityContextOpt =

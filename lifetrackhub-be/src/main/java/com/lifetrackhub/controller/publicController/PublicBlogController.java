@@ -2,7 +2,7 @@ package com.lifetrackhub.controller.publicController;
 
 import com.lifetrackhub.dto.BlogDto;
 import com.lifetrackhub.dto.PageDto;
-import com.lifetrackhub.dto.request.BlogGetRequestDto;
+import com.lifetrackhub.dto.request.BlogSearchRequestDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.service.BlogService;
 import org.springframework.data.domain.Page;
@@ -17,8 +17,8 @@ public class PublicBlogController extends PublicBaseController {
     }
 
     @PostMapping("/blog/find-all")
-    public PageDto<BlogDto> findAllBlogs(@RequestBody BlogGetRequestDto dto) {
-        Page<Blog> blogs = blogService.findAllBlogs(dto);
+    public PageDto<BlogDto> findAllBlogs(@RequestBody BlogSearchRequestDto dto) {
+        Page<Blog> blogs = blogService.findBlogsForUnauthenticatedUser(dto);
         return PageDto.fromEntity(blogs, BlogDto::formEntity);
     }
 

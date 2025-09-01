@@ -11,6 +11,16 @@ export const blogApi = apiSlice
     endpoints: builder => ({
       getBlogsByUser: builder.query({
         query: data => ({
+          url: `${BLOG_API_PATH}/find-all`,
+          method: 'POST',
+          body: data,
+        }),
+
+        providesTags: ['Blogs'],
+      }),
+
+      getBlogsByUnauthUser: builder.query({
+        query: data => ({
           url: `${PUBLIC_BLOG_API_PATH}/find-all`,
           method: 'POST',
           body: data,
@@ -20,6 +30,16 @@ export const blogApi = apiSlice
       }),
 
       getBlogBySlug: builder.query({
+        query: slug => {
+          return `${BLOG_API_PATH}/by-slug/${slug}`;
+        },
+
+        providesTags: (_result, _error, arg) => {
+          return [{ type: 'BlogBySlug', slug: arg }];
+        },
+      }),
+
+      getBlogBySlugForUnauthUser: builder.query({
         query: slug => {
           return `${PUBLIC_BLOG_API_PATH}/by-slug/${slug}`;
         },
@@ -73,7 +93,9 @@ export const blogApi = apiSlice
 
 export const {
   useLazyGetBlogsByUserQuery,
+  useLazyGetBlogsByUnauthUserQuery,
   useGetBlogBySlugQuery,
+  useGetBlogBySlugForUnauthUserQuery,
   useCreateBlogMutation,
   useUpdateBlogMutation,
   useGetBlogStatsQuery,

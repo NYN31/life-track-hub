@@ -42,9 +42,10 @@ const BlogCard: React.FC<{
   firstname = '',
   lastname = '',
 }) => {
+  const auth = useAuth();
+
   // tags: comma-separated string
   const tagList = tags ? tags.split(',').filter(tag => tag.trim() !== '') : [];
-  const auth = useAuth();
 
   return (
     <Link
@@ -64,10 +65,7 @@ const BlogCard: React.FC<{
 
           <div className="flex flex-wrap gap-2 mb-2">
             {tagList.map(tag => (
-              <span
-                key={tag}
-                className="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 rounded-full text-xs font-semibold shadow-sm"
-              >
+              <span key={tag} className="blog-tags">
                 #{tag}
               </span>
             ))}

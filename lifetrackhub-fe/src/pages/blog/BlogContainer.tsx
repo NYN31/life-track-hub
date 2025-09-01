@@ -5,7 +5,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { IBlog } from '../../types/blog';
 import { getValidParams } from '../../helper/utils/get-valid-params';
 import { BLOG_PATH, PUBLIC_BLOG_PATH } from '../../constants/title-and-paths';
-import { useLazyGetBlogsByUserQuery } from '../../features/blog/blogApi';
+import {
+  useLazyGetBlogsByUnauthUserQuery,
+  useLazyGetBlogsByUserQuery,
+} from '../../features/blog/blogApi';
 import Pagination from '../../components/common/Pagination';
 import BlogList from '../../components/blog/BlogList';
 import Spinner from '../../components/common/Spinner';
@@ -63,6 +66,7 @@ const BlogContainer: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const [triggerGetBlogsByUser] = useLazyGetBlogsByUserQuery();
+  const [triggerGetBlogsByUnauthUser] = useLazyGetBlogsByUnauthUserQuery();
 
   const updateAndPushUrl = (
     page: number,
@@ -103,13 +107,15 @@ const BlogContainer: React.FC = () => {
       email = '';
       status = 'PUBLIC';
       dateRange = [null, null];
-    }
-
-    if (auth && role === ROLE.ADMIN) {
+    } else if (role === ROLE.ADMIN) {
       status = 'PUBLIC';
     }
 
-    await triggerGetBlogsByUser({
+    const triggerFn = auth
+      ? triggerGetBlogsByUser
+      : triggerGetBlogsByUnauthUser;
+
+    await triggerFn({
       page: pageId,
       size: MAX_BLOG_ITEMS_IN_A_PAGE,
       keywords: keywords || null,

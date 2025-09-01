@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Data
 @ToString
-public class BlogGetRequestDto {
+public class BlogSearchRequestDto {
     private int page = 0;
 
     private int size = 10;
