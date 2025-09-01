@@ -22,6 +22,7 @@ import Spinner from '../../components/common/Spinner';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import { extractErrorMessage } from '../../helper/utils/extract-error-message';
 import { useOnClickOutside } from '../../helper/hooks/useOnClickOutside';
+import ModalPortal from '../../ModalPortal';
 
 const PAGE_SIZE = 6;
 
@@ -159,20 +160,22 @@ const TodoContainer: React.FC = () => {
       )}
       {/* Modal for update */}
       {editingTodo && isUpdateModalOpen && (
-        <div className="modal">
-          <div className="relative size-full md:size-9/12 lg:size-6/12">
-            <TodoUpdateForm
-              ref={updateModalRef}
-              editTodo={editingTodo}
-              onSubmit={handleUpdateTodo}
-              onCancel={() => {
-                setEditingTodo(null);
-                setIsUpdateModalOpen(false);
-                dispatch(resetTodoState());
-              }}
-            />
+        <ModalPortal>
+          <div className="modal" role="dialog" aria-modal="true">
+            <div className="relative size-full md:size-9/12 lg:size-6/12">
+              <TodoUpdateForm
+                ref={updateModalRef}
+                editTodo={editingTodo}
+                onSubmit={handleUpdateTodo}
+                onCancel={() => {
+                  setEditingTodo(null);
+                  setIsUpdateModalOpen(false);
+                  dispatch(resetTodoState());
+                }}
+              />
+            </div>
           </div>
-        </div>
+        </ModalPortal>
       )}
     </div>
   );
