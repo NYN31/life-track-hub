@@ -85,6 +85,10 @@
     @apply px-3 py-1 bg-gray-200 dark:bg-gray-200 text-purple-700 dark:text-purple-900 rounded-full text-xs font-semibold shadow-sm;
   }
 
+  .modal {
+    @apply fixed inset-0 z-50 flex items-start justify-center bg-gray-900 dark:bg-gray-50 bg-opacity-40 dark:bg-opacity-40;
+  }
+
   /* Form Styles*/
 
   .form-label {
@@ -118,7 +122,7 @@
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-3 px-3 md:px-4 py-2 bg-teal-300 text-gray-900 rounded-lg font-medium shadow hover:bg-teal-400 dark:bg-teal-400 dark:hover:bg-teal-300 transition;
+    @apply inline-flex items-center gap-3 px-3 md:px-4 py-2 bg-teal-300 text-gray-900 rounded-lg font-medium shadow hover:bg-teal-400 dark:bg-teal-100 dark:hover:bg-teal-300 transition;
   }
 
   .btn-add {
@@ -147,11 +151,11 @@
   }
 
   .btn-pagination-selected {
-    @apply px-[14px] py-2 rounded-lg font-semibold transition border-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white border-purple-500 shadow;
+    @apply px-4 py-2 rounded-full text-xs font-semibold transition border-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white border-purple-500 shadow;
   }
 
   .btn-pagination-not-selected {
-    @apply px-4 py-2 rounded-lg font-semibold transition border-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-50 border-gray-200 hover:bg-purple-50 hover:border-purple-400;
+    @apply px-4 py-2 rounded-full text-xs font-semibold transition border-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-50 border-gray-200 hover:bg-purple-50 hover:border-purple-400;
   }
 }
 

@@ -34,12 +34,12 @@ const TodoList: React.FC<TodoListProps> = ({ todos, onEdit }) => {
               </div>
               <h3 className="line-clamp-2">{todo.title}</h3>
             </div>
-            <div className="text-center ">
+            <div className="text-center">
               <div className="flex flex-wrap md:flex-row gap-2">
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-bold tracking-wide info-box ${
+                  className={`px-3 py-1 flex items-center rounded-full text-xs font-medium ${
                     todo.todoStatus === 'DONE'
-                      ? 'bg-green-100 text-green-700'
+                      ? 'bg-green-300 text-green-700'
                       : 'bg-yellow-100 text-yellow-700'
                   }`}
                 >
