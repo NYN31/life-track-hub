@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import ProfileDropdown from './ProfileDropdown';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
+  BLOG_SELF_PATH,
   LOGIN_PATH,
   PROFILE_DETAILS_PATH,
 } from '../../constants/title-and-paths';
@@ -40,6 +41,10 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
 
   const handleProfile = () => {
     navigate(PROFILE_DETAILS_PATH);
+  };
+
+  const handleNavigateToMyBlog = () => {
+    navigate(BLOG_SELF_PATH + '/' + localStorage.getItem('email'));
   };
 
   const handleNavClick = (path: string) => {
@@ -160,6 +165,7 @@ const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
             <ProfileDropdown
               onLogout={handleLogout}
               onProfile={handleProfile}
+              onNavigateToMyBlog={handleNavigateToMyBlog}
             />
           </div>
         </div>

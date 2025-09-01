@@ -1,12 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { useOnClickOutside } from '../../helper/hooks/useOnClickOutside';
+import { ROLE } from '../../types/user';
 
 const ProfileDropdown: React.FC<{
   onLogout: () => void;
   onProfile: () => void;
-}> = ({ onLogout, onProfile }) => {
+  onNavigateToMyBlog: () => void;
+}> = ({ onLogout, onProfile, onNavigateToMyBlog }) => {
   const fullname = localStorage.getItem('name') || '';
   const [open, setOpen] = useState(false);
+  const role = localStorage.getItem('role');
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(dropdownRef, () => {
     setOpen(false);
@@ -19,6 +23,9 @@ const ProfileDropdown: React.FC<{
     .join('')
     .toUpperCase()
     .slice(0, 2);
+
+  const isAccessibleMyBlogItem =
+    role === ROLE.ADMIN || role === ROLE.SUPER_ADMIN;
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
@@ -73,9 +80,22 @@ const ProfileDropdown: React.FC<{
                 }}
                 className="w-full text-left px-4 py-2 hover:bg-purple-50 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 font-medium transition"
               >
-                My Profile
+                Profile
               </button>
             </li>
+            {isAccessibleMyBlogItem && (
+              <li>
+                <button
+                  onClick={() => {
+                    onNavigateToMyBlog();
+                    setOpen(false);
+                  }}
+                  className="w-full text-left px-4 py-2 hover:bg-purple-50 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 font-medium transition border-t border-purple-50 dark:border-gray-600"
+                >
+                  Blogs
+                </button>
+              </li>
+            )}
             <li>
               <button
                 onClick={() => {

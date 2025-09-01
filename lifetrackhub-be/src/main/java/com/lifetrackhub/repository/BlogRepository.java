@@ -45,7 +45,14 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
             nativeQuery = true)
     Page<Blog> findAllBlogs(Long userId, String keyword, String slug, String status, Instant start, Instant end, Pageable pageable);
 
-    Page<Blog> findAllByUserIdAndStatus(Long userId, BlogStatus status, Pageable pageable);
+    @Query("""
+                SELECT b FROM Blog b
+                WHERE (:userId IS NULL OR b.user.id = :userId)
+                AND (:status IS NULL OR b.status = :status)
+                           AND (:start IS NULL OR b.createdDate >= :start)
+                      AND (:end IS NULL OR b.createdDate <= :end)
+            """)
+    Page<Blog> findSelfBlogs(Long userId, BlogStatus status, Instant start, Instant end, Pageable pageable);
 
     Optional<Blog> getBlogBySlug(String slug);
 

@@ -58,6 +58,16 @@ export const blogApi = apiSlice
         },
         keepUnusedDataFor: 0,
       }),
+
+      getSelfBlogs: builder.query({
+        query: data => ({
+          url: `${ADMIN_BLOG_API_PATH}/self`,
+          method: 'POST',
+          body: data,
+        }),
+
+        providesTags: ['Blogs'],
+      }),
     }),
   });
 
@@ -67,4 +77,5 @@ export const {
   useCreateBlogMutation,
   useUpdateBlogMutation,
   useGetBlogStatsQuery,
+  useLazyGetSelfBlogsQuery,
 } = blogApi;

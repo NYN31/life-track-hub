@@ -14,6 +14,7 @@ import FileContainer from './pages/file/FileContainer';
 import TodoContainer from './pages/todo/TodoContainer';
 import AboutContainer from './pages/about/AboutContainer';
 import PublicRoute from './components/layout/PublicRoute';
+import MyBlogsContainer from './pages/blog/MyBlogsContainer';
 
 function App() {
   useAuthCheck();
@@ -43,6 +44,7 @@ function App() {
           <Route path="by-slug/:slug" element={<DisplayBlogContainer />} />
           <Route path="update/:slug" element={<BlogUpdateContainer />} />
           <Route path="stats" element={<BlogStatsContainer />} />
+          <Route path="self/:email" element={<MyBlogsContainer />} />
         </Route>
         <Route path="user">
           <Route path="profile/update" element={<ProfileUpdateContainer />} />
