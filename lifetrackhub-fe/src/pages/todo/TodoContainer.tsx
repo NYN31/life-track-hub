@@ -159,7 +159,7 @@ const TodoContainer: React.FC = () => {
       )}
       {/* Modal for update */}
       {editingTodo && isUpdateModalOpen && (
-        <div className="fixed inset-0 bg-opacity-40 flex mt-4 md:mt-24 mx-1 justify-center z-50">
+        <div className="modal">
           <div className="relative size-full md:size-9/12 lg:size-6/12">
             <TodoUpdateForm
               ref={updateModalRef}

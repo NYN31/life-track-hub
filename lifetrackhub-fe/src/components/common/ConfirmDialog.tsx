@@ -31,11 +31,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center md:items-start justify-center bg-gray-900 dark:bg-gray-50 bg-opacity-40 dark:bg-opacity-40"
-      role="dialog"
-      aria-modal="true"
-    >
+    <div className="modal" role="dialog" aria-modal="true">
       <div className="common-box-container">
         <h2>{actionName}</h2>
         <p className="mt-2 text-gray-900 dark:text-gray-50">
