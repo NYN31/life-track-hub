@@ -1,7 +1,8 @@
-package com.lifetrackhub.controller.userController;
+package com.lifetrackhub.controller.adminController;
 
 import com.lifetrackhub.dto.PageDto;
 import com.lifetrackhub.dto.TodoDto;
+import com.lifetrackhub.dto.request.TodoSearchRequestDto;
 import com.lifetrackhub.entity.Todo;
 import com.lifetrackhub.service.TodoService;
 import jakarta.validation.Valid;
@@ -9,18 +10,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class TodoController extends BaseController {
+public class TodoController extends AdminBaseController {
     private final TodoService todoService;
 
     public TodoController(TodoService todoService) {
         this.todoService = todoService;
     }
 
-    @GetMapping("/todo/all/by-email/{email}/{page}/{size}")
-    public PageDto<TodoDto> findAllTodosByEmail(@PathVariable String email,
-                                                 @PathVariable Integer page,
-                                                 @PathVariable Integer size) {
-        Page<Todo> todos = todoService.findAllTodosByEmail(email, page, size);
+    @GetMapping("/todo/all")
+    public PageDto<TodoDto> findTodosWithFilterCriteria(@Valid @RequestBody TodoSearchRequestDto request) {
+        Page<Todo> todos = todoService.findFilteredTodos(request);
         return PageDto.fromEntity(todos, TodoDto::formEntity);
     }
 

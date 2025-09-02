@@ -4,8 +4,11 @@ import com.lifetrackhub.constant.enumeration.TodoStatus;
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.TodoDto;
 import com.lifetrackhub.dto.blob.TodoItems;
+import com.lifetrackhub.dto.request.TodoSearchRequestDto;
+import com.lifetrackhub.dto.response.DateRangePageRequest;
 import com.lifetrackhub.entity.Todo;
 import com.lifetrackhub.entity.User;
+import com.lifetrackhub.helper.BlogSearchHelper;
 import com.lifetrackhub.repository.TodoRepository;
 import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.TodoService;
@@ -24,6 +27,7 @@ import java.util.Optional;
 @Service
 public class TodoServiceImpl implements TodoService {
     private final Logger log = LoggerFactory.getLogger(getClass());
+    private static final int DATE_RANGE_PERIOD_FOR_TODO_SEARCH = 365;
 
     private final UserRepository userRepository;
     private final TodoRepository todoRepository;
@@ -34,10 +38,35 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Page<Todo> findAllTodosByEmail(String email, Integer page, Integer size) {
-        validateUserWithUserId(email);
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by("lastModifiedDate").descending());
-        return todoRepository.findAllByEmail(email, pageRequest);
+    public Page<Todo> findFilteredTodos(TodoSearchRequestDto dto) {
+        log.info("Finding filtered todos");
+
+        Optional<User> optionalUser = Util.getUserFromSecurityContextHolder(userRepository);
+        if (optionalUser.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "You are not authorized to perform this request."
+            );
+        }
+        User user = optionalUser.get();
+        log.info("Finding all {} blogs of {}, within {} to {}", dto.getStatus(), user.getEmail(), dto.getStart(), dto.getEnd());
+
+        DateRangePageRequest dateRangePageRequest =
+                BlogSearchHelper.buildDateRangePageRequest(
+                        dto.getPage(),
+                        dto.getSize(),
+                        dto.getStart(),
+                        dto.getEnd(),
+                        DATE_RANGE_PERIOD_FOR_TODO_SEARCH
+                );
+
+        return todoRepository.findAllWithFilter(
+                dto.getTitle(),
+                dto.getStatus(),
+                dateRangePageRequest.getStart(),
+                dateRangePageRequest.getEnd(),
+                dateRangePageRequest.getPageable()
+        );
     }
 
     @Override
