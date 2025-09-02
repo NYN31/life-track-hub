@@ -13,7 +13,7 @@ export const HOME_PATH = '/home';
 
 // TODO
 export const TODO = 'Todo';
-export const TODO_PATH = '/todos';
+export const TODO_PATH = '/todo';
 export const TODO_API_PATH = '/api/todo';
 
 // ABOUT

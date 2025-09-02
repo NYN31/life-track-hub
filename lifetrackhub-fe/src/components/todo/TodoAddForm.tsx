@@ -31,8 +31,7 @@ const TodoAddForm: React.FC<TodoAddFormProps> = ({
     onAddTitleLocal(newTitle);
   };
 
-  const handleAdd = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAdd = () => {
     if (todo.trim()) {
       onAddLocal(todo.trim());
       setTodo('');
@@ -48,7 +47,7 @@ const TodoAddForm: React.FC<TodoAddFormProps> = ({
   return (
     <div className="common-box">
       <h2 className="text-center">Add Todo Items</h2>
-      <form onSubmit={handleAdd} className="">
+      <div className="">
         <div className="flex-1 flex flex-col overflow-x-auto gap-y-2">
           <input
             type="text"
@@ -64,16 +63,20 @@ const TodoAddForm: React.FC<TodoAddFormProps> = ({
               name="todo item"
               value={todo}
               onChange={e => setTodo(e.target.value)}
-              className="form-input-field flex-1 p-2 md:p-4 m-1"
+              className="form-input-field flex-1 p-2 md:p-3 m-1"
               placeholder="Enter todo item"
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleAdd();
+                }
+              }}
             />
 
-            <button type="submit">
-              <OnClickAddButton />
-            </button>
+            <OnClickAddButton handleClick={handleAdd} />
           </div>
         </div>
-      </form>
+      </div>
       <div className="list-none space-y-2">
         {localTodos.map(todo => (
           <div

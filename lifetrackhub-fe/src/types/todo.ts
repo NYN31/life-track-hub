@@ -20,4 +20,13 @@ export interface ITodoItems {
   completed: boolean;
 }
 
-export type TodoStatus = 'IN_PROGRESS' | 'DONE';
+export interface TodoSearchRequestDto {
+  page: number;
+  size: number;
+  title: string | null;
+  status: string | null;
+  start: string | null;
+  end: string | null;
+}
+
+export type TodoStatus = 'IN_PROGRESS' | 'DONE' | 'ARCHIVED';
