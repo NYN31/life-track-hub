@@ -14,7 +14,7 @@ import com.lifetrackhub.dto.response.CountByStatusDto;
 import com.lifetrackhub.dto.response.DateRangePageRequest;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.entity.User;
-import com.lifetrackhub.helper.BlogSearchHelper;
+import com.lifetrackhub.helper.SearchHelper;
 import com.lifetrackhub.repository.BlogRepository;
 import com.lifetrackhub.repository.UserRepository;
 import com.lifetrackhub.service.BlogService;
@@ -106,12 +106,14 @@ public class BlogServiceImpl implements BlogService {
         log.info("Finding all {} blogs of {}, within {} to {} for unauthenticated user", dto.getStatus(), dto.getEmail(), dto.getStart(), dto.getEnd());
 
         DateRangePageRequest dateRangePageRequest =
-                BlogSearchHelper.buildDateRangePageRequest(
+                SearchHelper.buildDateRangePageRequest(
                         dto.getPage(),
                         dto.getSize(),
                         null,
                         null,
-                        DATE_RANGE_PERIOD_FOR_BLOG_SEARCH
+                        DATE_RANGE_PERIOD_FOR_BLOG_SEARCH,
+                        null,
+                        null
                 );
 
         return blogRepository.findAllBlogs(
@@ -156,12 +158,14 @@ public class BlogServiceImpl implements BlogService {
         }
 
         DateRangePageRequest dateRangePageRequest =
-                BlogSearchHelper.buildDateRangePageRequest(
+                SearchHelper.buildDateRangePageRequest(
                         dto.getPage(),
                         dto.getSize(),
                         dto.getStart(),
                         dto.getEnd(),
-                        DATE_RANGE_PERIOD_FOR_BLOG_SEARCH
+                        DATE_RANGE_PERIOD_FOR_BLOG_SEARCH,
+                        null,
+                        null
                 );
 
         log.info("User Id - {}, Keywords - {}, Status - {}", userId, dto.getKeywords(), currentStatus);
@@ -216,12 +220,14 @@ public class BlogServiceImpl implements BlogService {
         Long userId = userFromSecurityContextOpt.get().getId();
 
         DateRangePageRequest dateRangePageRequest =
-                BlogSearchHelper.buildDateRangePageRequest(
+                SearchHelper.buildDateRangePageRequest(
                         dto.getPage(),
                         dto.getSize(),
                         dto.getStart(),
                         dto.getEnd(),
-                        DATE_RANGE_PERIOD_FOR_BLOG_SEARCH
+                        DATE_RANGE_PERIOD_FOR_BLOG_SEARCH,
+                        "createdDate",
+                        Sort.Direction.DESC
                 );
 
         return blogRepository.

@@ -27,20 +27,18 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
               AND (:status IS NULL OR b.status = :status)
               AND (:start IS NULL OR b.created_date >= :start)
               AND (:end IS NULL OR b.created_date <= :end)
-              AND (:keyword IS NULL
-                   OR MATCH(b.title, b.tags) AGAINST(:keyword IN NATURAL LANGUAGE MODE))
-            ORDER BY MATCH(b.title, b.tags) AGAINST(:keyword IN NATURAL LANGUAGE MODE) DESC
+              AND (:keyword IS NULL OR MATCH(b.title, b.tags) AGAINST(:keyword IN NATURAL LANGUAGE MODE))
+              ORDER BY MATCH(b.title, b.tags) AGAINST(:keyword IN NATURAL LANGUAGE MODE) DESC, b.created_date DESC
             """,
             countQuery = """
                     SELECT COUNT(*)
                     FROM blog b
                     WHERE (:userId IS NULL OR b.user_id = :userId)
-                      AND (:slug IS NULL OR b.slug = :slug)
-                      AND (:status IS NULL OR b.status = :status)
-                      AND (:start IS NULL OR b.created_date >= :start)
-                      AND (:end IS NULL OR b.created_date <= :end)
-                      AND (:keyword IS NULL
-                           OR MATCH(b.title, b.tags) AGAINST(:keyword IN NATURAL LANGUAGE MODE))
+                        AND (:slug IS NULL OR b.slug = :slug)
+                        AND (:status IS NULL OR b.status = :status)
+                        AND (:start IS NULL OR b.created_date >= :start)
+                        AND (:end IS NULL OR b.created_date <= :end)
+                        AND (:keyword IS NULL OR MATCH(b.title, b.tags) AGAINST(:keyword IN NATURAL LANGUAGE MODE))
                     """,
             nativeQuery = true)
     Page<Blog> findAllBlogs(Long userId, String keyword, String slug, String status, Instant start, Instant end, Pageable pageable);
