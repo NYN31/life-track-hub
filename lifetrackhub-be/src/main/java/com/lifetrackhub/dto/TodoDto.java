@@ -22,6 +22,7 @@ public class TodoDto {
     @Length(min = 3, max = 255)
     private String title;
 
+    @NotNull
     private TodoStatus todoStatus;
 
     private TodoItem[] todoItems;

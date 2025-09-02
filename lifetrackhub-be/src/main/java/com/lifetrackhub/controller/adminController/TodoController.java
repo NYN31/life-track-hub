@@ -17,7 +17,7 @@ public class TodoController extends AdminBaseController {
         this.todoService = todoService;
     }
 
-    @GetMapping("/todo/all")
+    @PostMapping("/todo/all")
     public PageDto<TodoDto> findTodosWithFilterCriteria(@Valid @RequestBody TodoSearchRequestDto request) {
         Page<Todo> todos = todoService.findFilteredTodos(request);
         return PageDto.fromEntity(todos, TodoDto::formEntity);
