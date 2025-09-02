@@ -10,7 +10,7 @@ const OnClickFilterIcon: React.FC<OnClickFilterIconProps> = ({
   showFilterHandler,
 }) => {
   return (
-    <div className="flex items-center justify-end mb-4">
+    <div className="flex items-center justify-end my-4">
       <button
         className={`p-2 rounded-full border border-purple-200 dark:border-gray-700 hover:bg-purple-50 dark:hover:bg-gray-800 transition`}
         onClick={showFilterHandler}

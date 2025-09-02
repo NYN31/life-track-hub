@@ -4,6 +4,12 @@ import { ITodoResponseDto } from '../../types/todo';
 import OnClickButton from '../common/button/OnClickButton';
 import { FaRegEdit } from 'react-icons/fa';
 
+const statusClasses: Record<string, string> = {
+  DONE: 'bg-green-300 text-green-700',
+  IN_PROGRESS: 'bg-yellow-100 text-yellow-700',
+  ARCHIVED: 'bg-gray-600 text-gray-100', // new style for ARCHIVED
+};
+
 type TodoListProps = {
   todos: ITodoResponseDto[];
   onEdit: (todo: ITodoResponseDto) => void;
@@ -26,10 +32,9 @@ const TodoList: React.FC<TodoListProps> = ({ todos, onEdit }) => {
               <div>
                 <div
                   className={`w-3 h-3 rounded-full ${
-                    todo.todoStatus === 'DONE'
-                      ? 'bg-green-400'
-                      : 'bg-yellow-400'
-                  } border-2 border-white shadow`}
+                    statusClasses[todo.todoStatus] ||
+                    'bg-gray-100 text-gray-500'
+                  } border-2 border-gray-300 dark:border-white shadow`}
                 ></div>
               </div>
               <h3 className="line-clamp-2">{todo.title}</h3>
@@ -37,10 +42,9 @@ const TodoList: React.FC<TodoListProps> = ({ todos, onEdit }) => {
             <div className="text-center">
               <div className="flex flex-wrap md:flex-row gap-2">
                 <span
-                  className={`px-3 py-1 flex items-center rounded-full text-xs font-medium ${
-                    todo.todoStatus === 'DONE'
-                      ? 'bg-green-300 text-green-700'
-                      : 'bg-yellow-100 text-yellow-700'
+                  className={`px-3 py-1 flex items-center rounded-full text-xs font-medium border border-gray-300 ${
+                    statusClasses[todo.todoStatus] ||
+                    'bg-gray-100 text-gray-500'
                   }`}
                 >
                   {todo.todoStatus}

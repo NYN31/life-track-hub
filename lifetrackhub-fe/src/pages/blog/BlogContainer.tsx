@@ -30,9 +30,6 @@ const BlogContainer: React.FC = () => {
   const MAX_BLOG_ITEMS_IN_A_PAGE = 10;
   const role = localStorage.getItem('role');
   const isSuperAdmin = role === ROLE.SUPER_ADMIN;
-  console.log(isSuperAdmin);
-  console.log(role);
-  console.log(ROLE.SUPER_ADMIN);
 
   const navigate = useNavigate();
   const location = useLocation();

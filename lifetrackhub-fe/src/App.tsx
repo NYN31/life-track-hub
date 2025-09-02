@@ -53,7 +53,7 @@ function App() {
         <Route path="files">
           <Route index element={<FileContainer />} />
         </Route>
-        <Route path="todos">
+        <Route path="todo">
           <Route index element={<TodoContainer />} />
         </Route>
       </Route>
