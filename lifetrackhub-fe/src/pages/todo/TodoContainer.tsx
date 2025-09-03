@@ -13,6 +13,7 @@ import OnClickFilterIcon from '../../components/common/button/OnClickFilterIcon'
 import { OptionType } from '../../types/common';
 import {
   useAddTodoMutation,
+  useArchivedTodoMutation,
   useLazyGetTodosWithFilterCriteriaQuery,
   useUpdateTodoMutation,
 } from '../../features/todo/todoApi';
@@ -31,31 +32,24 @@ import { extractErrorMessage } from '../../helper/utils/extract-error-message';
 import { useOnClickOutside } from '../../helper/hooks/useOnClickOutside';
 import ModalPortal from '../../ModalPortal';
 import { TODO_PATH } from '../../constants/title-and-paths';
-import { ROLE } from '../../types/user';
 import { useToast } from '../../context/toast-context';
 
 const MAX_TODO_ITEMS_IN_A_PAGE = 10;
 
-const statusOptionsForAdmin: OptionType[] = [
-  { value: 'IN_PROGRESS', label: 'IN_PROGRESS' },
-  { value: 'DONE', label: 'DONE' },
-];
-
-const statusOptionsForSuperAdmin: OptionType[] = [
+const statusOptions: OptionType[] = [
   { value: 'IN_PROGRESS', label: 'IN_PROGRESS' },
   { value: 'DONE', label: 'DONE' },
   { value: 'ARCHIVED', label: 'ARCHIVED' },
 ];
 
 const TodoContainer: React.FC = () => {
-  const addToast = useToast();
+  const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const localTodos = useSelector((state: RootState) => state.todo);
   const { email } = getAllLocalStoreValue();
   const safeEmail = typeof email === 'string' ? email : '';
-  const isSuperAdmin = localStorage.getItem('role') === ROLE.SUPER_ADMIN;
 
   const queryPageNo = useQuery().get('page') || '0';
   const queryTitle = useQuery().get('title') || '';
@@ -95,6 +89,8 @@ const TodoContainer: React.FC = () => {
   const [addTodo, { isLoading: isTodoAddLoading }] = useAddTodoMutation();
   const [updateTodo] = useUpdateTodoMutation();
 
+  const [todoArchived] = useArchivedTodoMutation();
+
   const handleAddTitleLocal = (title: string) => {
     dispatch(addTitleToLocalTodo(title));
   };
@@ -125,9 +121,9 @@ const TodoContainer: React.FC = () => {
           queryStartDate,
           queryEndDate,
         ]);
-        addToast('Todo add successful.', 'success');
+        toast('Todo add successful.', 'success');
       })
-      .catch((err: any) => addToast(err.data.message, 'error'));
+      .catch((err: any) => toast(err.data.message, 'error'));
   };
 
   // Update todo (unchanged)
@@ -151,9 +147,22 @@ const TodoContainer: React.FC = () => {
           queryStartDate,
           queryEndDate,
         ]);
-        addToast('Todo update has been successful.', 'success');
+        toast('Todo update has been successful.', 'success');
       })
-      .catch((err: any) => addToast(err.data.message, 'error'));
+      .catch((err: any) => toast(err.data.message, 'error'));
+  };
+
+  const archivedTodoById = async (id: number) => {
+    await todoArchived(id)
+      .unwrap()
+      .then(res => {
+        handleSearch(Number(queryPageNo), queryTitle, queryStatus, [
+          queryStartDate,
+          queryEndDate,
+        ]);
+        toast(res.message, 'success');
+      })
+      .catch(err => toast(err.data.message, 'error'));
   };
 
   const onEditHandler = (todo: ITodoResponseDto) => {
@@ -231,7 +240,7 @@ const TodoContainer: React.FC = () => {
         setResults(content);
       })
       .catch((err: any) => {
-        addToast(err.data.message, 'error');
+        toast(err.data.message, 'error');
         setResults([]);
       });
   };
@@ -297,9 +306,7 @@ const TodoContainer: React.FC = () => {
             {
               name: 'Status',
               option: status,
-              options: isSuperAdmin
-                ? statusOptionsForSuperAdmin
-                : statusOptionsForAdmin,
+              options: statusOptions,
               setOption: setStatus,
               isMandatory: false,
             },
@@ -321,7 +328,11 @@ const TodoContainer: React.FC = () => {
         <ErrorMessage message={extractErrorMessage(todosError) || ''} />
       ) : (
         <>
-          <TodoList todos={results || []} onEdit={onEditHandler} />
+          <TodoList
+            todos={results || []}
+            onEdit={onEditHandler}
+            archivedTodoById={archivedTodoById}
+          />
           {results.length > 0 && (
             <Pagination
               handlePreviousPage={handlePreviousPage}

@@ -8,6 +8,7 @@ import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.TodoDto;
 import com.lifetrackhub.dto.blob.TodoItems;
 import com.lifetrackhub.dto.request.TodoSearchRequestDto;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.dto.response.DateRangePageRequest;
 import com.lifetrackhub.entity.Todo;
 import com.lifetrackhub.entity.User;
@@ -183,5 +184,24 @@ public class TodoServiceImpl implements TodoService {
 
         return TodoDto.formEntity(todo);
 
+    }
+
+    @Override
+    public CommonResponseDto archivedTodo(Long id) {
+        log.info("Archiving todo item: {}", id);
+
+        Optional<Todo> optionalTodo = todoRepository.findById(id);
+        if (optionalTodo.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found by id: " + id);
+        }
+        Todo todo = optionalTodo.get();
+
+        todo.setStatus(TodoStatus.ARCHIVED);
+        todoRepository.save(todo);
+
+        return CommonResponseDto.builder()
+                .status(HttpStatus.OK)
+                .message("Todo is archived")
+                .build();
     }
 }

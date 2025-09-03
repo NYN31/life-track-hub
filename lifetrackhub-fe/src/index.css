@@ -86,7 +86,7 @@
   }
 
   .modal {
-    @apply fixed inset-0 z-50 p-2 flex items-start justify-center bg-gray-900 dark:bg-gray-50 bg-opacity-40 dark:bg-opacity-40;
+    @apply fixed inset-0 z-50 p-2 flex items-start justify-center bg-gray-900 dark:bg-gray-50 bg-opacity-50 dark:bg-opacity-50 backdrop-blur-sm transition-opacity;
   }
 
   /* Form Styles*/

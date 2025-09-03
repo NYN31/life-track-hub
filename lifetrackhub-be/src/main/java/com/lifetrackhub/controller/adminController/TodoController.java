@@ -3,6 +3,7 @@ package com.lifetrackhub.controller.adminController;
 import com.lifetrackhub.dto.PageDto;
 import com.lifetrackhub.dto.TodoDto;
 import com.lifetrackhub.dto.request.TodoSearchRequestDto;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.Todo;
 import com.lifetrackhub.service.TodoService;
 import jakarta.validation.Valid;
@@ -37,5 +38,10 @@ public class TodoController extends AdminBaseController {
     @PutMapping("/todo/update")
     public TodoDto updateTodo(@RequestBody @Valid TodoDto dto) {
         return todoService.updateTodo(dto);
+    }
+
+    @PutMapping("/todo/archived/{id}")
+    public CommonResponseDto archivedTodo(@PathVariable Long id) {
+        return todoService.archivedTodo(id);
     }
 }
