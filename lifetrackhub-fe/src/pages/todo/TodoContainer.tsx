@@ -151,7 +151,7 @@ const TodoContainer: React.FC = () => {
           queryStartDate,
           queryEndDate,
         ]);
-        addToast('Todo update successful.', 'success');
+        addToast('Todo update has been successful.', 'success');
       })
       .catch((err: any) => addToast(err.data.message, 'error'));
   };

@@ -16,7 +16,7 @@ interface ToastProps {
 const CustomToast: React.FC<ToastProps> = ({ toast, removeToast }) => {
   return (
     <div
-      className={`flex items-center justify-between space-x-2 px-5 py-3 rounded-lg shadow-lg 
+      className={`flex items-center justify-between space-x-2 px-2 md:px-5 py-3 rounded-lg shadow-lg 
                  transition-all duration-700 ease-in-out
                  ${typeClasses[toast.type]}
                  ${

@@ -15,15 +15,17 @@ const FileCard: React.FC<FileCardProps> = ({ file, fileDeleteHandler }) => {
 
   return (
     <div key={file.filePath} className="common-box flex flex-col">
-      {file.fileType === 'IMG' ? (
-        <img
-          src={file.previewUrl}
-          alt={file.originalFileName}
-          className="w-48 h-48 object-cover rounded mb-2 border dark:border-gray-700"
-        />
-      ) : (
-        <HiOutlineDocumentText className="w-20 h-20 text-blue-600 dark:text-blue-400 mb-2" />
-      )}
+      <div className="flex items-center justify-center">
+        {file.fileType === 'IMG' ? (
+          <img
+            src={file.previewUrl}
+            alt={file.originalFileName}
+            className="w-48 h-48 object-cover rounded mb-2 border dark:border-gray-700"
+          />
+        ) : (
+          <HiOutlineDocumentText className="w-20 h-20 text-blue-600 dark:text-blue-400 mb-2" />
+        )}
+      </div>
       <div className="flex flex-col items-center">
         <div className="font-medium text-gray-800 dark:text-gray-100 line-clamp-1 lg:w-44">
           {file.originalFileName}
