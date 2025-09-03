@@ -11,6 +11,7 @@ interface OnClickButtonProps {
   action: () => void;
   borderRadius?: string;
   icon?: React.ReactNode;
+  hasStyle?: boolean;
 }
 
 const OnClickButton: React.FC<OnClickButtonProps> = ({
@@ -22,6 +23,7 @@ const OnClickButton: React.FC<OnClickButtonProps> = ({
   action,
   borderRadius = '0.5rem', // default 8px
   icon = null,
+  hasStyle = true,
 }) => {
   const isDisabled = isDisable || isLoading;
 
@@ -29,7 +31,7 @@ const OnClickButton: React.FC<OnClickButtonProps> = ({
     <button
       onClick={action}
       disabled={isDisabled}
-      className={`btn-secondary  ${
+      className={`${hasStyle ? 'btn-secondary' : 'p-2 rounded-full hover:bg-teal-200'}  ${
         isDisabled ? 'opacity-50 cursor-not-allowed' : ''
       }`}
       style={{
@@ -45,9 +47,9 @@ const OnClickButton: React.FC<OnClickButtonProps> = ({
           {icon ? (
             <span className="inline-block">{icon}</span>
           ) : (
-            <IoHelpCircleOutline size="20" />
+            <IoHelpCircleOutline size="18" />
           )}{' '}
-          <span className="hidden md:block">{text}</span>{' '}
+          {text && <span className="hidden md:block">{text}</span>}
         </div>
       )}
     </button>
