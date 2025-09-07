@@ -102,11 +102,11 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
           {/* Blog Cover Image */}
           <div className="flex items-center justify-center">
             <img
-              src={blogData.coverImagePath || fallback}
+              src={blogData.coverImagePath}
               alt="Blog Cover"
               className="object-cover rounded-lg shadow"
               height="auto"
-              width="600"
+              width="auto"
             />
           </div>
 

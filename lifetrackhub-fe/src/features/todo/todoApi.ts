@@ -55,6 +55,15 @@ export const todoApi = apiSlice
           { type: 'TodoByEmail', email: arg.email },
         ],
       }),
+
+      archivedTodo: builder.mutation({
+        query: id => ({
+          url: `${ADMIN_TODO_API_PATH}/archived/${id}`,
+          method: 'PUT',
+        }),
+
+        invalidatesTags: ['Todo'],
+      }),
     }),
   });
 
@@ -63,4 +72,5 @@ export const {
   useGetTodoByEmailQuery,
   useAddTodoMutation,
   useUpdateTodoMutation,
+  useArchivedTodoMutation,
 } = todoApi;
