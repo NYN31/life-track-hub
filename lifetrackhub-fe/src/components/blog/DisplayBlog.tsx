@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BLOG_UPDATED_PATH } from '../../constants/title-and-paths';
 import fallback from '../../assets/blogFallback.png';
 import { extractMarkdownHeadings } from '../../helper/utils/extract-markdown-headings';
@@ -9,11 +9,13 @@ import { FaRegEdit } from 'react-icons/fa';
 import OnClickButton from '../common/button/OnClickButton';
 import MarkdownRenderer from './MarkdownRenderer';
 import { ROLE } from '../../types/user';
+import { RootState } from '../../app/store';
 
 const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const auth = useSelector((state: any) => state.auth);
+  const location = useLocation();
+  const auth = useSelector((state: RootState) => state.auth);
 
   const headings = extractMarkdownHeadings(blogData.content);
 
@@ -25,16 +27,23 @@ const DisplayBlog: React.FC<{ blogData: any }> = ({ blogData }) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-6 md:h-screen">
-      <div className="md:w-1/4 hidden md:block md:order-2 ">
-        <div className="md:pl-4 h-full overflow-y-auto scrollbar-hide">
+      <div className="md:w-1/4 hidden md:block md:order-2">
+        <div className="sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto p-3 rounded-lg bg-gray-50 dark:bg-gray-800 shadow-md scrollbar-hide">
           <h3>Headings</h3>
-          <ul className="space-y-2 text-sm dark:text-gray-200">
+          <ul className="space-y-2 pt-2 text-sm dark:text-gray-200">
             {headings.map((heading, index) => {
+              const headingId = heading.id.replace(/\s+/g, '-').toLowerCase();
+              const activeId = location.hash.includes(headingId);
+
               return (
                 <li key={index} className={`pl-${heading.level * 2} list-disc`}>
                   <a
-                    href={`#${heading.id.replace(/\s+/g, '-').toLowerCase()}`}
-                    className="hover:underline"
+                    href={`#${headingId}`}
+                    className={`hover:underline ${
+                      activeId
+                        ? 'text-purple-700 font-semibold dark:text-purple-300'
+                        : ''
+                    }`}
                   >
                     {heading.text}
                   </a>
