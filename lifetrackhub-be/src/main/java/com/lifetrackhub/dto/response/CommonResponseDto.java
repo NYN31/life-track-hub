@@ -1,11 +1,11 @@
 package com.lifetrackhub.dto.response;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import org.springframework.http.HttpStatus;
 
 @Data
-@Builder
+@SuperBuilder
 public class CommonResponseDto {
     private String message;
     private HttpStatus status;

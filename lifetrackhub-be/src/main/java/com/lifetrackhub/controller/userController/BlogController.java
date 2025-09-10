@@ -8,7 +8,6 @@ import com.lifetrackhub.service.BlogService;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 public class BlogController extends BaseController {
     private final BlogService blogService;
