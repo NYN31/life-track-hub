@@ -3,6 +3,7 @@ package com.lifetrackhub.controller.userController;
 import com.lifetrackhub.dto.BlogDto;
 import com.lifetrackhub.dto.PageDto;
 import com.lifetrackhub.dto.request.BlogSearchRequestDto;
+import com.lifetrackhub.dto.response.BlogLikeCommentCountResponseDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.service.BlogService;
 import org.springframework.data.domain.Page;
@@ -26,5 +27,10 @@ public class BlogController extends BaseController {
     public BlogDto findBlogsBySlug(@PathVariable String slug) {
         Blog blog = blogService.findBlogBySlug(slug);
         return BlogDto.formEntity(blog);
+    }
+
+    @GetMapping("/blog/count-likes-comments/{slug}")
+    public BlogLikeCommentCountResponseDto countLikesComments(@PathVariable String slug) {
+        return blogService.countLikeAndComment(slug);
     }
 }

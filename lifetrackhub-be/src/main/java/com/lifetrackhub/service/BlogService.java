@@ -5,6 +5,7 @@ import com.lifetrackhub.dto.request.BlogCreateRequestDto;
 import com.lifetrackhub.dto.request.SelfBlogSearchRequestDto;
 import com.lifetrackhub.dto.request.BlogSearchRequestDto;
 import com.lifetrackhub.dto.request.BlogUpdateRequestDto;
+import com.lifetrackhub.dto.response.BlogLikeCommentCountResponseDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.Blog;
 import org.springframework.data.domain.Page;
@@ -29,4 +30,6 @@ public interface BlogService {
     CommonResponseDto softDelete(String slug);
 
     BlogCountStatsDto getBlogCountStats();
+
+    BlogLikeCommentCountResponseDto countLikeAndComment(String slug);
 }

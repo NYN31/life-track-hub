@@ -2,7 +2,6 @@ package com.lifetrackhub.service.impl;
 
 import com.lifetrackhub.constant.enumeration.LikeType;
 import com.lifetrackhub.constant.utils.Util;
-import com.lifetrackhub.dto.response.BlogLikeCountResponseDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.entity.BlogLike;
@@ -13,6 +12,7 @@ import com.lifetrackhub.service.BlogLikeService;
 import com.lifetrackhub.service.BlogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,7 +32,7 @@ public class BlogLikeServiceImpl implements BlogLikeService {
     public BlogLikeServiceImpl(
             BlogLikeRepository blogLikeRepository,
             UserRepository userRepository,
-            BlogService blogService
+            @Lazy BlogService blogService
     ) {
         this.blogLikeRepository = blogLikeRepository;
         this.userRepository = userRepository;
@@ -60,17 +60,10 @@ public class BlogLikeServiceImpl implements BlogLikeService {
     }
 
     @Override
-    public BlogLikeCountResponseDto countLikes(String slug) {
-        log.info("Count of likes by blog slug {}", slug);
+    public long countLikes(Long blogId) {
+        log.info("Count of likes by blog ID {}", blogId);
 
-        Blog blog = blogService.findBlogBySlug(slug);
-        Long likesCount = blogLikeRepository.countByBlogIdAndLikeType(blog.getId(), LikeType.LIKED);
-
-        return BlogLikeCountResponseDto.builder()
-                .status(HttpStatus.OK)
-                .message("Count of likes " + likesCount + " by blog slug " + slug)
-                .likeCount(likesCount)
-                .build();
+        return blogLikeRepository.countByBlogIdAndLikeType(blogId, LikeType.LIKED);
     }
 
     private BlogLike toggleExistingLike(BlogLike blogLike) {
