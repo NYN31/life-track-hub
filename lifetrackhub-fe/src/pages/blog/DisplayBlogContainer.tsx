@@ -9,11 +9,15 @@ import { extractErrorMessage } from '../../helper/utils/extract-error-message';
 import ErrorMessage from '../../components/common/ErrorMessage';
 import { IBlog } from '../../types/blog';
 import useAuth from '../../helper/hooks/useAuth';
+import { useGetBlogCommentsQuery } from '../../features/blog/blogCommentApi';
+import { useDispatch } from 'react-redux';
+import { addBlogComment } from '../../features/blog/blogCommentSlice';
 
 const DisplayBlogContainer: React.FC = () => {
   const { slug } = useParams();
   const location = useLocation();
   const auth = useAuth();
+  const dispatch = useDispatch();
   const isBlogPreview = location.pathname.includes('/blog/preview');
 
   const [currentBlog, setCurrentBlog] = useState<IBlog | null>(null);
@@ -23,6 +27,9 @@ const DisplayBlogContainer: React.FC = () => {
 
   const { data: blogDataBySlugUnauth, error: errorBlogDataBySlugUnauth } =
     useGetBlogBySlugForUnauthUserQuery(slug ?? '', { skip: !slug || auth });
+
+  const { data: blogCommentData, error: errorBlogCommentBySlug } =
+    useGetBlogCommentsQuery({ slug: slug ?? '', page: 0, size: 10 });
 
   const blogData = auth ? blogDataBySlug : blogDataBySlugUnauth;
   const errorBlogData = auth ? errorBlogDataBySlug : errorBlogDataBySlugUnauth;
@@ -37,13 +44,26 @@ const DisplayBlogContainer: React.FC = () => {
     }
   }, [blogData, slug, location.pathname]);
 
+  useEffect(() => {
+    if (blogCommentData) {
+      dispatch(addBlogComment(blogCommentData));
+    }
+  }, [blogCommentData, slug]);
+
+  console.log(blogCommentData);
+
   return (
     <div className="common-box-container animate-fade-in">
       {currentBlog && <DisplayBlog blogData={currentBlog} />}
 
-      {extractErrorMessage(errorBlogData) && !isBlogPreview && (
-        <ErrorMessage message={extractErrorMessage(errorBlogData) || ''} />
-      )}
+      {extractErrorMessage(errorBlogData) ||
+        (errorBlogCommentBySlug && !isBlogPreview && (
+          <ErrorMessage
+            message={
+              extractErrorMessage(errorBlogData || errorBlogCommentBySlug) || ''
+            }
+          />
+        ))}
     </div>
   );
 };

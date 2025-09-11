@@ -5,6 +5,7 @@ import blogSliceReducer from '../features/blog/blogSlice';
 import userSliceReducer from '../features/user/userSlice';
 import fileSliceReducer from '../features/file/fileSlice';
 import todoSliceReducer from '../features/todo/todoSlice';
+import blogCommentSliceReducer from '../features/blog/blogCommentSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     user: userSliceReducer,
     file: fileSliceReducer,
     todo: todoSliceReducer,
+    blogComment: blogCommentSliceReducer,
   },
 
   middleware: getDefaultMiddleware =>
