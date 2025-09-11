@@ -34,3 +34,13 @@ export interface IBlogStatusStats {
 export interface IBlogStats {
   statusCounts: IBlogStatusStats[];
 }
+
+// Blog Comment
+
+export interface BlogCommentResponseDto {
+  commentId: number;
+  username: string;
+  userProfilePictureUrl: string;
+  content: string;
+  createdDate: string;
+}
