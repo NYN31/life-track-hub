@@ -7,6 +7,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
-public class BlogLikeCountResponseDto extends CommonResponseDto {
+public class BlogLikeCommentCountResponseDto extends CommonResponseDto {
     private Long likeCount;
+
+    private Long commentCount;
 }

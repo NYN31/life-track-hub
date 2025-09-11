@@ -42,5 +42,4 @@ public class AdminBlogController extends AdminBaseController {
         Page<Blog> blogs = blogService.findSelfBlogs(request);
         return PageDto.fromEntity(blogs, BlogDto::formEntity);
     }
-
 }

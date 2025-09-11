@@ -9,14 +9,14 @@ import com.lifetrackhub.dto.request.BlogCreateRequestDto;
 import com.lifetrackhub.dto.request.SelfBlogSearchRequestDto;
 import com.lifetrackhub.dto.request.BlogSearchRequestDto;
 import com.lifetrackhub.dto.request.BlogUpdateRequestDto;
-import com.lifetrackhub.dto.response.CommonResponseDto;
-import com.lifetrackhub.dto.response.CountByStatusDto;
-import com.lifetrackhub.dto.response.DateRangePageRequest;
+import com.lifetrackhub.dto.response.*;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.helper.SearchHelper;
 import com.lifetrackhub.repository.BlogRepository;
 import com.lifetrackhub.repository.UserRepository;
+import com.lifetrackhub.service.BlogCommentService;
+import com.lifetrackhub.service.BlogLikeService;
 import com.lifetrackhub.service.BlogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +37,19 @@ public class BlogServiceImpl implements BlogService {
 
     private final BlogRepository blogRepository;
     private final UserRepository userRepository;
+    private final BlogLikeService blogLikeService;
+    private final BlogCommentService blogCommentService;
 
-    public BlogServiceImpl(BlogRepository blogRepository, UserRepository userRepository) {
+    public BlogServiceImpl(
+            BlogRepository blogRepository,
+            UserRepository userRepository,
+            BlogLikeService blogLikeService,
+            BlogCommentService blogCommentService) {
         this.blogRepository = blogRepository;
         this.userRepository = userRepository;
+        this.blogCommentService = blogCommentService;
+        this.blogLikeService = blogLikeService;
+
     }
 
     @Override
@@ -285,5 +294,21 @@ public class BlogServiceImpl implements BlogService {
                 .collect(Collectors.toList());
 
         return new BlogCountStatsDto(visibilityCounts);
+    }
+
+    @Override
+    public BlogLikeCommentCountResponseDto countLikeAndComment(String slug) {
+        log.info("Count of likes by blog slug {}", slug);
+
+        Blog blog = findBlogBySlug(slug);
+        Long likesCount = blogLikeService.countLikes(blog.getId());
+        Long commentsCount = blogCommentService.countComments(blog.getId());
+
+        return BlogLikeCommentCountResponseDto.builder()
+                .status(HttpStatus.OK)
+                .message("Successfully counted likes and comments.")
+                .likeCount(likesCount)
+                .commentCount(commentsCount)
+                .build();
     }
 }
