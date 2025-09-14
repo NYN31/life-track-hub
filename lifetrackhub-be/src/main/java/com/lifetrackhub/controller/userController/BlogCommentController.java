@@ -27,7 +27,7 @@ public class BlogCommentController extends BaseController {
     }
 
     @PostMapping("/blog/comment/add")
-    public BlogComment addComment(
+    public BlogCommentResponseDto addComment(
             @RequestParam(value = "slug") String slug,
             @RequestParam(value = "content") String content) {
         return blogCommentService.addComment(slug, content);

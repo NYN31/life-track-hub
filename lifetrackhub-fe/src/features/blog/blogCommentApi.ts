@@ -1,4 +1,10 @@
+import { BlogCommentResponseDto } from '../../types/blog';
 import { apiSlice } from '../api/apiSlice';
+import {
+  addBlogCommentOptimistically,
+  rollbackBlogComment,
+  updateOptimisticBlogComment,
+} from './blogCommentSlice';
 
 export const BLOG_COMMENT_API_PATH = '/api/blog/comment';
 
@@ -24,7 +30,34 @@ export const blogCommentApi = apiSlice
             content,
           });
 
-          return `${BLOG_COMMENT_API_PATH}/add?${params.toString()}`;
+          return {
+            url: `${BLOG_COMMENT_API_PATH}/add?${params.toString()}`,
+            method: 'POST',
+          };
+        },
+
+        async onQueryStarted({ content }, { dispatch, queryFulfilled }) {
+          const optimisticId = Date.now();
+
+          const optimisticComment: BlogCommentResponseDto = {
+            commentId: optimisticId,
+            username: localStorage.getItem('name') || '',
+            userProfilePictureUrl: 'null',
+            content,
+            createdDate: new Date().toISOString() as any,
+          };
+
+          dispatch(addBlogCommentOptimistically(optimisticComment));
+
+          try {
+            const { data } = await queryFulfilled;
+
+            dispatch(
+              updateOptimisticBlogComment({ optimisticId, realComment: data })
+            );
+          } catch {
+            dispatch(rollbackBlogComment(optimisticId));
+          }
         },
       }),
 

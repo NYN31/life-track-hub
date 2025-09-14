@@ -1,40 +1,96 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { useState } from 'react';
-import { BlogCommentState } from '../../features/blog/blogCommentSlice';
+import {
+  BlogCommentState,
+  updateCurrentPage,
+} from '../../features/blog/blogCommentSlice';
+import { useAddCommentMutation } from '../../features/blog/blogCommentApi';
+import { useParams } from 'react-router-dom';
+import { useToast } from '../../context/toast-context';
+import SimplePagination from '../common/SimplePagination';
 
 const BlogComments = () => {
+  const MIN_COMMENT_FOR_SHOW_TOP_PAGINATION = 5;
+  const { slug } = useParams();
+  const toast = useToast();
+  const dispatch = useDispatch();
   const blogState = useSelector((state: RootState) => state.blogComment);
-
   const { content, hasNext, hasPrevious, pageNumber, totalPages } =
     blogState as BlogCommentState;
 
+  const [addComment, { isLoading: isAddCommentLoading }] =
+    useAddCommentMutation();
   const [editCommentId, setEditCommentId] = useState<number | null>(null);
+  const [commentContent, setCommentContent] = useState<string>('');
+
+  const addCommentHandler = async () => {
+    await addComment({ slug, content: commentContent })
+      .unwrap()
+      .then(() => {
+        setCommentContent('');
+        toast('Comment add successfully', 'success', 3000);
+      })
+      .catch(err => {
+        toast(err.data.message, 'error', 300);
+      });
+  };
+
+  const handleNextPage = () => {
+    const nextPageNo = pageNumber + 1;
+    dispatch(updateCurrentPage(nextPageNo));
+  };
+
+  const handlePreviousPage = () => {
+    const nextPageNo = pageNumber - 1;
+    dispatch(updateCurrentPage(nextPageNo));
+  };
 
   return (
-    <div className="p-4">
+    <>
       {/* Add Comment */}
       <div className="pb-4">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
           Add a Comment
         </h3>
         <textarea
-          className="w-full p-3 resize-none rounded-md border focus:ring-2 focus:ring-blue-400 focus:outline-none"
+          className="form-input-field max-h-32 min-h-32 resize-none"
           placeholder="Write your comment..."
           rows={3}
+          value={commentContent}
+          onChange={e => setCommentContent(e.target.value)}
         ></textarea>
         <div className="mt-3 flex justify-end">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
-            Submit
+          <button
+            //={isAddCommentLoading}
+            disabled={isAddCommentLoading || commentContent.length === 0}
+            onClick={addCommentHandler}
+            className={
+              commentContent.length === 0
+                ? 'btn-submit-disabled'
+                : 'btn-submit-enabled'
+            }
+          >
+            Comment
           </button>
         </div>
       </div>
 
+      {content.length > MIN_COMMENT_FOR_SHOW_TOP_PAGINATION && (
+        <SimplePagination
+          handlePreviousPage={handlePreviousPage}
+          handleNextPage={handleNextPage}
+          currentPageNo={pageNumber}
+          hasPrevious={hasPrevious}
+          hasNext={hasNext}
+          totalPages={totalPages}
+        />
+      )}
+
       {/* Comments List */}
-      <div className="space-y-6">
+      <div className="space-y-6 mt-6">
         {content.map(comment => (
           <div key={comment.commentId} className="flex gap-4 border-b pb-4">
-            {/* Avatar */}
             <div className="flex-shrink-0">
               {comment.userProfilePictureUrl ? (
                 <img
@@ -49,28 +105,28 @@ const BlogComments = () => {
               )}
             </div>
 
-            {/* Comment Content */}
-            <div className="flex-1">
+            <div className="w-full">
               <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-gray-800">
+                <h4 className="font-semibold text-xs md:text-sm text-gray-800">
                   {comment.username}
                 </h4>
-                <span className="text-sm text-gray-500">
+                <span className="text-xs md:text-sm text-gray-500">
                   {new Date(comment.createdDate).toLocaleString()}
                 </span>
               </div>
 
               {editCommentId === comment.commentId ? (
                 <textarea
-                  className="w-full mt-2 p-2 resize-none focus:outline-none rounded bg-gray-50"
+                  className="form-input-field max-h-32 min-h-32 resize-none"
                   rows={3}
                   defaultValue={comment.content}
                 />
               ) : (
-                <p className="mt-2 text-gray-700">{comment.content}</p>
+                <p className="text-xs md:text-sm mt-1 md:mt-2 text-gray-700 break-words">
+                  {comment.content}
+                </p>
               )}
 
-              {/* Actions */}
               <div className="mt-2 flex gap-3 text-sm">
                 <button
                   className="text-green-500 hover:underline"
@@ -95,25 +151,15 @@ const BlogComments = () => {
         ))}
       </div>
 
-      {/* Pagination */}
-      <div className="mt-6 flex justify-center items-center gap-3">
-        <button
-          className="px-3 py-1 border rounded-md text-sm disabled:opacity-50"
-          disabled={!hasPrevious}
-        >
-          Previous
-        </button>
-        <span className="text-sm text-gray-600">
-          Page {pageNumber + 1} of {totalPages}
-        </span>
-        <button
-          className="px-3 py-1 border rounded-md text-sm disabled:opacity-50"
-          disabled={!hasNext}
-        >
-          Next
-        </button>
-      </div>
-    </div>
+      <SimplePagination
+        handlePreviousPage={handlePreviousPage}
+        handleNextPage={handleNextPage}
+        currentPageNo={pageNumber}
+        hasPrevious={hasPrevious}
+        hasNext={hasNext}
+        totalPages={totalPages}
+      />
+    </>
   );
 };
 
