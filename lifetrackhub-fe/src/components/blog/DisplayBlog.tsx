@@ -126,7 +126,7 @@ const DisplayBlog: React.FC<{
         </div>
 
         {/* Blog Content */}
-        <div className="shadow-sm rounded-lg md:6 lg:8">
+        <div className="shadow-sm rounded-lg">
           <MarkdownRenderer content={blogData.content} />
         </div>
       </>

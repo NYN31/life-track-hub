@@ -22,7 +22,7 @@ const SimplePagination: React.FC<PaginationProps> = ({
   totalPages,
 }) => {
   return (
-    <div className="mt-6 flex justify-center items-center gap-3">
+    <div className="flex justify-center items-center gap-3">
       <button
         className="btn-pagination-arrow"
         disabled={!hasPrevious}

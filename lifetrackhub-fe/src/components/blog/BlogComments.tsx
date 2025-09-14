@@ -3,26 +3,38 @@ import { RootState } from '../../app/store';
 import { useState } from 'react';
 import {
   BlogCommentState,
+  updateBlogComment,
   updateCurrentPage,
 } from '../../features/blog/blogCommentSlice';
-import { useAddCommentMutation } from '../../features/blog/blogCommentApi';
+import {
+  useAddCommentMutation,
+  useUpdateCommentMutation,
+} from '../../features/blog/blogCommentApi';
 import { useParams } from 'react-router-dom';
 import { useToast } from '../../context/toast-context';
 import SimplePagination from '../common/SimplePagination';
+import useAuth from '../../helper/hooks/useAuth';
 
 const BlogComments = () => {
   const MIN_COMMENT_FOR_SHOW_TOP_PAGINATION = 5;
   const { slug } = useParams();
   const toast = useToast();
   const dispatch = useDispatch();
+  const isAuth = useAuth();
+
   const blogState = useSelector((state: RootState) => state.blogComment);
   const { content, hasNext, hasPrevious, pageNumber, totalPages } =
     blogState as BlogCommentState;
 
+  const [editCommentId, setEditCommentId] = useState<number | null>(null);
+  const [editCommentContent, setEditCommentContent] = useState<string>('');
+  const [commentContent, setCommentContent] = useState<string>('');
+  console.log(editCommentContent);
+
   const [addComment, { isLoading: isAddCommentLoading }] =
     useAddCommentMutation();
-  const [editCommentId, setEditCommentId] = useState<number | null>(null);
-  const [commentContent, setCommentContent] = useState<string>('');
+  const [updateComment, { isLoading: isUpdateCommentLoading }] =
+    useUpdateCommentMutation();
 
   const addCommentHandler = async () => {
     await addComment({ slug, content: commentContent })
@@ -30,6 +42,25 @@ const BlogComments = () => {
       .then(() => {
         setCommentContent('');
         toast('Comment add successfully', 'success', 3000);
+      })
+      .catch(err => {
+        toast(err.data.message, 'error', 300);
+      });
+  };
+
+  const updateCommentHandler = async () => {
+    await updateComment({
+      commentId: editCommentId,
+      content: editCommentContent,
+      slug,
+      currentPage: pageNumber,
+    })
+      .unwrap()
+      .then(res => {
+        dispatch(updateBlogComment(res));
+        setEditCommentContent(res.content);
+        setEditCommentId(null);
+        toast('Comment update successfully', 'success', 3000);
       })
       .catch(err => {
         toast(err.data.message, 'error', 300);
@@ -46,35 +77,43 @@ const BlogComments = () => {
     dispatch(updateCurrentPage(nextPageNo));
   };
 
+  const isEligibleForAddComment = () => {
+    return isAuth;
+  };
+
+  const isEligibleForUpdateComment = (email: string) => {
+    return localStorage.getItem('email') === email;
+  };
+
   return (
     <>
       {/* Add Comment */}
-      <div className="pb-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">
-          Add a Comment
-        </h3>
-        <textarea
-          className="form-input-field max-h-32 min-h-32 resize-none"
-          placeholder="Write your comment..."
-          rows={3}
-          value={commentContent}
-          onChange={e => setCommentContent(e.target.value)}
-        ></textarea>
-        <div className="mt-3 flex justify-end">
-          <button
-            //={isAddCommentLoading}
-            disabled={isAddCommentLoading || commentContent.length === 0}
-            onClick={addCommentHandler}
-            className={
-              commentContent.length === 0
-                ? 'btn-submit-disabled'
-                : 'btn-submit-enabled'
-            }
-          >
-            Comment
-          </button>
+      {isEligibleForAddComment() && (
+        <div className="space-y-3">
+          <h3>Add a Comment</h3>
+          <textarea
+            className="form-input-field max-h-32 min-h-32 resize-none"
+            placeholder="Write your comment..."
+            rows={3}
+            value={commentContent}
+            onChange={e => setCommentContent(e.target.value)}
+          ></textarea>
+          <div className="flex justify-end">
+            <button
+              //={isAddCommentLoading}
+              disabled={isAddCommentLoading || commentContent.length === 0}
+              onClick={addCommentHandler}
+              className={
+                commentContent.length === 0
+                  ? 'btn-submit-disabled'
+                  : 'btn-submit-enabled'
+              }
+            >
+              Comment
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {content.length > MIN_COMMENT_FOR_SHOW_TOP_PAGINATION && (
         <SimplePagination
@@ -88,7 +127,8 @@ const BlogComments = () => {
       )}
 
       {/* Comments List */}
-      <div className="space-y-6 mt-6">
+      <h3>Total Comments(122)</h3>
+      <div className="space-y-2 md:space-y-6 mt-6">
         {content.map(comment => (
           <div key={comment.commentId} className="flex gap-4 border-b pb-4">
             <div className="flex-shrink-0">
@@ -107,10 +147,8 @@ const BlogComments = () => {
 
             <div className="w-full">
               <div className="flex items-center justify-between">
-                <h4 className="font-semibold text-xs md:text-sm text-gray-800">
-                  {comment.username}
-                </h4>
-                <span className="text-xs md:text-sm text-gray-500">
+                <h4>{comment.username}</h4>
+                <span className="text-xs md:text-sm text-gray-500 dark:text-gray-200">
                   {new Date(comment.createdDate).toLocaleString()}
                 </span>
               </div>
@@ -119,33 +157,49 @@ const BlogComments = () => {
                 <textarea
                   className="form-input-field max-h-32 min-h-32 resize-none"
                   rows={3}
-                  defaultValue={comment.content}
+                  value={editCommentContent}
+                  //defaultValue={comment.content}
+                  onChange={e => setEditCommentContent(e.target.value)}
                 />
               ) : (
-                <p className="text-xs md:text-sm mt-1 md:mt-2 text-gray-700 break-words">
+                <p className="text-sm md:text-base mt-1 md:mt-2 text-gray-900 dark:text-gray-50 break-words">
                   {comment.content}
                 </p>
               )}
 
-              <div className="mt-2 flex gap-3 text-sm">
-                <button
-                  className="text-green-500 hover:underline"
-                  onClick={() =>
-                    setEditCommentId(
-                      editCommentId === comment.commentId
-                        ? null
-                        : comment.commentId
-                    )
-                  }
-                >
-                  {editCommentId === comment.commentId ? 'Cancel' : 'Update'}
-                </button>
-                {editCommentId === comment.commentId && (
-                  <button className="text-white bg-green-500 px-3 py-1 rounded hover:bg-green-600">
-                    Save
+              {isEligibleForUpdateComment(comment.email) && (
+                <div className="mt-2 flex gap-3 text-sm">
+                  <button
+                    className="text-teal-500 dark:text-teal-300 hover:underline"
+                    onClick={() => {
+                      setEditCommentContent(comment.content);
+                      setEditCommentId(
+                        editCommentId === comment.commentId
+                          ? null
+                          : comment.commentId
+                      );
+                    }}
+                  >
+                    {editCommentId === comment.commentId ? 'Cancel' : 'Update'}
                   </button>
-                )}
-              </div>
+                  {editCommentId === comment.commentId && (
+                    <button
+                      disabled={
+                        isUpdateCommentLoading ||
+                        editCommentContent.length === 0
+                      }
+                      onClick={updateCommentHandler}
+                      className={
+                        editCommentContent.length === 0
+                          ? 'btn-submit-disabled'
+                          : 'btn-submit-enabled'
+                      }
+                    >
+                      Save
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         ))}

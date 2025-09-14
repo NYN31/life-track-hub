@@ -123,5 +123,6 @@ export const {
   addBlogCommentOptimistically,
   rollbackBlogComment,
   updateOptimisticBlogComment,
+  updateBlogComment,
 } = blogCommentSlice.actions;
 export default blogCommentSlice.reducer;

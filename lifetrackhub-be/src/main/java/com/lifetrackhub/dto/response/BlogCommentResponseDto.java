@@ -18,6 +18,8 @@ public class BlogCommentResponseDto {
 
     private String username;
 
+    private String email;
+
     private String userProfilePictureUrl;
 
     private String content;
@@ -31,6 +33,7 @@ public class BlogCommentResponseDto {
 
         dto.setCommentId(blogComment.getId());
         dto.setUsername(userInfo.get("username"));
+        dto.setEmail(userInfo.get("email"));
         dto.setUserProfilePictureUrl(userInfo.get("userProfilePictureUrl"));
         dto.setContent(blogComment.getContent());
         dto.setCreatedDate(blogComment.getCreatedDate());
@@ -45,6 +48,7 @@ public class BlogCommentResponseDto {
                 .orElse(null);
 
         userInfo.put("username", user.getFirstname() + " " + user.getLastname());
+        userInfo.put("email", user.getEmail());
         userInfo.put("userProfilePictureUrl", profileImageUrl);
         return userInfo;
     }
