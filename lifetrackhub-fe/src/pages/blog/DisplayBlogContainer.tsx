@@ -10,8 +10,9 @@ import ErrorMessage from '../../components/common/ErrorMessage';
 import { IBlog } from '../../types/blog';
 import useAuth from '../../helper/hooks/useAuth';
 import { useGetBlogCommentsQuery } from '../../features/blog/blogCommentApi';
-import { useDispatch } from 'react-redux';
-import { addBlogComment } from '../../features/blog/blogCommentSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBlogComment } from '../../features/blog/blogCommentSlice';
+import { RootState } from '../../app/store';
 
 const DisplayBlogContainer: React.FC = () => {
   const { slug } = useParams();
@@ -19,6 +20,9 @@ const DisplayBlogContainer: React.FC = () => {
   const auth = useAuth();
   const dispatch = useDispatch();
   const isBlogPreview = location.pathname.includes('/blog/preview');
+  const currentCommentPageNo = useSelector(
+    (state: RootState) => state.blogComment.pageNumber
+  );
 
   const [currentBlog, setCurrentBlog] = useState<IBlog | null>(null);
 
@@ -29,7 +33,11 @@ const DisplayBlogContainer: React.FC = () => {
     useGetBlogBySlugForUnauthUserQuery(slug ?? '', { skip: !slug || auth });
 
   const { data: blogCommentData, error: errorBlogCommentBySlug } =
-    useGetBlogCommentsQuery({ slug: slug ?? '', page: 0, size: 10 });
+    useGetBlogCommentsQuery({
+      slug: slug ?? '',
+      page: currentCommentPageNo,
+      size: 10,
+    });
 
   const blogData = auth ? blogDataBySlug : blogDataBySlugUnauth;
   const errorBlogData = auth ? errorBlogDataBySlug : errorBlogDataBySlugUnauth;
@@ -46,11 +54,9 @@ const DisplayBlogContainer: React.FC = () => {
 
   useEffect(() => {
     if (blogCommentData) {
-      dispatch(addBlogComment(blogCommentData));
+      dispatch(setBlogComment(blogCommentData));
     }
   }, [blogCommentData, slug]);
-
-  console.log(blogCommentData);
 
   return (
     <div className="common-box-container animate-fade-in">

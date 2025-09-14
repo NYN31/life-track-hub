@@ -1,5 +1,6 @@
 package com.lifetrackhub.service;
 
+import com.lifetrackhub.dto.response.BlogCommentResponseDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.BlogComment;
 import org.springframework.data.domain.Page;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface BlogCommentService {
-    BlogComment addComment(String slug, String content);
+    BlogCommentResponseDto addComment(String slug, String content);
 
     Page<BlogComment> getComments(String slug, Pageable pageable);
 

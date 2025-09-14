@@ -1,6 +1,7 @@
 package com.lifetrackhub.service.impl;
 
 import com.lifetrackhub.constant.utils.Util;
+import com.lifetrackhub.dto.response.BlogCommentResponseDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.entity.BlogComment;
@@ -37,7 +38,7 @@ public class BlogCommentServiceImpl implements BlogCommentService {
     }
 
     @Override
-    public BlogComment addComment(String slug, String content) {
+    public BlogCommentResponseDto addComment(String slug, String content) {
         log.info("Adding comment for slug: {} with content: {}", slug, content);
 
         Blog blog = blogService.findBlogBySlug(slug);
@@ -47,7 +48,8 @@ public class BlogCommentServiceImpl implements BlogCommentService {
         comment.setBlogId(blog.getId());
         comment.setUser(user);
         comment.setContent(content);
-        return blogCommentRepository.save(comment);
+        comment = blogCommentRepository.save(comment);
+        return BlogCommentResponseDto.formEntity(comment);
     }
 
     @Override
