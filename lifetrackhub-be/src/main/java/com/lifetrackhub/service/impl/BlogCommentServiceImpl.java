@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 @Service
 public class BlogCommentServiceImpl implements BlogCommentService {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -49,6 +51,19 @@ public class BlogCommentServiceImpl implements BlogCommentService {
         comment.setUser(user);
         comment.setContent(content);
         comment = blogCommentRepository.save(comment);
+        return BlogCommentResponseDto.formEntity(comment);
+    }
+
+    @Override
+    public BlogCommentResponseDto updateComment(Long commentId, String content) {
+        log.info("Updating comment for comment id: {} with content: {}", commentId, content);
+        BlogComment comment = blogCommentRepository.findById(commentId)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment not found with id: " + commentId)
+                );
+        comment.setContent(content);
+        comment = blogCommentRepository.save(comment);
+
         return BlogCommentResponseDto.formEntity(comment);
     }
 

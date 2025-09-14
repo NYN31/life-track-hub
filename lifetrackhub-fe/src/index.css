@@ -24,7 +24,7 @@
     @apply text-xl md:text-2xl font-bold text-purple-700 dark:text-purple-300;
   }
   h4 {
-    @apply text-xl font-bold text-purple-700 dark:text-purple-300;
+    @apply text-sm md:text-base font-bold text-purple-700 dark:text-purple-300;
   }
   p {
     @apply text-base text-gray-700 dark:text-gray-300;

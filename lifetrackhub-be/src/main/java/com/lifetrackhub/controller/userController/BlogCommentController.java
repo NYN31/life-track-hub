@@ -33,6 +33,13 @@ public class BlogCommentController extends BaseController {
         return blogCommentService.addComment(slug, content);
     }
 
+    @PutMapping("/blog/comment/update")
+    public BlogCommentResponseDto updateComment(
+            @RequestParam(value = "commentId") Long commentId,
+            @RequestParam(value = "content") String content) {
+        return blogCommentService.updateComment(commentId, content);
+    }
+
     @PutMapping("/blog/comment/delete/{commentId}")
     public CommonResponseDto deleteComment(@PathVariable Long commentId) {
         return blogCommentService.deleteComment(commentId);

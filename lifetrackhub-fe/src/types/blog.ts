@@ -40,6 +40,7 @@ export interface IBlogStats {
 export interface BlogCommentResponseDto {
   commentId: number;
   username: string;
+  email: string;
   userProfilePictureUrl: string;
   content: string;
   createdDate: string;

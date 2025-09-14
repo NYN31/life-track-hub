@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 public interface BlogCommentService {
     BlogCommentResponseDto addComment(String slug, String content);
 
+    BlogCommentResponseDto updateComment(Long commentId, String content);
+
     Page<BlogComment> getComments(String slug, Pageable pageable);
 
     long countComments(Long blogId);
