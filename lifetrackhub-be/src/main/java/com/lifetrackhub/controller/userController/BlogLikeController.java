@@ -16,4 +16,9 @@ public class BlogLikeController extends BaseController {
     public CommonResponseDto likeUnlikeOperationOfBlog(@PathVariable String slug) {
         return blogLikeService.likeUnlikeOperation(slug);
     }
+
+    @GetMapping("/blog/like/isLiked/{slug}")
+    public CommonResponseDto isLikeOperationOfBlog(@PathVariable String slug) {
+        return blogLikeService.isLiked(slug);
+    }
 }

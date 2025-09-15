@@ -7,7 +7,7 @@ export interface BlogCommentState {
   hasPrevious: boolean;
   pageNumber: number;
   totalPages: number;
-  totalElements: number;
+  totalComments: number;
   currentPage: number;
 }
 
@@ -17,7 +17,7 @@ const initialState: BlogCommentState = {
   hasPrevious: false,
   pageNumber: 0,
   totalPages: 0,
-  totalElements: 0,
+  totalComments: 0,
   currentPage: 0,
 };
 
@@ -31,8 +31,8 @@ const blogCommentSlice = createSlice({
       state.pageNumber = action.payload;
     },
 
-    updateCurrentElements: (state, action) => {
-      state.totalElements = action.payload;
+    setTotalComments: (state, action) => {
+      state.totalComments = action.payload;
     },
 
     setBlogComment: (state, action: PayloadAction<BlogCommentState>) => {
@@ -51,6 +51,7 @@ const blogCommentSlice = createSlice({
       action: PayloadAction<BlogCommentResponseDto>
     ) => {
       state.content.unshift(action.payload);
+      state.totalComments += 1;
 
       // keep only MAX_PAGE_SIZE per page
       if (state.content.length > MAX_PAGE_SIZE) {
@@ -59,7 +60,7 @@ const blogCommentSlice = createSlice({
 
       // If we’re on first page → update pagination counters
       if (state.pageNumber === 0) {
-        const totalComments = state.totalElements + 1;
+        const totalComments = state.totalComments + 1;
         const newTotalPages = Math.ceil(totalComments / MAX_PAGE_SIZE);
 
         if (newTotalPages > state.totalPages) {
@@ -101,10 +102,11 @@ const blogCommentSlice = createSlice({
 
     rollbackBlogComment: (state, action: PayloadAction<number>) => {
       state.content = state.content.filter(c => c.commentId !== action.payload);
+      state.totalComments -= 1;
 
       // If rollback happend on first page -> recalc pagination
       if (state.pageNumber === 0) {
-        const totalComments = state.totalElements - 1;
+        const totalComments = state.totalComments - 1;
         state.totalPages = Math.max(
           1,
           Math.ceil(totalComments / MAX_PAGE_SIZE)
@@ -118,7 +120,7 @@ const blogCommentSlice = createSlice({
 
 export const {
   updateCurrentPage,
-  updateCurrentElements,
+  setTotalComments,
   setBlogComment,
   addBlogCommentOptimistically,
   rollbackBlogComment,

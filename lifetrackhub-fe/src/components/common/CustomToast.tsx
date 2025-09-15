@@ -4,8 +4,8 @@ import { Toast, ToastType } from '../../context/toast-context';
 const typeClasses: Record<ToastType, string> = {
   error: 'bg-red-600 text-white',
   success: 'bg-green-600 text-white',
-  info: 'bg-blue-600 text-white',
-  warning: 'bg-yellow-400 text-black',
+  info: 'bg-yellow-400 text-black',
+  warning: 'bg-orange-600 text-white',
 };
 
 interface ToastProps {

@@ -22,14 +22,19 @@ const BlogComments = () => {
   const dispatch = useDispatch();
   const isAuth = useAuth();
 
-  const blogState = useSelector((state: RootState) => state.blogComment);
-  const { content, hasNext, hasPrevious, pageNumber, totalPages } =
-    blogState as BlogCommentState;
+  const blogCommentState = useSelector((state: RootState) => state.blogComment);
+  const {
+    content,
+    hasNext,
+    hasPrevious,
+    pageNumber,
+    totalPages,
+    totalComments,
+  } = blogCommentState as BlogCommentState;
 
   const [editCommentId, setEditCommentId] = useState<number | null>(null);
   const [editCommentContent, setEditCommentContent] = useState<string>('');
   const [commentContent, setCommentContent] = useState<string>('');
-  console.log(editCommentContent);
 
   const [addComment, { isLoading: isAddCommentLoading }] =
     useAddCommentMutation();
@@ -85,11 +90,13 @@ const BlogComments = () => {
     return localStorage.getItem('email') === email;
   };
 
+  if (!isAuth) return null;
+
   return (
     <>
       {/* Add Comment */}
       {isEligibleForAddComment() && (
-        <div className="space-y-3">
+        <div className="space-y-3 px-1">
           <h3>Add a Comment</h3>
           <textarea
             className="form-input-field max-h-32 min-h-32 resize-none"
@@ -127,7 +134,7 @@ const BlogComments = () => {
       )}
 
       {/* Comments List */}
-      <h3>Total Comments(122)</h3>
+      <h3 id="comment-list">Total Comments({totalComments})</h3>
       <div className="space-y-2 md:space-y-6 mt-6">
         {content.map(comment => (
           <div key={comment.commentId} className="flex gap-4 border-b pb-4">
