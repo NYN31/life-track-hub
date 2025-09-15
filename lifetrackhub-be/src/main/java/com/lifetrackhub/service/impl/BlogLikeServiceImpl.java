@@ -17,13 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 @Service
 public class BlogLikeServiceImpl implements BlogLikeService {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private static final int BLOCK_TIME_FOR_LIKE_AND_UNLIKE_OPERATION_IN_MINUTES = 5;
 
     private final BlogLikeRepository blogLikeRepository;
     private final UserRepository userRepository;
@@ -37,6 +35,28 @@ public class BlogLikeServiceImpl implements BlogLikeService {
         this.blogLikeRepository = blogLikeRepository;
         this.userRepository = userRepository;
         this.blogService = blogService;
+    }
+
+    @Override
+    public CommonResponseDto isLiked(String slug) {
+        log.info("User like status by slug: {}", slug);
+
+        Blog blog = blogService.findBlogBySlug(slug);
+        User user = Util.getUserFromSecurityContext(userRepository);
+
+        Optional<BlogLike> blogLikeOptional = blogLikeRepository.findByBlogIdAndUserId(blog.getId(), user.getId());
+        if (blogLikeOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Blog like not found");
+        }
+        BlogLike blogLike = blogLikeOptional.get();
+        if (blogLike.getLikeType().equals(LikeType.UNLIKED)) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "You unliked this blog");
+        }
+
+        return CommonResponseDto.builder()
+                .message("You're already liked the post")
+                .status(HttpStatus.OK)
+                .build();
     }
 
     @Override
@@ -67,7 +87,6 @@ public class BlogLikeServiceImpl implements BlogLikeService {
     }
 
     private BlogLike toggleExistingLike(BlogLike blogLike) {
-        checkEligibilityOfLikeAndUnlikeBlog(blogLike.getLastModifiedDate());
         blogLike.setLikeType(
                 blogLike.getLikeType() == LikeType.LIKED
                         ? LikeType.UNLIKED
@@ -82,20 +101,5 @@ public class BlogLikeServiceImpl implements BlogLikeService {
         newLike.setUserId(userId);
         newLike.setLikeType(LikeType.LIKED);
         return newLike;
-    }
-
-    private void checkEligibilityOfLikeAndUnlikeBlog(Instant lastModifiedDate) {
-        long currentBlockingTimeGone = ChronoUnit.MINUTES.between(lastModifiedDate, Instant.now());
-        long remainingBlockingTimeToPerformOperation =
-                BLOCK_TIME_FOR_LIKE_AND_UNLIKE_OPERATION_IN_MINUTES - currentBlockingTimeGone;
-
-        log.info("{} minutes remaining to perform operation", remainingBlockingTimeToPerformOperation);
-
-        if (remainingBlockingTimeToPerformOperation > 0) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "You will make this operation after " + remainingBlockingTimeToPerformOperation + " minutes."
-            );
-        }
     }
 }

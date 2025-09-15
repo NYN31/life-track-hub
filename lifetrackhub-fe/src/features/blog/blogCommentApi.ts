@@ -9,7 +9,7 @@ import {
 export const BLOG_COMMENT_API_PATH = '/api/blog/comment';
 
 export const blogCommentApi = apiSlice
-  .enhanceEndpoints({ addTagTypes: ['BlogComments'] })
+  .enhanceEndpoints({ addTagTypes: ['BlogComments', 'BlogStats'] })
   .injectEndpoints({
     endpoints: builder => ({
       getBlogComments: builder.query({
@@ -43,6 +43,7 @@ export const blogCommentApi = apiSlice
         // Invalidate the first page for the slug (where new comment usually goes)
         invalidatesTags: (_result, _error, { slug }) => [
           { type: 'BlogComments', id: `${slug}-0` },
+          { type: 'BlogStats', id: slug },
         ],
 
         async onQueryStarted({ content }, { dispatch, queryFulfilled }) {

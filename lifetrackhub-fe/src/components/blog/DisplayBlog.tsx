@@ -5,12 +5,24 @@ import { extractMarkdownHeadings } from '../../helper/utils/extract-markdown-hea
 import { blogStatusColor } from '../../helper/utils/color-code';
 import { BlogStatus } from '../../types/blog';
 import { useSelector } from 'react-redux';
-import { FaRegEdit } from 'react-icons/fa';
+import {
+  FaRegCommentDots,
+  FaRegEdit,
+  FaRegHeart,
+  FaHeart,
+} from 'react-icons/fa';
 import OnClickButton from '../common/button/OnClickButton';
 import MarkdownRenderer from './MarkdownRenderer';
 import { ROLE } from '../../types/user';
 import { RootState } from '../../app/store';
 import BlogComments from './BlogComments';
+import useAuth from '../../helper/hooks/useAuth';
+import {
+  useIsLikedQuery,
+  useLikeUnlikeOperationOfBlogMutation,
+} from '../../features/blog/blogLikeApi';
+import { useEffect, useState } from 'react';
+import { useToast } from '../../context/toast-context';
 
 const DisplayBlog: React.FC<{
   blogData: any;
@@ -18,17 +30,91 @@ const DisplayBlog: React.FC<{
   const { slug } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
   const auth = useSelector((state: RootState) => state.auth);
+  const blogLike = useSelector((state: RootState) => state.blogLike);
+  const blogComment = useSelector((state: RootState) => state.blogComment);
+  const isAuth = useAuth();
+
+  const { isError: isLikedBySlugError } = useIsLikedQuery(slug ?? '', {
+    skip: !isAuth,
+  });
+  const [currentUserLikeInBlog, setCurrentuserLikeInBlog] = useState(false);
+
+  const [triggerLikeUnlikeOperationOfBlog] =
+    useLikeUnlikeOperationOfBlogMutation();
+
+  const handleToggoleLikeOperation = async () => {
+    await triggerLikeUnlikeOperationOfBlog(slug)
+      .unwrap()
+      .then(() => {
+        setCurrentuserLikeInBlog(prev => !prev);
+
+        toast(
+          currentUserLikeInBlog ? 'You unlike the blog' : 'You like the blog',
+          'info',
+          5000
+        );
+      })
+      .catch(err => {
+        toast(err.data.message, 'error');
+      });
+  };
+
+  useEffect(() => {
+    if (isLikedBySlugError) {
+      setCurrentuserLikeInBlog(false);
+    } else {
+      setCurrentuserLikeInBlog(true);
+    }
+  }, [isLikedBySlugError, slug]);
 
   const headings = extractMarkdownHeadings(blogData.content);
 
-  const navigateFromBlogDetailsPage = () => {
+  const navigateFromBlogUpdatePage = () => {
     if (slug) {
       navigate(`${BLOG_UPDATED_PATH}/${slug}`);
     }
   };
 
-  const BlogHeadingMenu = () => {
+  const blogLikeCommentStats = (likes: number, comments: number) => {
+    const toggleLikeIcon = () => {
+      if (currentUserLikeInBlog) {
+        return (
+          <FaHeart
+            onClick={handleToggoleLikeOperation}
+            className="w-5 h-5 cursor-pointer text-red-500"
+          />
+        );
+      }
+
+      return (
+        <FaRegHeart
+          onClick={handleToggoleLikeOperation}
+          className="w-5 h-5 cursor-pointer hover:text-red-500"
+        />
+      );
+    };
+
+    return (
+      <div className="flex items-center justify-center space-x-6 text-gray-600 dark:text-gray-300">
+        <div className="flex items-center space-x-2 transition">
+          {toggleLikeIcon()}
+          <span className="text-sm font-medium">{likes}</span>
+        </div>
+
+        <a
+          href="#comment-list"
+          className="flex items-center space-x-2 hover:text-purple-500 cursor-pointer transition"
+        >
+          <FaRegCommentDots className="w-5 h-5" />
+          <span className="text-sm font-medium">{comments}</span>
+        </a>
+      </div>
+    );
+  };
+
+  const blogHeadingMenu = () => {
     return (
       <div className="md:w-1/4 hidden md:block md:order-2">
         <div className="sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto p-3 rounded-lg bg-gray-50 dark:bg-gray-800 shadow-md scrollbar-hide">
@@ -59,7 +145,7 @@ const DisplayBlog: React.FC<{
     );
   };
 
-  const BlogContent = () => {
+  const blogContent = () => {
     return (
       <>
         {/* Blog Author Info */}
@@ -86,7 +172,7 @@ const DisplayBlog: React.FC<{
           {(auth.email === blogData.user.email ||
             auth.role === ROLE.SUPER_ADMIN) && (
             <OnClickButton
-              action={navigateFromBlogDetailsPage}
+              action={navigateFromBlogUpdatePage}
               text="Edit Blog"
               icon={<FaRegEdit size={18} />}
             />
@@ -125,6 +211,9 @@ const DisplayBlog: React.FC<{
           />
         </div>
 
+        {isAuth &&
+          blogLikeCommentStats(blogLike.totalLikes, blogComment.totalComments)}
+
         {/* Blog Content */}
         <div className="shadow-sm rounded-lg">
           <MarkdownRenderer content={blogData.content} />
@@ -135,12 +224,12 @@ const DisplayBlog: React.FC<{
 
   return (
     <div className="flex flex-col md:flex-row gap-6 md:h-screen">
-      {BlogHeadingMenu()}
+      {blogHeadingMenu()}
       <div className="md:w-3/4 order-2 md:order-1 h-screen md:border-r md:border-gray-300 dark:md:border-gray-700 md:pr-4">
         <div className="flex flex-col gap-y-4 h-full overflow-y-auto scrollbar-hide">
-          {BlogContent()}
+          {blogContent()}
 
-          <BlogComments />
+          {isAuth && <BlogComments />}
         </div>
       </div>
     </div>

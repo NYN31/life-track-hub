@@ -6,7 +6,7 @@ export const ADMIN_BLOG_API_PATH = '/admin/api/blog';
 export const SUPER_ADMIN_BLOG_API_PATH = '/super-admin/api/blog';
 
 export const blogApi = apiSlice
-  .enhanceEndpoints({ addTagTypes: ['Blogs', 'BlogBySlug'] })
+  .enhanceEndpoints({ addTagTypes: ['Blogs', 'BlogBySlug', 'BlogStats'] })
   .injectEndpoints({
     endpoints: builder => ({
       getBlogsByUser: builder.query({
@@ -88,6 +88,16 @@ export const blogApi = apiSlice
 
         providesTags: ['Blogs'],
       }),
+
+      countLikesAndComments: builder.query({
+        query: slug => {
+          return `${BLOG_API_PATH}/count-likes-comments/${slug}`;
+        },
+
+        providesTags: (_result, _error, slug) => [
+          { type: 'BlogStats', id: slug },
+        ],
+      }),
     }),
   });
 
@@ -100,4 +110,5 @@ export const {
   useUpdateBlogMutation,
   useGetBlogStatsQuery,
   useLazyGetSelfBlogsQuery,
+  useCountLikesAndCommentsQuery,
 } = blogApi;
