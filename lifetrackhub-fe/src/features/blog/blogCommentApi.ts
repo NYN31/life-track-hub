@@ -92,12 +92,14 @@ export const blogCommentApi = apiSlice
       }),
 
       deleteComment: builder.mutation({
-        query: commentId => {
-          return `${BLOG_COMMENT_API_PATH}/delete/${commentId}`;
-        },
+        query: ({ commentId }) => ({
+          url: `${BLOG_COMMENT_API_PATH}/delete/${commentId}`,
+          method: 'PUT',
+        }),
 
         invalidatesTags: (_result, _error, { slug, currentPage }) => [
           { type: 'BlogComments', id: `${slug}-${currentPage}` },
+          { type: 'BlogStats', id: slug },
         ],
       }),
     }),

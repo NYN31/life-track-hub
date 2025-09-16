@@ -9,11 +9,13 @@ import {
 import {
   useAddCommentMutation,
   useUpdateCommentMutation,
+  useDeleteCommentMutation,
 } from '../../features/blog/blogCommentApi';
 import { useParams } from 'react-router-dom';
 import { useToast } from '../../context/toast-context';
 import SimplePagination from '../common/SimplePagination';
 import useAuth from '../../helper/hooks/useAuth';
+import OnClickTrashIcon from '../common/button/OnClickTrashIcon';
 
 const BlogComments = () => {
   const MIN_COMMENT_FOR_SHOW_TOP_PAGINATION = 5;
@@ -40,6 +42,7 @@ const BlogComments = () => {
     useAddCommentMutation();
   const [updateComment, { isLoading: isUpdateCommentLoading }] =
     useUpdateCommentMutation();
+  const [deleteComment] = useDeleteCommentMutation();
 
   const addCommentHandler = async () => {
     await addComment({ slug, content: commentContent })
@@ -72,6 +75,20 @@ const BlogComments = () => {
       });
   };
 
+  const deleteCommentHandler = async (commentId: number) => {
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      await deleteComment({ commentId, slug, currentPage: pageNumber })
+        .unwrap()
+        .then(res => {
+          dispatch(updateBlogComment(res));
+          toast('Comment deleted successfully', 'success', 3000);
+        })
+        .catch(err => {
+          toast(err.data.message, 'error', 3000);
+        });
+    }
+  };
+
   const handleNextPage = () => {
     const nextPageNo = pageNumber + 1;
     dispatch(updateCurrentPage(nextPageNo));
@@ -86,7 +103,7 @@ const BlogComments = () => {
     return isAuth;
   };
 
-  const isEligibleForUpdateComment = (email: string) => {
+  const isEligibleForUpdateAndDeleteComment = (email: string) => {
     return localStorage.getItem('email') === email;
   };
 
@@ -174,7 +191,7 @@ const BlogComments = () => {
                 </p>
               )}
 
-              {isEligibleForUpdateComment(comment.email) && (
+              {isEligibleForUpdateAndDeleteComment(comment.email) && (
                 <div className="mt-2 flex gap-3 text-sm">
                   <button
                     className="text-teal-500 dark:text-teal-300 hover:underline"
@@ -189,7 +206,7 @@ const BlogComments = () => {
                   >
                     {editCommentId === comment.commentId ? 'Cancel' : 'Update'}
                   </button>
-                  {editCommentId === comment.commentId && (
+                  {editCommentId === comment.commentId ? (
                     <button
                       disabled={
                         isUpdateCommentLoading ||
@@ -204,6 +221,15 @@ const BlogComments = () => {
                     >
                       Save
                     </button>
+                  ) : (
+                    <OnClickTrashIcon
+                      handleRemover={() =>
+                        deleteCommentHandler(comment.commentId)
+                      }
+                      absolute={false}
+                      title="Comment Delete"
+                      text="Delete"
+                    />
                   )}
                 </div>
               )}
