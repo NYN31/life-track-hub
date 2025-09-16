@@ -61,7 +61,10 @@ const blogCommentSlice = createSlice({
       // If we’re on first page → update pagination counters
       if (state.pageNumber === 0) {
         const totalComments = state.totalComments + 1;
-        const newTotalPages = Math.ceil(totalComments / MAX_PAGE_SIZE);
+        const newTotalPages = Math.max(
+          1,
+          Math.ceil(totalComments / MAX_PAGE_SIZE)
+        );
 
         if (newTotalPages > state.totalPages) {
           state.totalPages = newTotalPages;
@@ -100,6 +103,24 @@ const blogCommentSlice = createSlice({
       }
     },
 
+    deleteBlogComment: (state, action: PayloadAction<number>) => {
+      state.content = state.content.filter(
+        comment => comment.commentId !== action.payload
+      );
+      state.totalComments -= 1;
+
+      // If delete happend on first page -> recalc pagination
+      if (state.pageNumber === 0) {
+        const totalComments = state.totalComments - 1;
+        state.totalPages = Math.max(
+          1,
+          Math.ceil(totalComments / MAX_PAGE_SIZE)
+        );
+        state.hasPrevious = state.pageNumber > 0;
+        state.hasNext = state.pageNumber < state.totalPages - 1;
+      }
+    },
+
     rollbackBlogComment: (state, action: PayloadAction<number>) => {
       state.content = state.content.filter(c => c.commentId !== action.payload);
       state.totalComments -= 1;
@@ -126,5 +147,6 @@ export const {
   rollbackBlogComment,
   updateOptimisticBlogComment,
   updateBlogComment,
+  deleteBlogComment,
 } = blogCommentSlice.actions;
 export default blogCommentSlice.reducer;

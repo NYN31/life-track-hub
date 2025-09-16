@@ -19,8 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
 @Service
 public class BlogCommentServiceImpl implements BlogCommentService {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -90,16 +88,25 @@ public class BlogCommentServiceImpl implements BlogCommentService {
                     .build();
         }
 
-        comment.setIsDeleted(true);
-        blogCommentRepository.save(comment);
+        User user = Util.getUserFromSecurityContext(userRepository);
+        if (comment.getUser().getId().equals(user.getId())) {
+            comment.setIsDeleted(true);
+            blogCommentRepository.save(comment);
 
-        return CommonResponseDto.builder()
-                .status(HttpStatus.OK)
-                .message("Comment deleted successfully.")
-                .build();
+            return CommonResponseDto.builder()
+                    .status(HttpStatus.OK)
+                    .message("Comment deleted successfully.")
+                    .build();
+        }
+
+        throw new ResponseStatusException(
+                HttpStatus.FORBIDDEN,
+                "You're not allowed to delete this comment."
+        );
     }
 
 
+    @Override
     public long countComments(Long blogId) {
         log.info("Counting comments for blog ID: {}", blogId);
 
