@@ -26,6 +26,42 @@ const BlogCommentItem: React.FC<BlogCommentItemProps> = ({
   setIsOpen,
   isEligibleForUpdateAndDeleteComment,
 }) => {
+  const MAX_CONTENT_LENGTH = 10000;
+  const [openFullComment, setOpenFullComment] = React.useState(false);
+
+  const getFullContent = (content: string) => {
+    if (content.length <= 300) return content;
+
+    return (
+      <>
+        {content}...
+        <button
+          className="text-purple-500 dark:text-purple-300 hover:underline ml-2"
+          onClick={() => setOpenFullComment(false)}
+        >
+          Read less
+        </button>
+      </>
+    );
+  };
+
+  const getShortContent = (content: string) => {
+    if (content.length <= 300) return content;
+    const comment = content.substring(0, 300);
+
+    return (
+      <>
+        {comment}...
+        <button
+          className="text-purple-500 dark:text-purple-300 hover:underline ml-2"
+          onClick={() => setOpenFullComment(true)}
+        >
+          Read more
+        </button>
+      </>
+    );
+  };
+
   return (
     <div key={comment.commentId} className="flex gap-4 border-b pb-4">
       <div className="flex-shrink-0">
@@ -51,15 +87,24 @@ const BlogCommentItem: React.FC<BlogCommentItemProps> = ({
         </div>
 
         {editCommentId === comment.commentId ? (
-          <textarea
-            className="form-input-field max-h-32 min-h-32 resize-none"
-            rows={3}
-            value={editCommentContent}
-            onChange={e => setEditCommentContent(e.target.value)}
-          />
+          <div className="mt-2 gap-2 flex flex-col">
+            <textarea
+              className="form-input-field max-h-32 min-h-32 resize-none"
+              rows={3}
+              value={editCommentContent}
+              onChange={e => setEditCommentContent(e.target.value)}
+            />
+            {editCommentContent.length > MAX_CONTENT_LENGTH && (
+              <p className="form-field-error">
+                Comment exceeded max characters limit.
+              </p>
+            )}
+          </div>
         ) : (
           <p className="text-sm md:text-base mt-1 md:mt-2 text-gray-900 dark:text-gray-50 break-words">
-            {comment.content}
+            {openFullComment
+              ? getFullContent(comment.content)
+              : getShortContent(comment.content)}
           </p>
         )}
 
@@ -79,11 +124,14 @@ const BlogCommentItem: React.FC<BlogCommentItemProps> = ({
             {editCommentId === comment.commentId ? (
               <button
                 disabled={
-                  isUpdateCommentLoading || editCommentContent.length === 0
+                  isUpdateCommentLoading ||
+                  editCommentContent.length === 0 ||
+                  editCommentContent.length > MAX_CONTENT_LENGTH
                 }
                 onClick={updateCommentHandler}
                 className={
-                  editCommentContent.length === 0
+                  editCommentContent.length === 0 ||
+                  editCommentContent.length > MAX_CONTENT_LENGTH
                     ? 'btn-submit-disabled'
                     : 'btn-submit-enabled'
                 }

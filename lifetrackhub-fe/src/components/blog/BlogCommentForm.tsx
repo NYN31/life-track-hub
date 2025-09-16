@@ -13,6 +13,7 @@ const BlogCommentForm: React.FC<BlogCommentFormProps> = ({
   addCommentHandler,
   isAddCommentLoading,
 }) => {
+  const MAX_CONTENT_LENGTH = 10000;
   return (
     <div className="space-y-3 px-1">
       <h3>Add a Comment</h3>
@@ -23,13 +24,22 @@ const BlogCommentForm: React.FC<BlogCommentFormProps> = ({
         value={commentContent}
         onChange={e => setCommentContent(e.target.value)}
       ></textarea>
+      {commentContent.length > MAX_CONTENT_LENGTH && (
+        <p className="form-field-error">
+          Comment exceeded max characters limit.
+        </p>
+      )}
       <div className="flex justify-end">
         <button
-          //={isAddCommentLoading}
-          disabled={isAddCommentLoading || commentContent.length === 0}
+          disabled={
+            isAddCommentLoading ||
+            commentContent.length === 0 ||
+            commentContent.length > MAX_CONTENT_LENGTH
+          }
           onClick={addCommentHandler}
           className={
-            commentContent.length === 0
+            commentContent.length === 0 ||
+            commentContent.length > MAX_CONTENT_LENGTH
               ? 'btn-submit-disabled'
               : 'btn-submit-enabled'
           }
