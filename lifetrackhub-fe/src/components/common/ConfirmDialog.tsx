@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ModalPortal from '../../ModalPortal';
+import { useOnClickOutside } from '../../helper/hooks/useOnClickOutside';
 
 interface ConfirmDialogProps {
   isOpen: boolean;
@@ -18,6 +19,9 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   const [loading, setLoading] = useState(false);
 
   const onClose = () => setIsOpen(false);
+  useOnClickOutside(cancelRef, () => {
+    setIsOpen(false);
+  });
 
   async function handleConfirm() {
     setLoading(true);

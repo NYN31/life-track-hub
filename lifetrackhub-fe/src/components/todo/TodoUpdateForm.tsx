@@ -74,7 +74,7 @@ const TodoUpdateForm = forwardRef<HTMLFormElement, TodoUpdateFormProps>(
       <form
         ref={ref}
         onSubmit={handleSubmit}
-        className="common-box-container gap-6 overflow-y-auto max-h-[92vh] md:max-h-[65vh] scrollbar-hide"
+        className="common-box-container gap-6 overflow-y-auto max-h-[92vh] scrollbar-hide"
       >
         <h2 className="text-center">Update Todo</h2>
         <div className="flex flex-col gap-2">
