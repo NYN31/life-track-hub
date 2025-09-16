@@ -5,7 +5,7 @@ const initialState = {
 };
 
 const blogLikeSlice = createSlice({
-  name: 'blogLikeSlice',
+  name: 'blogLike',
   initialState,
   reducers: {
     setLikesCount: (state, action) => {

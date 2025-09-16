@@ -45,11 +45,10 @@ const DisplayBlog: React.FC<{
     useLikeUnlikeOperationOfBlogMutation();
 
   const handleToggoleLikeOperation = async () => {
+    setCurrentuserLikeInBlog(prev => !prev);
     await triggerLikeUnlikeOperationOfBlog(slug)
       .unwrap()
       .then(() => {
-        setCurrentuserLikeInBlog(prev => !prev);
-
         toast(
           currentUserLikeInBlog ? 'You unlike the blog' : 'You like the blog',
           'info',
@@ -57,6 +56,7 @@ const DisplayBlog: React.FC<{
         );
       })
       .catch(err => {
+        setCurrentuserLikeInBlog(prev => !prev);
         toast(err.data.message, 'error');
       });
   };
