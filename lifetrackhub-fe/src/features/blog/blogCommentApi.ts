@@ -28,15 +28,11 @@ export const blogCommentApi = apiSlice
       }),
 
       addComment: builder.mutation({
-        query: ({ slug, content }) => {
-          const params = new URLSearchParams({
-            slug,
-            content,
-          });
-
+        query: data => {
           return {
-            url: `${BLOG_COMMENT_API_PATH}/add?${params.toString()}`,
+            url: `${BLOG_COMMENT_API_PATH}/add`,
             method: 'POST',
+            body: data,
           };
         },
 
@@ -73,15 +69,11 @@ export const blogCommentApi = apiSlice
       }),
 
       updateComment: builder.mutation({
-        query: ({ commentId, content }) => {
-          const params = new URLSearchParams({
-            commentId,
-            content,
-          });
-
+        query: data => {
           return {
-            url: `${BLOG_COMMENT_API_PATH}/update?${params.toString()}`,
+            url: `${BLOG_COMMENT_API_PATH}/update`,
             method: 'PUT',
+            body: data,
           };
         },
 

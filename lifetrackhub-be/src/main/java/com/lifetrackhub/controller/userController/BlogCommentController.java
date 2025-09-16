@@ -1,10 +1,13 @@
 package com.lifetrackhub.controller.userController;
 
 import com.lifetrackhub.dto.PageDto;
+import com.lifetrackhub.dto.request.BlogCommentAddRequestDto;
+import com.lifetrackhub.dto.request.BlogCommentUpdateRequestDto;
 import com.lifetrackhub.dto.response.BlogCommentResponseDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.BlogComment;
 import com.lifetrackhub.service.BlogCommentService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
@@ -27,17 +30,13 @@ public class BlogCommentController extends BaseController {
     }
 
     @PostMapping("/blog/comment/add")
-    public BlogCommentResponseDto addComment(
-            @RequestParam(value = "slug") String slug,
-            @RequestParam(value = "content") String content) {
-        return blogCommentService.addComment(slug, content);
+    public BlogCommentResponseDto addComment(@RequestBody @Valid BlogCommentAddRequestDto dto) {
+        return blogCommentService.addComment(dto.getSlug(), dto.getContent());
     }
 
     @PutMapping("/blog/comment/update")
-    public BlogCommentResponseDto updateComment(
-            @RequestParam(value = "commentId") Long commentId,
-            @RequestParam(value = "content") String content) {
-        return blogCommentService.updateComment(commentId, content);
+    public BlogCommentResponseDto updateComment(@RequestBody @Valid BlogCommentUpdateRequestDto dto) {
+        return blogCommentService.updateComment(dto.getCommentId(), dto.getContent());
     }
 
     @PutMapping("/blog/comment/delete/{commentId}")
