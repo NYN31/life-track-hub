@@ -9,9 +9,12 @@ import com.lifetrackhub.dto.request.RegistrationRequestDto;
 import com.lifetrackhub.dto.request.LoginRequestDto;
 import com.lifetrackhub.dto.response.LoginResponseDto;
 import com.lifetrackhub.entity.User;
+import com.lifetrackhub.entity.UserVerificationToken;
 import com.lifetrackhub.repository.UserRepository;
+import com.lifetrackhub.repository.UserVerificationTokenRepository;
 import com.lifetrackhub.service.AuthService;
 import com.lifetrackhub.service.JwtService;
+import com.lifetrackhub.service.UserVerificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,7 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
+import java.time.Instant;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -28,29 +32,71 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final JwtService jwtService;
+    private final UserVerificationTokenRepository userVerificationTokenRepository;
+    private final UserVerificationService userVerificationService;
 
     public AuthServiceImpl(
             UserRepository userRepository,
             PasswordEncoder bCryptPasswordEncoder,
-            JwtService jwtService) {
+            JwtService jwtService,
+            UserVerificationTokenRepository userVerificationTokenRepository,
+            UserVerificationService userVerificationService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtService = jwtService;
+        this.userVerificationTokenRepository = userVerificationTokenRepository;
+        this.userVerificationService = userVerificationService;
     }
 
     @Override
     public UserDto registration(RegistrationRequestDto request) {
-        Optional<User> user = userRepository.findByEmail(request.getEmail());
-        if (user.isPresent()) {
-            log.warn("User with email {} already exists", request.getEmail());
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User already exists");
+        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+
+        if (userOptional.isEmpty()) {
+            User userInfo = createUser(request, String.valueOf(Role.USER));
+            userInfo = userRepository.save(userInfo);
+            log.info("User created: {}", userInfo);
+
+            UserVerificationToken token = userVerificationService.createVerificationToken(userInfo, null);
+            userVerificationService.sendUserVerifyMail(userInfo.getEmail(), token.getToken());
+            log.info("Verification email sent to {}", userInfo.getEmail());
+
+            return UserDto.formEntity(userInfo);
         }
 
-        User userInfo = createUser(request, String.valueOf(Role.USER));
-        userInfo = userRepository.save(userInfo);
-        log.info("User created: {}", userInfo);
+        User user = userOptional.get();
+        if (user.getAccountStatus().equals(AccountStatus.DELETED)) {
+            log.info("User deleted: {}", user.getEmail());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Your account has been deleted");
+        }
 
-        return UserDto.formEntity(userInfo);
+        if (user.getAccountStatus().equals(AccountStatus.INACTIVE)) {
+            log.info("User inactive: {}", user.getEmail());
+
+            UserVerificationToken userVerificationToken = userVerificationTokenRepository.findByUserId(user.getId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Token not found by user id."));
+
+            if (Instant.now().isBefore(userVerificationToken.getExpirationTime())) {
+                log.warn("A account verify link has already sent to your email {} or retry {} hours later", 24, user.getEmail());
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "A account verify link has already sent to your email"
+                );
+            }
+
+            userVerificationToken = userVerificationService.createVerificationToken(user, userVerificationToken);
+            userVerificationService.sendUserVerifyMail(user.getEmail(), userVerificationToken.getToken());
+            log.info("Verification email sent to {}", user.getEmail());
+
+            return UserDto.formEntity(user);
+        }
+
+        if (user.getAccountStatus().equals(AccountStatus.ACTIVE)) {
+            log.info("User already has been exist/active: {}", user.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exist.");
+        }
+
+        return null;
     }
 
     @Override
@@ -113,7 +159,7 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(request.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         user.setRole(role);
-        user.setAccountStatus(AccountStatus.ACTIVE);
+        user.setAccountStatus(AccountStatus.INACTIVE);
         user.setLoginType(LoginType.CREDENTIAL);
         user.setAccountType(AccountType.STANDARD);
         user.setUserDetails(null);
