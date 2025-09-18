@@ -15,6 +15,7 @@ import TodoContainer from './pages/todo/TodoContainer';
 import AboutContainer from './pages/about/AboutContainer';
 import PublicRoute from './components/layout/PublicRoute';
 import MyBlogsContainer from './pages/blog/MyBlogsContainer';
+import UserVerifyFormContainer from './pages/auth/UserVerifyFormContainer';
 
 function App() {
   useAuthCheck();
@@ -26,6 +27,7 @@ function App() {
       <Route path="auth" element={<PublicRoute />}>
         <Route path="sign-in" element={<LoginContainer />} />
         <Route path="sign-up" element={<RegistrationContainer />} />
+        <Route path="user/verify" element={<UserVerifyFormContainer />} />
       </Route>
 
       <Route path="public" element={<PublicRoute />}>

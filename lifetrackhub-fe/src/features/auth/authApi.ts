@@ -50,6 +50,20 @@ export const authApi = apiSlice.injectEndpoints({
         method: 'POST',
       }),
     }),
+
+    userVerify: builder.mutation({
+      query: ({ verifyToken, email }) => {
+        const params = new URLSearchParams({
+          verifyToken,
+          email,
+        });
+
+        return {
+          url: `/auth/user/verify?${params.toString()}`,
+          method: 'PUT',
+        };
+      },
+    }),
   }),
 });
 
@@ -58,4 +72,5 @@ export const {
   useRegistrationMutation,
   useLazyGoogleRedirectUrlQuery,
   useGoogleCallbackMutation,
+  useUserVerifyMutation,
 } = authApi;

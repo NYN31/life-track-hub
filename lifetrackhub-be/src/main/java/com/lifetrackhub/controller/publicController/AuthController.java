@@ -9,6 +9,7 @@ import com.lifetrackhub.dto.response.SsoRedirectUrlResponseDto;
 import com.lifetrackhub.service.AuthService;
 import com.lifetrackhub.service.GoogleAuthService;
 import com.lifetrackhub.service.PasswordReset;
+import com.lifetrackhub.service.UserVerificationService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,15 +18,18 @@ public class AuthController {
     private final AuthService authService;
     private final GoogleAuthService googleAuthService;
     private final PasswordReset passwordReset;
+    private final UserVerificationService userVerificationService;
 
     public AuthController(
             AuthService authService,
             GoogleAuthService googleAuthService,
-            PasswordReset passwordReset
+            PasswordReset passwordReset,
+            UserVerificationService userVerificationService
     ) {
         this.authService = authService;
         this.googleAuthService = googleAuthService;
         this.passwordReset = passwordReset;
+        this.userVerificationService = userVerificationService;
     }
 
     @PostMapping("/auth/login")
@@ -34,7 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/registration")
-    public UserDto registration(@RequestBody @Valid RegistrationRequestDto dto) {
+    public CommonResponseDto registration(@RequestBody @Valid RegistrationRequestDto dto) {
         return authService.registration(dto);
     }
 
@@ -64,5 +68,12 @@ public class AuthController {
             @RequestParam(value = "resetPasswordToken") String resetPasswordToken
     ) {
         return passwordReset.resetPassword(newPassword, resetPasswordToken);
+    }
+
+    @PutMapping("/auth/user/verify")
+    public CommonResponseDto verifyUser(
+            @RequestParam(value = "verifyToken") String verifyToken,
+            @RequestParam(value = "email") String email) {
+        return userVerificationService.verifyUser(verifyToken, email);
     }
 }

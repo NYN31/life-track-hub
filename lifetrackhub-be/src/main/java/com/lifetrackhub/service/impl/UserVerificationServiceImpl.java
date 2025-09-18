@@ -19,7 +19,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -68,6 +67,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
         verificationToken.setExpirationTime(
                 Instant.now().plus(resetTokenExpirationTime, ChronoUnit.HOURS)
         );
+
         return userVerificationTokenRepository.save(verificationToken);
     }
 
@@ -77,7 +77,13 @@ public class UserVerificationServiceImpl implements UserVerificationService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid token."));
 
         if (verificationToken.getExpirationTime().isBefore(Instant.now())) {
+            log.warn("Verification token expired for user: {}", verificationToken.getUser().getEmail());
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token has been expired");
+        }
+
+        if (!verificationToken.getUser().getEmail().equals(email)) {
+            log.warn("Verification token does not match user email: {}", verificationToken.getUser().getEmail());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid email");
         }
 
         User user = verificationToken.getUser();
@@ -111,6 +117,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
                 null,
                 templateVariables
         );
+        log.info("Verification email sent to {}", email);
     }
 
     private String getTokenExpirationTimeInMinutes() {
