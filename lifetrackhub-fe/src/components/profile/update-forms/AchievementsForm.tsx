@@ -141,8 +141,8 @@ const AchievementsForm: React.FC = () => {
                     message: 'Description must be at least 10 characters long',
                   },
                   maxLength: {
-                    value: 300,
-                    message: 'Description cannot exceed 300 characters',
+                    value: 2000,
+                    message: 'Description cannot exceed 2000 characters',
                   },
                 })}
                 className="form-input-field h-24 scrollbar-hide"

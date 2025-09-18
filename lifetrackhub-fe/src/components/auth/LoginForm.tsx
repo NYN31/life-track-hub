@@ -8,10 +8,11 @@ import { useLoginMutation } from '../../features/auth/authApi';
 import { REGISTRATION_PATH } from '../../constants/title-and-paths';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import OnSubmitButton from '../common/button/OnSubmitButton';
+import { useToast } from '../../context/toast-context';
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
-  //const { errorToast } = useCustomToast();
+  const toast = useToast();
   const storeLoginCredential = useLoginCredentialStore();
 
   const [isLoading, setLoading] = useState(false);
@@ -36,9 +37,13 @@ const LoginForm: React.FC = () => {
 
     await login(data)
       .unwrap()
-      .then(res => storeLoginCredential(res))
+      .then(res => {
+        storeLoginCredential(res);
+        toast(res.message, 'success');
+      })
       .catch(error => {
         setErrorMessage(error?.data?.message);
+        toast(error?.data?.message, 'error');
       })
       .finally(() => {
         setLoading(false);

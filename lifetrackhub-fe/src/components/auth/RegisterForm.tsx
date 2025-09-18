@@ -7,9 +7,11 @@ import { LOGIN_PATH } from '../../constants/title-and-paths';
 import { useRegistrationMutation } from '../../features/auth/authApi';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import OnSubmitButton from '../common/button/OnSubmitButton';
+import { useToast } from '../../context/toast-context';
 
 const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -28,9 +30,10 @@ const RegisterForm: React.FC = () => {
     setLoading(true);
     await registration(data)
       .unwrap()
-      .then(() => {
+      .then(res => {
         localStorage.setItem('email', data.email);
         navigate(LOGIN_PATH);
+        toast(res.message, 'success');
       })
       .catch(err => {
         reset({
@@ -40,6 +43,7 @@ const RegisterForm: React.FC = () => {
           password: '',
         });
         setErrorMessage(err.data.message);
+        toast(err.data.message, 'error');
       })
       .finally(() => setLoading(false));
   };
@@ -94,7 +98,7 @@ const RegisterForm: React.FC = () => {
             <input
               id="lastname"
               type="text"
-              {...register('lastname', { required: 'Last name is required' })}
+              {...register('lastname')}
               className="form-input-field"
             />
             {errors.lastname && (

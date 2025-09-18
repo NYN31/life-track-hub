@@ -5,8 +5,9 @@ import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.LoginType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.dto.UserDto;
-import com.lifetrackhub.dto.request.RegistrationRequestDto;
 import com.lifetrackhub.dto.request.LoginRequestDto;
+import com.lifetrackhub.dto.request.RegistrationRequestDto;
+import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.dto.response.LoginResponseDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.entity.UserVerificationToken;
@@ -17,17 +18,22 @@ import com.lifetrackhub.service.JwtService;
 import com.lifetrackhub.service.UserVerificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
-import java.util.*;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    @Value("${user.verify.expiration.time}")
+    private int resetTokenExpirationTime;
 
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
@@ -49,54 +55,47 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserDto registration(RegistrationRequestDto request) {
+    public CommonResponseDto registration(RegistrationRequestDto request) {
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
 
         if (userOptional.isEmpty()) {
-            User userInfo = createUser(request, String.valueOf(Role.USER));
-            userInfo = userRepository.save(userInfo);
-            log.info("User created: {}", userInfo);
+            User user = createUser(request, String.valueOf(Role.USER));
+            user = userRepository.save(user);
+            log.info("User created: {}", user);
 
-            UserVerificationToken token = userVerificationService.createVerificationToken(userInfo, null);
-            userVerificationService.sendUserVerifyMail(userInfo.getEmail(), token.getToken());
-            log.info("Verification email sent to {}", userInfo.getEmail());
+            UserVerificationToken token = userVerificationService.createVerificationToken(user, null);
+            log.info("Verification token has been created: {}", token.getToken());
+            userVerificationService.sendUserVerifyMail(user.getEmail(), token.getToken());
 
-            return UserDto.formEntity(userInfo);
+            return CommonResponseDto.builder()
+                    .status(HttpStatus.OK)
+                    .message("A verification link sent to your account")
+                    .build();
         }
 
         User user = userOptional.get();
-        if (user.getAccountStatus().equals(AccountStatus.DELETED)) {
-            log.info("User deleted: {}", user.getEmail());
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Your account has been deleted");
-        }
 
-        if (user.getAccountStatus().equals(AccountStatus.INACTIVE)) {
-            log.info("User inactive: {}", user.getEmail());
-
-            UserVerificationToken userVerificationToken = userVerificationTokenRepository.findByUserId(user.getId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Token not found by user id."));
-
-            if (Instant.now().isBefore(userVerificationToken.getExpirationTime())) {
-                log.warn("A account verify link has already sent to your email {} or retry {} hours later", 24, user.getEmail());
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "A account verify link has already sent to your email"
-                );
+        switch (user.getAccountStatus()) {
+            case DELETED -> {
+                log.info("User deleted: {}", user.getEmail());
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Your account has been deleted");
             }
-
-            userVerificationToken = userVerificationService.createVerificationToken(user, userVerificationToken);
-            userVerificationService.sendUserVerifyMail(user.getEmail(), userVerificationToken.getToken());
-            log.info("Verification email sent to {}", user.getEmail());
-
-            return UserDto.formEntity(user);
+            case INACTIVE -> {
+                handleInactiveUser(user);
+                return CommonResponseDto.builder()
+                        .status(HttpStatus.OK)
+                        .message("Your account is now active.")
+                        .build();
+            }
+            case ACTIVE -> {
+                log.info("User already active: {}", user.getEmail());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.");
+            }
+            default -> {
+                log.warn("Unexpected account status: {} for user {}", user.getAccountStatus(), user.getEmail());
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected account status");
+            }
         }
-
-        if (user.getAccountStatus().equals(AccountStatus.ACTIVE)) {
-            log.info("User already has been exist/active: {}", user.getEmail());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exist.");
-        }
-
-        return null;
     }
 
     @Override
@@ -165,5 +164,23 @@ public class AuthServiceImpl implements AuthService {
         user.setUserDetails(null);
 
         return user;
+    }
+
+    private void handleInactiveUser(User user) {
+        UserVerificationToken token = userVerificationTokenRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Token not found by user id."
+                ));
+
+        if (Instant.now().isBefore(token.getExpirationTime())) {
+            long remainingHours = ChronoUnit.HOURS.between(Instant.now(), token.getExpirationTime());
+            log.warn("Account verify link already sent to {}. Verify within {} hours.", user.getEmail(), remainingHours);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Account verify link already has sent to " + user.getEmail() + ". Verify within " + remainingHours + " hours."
+            );
+        }
+
+        userVerificationService.sendUserVerifyMail(user.getEmail(), token.getToken());
     }
 }
