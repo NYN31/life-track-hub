@@ -6,7 +6,7 @@
 
 @layer base {
   /* Global Styles */
-
+  
   body {
     @apply font-sans text-gray-800 leading-relaxed; /* Inter font by default */
     font-size: 14px; /* Base font size */

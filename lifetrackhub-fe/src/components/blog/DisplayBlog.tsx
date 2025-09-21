@@ -48,13 +48,7 @@ const DisplayBlog: React.FC<{
     setCurrentuserLikeInBlog(prev => !prev);
     await triggerLikeUnlikeOperationOfBlog(slug)
       .unwrap()
-      .then(() => {
-        toast(
-          currentUserLikeInBlog ? 'You unlike the blog' : 'You like the blog',
-          'info',
-          5000
-        );
-      })
+      .then()
       .catch(err => {
         setCurrentuserLikeInBlog(prev => !prev);
         toast(err.data.message, 'error');
@@ -70,11 +64,21 @@ const DisplayBlog: React.FC<{
   }, [isLikedBySlugError, slug]);
 
   const headings = extractMarkdownHeadings(blogData.content);
+  console.log(headings);
 
   const navigateFromBlogUpdatePage = () => {
     if (slug) {
       navigate(`${BLOG_UPDATED_PATH}/${slug}`);
     }
+  };
+
+  const handleScroll = (e:React.MouseEvent<HTMLAnchorElement>, elementId: string) => {
+    e.preventDefault(); // prevent default anchor jump
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    navigate(`${location.pathname}#${elementId}`);
   };
 
   const blogLikeCommentStats = (likes: number, comments: number) => {
@@ -105,6 +109,7 @@ const DisplayBlog: React.FC<{
 
         <a
           href="#comment-list"
+          onClick={(e) => handleScroll(e, 'comment-list')}
           className="flex items-center space-x-2 hover:text-purple-500 cursor-pointer transition"
         >
           <FaRegCommentDots className="w-5 h-5" />
@@ -133,6 +138,7 @@ const DisplayBlog: React.FC<{
                         ? 'text-purple-700 font-semibold dark:text-purple-300'
                         : ''
                     }`}
+                    onClick={(e) => handleScroll(e, heading.id)}
                   >
                     {heading.text}
                   </a>

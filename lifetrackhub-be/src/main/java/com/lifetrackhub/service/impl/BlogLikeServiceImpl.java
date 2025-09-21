@@ -69,7 +69,7 @@ public class BlogLikeServiceImpl implements BlogLikeService {
         BlogLike blogLike = blogLikeRepository
                 .findByBlogIdAndUserId(blog.getId(), user.getId())
                 .map(this::toggleExistingLike)
-                .orElseGet(() -> createNewLike(blog.getId(), user.getId()));
+                .orElseGet(() -> createNewLike(blog.getId(), user));
 
         blogLikeRepository.save(blogLike);
 
@@ -95,10 +95,10 @@ public class BlogLikeServiceImpl implements BlogLikeService {
         return blogLike;
     }
 
-    private BlogLike createNewLike(Long blogId, Long userId) {
+    private BlogLike createNewLike(Long blogId, User user) {
         BlogLike newLike = new BlogLike();
         newLike.setBlogId(blogId);
-        newLike.setUserId(userId);
+        newLike.setUser(user);
         newLike.setLikeType(LikeType.LIKED);
         return newLike;
     }
