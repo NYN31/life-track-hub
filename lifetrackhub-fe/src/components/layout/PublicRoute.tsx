@@ -1,9 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import useAuth from '../../helper/hooks/useAuth';
 import Footer from '../common/Footer';
-import PublicNavbar from '../common/PublicNavbar';
+import PublicNavbar from '../common/navbar/PublicNavbar';
 import * as pathname from '../../constants/title-and-paths';
-
 
 const PublicRoute = () => {
   const authed = useAuth();

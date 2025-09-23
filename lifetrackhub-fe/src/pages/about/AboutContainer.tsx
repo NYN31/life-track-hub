@@ -5,7 +5,7 @@ import myPhoto from '../../assets/site-owner.jpeg';
 
 const AboutContainer = () => {
   return (
-    <div className="common-box flex flex-col items-center justify-center">
+    <div className="common-container-box flex flex-col items-center justify-center">
       <h1>{aboutData.name}</h1>
       <div className="uppercase tracking-wide text-sm text-purple-400 font-semibold text-center">
         {aboutData.designation}
@@ -54,7 +54,7 @@ const AboutContainer = () => {
         loading="lazy"
       />
 
-      <div className="mt-4 lg:mt-8">
+      <div className="mt-4 lg:mt-8 common-box">
         <MarkdownRenderer content={aboutData.aboutContent} />
       </div>
     </div>

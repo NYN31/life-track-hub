@@ -1,16 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
-import ProfileDropdown from './ProfileDropdown';
+import ProfileDropdown from '../ProfileDropdown';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   BLOG_SELF_PATH,
   LOGIN_PATH,
   PROFILE_DETAILS_PATH,
-} from '../../constants/title-and-paths';
-import { logoutClearingLocalStorage } from '../../helper/local-storage/clear-local-storage';
+} from '../../../constants/title-and-paths';
+import { logoutClearingLocalStorage } from '../../../helper/local-storage/clear-local-storage';
 import { FiMenu, FiX, FiMoon, FiSun } from 'react-icons/fi';
 import { SiSvgtrace } from 'react-icons/si';
-import { INavbar } from '../../types/common';
-import useToggleTheme from '../../helper/hooks/useToggleTheme';
+import { INavbar } from '../../../types/common';
+import useToggleTheme from '../../../helper/hooks/useToggleTheme';
 
 const ProtectedNavbar: React.FC<{ items: INavbar[] }> = ({ items }) => {
   const navigate = useNavigate();

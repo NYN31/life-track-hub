@@ -4,10 +4,10 @@ import {
   REGISTRATION_PATH,
   PUBLIC_ABOUT_PATH,
   PUBLIC_BLOG_PATH,
-} from '../../constants/title-and-paths';
+} from '../../../constants/title-and-paths';
 import { SiSvgtrace } from 'react-icons/si';
 import { FiMoon, FiSun } from 'react-icons/fi';
-import useToggleTheme from '../../helper/hooks/useToggleTheme';
+import useToggleTheme from '../../../helper/hooks/useToggleTheme';
 
 const PublicNavbar = () => {
   const navigate = useNavigate();

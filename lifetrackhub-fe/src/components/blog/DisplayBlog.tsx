@@ -64,7 +64,6 @@ const DisplayBlog: React.FC<{
   }, [isLikedBySlugError, slug]);
 
   const headings = extractMarkdownHeadings(blogData.content);
-  console.log(headings);
 
   const navigateFromBlogUpdatePage = () => {
     if (slug) {

@@ -1,53 +1,65 @@
 import * as data from '../title-and-paths';
-import { IoSettingsOutline } from 'react-icons/io5';
 import { LuListTodo } from 'react-icons/lu';
-import { MdOutlineCreateNewFolder } from 'react-icons/md';
-import { TbListDetails } from 'react-icons/tb';
-import { FaUserEdit } from 'react-icons/fa';
+import { MdOutlineCreateNewFolder, MdOutlineFilePresent } from 'react-icons/md';
+import { IoStatsChartOutline } from 'react-icons/io5';
+import { FiSettings } from 'react-icons/fi';
+import { CgProfile } from 'react-icons/cg';
 
 const ICON_SIZE = 18;
 
-const SidebarData = [
+const SIDE_MENU_ITEMS = [
   {
-    title: data.TODO,
-    hasAccordion: [
+    title: data.BLOG,
+    icon: <LuListTodo size={ICON_SIZE} />,
+    children: [
       {
-        title: data.TODO_LIST,
-        label: data.TODO_LIST_PATH,
-        path: data.TODO_LIST_PATH,
+        title: data.ALL_BLOGS,
+        path: data.BLOG_PATH,
         icon: <LuListTodo size={ICON_SIZE} />,
       },
       {
-        title: data.TODO_CREATE,
-        label: data.TODO_CREATE_PATH,
-        path: data.TODO_CREATE_PATH,
+        title: data.BLOG_CREATED,
+        path: data.BLOG_CREATED_PATH,
         icon: <MdOutlineCreateNewFolder size={ICON_SIZE} />,
+      },
+      {
+        title: data.BLOG_STATS,
+        path: data.BLOG_STATS_PATH,
+        icon: <IoStatsChartOutline size={ICON_SIZE} />,
       },
     ],
   },
   {
     title: data.PROFILE,
-    hasAccordion: [
+    icon: <CgProfile size={ICON_SIZE} />,
+    children: [
       {
-        title: data.PROFILE_DETAILS,
-        label: data.PROFILE_DETAILS_PATH,
-        path: data.PROFILE_DETAILS_PATH,
-        icon: <TbListDetails size={ICON_SIZE} />,
+        title: data.PROFILE_UPDATE,
+        path: data.PROFILE_UPDATE_PATH,
+        icon: <FiSettings size={ICON_SIZE} />,
       },
       {
-        title: data.PROFILE_EDIT,
-        label: data.PROFILE_EDIT_PATH,
-        path: data.PROFILE_EDIT_PATH,
-        icon: <FaUserEdit size={ICON_SIZE} />,
+        title: data.PROFILE_DETAILS,
+        path: data.PROFILE_DETAILS_PATH,
+        icon: <CgProfile size={ICON_SIZE} />,
       },
     ],
   },
   {
-    title: data.SETTING,
-    label: data.SETTING_PATH,
-    path: data.SETTING_PATH,
-    icon: <IoSettingsOutline size={ICON_SIZE} />,
+    title: data.FILE,
+    path: data.FILE_PATH,
+    icon: <MdOutlineFilePresent size={ICON_SIZE} />,
+  },
+  {
+    title: data.TODO,
+    path: data.TODO_PATH,
+    icon: <LuListTodo size={ICON_SIZE} />,
+  },
+  {
+    title: data.ABOUT,
+    path: data.ABOUT_PATH,
+    icon: <LuListTodo size={ICON_SIZE} />,
   },
 ];
 
-export default SidebarData;
+export default SIDE_MENU_ITEMS;
