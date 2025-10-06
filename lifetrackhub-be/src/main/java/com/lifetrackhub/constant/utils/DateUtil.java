@@ -5,25 +5,35 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.Optional;
 
 public class DateUtil {
+    static ZoneId zoneId = ZoneId.of("Asia/Dhaka");
+
     public static Instant getStartDate(LocalDate date) {
         date = Optional.ofNullable(date)
                 .orElse(LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()));
-        return date.atTime(LocalTime.MIN).atZone(ZoneId.of("Asia/Dhaka")).toInstant();
+        return date.atTime(LocalTime.MIN).atZone(zoneId).toInstant();
     }
 
     public static Instant getEndDate(LocalDate date) {
         date = Optional.ofNullable(date)
                 .orElse(LocalDate.now());
-        return date.atTime(LocalTime.MAX).atZone(ZoneId.of("Asia/Dhaka")).toInstant();
+        return date.atTime(LocalTime.MAX).atZone(zoneId).toInstant();
     }
 
     public static Instant getStartOfCurrentDay() {
         LocalDate date = LocalDate.now(ZoneOffset.UTC);
-        return date.atTime(LocalTime.MIN).atZone(ZoneId.of("Asia/Dhaka")).toInstant();
+        return date.atTime(LocalTime.MIN).atZone(zoneId).toInstant();
     }
 
     public static Instant getEndOfCurrentDay() {
         LocalDate date = LocalDate.now(ZoneOffset.UTC);
-        return date.atTime(LocalTime.MAX).atZone(ZoneId.of("Asia/Dhaka")).toInstant();
+        return date.atTime(LocalTime.MAX).atZone(zoneId).toInstant();
+    }
+
+    public static Instant toStartOfDayInstant(LocalDate date) {
+        return (date != null) ? date.atTime(LocalTime.MIN).atZone(zoneId).toInstant() : null;
+    }
+
+    public static Instant toEndOfDayInstant(LocalDate date) {
+        return (date != null) ? date.atTime(LocalTime.MAX).atZone(zoneId).toInstant() : null;
     }
 }

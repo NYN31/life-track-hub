@@ -7,6 +7,7 @@ import com.lifetrackhub.constant.utils.DateUtil;
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.dto.blob.UserDetails;
+import com.lifetrackhub.dto.request.GetUsersRequestDto;
 import com.lifetrackhub.dto.request.UpdatePasswordRequestDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.User;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -125,20 +125,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> getUsers(int page, int size, String email, Role role, AccountStatus accountStatus, AccountType accountType, LocalDate startDate, LocalDate endDate) {
-        log.info("Get users by filtered attributes - email: {}, role: {}, accountStatus: {}, accountType: {}, start: {}, end: {}", email, role, accountStatus, accountType, startDate, endDate);
+    public Page<User> getUsers(GetUsersRequestDto dto) {
+        log.info(
+                "Get users by filtered attributes - email: {}, role: {}, accountStatus: {}, accountType: {}, start: {}, end: {}",
+                dto.getEmail(), dto.getRole(), dto.getAccountStatus(), dto.getAccountType(), dto.getStart(), dto.getEnd()
+        );
         String roleName = null;
-        if (role != null) {
-            roleName = role.name();
+        if (dto.getRole() != null) {
+            roleName = dto.getRole().name();
         }
 
         Sort sort = Sort.by(Sort.Direction.ASC, "createdDate");
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), sort);
 
-        Instant start = DateUtil.getStartDate(startDate);
-        Instant end = DateUtil.getEndDate(endDate);
+        Instant start = DateUtil.toStartOfDayInstant(dto.getStart());
+        Instant end = DateUtil.toEndOfDayInstant(dto.getEnd());
 
-        return userRepository.findByEmailAndRoleNameAndAccountStatusAndAccountTypeAndCreatedDateBetween(email, roleName, accountStatus, accountType, start, end, pageable);
+        return userRepository.getAllUsers(
+                dto.getEmail(),
+                roleName,
+                dto.getAccountStatus(),
+                dto.getAccountType(),
+                start,
+                end,
+                pageable
+        );
     }
 
     @Override

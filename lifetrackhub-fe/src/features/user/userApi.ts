@@ -36,6 +36,16 @@ export const userApi = apiSlice
           { type: 'UserByEmail', email: arg },
         ],
       }),
+
+      getUsers: builder.query({
+        query: data => ({
+          url: `${PROFILE_SUPER_ADMIN_USER_API_PATH}/all`,
+          method: 'POST',
+          body: data,
+        }),
+
+        providesTags: ['Users'],
+      }),
     }),
     overrideExisting: false,
   });
@@ -44,4 +54,6 @@ export const {
   useGetProfileQuery,
   useUpdateProfileMutation,
   useGetUserByEmailQuery,
+  useGetUsersQuery,
+  useLazyGetUsersQuery,
 } = userApi;

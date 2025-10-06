@@ -4,14 +4,14 @@ import com.lifetrackhub.constant.enumeration.AccountStatus;
 import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.dto.PageDto;
-import com.lifetrackhub.dto.UserDto;
+import com.lifetrackhub.dto.request.GetUsersRequestDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
+import com.lifetrackhub.dto.response.UserResponseDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 @RestController
 public class SuperAdminUserController extends SuperAdminBaseController {
@@ -21,18 +21,10 @@ public class SuperAdminUserController extends SuperAdminBaseController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/all")
-    public PageDto<UserDto> getUsers(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "email", required = false) String email,
-            @RequestParam(value = "role", required = false) Role role,
-            @RequestParam(value = "accountStatus", required = false) AccountStatus accountStatus,
-            @RequestParam(value = "accountType", required = false) AccountType accountType,
-            @RequestParam(value = "start", required = false) LocalDate start,
-            @RequestParam(value = "end", required = false) LocalDate end) {
-        Page<User> users = userService.getUsers(page, size, email, role, accountStatus, accountType, start, end);
-        return PageDto.fromEntity(users, UserDto::formEntity);
+    @PostMapping("/user/all")
+    public PageDto<UserResponseDto> getUsers(@RequestBody @Valid GetUsersRequestDto dto) {
+        Page<User> users = userService.getUsers(dto);
+        return PageDto.fromEntity(users, UserResponseDto::formEntity);
     }
 
     @PutMapping("/user/update/role/{email}/{role}")

@@ -7,6 +7,9 @@ import {
   TODO,
   TODO_PATH,
   ABOUT_PATH,
+  ALL_BLOGS,
+  BLOG_CREATED,
+  ABOUT,
 } from '../../constants/title-and-paths';
 import { LuListTodo } from 'react-icons/lu';
 import { MdOutlineCreateNewFolder } from 'react-icons/md';
@@ -21,17 +24,17 @@ export const ADMIN_NAV_ITEMS = [
     path: BLOG_PATH,
     children: [
       {
-        label: 'All Blogs',
+        label: ALL_BLOGS,
         path: BLOG_PATH,
         icon: <LuListTodo size={ICON_SIZE} />,
       },
       {
-        label: 'Create Blog',
+        label: BLOG_CREATED,
         path: BLOG_CREATED_PATH,
         icon: <MdOutlineCreateNewFolder size={ICON_SIZE} />,
       },
       {
-        label: 'Stats',
+        label: 'My Stats',
         path: BLOG_STATS_PATH,
         icon: <IoStatsChartOutline size={ICON_SIZE} />,
       },
@@ -48,7 +51,7 @@ export const ADMIN_NAV_ITEMS = [
     icon: <LuListTodo />,
   },
   {
-    label: 'About',
+    label: ABOUT,
     path: ABOUT_PATH,
     icon: <LuListTodo size={18} />,
   },

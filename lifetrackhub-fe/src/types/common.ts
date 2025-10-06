@@ -49,3 +49,20 @@ export interface INavbar {
   icon?: React.ReactNode;
   children?: INavbar[];
 }
+
+export interface HeaderColumn {
+  key: string;
+  width: string;
+  description: string;
+  align: TextAlign;
+}
+
+export type TextAlign =
+  | '-webkit-match-parent'
+  | 'center'
+  | 'end'
+  | 'justify'
+  | 'left'
+  | 'match-parent'
+  | 'right'
+  | 'start';
