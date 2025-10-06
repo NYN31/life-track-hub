@@ -16,6 +16,7 @@ import AboutContainer from './pages/about/AboutContainer';
 import PublicRoute from './components/layout/PublicRoute';
 import MyBlogsContainer from './pages/blog/MyBlogsContainer';
 import UserVerifyFormContainer from './pages/auth/UserVerifyFormContainer';
+import UserListContainer from './pages/user/super-admin/UserListContainer';
 
 function App() {
   useAuthCheck();
@@ -57,6 +58,9 @@ function App() {
         </Route>
         <Route path="todo">
           <Route index element={<TodoContainer />} />
+        </Route>
+        <Route path="user-management">
+          <Route path="users" element={<UserListContainer />} />
         </Route>
       </Route>
     </Routes>

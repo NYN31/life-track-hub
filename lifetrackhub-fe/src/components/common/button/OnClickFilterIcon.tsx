@@ -16,14 +16,16 @@ const OnClickFilterIcon: React.FC<OnClickFilterIconProps> = ({
         onClick={showFilterHandler}
         aria-label="Toggle filters"
       >
-        <FiFilter
-          size={22}
-          className={
+        <div
+          className={`flex items-center gap-2 text-sm font-mediumn ${
             showFilter
               ? 'text-purple-600 dark:text-purple-300'
               : 'text-gray-400 dark:text-gray-500'
-          }
-        />
+          }`}
+        >
+          <FiFilter size={22} />
+          Filter
+        </div>
       </button>
     </div>
   );

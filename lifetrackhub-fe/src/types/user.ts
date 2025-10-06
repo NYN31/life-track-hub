@@ -64,4 +64,42 @@ export const ROLE = {
   SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
   USER: 'USER',
-};
+} as const;
+
+export type Role = (typeof ROLE)[keyof typeof ROLE];
+
+export const ACCOUNT_STATUS = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  DELETED: 'DELETED',
+} as const;
+
+export type AccountStatus =
+  (typeof ACCOUNT_STATUS)[keyof typeof ACCOUNT_STATUS];
+
+export const ACCOUNT_TYPE = {
+  STANDARD: 'STANDARD',
+  PREMIUM: 'PREMIUM',
+} as const;
+
+export type AccountType = (typeof ACCOUNT_TYPE)[keyof typeof ACCOUNT_TYPE];
+
+export interface UserResponseDto {
+  id: number;
+  email: string;
+  name: string;
+  role: string;
+  accountStatus: string;
+  accountType: string;
+  createdDate: string;
+  lastModifiedDate: string;
+}
+
+export interface UserPaginationResponse {
+  content: IUser[];
+  pageNumber: number;
+  totalPages: number;
+  totalElements: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}

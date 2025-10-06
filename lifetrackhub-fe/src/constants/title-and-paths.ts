@@ -58,3 +58,12 @@ export const BLOG_STATS_PATH = '/blog/stats';
 // FILE
 export const FILE = 'File';
 export const FILE_PATH = '/files';
+
+// SUPER ADMIN
+export const SUPER_ADMIN_USER_MANAGEMENT = 'User Management';
+
+export const SUPER_ADMIN_USER_LIST = 'User List';
+export const SUPER_ADMIN_USER_LIST_PATH = '/user-management/users';
+
+export const SUPER_ADMIN_USER_CREATE = 'Create User';
+export const SUPER_ADMIN_USER_CREATE_PATH = '/user-management/create-user';

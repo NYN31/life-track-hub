@@ -27,7 +27,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
                   AND (:startDate IS NULL OR u.createdDate >= :startDate)
                   AND (:endDate IS NULL OR u.createdDate <= :endDate)
             """)
-    Page<User> findByEmailAndRoleNameAndAccountStatusAndAccountTypeAndCreatedDateBetween(
+    Page<User> getAllUsers(
             String email,
             String role,
             AccountStatus accountStatus,

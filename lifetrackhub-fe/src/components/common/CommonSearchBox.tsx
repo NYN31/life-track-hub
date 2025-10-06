@@ -43,13 +43,10 @@ const CommonSearchBox: React.FC<{
 
   return (
     <div className="w-full mb-3 md:mb-4">
-      <div className="common-box flex flex-wrap gap-2 lg:gap-4 items-end">
+      <div className="common-box flex flex-wrap gap-2 lg:gap-2 items-end">
         {/* Text Inputs */}
         {textFields?.map((item, index) => (
           <div key={index} className="flex flex-col w-full lg:w-[220px]">
-            <label className="mb-1 font-semibold text-gray-700 text-sm dark:text-gray-200">
-              {item.name}
-            </label>
             <Controller
               name={item.name}
               control={control}
@@ -75,9 +72,6 @@ const CommonSearchBox: React.FC<{
         {/* Date Range Pickers */}
         {dateFields?.map((item, index) => (
           <div key={index} className="flex flex-col w-full lg:w-[220px]">
-            <label className="mb-1 font-semibold text-gray-700 text-sm dark:text-gray-200">
-              {item.name}
-            </label>
             <Controller
               name={item.name}
               control={control}
@@ -104,9 +98,6 @@ const CommonSearchBox: React.FC<{
         {/* Select Dropdowns */}
         {selectDropdowns?.map(item => (
           <div key={item.name} className="flex flex-col w-full lg:w-[220px]">
-            <label className="mb-1 font-semibold text-gray-700 text-sm dark:text-gray-200">
-              {item.name}
-            </label>
             <Controller
               name={item.name}
               control={control}
