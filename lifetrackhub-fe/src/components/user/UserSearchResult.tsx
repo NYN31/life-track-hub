@@ -22,7 +22,7 @@ const UserSearchResult: React.FC<{ results: UserResponseDto[] }> = ({
             ];
 
             return (
-              <tr key={user.id}>
+              <tr key={user.email}>
                 {columns.map((value, i) => (
                   <td
                     key={i}

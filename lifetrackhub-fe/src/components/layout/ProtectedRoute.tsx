@@ -6,7 +6,7 @@ import Footer from '../common/Footer';
 import { getNavOrManubarDataBaseOnRole } from '../../helper/utils/get-nav-or-menu-bar-data';
 import SuperAdminNavbar from '../common/navbar/SuperAdminNavbar';
 import { useState } from 'react';
-import { Sidebar } from '../common/Sidebar';
+import { Sidebar } from './Sidebar';
 import SIDE_MENU_ITEMS from '../../constants/Sidebar/super-admin-sidebar-data';
 
 const ProtectedRoute = () => {

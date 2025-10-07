@@ -125,7 +125,7 @@ const UserListContainer: React.FC = () => {
         if (content.length === 0) {
           setErrorMessage('No users found within filter criteria');
           toast('No users found within filter criteria', 'info', 3000);
-        } else toast('Users fetched successfully', 'success', 3000);
+        }
       })
       .catch((error: any) => {
         setErrorMessage(error?.data?.message);
