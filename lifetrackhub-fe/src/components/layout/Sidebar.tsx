@@ -65,12 +65,12 @@ const SidebarList = ({
     <ul className="space-y-2 m-0 p-0">
       {items.map((item, idx) => (
         <ul
+          key={idx}
           className={`ml-4 mt-1 space-y-1 ${
             depth > 0 && 'border-l-2'
           } border-purple-300 dark:border-purple-400 pl-1`}
         >
           <SidebarItemComponent
-            key={idx}
             item={item}
             isOpen={activeIndex === idx}
             onToggle={() => setActiveIndex(activeIndex === idx ? null : idx)}
