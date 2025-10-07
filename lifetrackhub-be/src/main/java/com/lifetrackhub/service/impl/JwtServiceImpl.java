@@ -13,9 +13,11 @@ import com.lifetrackhub.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -79,6 +81,12 @@ public class JwtServiceImpl implements JwtService {
         Claim role = jwt.getClaim("role");
         log.info("email: {} & role/authorities: {}", email, role);
         User user = userService.findUserByEmail(email);
+        user.setUserDetails(null);
+
+        if(user.getAccountStatus().equals(AccountStatus.INACTIVE) ||
+                user.getAccountStatus().equals(AccountStatus.DELETED)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
 
         List<SimpleGrantedAuthority> authorities = role
                 .asList(String.class)

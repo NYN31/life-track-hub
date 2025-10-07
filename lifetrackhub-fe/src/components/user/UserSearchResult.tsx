@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import TableHeader from '../common/TableHeader';
 import { USER_TABLE_HEADERS } from '../../constants/table-headers/user-table-header';
 import { UserResponseDto } from '../../types/user';
@@ -5,6 +6,7 @@ import { UserResponseDto } from '../../types/user';
 const UserSearchResult: React.FC<{ results: UserResponseDto[] }> = ({
   results,
 }) => {
+  const navigate = useNavigate();
   return (
     <div className="overflow-x-auto scrollbar-hide">
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -32,7 +34,12 @@ const UserSearchResult: React.FC<{ results: UserResponseDto[] }> = ({
                   </td>
                 ))}
                 <td>
-                  <button className="btn-secondary text-xs uppercase">
+                  <button
+                    onClick={() =>
+                      navigate(`/user-management/users/${user.email}`)
+                    }
+                    className="btn-secondary text-xs uppercase"
+                  >
                     Details
                   </button>
                 </td>

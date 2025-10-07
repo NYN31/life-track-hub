@@ -2,7 +2,7 @@ import React, { Dispatch } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { IBlogFormInputs, BlogStatus, TagOption } from '../../types/blog';
 import Select from 'react-select';
-import { tagOptions } from '../../constants/tag-options';
+import { tagOptions } from '../../constants/select-options/tag-options';
 import { customItemsForMarkdown } from '../../constants/blog-editor-icons';
 import MarkdownEditor from './MarkdownEditor';
 import { getCustomSelectStyles } from '../../helper/utils/get-custom-select-styles';

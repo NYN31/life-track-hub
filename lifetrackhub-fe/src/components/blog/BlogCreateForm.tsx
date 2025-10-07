@@ -9,7 +9,7 @@ import ErrorMessage from '../common/ErrorMessage';
 import { resetDraftBlogStorage } from '../../helper/local-storage/reset-blog-storage';
 import { useNavigate } from 'react-router-dom';
 import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
-import { tagOptions } from '../../constants/tag-options';
+import { tagOptions } from '../../constants/select-options/tag-options';
 import { customItemsForMarkdown } from '../../constants/blog-editor-icons';
 import MarkdownEditor from './MarkdownEditor';
 import useDarkMode from '../../helper/hooks/useDarkMode';

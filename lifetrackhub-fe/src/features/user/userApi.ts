@@ -46,6 +46,39 @@ export const userApi = apiSlice
 
         providesTags: ['Users'],
       }),
+
+      updateUserRole: builder.mutation({
+        query: ({ email, role }) => ({
+          url: `${PROFILE_SUPER_ADMIN_USER_API_PATH}/update/role/${email}/${role}`,
+          method: 'PUT',
+        }),
+
+        invalidatesTags: (_result, _error, { email }) => [
+          { type: 'UserByEmail', email },
+        ],
+      }),
+
+      updateUserAccountStatus: builder.mutation({
+        query: ({ email, status }) => ({
+          url: `${PROFILE_SUPER_ADMIN_USER_API_PATH}/update/status/${email}/${status}`,
+          method: 'PUT',
+        }),
+
+        invalidatesTags: (_result, _error, { email }) => [
+          { type: 'UserByEmail', email },
+        ],
+      }),
+
+      updateUserAccountType: builder.mutation({
+        query: ({ email, type }) => ({
+          url: `${PROFILE_SUPER_ADMIN_USER_API_PATH}/update/upgrade-account/${email}/${type}`,
+          method: 'PUT',
+        }),
+
+        invalidatesTags: (_result, _error, { email }) => [
+          { type: 'UserByEmail', email },
+        ],
+      }),
     }),
     overrideExisting: false,
   });
@@ -56,4 +89,7 @@ export const {
   useGetUserByEmailQuery,
   useGetUsersQuery,
   useLazyGetUsersQuery,
+  useUpdateUserRoleMutation,
+  useUpdateUserAccountStatusMutation,
+  useUpdateUserAccountTypeMutation,
 } = userApi;
