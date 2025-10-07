@@ -1,7 +1,7 @@
 import { OptionType } from '../../types/common';
 
 export const USER_ROLE_OPTIONS: OptionType[] = [
-  { value: 'SUPER ADMIN', label: 'SUPER ADMIN' },
+  { value: 'SUPER_ADMIN', label: 'SUPER_ADMIN' },
   { value: 'ADMIN', label: 'ADMIN' },
   { value: 'USER', label: 'USER' },
 ];

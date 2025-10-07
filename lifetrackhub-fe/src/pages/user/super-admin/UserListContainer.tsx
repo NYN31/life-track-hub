@@ -8,7 +8,6 @@ import { UserResponseDto } from '../../../types/user';
 import { OptionType } from '../../../types/common';
 import CommonSearchBox from '../../../components/common/CommonSearchBox';
 import OnClickFilterIcon from '../../../components/common/button/OnClickFilterIcon';
-import Spinner from '../../../components/common/Spinner';
 import ErrorMessage from '../../../components/common/ErrorMessage';
 import Pagination from '../../../components/common/Pagination';
 import UserSearchResult from '../../../components/user/UserSearchResult';
@@ -18,15 +17,17 @@ import {
   USER_ROLE_OPTIONS,
   USER_STATUS_OPTIONS,
 } from '../../../constants/select-options/user-options';
+import CustomSelect from '../../../components/common/form/CustomSelect';
+import { PAGE_SIZE_OPTIONS } from '../../../constants/select-options/common';
 
 const UserListContainer: React.FC = () => {
-  const MAX_USERS_IN_PAGE = 10;
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
 
   // Query params
   const queryPageNo = useQuery().get('page') || '0';
+  const queryPageSize = useQuery().get('size') || '10';
   const queryEmail = useQuery().get('email') || '';
   const queryRole = useQuery().get('role') || '';
   const queryAccountStatus = useQuery().get('accountStatus') || '';
@@ -59,13 +60,34 @@ const UserListContainer: React.FC = () => {
     queryStartDate,
     queryEndDate,
   ]);
+  const [pageSize, setPageSize] = useState<OptionType>({
+    value: queryPageSize,
+    label: `${queryPageSize} per page`,
+  });
   const [showFilters, setShowFilters] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [triggerGetUsers, { isLoading }] = useLazyGetUsersQuery();
+  const [triggerGetUsers] = useLazyGetUsersQuery();
+
+  const handleUpdateElementSizePerPage = (option: OptionType | null) => {
+    if (option) {
+      setPageSize(option);
+      updateAndPushUrl(
+        0,
+        option.value,
+        email,
+        role?.value || '',
+        accountStatus?.value || '',
+        accountType?.value || '',
+        dateRange
+      );
+    }
+  };
 
   const updateAndPushUrl = (
     page: number,
+    size: string,
     email: string,
     role: string,
     accountStatus: string,
@@ -73,7 +95,7 @@ const UserListContainer: React.FC = () => {
     dateRange: [Date | null, Date | null]
   ) => {
     const validParams = getValidParams(
-      `page=${page}&email=${email}&role=${role}&accountStatus=${accountStatus}&accountType=${accountType}&start=${getDateToString(
+      `page=${page}&size=${size}&email=${email}&role=${role}&accountStatus=${accountStatus}&accountType=${accountType}&start=${getDateToString(
         dateRange[0]
       )}&end=${getDateToString(dateRange[1])}`
     );
@@ -82,6 +104,7 @@ const UserListContainer: React.FC = () => {
 
   const handleSearch = async (
     pageId: number,
+    pageSize: string,
     email: string,
     role: string,
     accountStatus: string,
@@ -89,10 +112,11 @@ const UserListContainer: React.FC = () => {
     dateRange: [Date | null, Date | null]
   ) => {
     setErrorMessage('');
+    setIsLoading(true);
 
     await triggerGetUsers({
       page: pageId,
-      size: MAX_USERS_IN_PAGE,
+      size: parseInt(pageSize),
       email: email || null,
       role: role || null,
       accountStatus: accountStatus || null,
@@ -119,12 +143,16 @@ const UserListContainer: React.FC = () => {
         setErrorMessage(error?.data?.message);
         setResults([]);
         toast(error?.data?.message, 'error', 3000);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleUsersSearch = () => {
     updateAndPushUrl(
       0,
+      pageSize.value,
       email,
       role?.value || '',
       accountStatus?.value || '',
@@ -141,7 +169,7 @@ const UserListContainer: React.FC = () => {
     const accountType = '';
     const startDate = null;
     const endDate = null;
-    updateAndPushUrl(pageNo, email, role, accountStatus, accountType, [
+    updateAndPushUrl(pageNo, '10', email, role, accountStatus, accountType, [
       startDate,
       endDate,
     ]);
@@ -153,10 +181,10 @@ const UserListContainer: React.FC = () => {
       queryStartDate ||
       queryEndDate
     ) {
-      setEmail('');
-      setRole(null);
-      setAccountStatus(null);
-      setAccountType(null);
+      setEmail(email);
+      setRole({ value: '', label: '' });
+      setAccountStatus({ value: '', label: '' });
+      setAccountType({ value: '', label: '' });
       setDateRange([startDate, endDate]);
     }
     setResults([]);
@@ -166,6 +194,7 @@ const UserListContainer: React.FC = () => {
     const nextPageNo = Number(queryPageNo) + 1;
     updateAndPushUrl(
       nextPageNo,
+      queryPageSize,
       queryEmail,
       queryRole,
       queryAccountStatus,
@@ -178,6 +207,7 @@ const UserListContainer: React.FC = () => {
     const prevPageNo = Number(queryPageNo) - 1;
     updateAndPushUrl(
       prevPageNo,
+      queryPageSize,
       queryEmail,
       queryRole,
       queryAccountStatus,
@@ -188,21 +218,14 @@ const UserListContainer: React.FC = () => {
 
   useEffect(() => {
     setEmail(queryEmail);
-    setRole(queryRole ? { value: queryRole, label: queryRole } : null);
-    setAccountStatus(
-      queryAccountStatus
-        ? { value: queryAccountStatus, label: queryAccountStatus }
-        : null
-    );
-    setAccountType(
-      queryAccountType
-        ? { value: queryAccountType, label: queryAccountType }
-        : null
-    );
+    setRole({ value: queryRole, label: queryRole });
+    setAccountStatus({ value: queryAccountStatus, label: queryAccountStatus });
+    setAccountType({ value: queryAccountType, label: queryAccountType });
     setDateRange([queryStartDate, queryEndDate]);
 
     handleSearch(
       Number(queryPageNo),
+      queryPageSize,
       queryEmail,
       queryRole,
       queryAccountStatus,
@@ -211,12 +234,12 @@ const UserListContainer: React.FC = () => {
     );
   }, [location.search]);
 
-  if (isLoading) return <Spinner />;
+  //if (isLoading) return <Spinner />;
 
   return (
     <div className="common-box-container">
       <div className="flex items-start justify-between">
-        <h1>User Management</h1>
+        <h1>Users List</h1>
 
         <div className="flex items-center justify-end">
           <OnClickFilterIcon
@@ -275,9 +298,20 @@ const UserListContainer: React.FC = () => {
         </div>
       )}
 
-      {/* User List Table */}
+      {/* Page Size Selector */}
+      <div className="flex justify-end mb-4">
+        <div className="w-48">
+          <CustomSelect
+            label=""
+            value={pageSize}
+            options={PAGE_SIZE_OPTIONS}
+            onChangeAction={handleUpdateElementSizePerPage}
+          />
+        </div>
+      </div>
 
-      <UserSearchResult results={results} />
+      {/* User List Table */}
+      <UserSearchResult results={results} isLoading={isLoading} />
 
       {results.length > 0 && (
         <Pagination
@@ -290,6 +324,7 @@ const UserListContainer: React.FC = () => {
           onPageChange={page =>
             updateAndPushUrl(
               page,
+              pageSize.value,
               email,
               role?.value || '',
               accountStatus?.value || '',

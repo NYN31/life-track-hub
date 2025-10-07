@@ -43,10 +43,4 @@ export const USER_TABLE_HEADERS = [
     description: 'Last Modified Date',
     align: 'start',
   },
-  {
-    key: 'details',
-    width: '12.5%',
-    description: '',
-    align: 'start',
-  },
 ] as HeaderColumn[];
