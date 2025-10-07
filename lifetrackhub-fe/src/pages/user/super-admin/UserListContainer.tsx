@@ -13,23 +13,11 @@ import ErrorMessage from '../../../components/common/ErrorMessage';
 import Pagination from '../../../components/common/Pagination';
 import UserSearchResult from '../../../components/user/UserSearchResult';
 import { useToast } from '../../../context/toast-context';
-
-const roleOptions: OptionType[] = [
-  { value: 'SUPER ADMIN', label: 'SUPER ADMIN' },
-  { value: 'ADMIN', label: 'ADMIN' },
-  { value: 'USER', label: 'USER' },
-];
-
-const accountStatusOptions: OptionType[] = [
-  { value: 'ACTIVE', label: 'ACTIVE' },
-  { value: 'INACTIVE', label: 'INACTIVE' },
-  { value: 'DELETED', label: 'DELETED' },
-];
-
-const accountTypeOptions: OptionType[] = [
-  { value: 'STANDARD', label: 'STANDARD' },
-  { value: 'PREMIUM', label: 'PREMIUM' },
-];
+import {
+  USER_ACCOUNT_TYPE_OPTIONS,
+  USER_ROLE_OPTIONS,
+  USER_STATUS_OPTIONS,
+} from '../../../constants/select-options/user-options';
 
 const UserListContainer: React.FC = () => {
   const MAX_USERS_IN_PAGE = 10;
@@ -254,21 +242,21 @@ const UserListContainer: React.FC = () => {
               {
                 name: 'Role',
                 option: role,
-                options: roleOptions,
+                options: USER_ROLE_OPTIONS,
                 setOption: setRole,
                 isMandatory: false,
               },
               {
                 name: 'Account Status',
                 option: accountStatus,
-                options: accountStatusOptions,
+                options: USER_STATUS_OPTIONS,
                 setOption: setAccountStatus,
                 isMandatory: false,
               },
               {
                 name: 'Account Type',
                 option: accountType,
-                options: accountTypeOptions,
+                options: USER_ACCOUNT_TYPE_OPTIONS,
                 setOption: setAccountType,
                 isMandatory: false,
               },

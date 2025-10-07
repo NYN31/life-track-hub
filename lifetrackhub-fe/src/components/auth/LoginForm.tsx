@@ -39,7 +39,6 @@ const LoginForm: React.FC = () => {
       .unwrap()
       .then(res => {
         storeLoginCredential(res);
-        toast(res.message, 'success');
       })
       .catch(error => {
         setErrorMessage(error?.data?.message);

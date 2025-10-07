@@ -17,6 +17,7 @@ import PublicRoute from './components/layout/PublicRoute';
 import MyBlogsContainer from './pages/blog/MyBlogsContainer';
 import UserVerifyFormContainer from './pages/auth/UserVerifyFormContainer';
 import UserListContainer from './pages/user/super-admin/UserListContainer';
+import UserDetailsContainer from './pages/user/super-admin/UserDetailsContainer';
 
 function App() {
   useAuthCheck();
@@ -61,6 +62,7 @@ function App() {
         </Route>
         <Route path="user-management">
           <Route path="users" element={<UserListContainer />} />
+          <Route path="users/:email" element={<UserDetailsContainer />} />
         </Route>
       </Route>
     </Routes>
