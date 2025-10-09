@@ -10,6 +10,7 @@ import OnClickButton from '../../../components/common/button/OnClickButton';
 import { SUPER_ADMIN_USER_LIST_PATH } from '../../../constants/title-and-paths';
 import OnSubmitButton from '../../../components/common/button/OnSubmitButton';
 import { EMAIL_REGEX_V2 } from '../../../constants/regex';
+import useDarkMode from '../../../helper/hooks/useDarkMode';
 
 // Role options
 const ROLE_OPTIONS: OptionType[] = [
@@ -31,6 +32,7 @@ const CreateUserContainer: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [createUser] = useCreateUserMutation();
+  const isDark = useDarkMode();
 
   const {
     register,
@@ -139,8 +141,18 @@ const CreateUserContainer: React.FC = () => {
 
           <div className="flex gap-4 justify-end mt-6">
             <OnClickButton
-              action={() => navigate(SUPER_ADMIN_USER_LIST_PATH)}
-              text="Cancel"
+              color={isDark ? '#e5e7eb' : '#374151'}
+              backgroundColor={isDark ? '#1f2937' : '#f2f2f2'}
+              border={isDark ? '1px solid #4b5563' : '1px solid #d1d5db'}
+              action={() => {
+                reset({
+                  firstName: '',
+                  lastName: '',
+                  email: '',
+                  role: { value: '', label: '' },
+                });
+              }}
+              text="Reset"
             />
             <OnSubmitButton
               text="Create User"

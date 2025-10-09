@@ -2,6 +2,7 @@ import React from 'react';
 
 interface OnClickButtonProps {
   color?: string;
+  backgroundColor?: string;
   text?: string;
   width?: string;
   height?: string;
@@ -9,12 +10,15 @@ interface OnClickButtonProps {
   isDisable?: boolean;
   isLoading?: boolean;
   action: () => void;
+  border?: string;
   borderRadius?: string;
   icon?: React.ReactNode;
   hasStyle?: boolean;
 }
 
 const OnClickButton: React.FC<OnClickButtonProps> = ({
+  color = '',
+  backgroundColor = '',
   text = '',
   width = 'auto',
   height = 'auto',
@@ -22,6 +26,7 @@ const OnClickButton: React.FC<OnClickButtonProps> = ({
   isDisable = false,
   isLoading = false,
   action,
+  border = 'none',
   borderRadius = '0.5rem', // default 8px
   icon = null,
   hasStyle = true,
@@ -39,7 +44,10 @@ const OnClickButton: React.FC<OnClickButtonProps> = ({
         width,
         height,
         cursor,
+        color,
+        backgroundColor,
         borderRadius,
+        border,
       }}
     >
       {isLoading ? (
