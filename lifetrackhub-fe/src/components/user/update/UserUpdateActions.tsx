@@ -14,7 +14,7 @@ const UserUpdateActions: React.FC<UserUpdateActionsProps> = ({
   user,
 }) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
       <RoleUpdate email={email} user={user} />
       <StatusUpdate email={email} user={user} />
       <AccountTypeUpdate email={email} user={user} />
