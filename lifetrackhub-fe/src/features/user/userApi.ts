@@ -47,6 +47,15 @@ export const userApi = apiSlice
         providesTags: ['Users'],
       }),
 
+      createUser: builder.mutation({
+        query: data => ({
+          url: `${PROFILE_SUPER_ADMIN_USER_API_PATH}/create`,
+          method: 'POST',
+          body: data,
+        }),
+        invalidatesTags: ['Users'],
+      }),
+
       updateUserRole: builder.mutation({
         query: ({ email, role }) => ({
           url: `${PROFILE_SUPER_ADMIN_USER_API_PATH}/update/role/${email}/${role}`,
@@ -92,4 +101,5 @@ export const {
   useUpdateUserRoleMutation,
   useUpdateUserAccountStatusMutation,
   useUpdateUserAccountTypeMutation,
+  useCreateUserMutation
 } = userApi;

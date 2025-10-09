@@ -1,10 +1,10 @@
 import React from 'react';
-import { IoHelpCircleOutline } from 'react-icons/io5';
 
 interface OnClickButtonProps {
   color?: string;
   text?: string;
   width?: string;
+  height?: string;
   cursor?: string;
   isDisable?: boolean;
   isLoading?: boolean;
@@ -17,6 +17,7 @@ interface OnClickButtonProps {
 const OnClickButton: React.FC<OnClickButtonProps> = ({
   text = '',
   width = 'auto',
+  height = 'auto',
   cursor = 'pointer',
   isDisable = false,
   isLoading = false,
@@ -31,11 +32,12 @@ const OnClickButton: React.FC<OnClickButtonProps> = ({
     <button
       onClick={action}
       disabled={isDisabled}
-      className={`${hasStyle ? 'btn-secondary' : 'p-2 rounded-full hover:bg-teal-200'}  ${
-        isDisabled ? 'opacity-50 cursor-not-allowed' : ''
-      }`}
+      className={`${
+        hasStyle ? 'btn-secondary' : 'p-2 rounded-full hover:bg-teal-200'
+      }  ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       style={{
         width,
+        height,
         cursor,
         borderRadius,
       }}
@@ -44,12 +46,8 @@ const OnClickButton: React.FC<OnClickButtonProps> = ({
         'Loading...'
       ) : (
         <div className="flex items-center gap-2">
-          {icon ? (
-            <span className="inline-block">{icon}</span>
-          ) : (
-            <IoHelpCircleOutline size="18" />
-          )}{' '}
-          {text && <span className="hidden md:block">{text}</span>}
+          {icon && <span className="inline-block">{icon}</span>}
+          {text && <span className="block">{text}</span>}
         </div>
       )}
     </button>

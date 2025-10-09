@@ -1,71 +1,88 @@
-import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
-import { OptionType } from '../../../types/common';
-import { getCustomSelectStyles } from '../../../helper/utils/get-custom-select-styles';
-import useDarkMode from '../../../helper/hooks/useDarkMode';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { USER_STATUS_OPTIONS } from '../../../constants/select-options/user-options';
 import { useUpdateUserAccountStatusMutation } from '../../../features/user/userApi';
 import { useToast } from '../../../context/toast-context';
 import { IUser } from '../../../types/user';
-import { MdUpdate } from 'react-icons/md';
-import OnClickButton from '../../common/button/OnClickButton';
+import OnSubmitButton from '../../common/button/OnSubmitButton';
+import SimpleSelectField from '../../common/form/SimpleSelectField';
 
 interface StatusUpdateProps {
   email: string;
   user: IUser;
 }
 
+interface FormData {
+  status: {
+    value: string;
+    label: string;
+  };
+}
+
 const StatusUpdate: React.FC<StatusUpdateProps> = ({ email, user }) => {
-  const isDark = useDarkMode();
   const toast = useToast();
   const [updateStatus, { isLoading }] = useUpdateUserAccountStatusMutation();
-  const [selectedStatus, setSelectedStatus] = useState<OptionType | null>(null);
 
-  useEffect(() => {
-    if (user?.accountStatus) {
-      const statusOption = USER_STATUS_OPTIONS.find(
-        (option: OptionType) => option.value === user.accountStatus
-      );
-      setSelectedStatus(statusOption || null);
-    }
-  }, [user]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    trigger,
+    formState: { errors, isDirty },
+  } = useForm<FormData>({
+    mode: 'onChange',
+    defaultValues: {
+      status: USER_STATUS_OPTIONS.find(
+        option => option.value === user.accountStatus
+      ) || { value: '', label: '' },
+    },
+  });
 
-  const handleUpdate = async () => {
-    if (!selectedStatus) return;
-
-    await updateStatus({ email, status: selectedStatus.value })
-      .unwrap()
-      .then(() => {
-        toast('Status updated successfully', 'success', 3000);
-      })
-      .catch(error => {
-        toast(error?.data?.message || 'Failed to update status', 'error', 3000);
+  const onSubmit = async (data: FormData) => {
+    try {
+      await updateStatus({ email, status: data.status.value }).unwrap();
+      // Reset the form with the new value as default to clear dirty state
+      reset({
+        status: data.status,
       });
+      toast('Status updated successfully', 'success', 3000);
+    } catch (error: any) {
+      toast(error?.data?.message || 'Failed to update status', 'error', 3000);
+    }
   };
 
   return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        Update Status
-      </label>
-      <div className="flex gap-2">
-        <Select
-          value={selectedStatus}
-          onChange={setSelectedStatus}
-          options={USER_STATUS_OPTIONS}
-          placeholder="Select Status"
-          className="flex-1 text-sm react-select-container dark:react-select-dark"
-          styles={getCustomSelectStyles(isDark)}
-        />
-        <OnClickButton
-          action={handleUpdate}
-          text="Update"
-          isDisable={!selectedStatus}
-          isLoading={isLoading}
-          icon={<MdUpdate size="20" />}
-        />
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+      <label className="form-label">Update Status</label>
+      <div className="flex gap-2 items-start">
+        <div className="flex-1">
+          <SimpleSelectField
+            id="status"
+            name="status"
+            label=""
+            options={USER_STATUS_OPTIONS}
+            defaultValue={USER_STATUS_OPTIONS.find(
+              option => option.value === user.accountStatus
+            )}
+            register={register}
+            setValue={setValue}
+            trigger={trigger}
+            error={errors.status?.message}
+          />
+        </div>
+
+        <div>
+          <OnSubmitButton
+            height="47px"
+            text="Update"
+            isSaving={isLoading}
+            isDirty={isDirty}
+            hasError={false}
+          />
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
 

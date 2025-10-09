@@ -4,6 +4,8 @@ import com.lifetrackhub.constant.enumeration.AccountStatus;
 import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.dto.PageDto;
+import com.lifetrackhub.dto.UserDto;
+import com.lifetrackhub.dto.request.CreateUserRequestDto;
 import com.lifetrackhub.dto.request.GetUsersRequestDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.dto.response.UserResponseDto;
@@ -40,5 +42,11 @@ public class SuperAdminUserController extends SuperAdminBaseController {
     @PutMapping("/user/update/upgrade-account/{email}/{accountType}")
     public CommonResponseDto updateAccount(@PathVariable String email, @PathVariable AccountType accountType) {
         return userService.upgradeAccount(email, accountType);
+    }
+
+    @PostMapping("/user/create")
+    public UserDto createUser(@RequestBody @Valid CreateUserRequestDto dto) {
+        User user = userService.createUser(dto);
+        return UserDto.formEntity(user);
     }
 }

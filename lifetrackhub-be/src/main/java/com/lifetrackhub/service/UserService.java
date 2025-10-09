@@ -4,6 +4,7 @@ import com.lifetrackhub.constant.enumeration.AccountStatus;
 import com.lifetrackhub.constant.enumeration.AccountType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.dto.UserDto;
+import com.lifetrackhub.dto.request.CreateUserRequestDto;
 import com.lifetrackhub.dto.request.GetUsersRequestDto;
 import com.lifetrackhub.dto.request.UpdatePasswordRequestDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
@@ -32,4 +33,6 @@ public interface UserService {
     CommonResponseDto updateStatus(String email, AccountStatus accountStatus);
 
     CommonResponseDto upgradeAccount(String email, AccountType accountType);
+
+    User createUser(CreateUserRequestDto dto);
 }

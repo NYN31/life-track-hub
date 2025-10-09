@@ -18,7 +18,6 @@ import com.lifetrackhub.service.JwtService;
 import com.lifetrackhub.service.UserVerificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,9 +30,6 @@ import java.util.Optional;
 @Service
 public class AuthServiceImpl implements AuthService {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Value("${user.verify.expiration.time}")
-    private int resetTokenExpirationTime;
 
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;

@@ -1,70 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import Select from 'react-select';
-import { OptionType } from '../../../types/common';
-import { getCustomSelectStyles } from '../../../helper/utils/get-custom-select-styles';
-import useDarkMode from '../../../helper/hooks/useDarkMode';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import { USER_ROLE_OPTIONS } from '../../../constants/select-options/user-options';
 import { useUpdateUserRoleMutation } from '../../../features/user/userApi';
 import { useToast } from '../../../context/toast-context';
 import { IUser } from '../../../types/user';
-import OnClickButton from '../../common/button/OnClickButton';
-import { MdUpdate } from 'react-icons/md';
+import OnSubmitButton from '../../common/button/OnSubmitButton';
+import SimpleSelectField from '../../common/form/SimpleSelectField';
 
 interface RoleUpdateProps {
   email: string;
   user: IUser;
 }
 
+interface FormData {
+  role: {
+    value: string;
+    label: string;
+  };
+}
+
 const RoleUpdate: React.FC<RoleUpdateProps> = ({ email, user }) => {
-  const isDark = useDarkMode();
   const toast = useToast();
   const [updateRole, { isLoading }] = useUpdateUserRoleMutation();
-  const [selectedRole, setSelectedRole] = useState<OptionType | null>(null);
 
-  useEffect(() => {
-    if (user?.role) {
-      const roleOption = USER_ROLE_OPTIONS.find(
-        (option: OptionType) => option.value === user.role
-      );
-      setSelectedRole(roleOption || null);
-    }
-  }, [user]);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    trigger,
+    formState: { errors, isDirty },
+  } = useForm<FormData>({
+    mode: 'onChange',
+    defaultValues: {
+      role: USER_ROLE_OPTIONS.find(option => option.value === user.role) || {
+        value: '',
+        label: '',
+      },
+    },
+  });
 
-  const handleUpdate = async () => {
-    if (!selectedRole) return;
-    await updateRole({ email, role: selectedRole.value })
-      .unwrap()
-      .then(() => {
-        toast('Role updated successfully', 'success', 3000);
-      })
-      .catch(error => {
-        toast(error?.data?.message || 'Failed to update role', 'error', 3000);
+  const onSubmit = async (data: FormData) => {
+    try {
+      await updateRole({ email, role: data.role.value }).unwrap();
+      // Reset the form with the new value as default to clear dirty state
+      reset({
+        role: data.role,
       });
+      toast('Role updated successfully', 'success', 3000);
+    } catch (error: any) {
+      toast(error?.data?.message || 'Failed to update role', 'error', 3000);
+    }
   };
 
   return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        Update Role
-      </label>
-      <div className="flex gap-2">
-        <Select
-          value={selectedRole}
-          onChange={setSelectedRole}
-          options={USER_ROLE_OPTIONS}
-          placeholder="Select Role"
-          className="flex-1 text-sm react-select-container dark:react-select-dark"
-          styles={getCustomSelectStyles(isDark)}
-        />
-        <OnClickButton
-          action={handleUpdate}
-          text="Update"
-          isDisable={!selectedRole}
-          isLoading={isLoading}
-          icon={<MdUpdate size="20" />}
-        />
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+      <label className="form-label">Update Role</label>
+      <div className="flex gap-2 items-start">
+        <div className="flex-1">
+          <SimpleSelectField
+            id="role"
+            name="role"
+            label=""
+            options={USER_ROLE_OPTIONS}
+            defaultValue={USER_ROLE_OPTIONS.find(
+              option => option.value === user.role
+            )}
+            register={register}
+            setValue={setValue}
+            trigger={trigger}
+            error={errors.role?.message}
+          />
+        </div>
+
+        <div>
+          <OnSubmitButton
+            height="47px"
+            text="Update"
+            isSaving={isLoading}
+            isDirty={isDirty}
+            hasError={false}
+          />
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
 

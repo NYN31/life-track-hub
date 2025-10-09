@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Pattern(regexp = "^[a-zA-Z0-9\\-._]+@[a-zA-Z0-9\\-._]+.[a-zA-Z]{2,4}$")
+@Pattern(regexp = "^[a-zA-Z0-9\\-._+]+@[a-zA-Z0-9\\-._]+.[a-zA-Z]{2,4}$")
 @Constraint(validatedBy = {})
 public @interface Email {
     String message() default "Invalid email format";

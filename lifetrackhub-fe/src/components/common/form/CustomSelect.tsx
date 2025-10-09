@@ -20,17 +20,19 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   const isDark = useDarkMode();
 
   return (
-    <>
+    <div>
       {label && <label className="form-label">{label}</label>}
-      <Select
-        value={value}
-        onChange={onChangeAction}
-        options={options}
-        classNamePrefix="react-select"
-        className="text-sm react-select-container dark:react-select-dark"
-        styles={getCustomSelectStyles(isDark)}
-      />
-    </>
+      <div className="w-full">
+        <Select
+          value={value}
+          onChange={onChangeAction}
+          options={options}
+          classNamePrefix="react-select"
+          className="text-sm react-select-container dark:react-select-dark"
+          styles={getCustomSelectStyles(isDark)}
+        />
+      </div>
+    </div>
   );
 };
 

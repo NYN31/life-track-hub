@@ -18,6 +18,7 @@ import org.springframework.retry.RetryContext;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetrySynchronizationManager;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.thymeleaf.TemplateEngine;
@@ -54,6 +55,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
+    @Async
     @Retryable(
             retryFor = {
                     MessagingException.class, ConnectException.class,
@@ -101,6 +103,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
+    @Async
     @Retryable(
             retryFor = {
                     MessagingException.class, ConnectException.class,
