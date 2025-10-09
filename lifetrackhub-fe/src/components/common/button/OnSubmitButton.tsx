@@ -2,6 +2,8 @@ import Spinner from '../Spinner';
 import { FaRegSave } from 'react-icons/fa';
 
 interface OnSubmitButtonProps {
+  width?: string;
+  height?: string;
   text: string;
   isSaving: boolean;
   isDirty: boolean;
@@ -9,6 +11,8 @@ interface OnSubmitButtonProps {
 }
 
 const OnSubmitButton: React.FC<OnSubmitButtonProps> = ({
+  width = 'auto',
+  height = 'auto',
   text,
   isSaving,
   isDirty,
@@ -23,6 +27,10 @@ const OnSubmitButton: React.FC<OnSubmitButtonProps> = ({
           : 'btn-submit-enabled'
       }
       disabled={isSaving || !isDirty}
+      style={{
+        width,
+        height,
+      }}
     >
       {isSaving ? (
         <span className="flex items-center gap-2">

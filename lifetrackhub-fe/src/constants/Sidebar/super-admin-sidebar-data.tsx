@@ -55,6 +55,11 @@ const SIDE_MENU_ITEMS = [
         path: data.SUPER_ADMIN_USER_LIST_PATH,
         icon: <FaUsers size={ICON_SIZE} />,
       },
+      {
+        title: data.SUPER_ADMIN_USER_CREATE,
+        path: data.SUPER_ADMIN_USER_CREATE_PATH,
+        icon: <MdOutlineCreateNewFolder size={ICON_SIZE} />,
+      },
     ],
   },
   {

@@ -2,16 +2,20 @@ package com.lifetrackhub.service.impl;
 
 import com.lifetrackhub.constant.enumeration.AccountStatus;
 import com.lifetrackhub.constant.enumeration.AccountType;
+import com.lifetrackhub.constant.enumeration.LoginType;
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.constant.utils.DateUtil;
+import com.lifetrackhub.constant.utils.PasswordGenerator;
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.UserDto;
 import com.lifetrackhub.dto.blob.UserDetails;
+import com.lifetrackhub.dto.request.CreateUserRequestDto;
 import com.lifetrackhub.dto.request.GetUsersRequestDto;
 import com.lifetrackhub.dto.request.UpdatePasswordRequestDto;
 import com.lifetrackhub.dto.response.CommonResponseDto;
 import com.lifetrackhub.entity.User;
 import com.lifetrackhub.repository.UserRepository;
+import com.lifetrackhub.service.MailService;
 import com.lifetrackhub.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -34,11 +40,15 @@ public class UserServiceImpl implements UserService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder bCryptPasswordEncoder;
+    private final MailService mailService;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder,
+                           MailService mailService) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.bCryptPasswordEncoder = passwordEncoder;
+        this.mailService = mailService;
     }
 
     @Override
@@ -110,11 +120,11 @@ public class UserServiceImpl implements UserService {
     public CommonResponseDto updatePassword(UpdatePasswordRequestDto dto) {
         User user = Util.getUserFromSecurityContextHolder(userRepository).get();
 
-        if (!passwordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
+        if (!bCryptPasswordEncoder.matches(dto.getOldPassword(), user.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Old password does not match.");
         }
 
-        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(dto.getNewPassword()));
         userRepository.save(user);
 
         return CommonResponseDto
@@ -155,7 +165,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public CommonResponseDto updateRole(String email, Role role) {
         if (Objects.equals(role, Role.SUPER_ADMIN)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only one super-admin role is allowed.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only one super-admin role can be exist.");
         }
 
         Optional<User> optional = userRepository.findByEmail(email);
@@ -205,5 +215,56 @@ public class UserServiceImpl implements UserService {
                 .status(HttpStatus.OK)
                 .message("Account type upgraded successfully.")
                 .build();
+    }
+
+    @Override
+    public User createUser(CreateUserRequestDto dto) {
+        log.info("Create user for {}", dto.getEmail());
+
+        Optional<User> optionalUser = userRepository.findByEmail(dto.getEmail());
+        if (optionalUser.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists.");
+        }
+
+        String password = PasswordGenerator.generatePassword();
+        log.info("Generated Password: {}", password);
+
+        User user = new User();
+        user.setFirstname(dto.getFirstName());
+        user.setLastname(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(password));
+        user.setRole(String.valueOf(dto.getRole()));
+        user.setAccountStatus(AccountStatus.ACTIVE);
+        user.setAccountType(AccountType.STANDARD);
+        user.setLoginType(LoginType.CREDENTIAL);
+        user.setUserDetails(null);
+
+        user = userRepository.save(user);
+        sendMailWithPassword(user.getEmail(), password);
+        return user;
+    }
+
+
+    private void sendMailWithPassword(String email, String password) {
+        log.info("User password mail sending for {}", email);
+
+        String[] to = new String[]{email};
+        String subject = "Sent password from lifetrackhub";
+        String templatePath = "user-password-sent.html";
+
+        Map<String, Object> templateVariables = new HashMap<>();
+        templateVariables.put("password", password);
+
+        mailService.sendEmailWithTemplateAsync(
+                to,
+                null,
+                null,
+                templatePath,
+                subject,
+                null,
+                templateVariables
+        );
+        log.info("Password sent to {}", email);
     }
 }

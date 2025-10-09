@@ -1,21 +1,50 @@
-const FIELD_BORDER_COLOR = '#7c3aed';
 const FIELD_BG_COLOR = '#ffffff';
 const FIELD_DARK_BG_COLOR = '#111827';
+const gray_700 = '#424242';
+const purple_200 = '#e9d5ff';
+const purple_400 = '#b794f4';
+const purple_600 = '#9333ea';
 
 export const getCustomSelectStyles = (isDark: boolean) => {
   return {
-    control: (base: any) => ({
+    container: (base: any) => ({
       ...base,
-      borderRadius: '8px',
-      borderColor: FIELD_BORDER_COLOR,
-      backgroundColor: isDark ? FIELD_DARK_BG_COLOR : FIELD_BG_COLOR,
-      boxShadow: 'none',
-      '&:hover': { borderColor: FIELD_BORDER_COLOR },
+      width: '100%',
+      minWidth: 0,
     }),
+    control: (base: any, state: any) => ({
+      ...base,
+      minHeight: '47px',
+      height: '47px',
+      borderRadius: '8px',
+      borderColor: state.isFocused
+        ? isDark
+          ? purple_600
+          : purple_400
+        : isDark
+        ? gray_700
+        : purple_200,
+      backgroundColor: isDark ? FIELD_DARK_BG_COLOR : FIELD_BG_COLOR,
+      boxShadow: state.isFocused
+        ? `0 0 0 2px ${isDark ? '#7C3AED40' : '#C084FC40'}` // optional glow
+        : 'none',
+      '&:hover': {
+        borderColor: state.isFocused
+          ? isDark
+            ? purple_600
+            : purple_200
+          : isDark
+          ? gray_700
+          : purple_200,
+      },
+    }),
+
     menu: (base: any) => ({
       ...base,
       backgroundColor: isDark ? '#1f2937' : '#fff',
       color: isDark ? '#f3f4f6' : '#1f2937',
+      width: '100%',
+      zIndex: 100, // Ensure the menu appears above other elements
     }),
     multiValue: (base: any) => ({
       ...base,
@@ -39,8 +68,8 @@ export const getCustomSelectStyles = (isDark: boolean) => {
           ? '#374151' // hover bg in dark
           : '#f3f4f6' // hover bg in light
         : isDark
-          ? '#1f2937' // default bg in dark
-          : '#fff', // default bg in light
+        ? '#1f2937' // default bg in dark
+        : '#fff', // default bg in light
       color: isDark ? '#f9fafb' : '#111827',
       cursor: 'pointer',
     }),

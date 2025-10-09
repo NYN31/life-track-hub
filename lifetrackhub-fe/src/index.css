@@ -92,7 +92,7 @@
   /* Form Styles*/
 
   .form-label {
-    @apply block text-base font-semibold text-gray-700 dark:text-gray-200;
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-200;
   }
 
   .form-input-field {
