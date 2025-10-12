@@ -2,6 +2,7 @@ package com.lifetrackhub.service.impl;
 
 import com.lifetrackhub.constant.enumeration.Role;
 import com.lifetrackhub.constant.enumeration.BlogStatus;
+import com.lifetrackhub.constant.utils.DateUtil;
 import com.lifetrackhub.constant.utils.RandomUtil;
 import com.lifetrackhub.constant.utils.Util;
 import com.lifetrackhub.dto.BlogCountStatsDto;
@@ -27,6 +28,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -264,7 +267,8 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public BlogCountStatsDto getBlogCountStats() {
+    public BlogCountStatsDto getBlogCountStats(LocalDate startDate, LocalDate endDate) {
+        log.info("Status between {} and {}", startDate, endDate);
         Optional<User> optionalUser = Util.getUserFromSecurityContextHolder(userRepository);
         if (optionalUser.isEmpty()) {
             throw new ResponseStatusException(
@@ -280,7 +284,10 @@ public class BlogServiceImpl implements BlogService {
             userId = user.getId();
         }
 
-        List<CountByStatusDto> partialStatusCounts = blogRepository.countGroupByStatus(userId);
+        Instant start = DateUtil.toStartOfDayInstant(startDate);
+        Instant end = DateUtil.toEndOfDayInstant(endDate);
+
+        List<CountByStatusDto> partialStatusCounts = blogRepository.countGroupByStatus(userId, start, end);
 
         Map<BlogStatus, Long> blogStatusMap = Arrays.stream(BlogStatus.values())
                 .collect(Collectors.toMap(v -> v, v -> 0L));

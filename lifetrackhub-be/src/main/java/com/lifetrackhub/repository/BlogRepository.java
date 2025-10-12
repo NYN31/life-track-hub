@@ -46,16 +46,21 @@ public interface BlogRepository extends JpaRepository<Blog, Long> {
     @Query("""
                 SELECT b FROM Blog b
                 WHERE (:userId IS NULL OR b.user.id = :userId)
-                AND (:status IS NULL OR b.status = :status)
-                           AND (:start IS NULL OR b.createdDate >= :start)
-                      AND (:end IS NULL OR b.createdDate <= :end)
+                  AND (:status IS NULL OR b.status = :status)
+                  AND (:start IS NULL OR b.createdDate >= :start)
+                  AND (:end IS NULL OR b.createdDate <= :end)
             """)
     Page<Blog> findSelfBlogs(Long userId, BlogStatus status, Instant start, Instant end, Pageable pageable);
 
     Optional<Blog> getBlogBySlug(String slug);
 
-    @Query("SELECT new com.lifetrackhub.dto.response.CountByStatusDto(b.status, COUNT(b)) FROM Blog b " +
-            "WHERE (:userId IS NULL OR b.user.id = :userId)" +
-            "GROUP BY b.status")
-    List<CountByStatusDto> countGroupByStatus(Long userId);
+    @Query("""
+                SELECT new com.lifetrackhub.dto.response.CountByStatusDto(b.status, COUNT(b))
+                FROM Blog b
+                WHERE (:userId IS NULL OR b.user.id = :userId)
+                  AND (:start IS NULL OR b.createdDate >= :start)
+                  AND (:end IS NULL OR b.createdDate <= :end)
+                GROUP BY b.status
+            """)
+    List<CountByStatusDto> countGroupByStatus(Long userId, Instant start, Instant end);
 }

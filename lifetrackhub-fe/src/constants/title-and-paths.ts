@@ -37,7 +37,8 @@ export const PROFILE_UPDATE_PATH = '/user/profile/update';
 
 // BLOG
 export const BLOG = 'Blog';
-export const ALL_BLOGS = 'All blogs';
+export const BLOG_MANAGEMENT = 'Blog Management';
+export const ALL_BLOGS = 'Blog list';
 export const BLOG_PATH = '/blog';
 export const BLOG_SELF_PATH = '/blog/self';
 export const PUBLIC_BLOG_PATH = '/public/blog';

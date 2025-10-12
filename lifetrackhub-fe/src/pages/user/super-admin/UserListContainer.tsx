@@ -299,7 +299,11 @@ const UserListContainer: React.FC = () => {
       )}
 
       {/* Page Size Selector */}
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-between mb-2">
+        <caption className="caption-top py-3 px-2 text-sm font-medium text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 rounded-md">
+          Total pages: <span className="font-semibold">{totalPages}</span>
+        </caption>
+
         <div className="w-48">
           <CustomSelect
             label=""
