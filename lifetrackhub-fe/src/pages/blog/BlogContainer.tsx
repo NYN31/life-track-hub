@@ -220,14 +220,18 @@ const BlogContainer: React.FC = () => {
 
   return (
     <div className="common-box-container">
-      <h1>Blogs</h1>
+      <div className="flex items-start justify-between">
+        <h1>Blog List</h1>
 
-      {auth && (
-        <OnClickFilterIcon
-          showFilter={showFilters}
-          showFilterHandler={() => setShowFilters(v => !v)}
-        />
-      )}
+        <div className="flex items-center justify-end">
+          {auth && (
+            <OnClickFilterIcon
+              showFilter={showFilters}
+              showFilterHandler={() => setShowFilters(v => !v)}
+            />
+          )}
+        </div>
+      </div>
 
       {auth && showFilters && (
         <div className="gap-6">

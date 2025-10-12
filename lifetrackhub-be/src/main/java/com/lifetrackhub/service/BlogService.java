@@ -11,6 +11,8 @@ import com.lifetrackhub.entity.Blog;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public interface BlogService {
     Blog create(BlogCreateRequestDto request);
@@ -29,7 +31,7 @@ public interface BlogService {
 
     CommonResponseDto softDelete(String slug);
 
-    BlogCountStatsDto getBlogCountStats();
+    BlogCountStatsDto getBlogCountStats(LocalDate startDate, LocalDate endDate);
 
     BlogLikeCommentCountResponseDto countLikeAndComment(String slug);
 }

@@ -73,8 +73,11 @@ export const blogApi = apiSlice
       }),
 
       getBlogStats: builder.query({
-        query: () => {
-          return `${ADMIN_BLOG_API_PATH}/stats`;
+        query: ({ startDate, endDate }) => {
+          const params = new URLSearchParams();
+          if (startDate) params.append('start', startDate);
+          if (endDate) params.append('end', endDate);
+          return `${ADMIN_BLOG_API_PATH}/stats?${params.toString()}`;
         },
         keepUnusedDataFor: 0,
       }),
@@ -108,7 +111,7 @@ export const {
   useGetBlogBySlugForUnauthUserQuery,
   useCreateBlogMutation,
   useUpdateBlogMutation,
-  useGetBlogStatsQuery,
+  useLazyGetBlogStatsQuery,
   useLazyGetSelfBlogsQuery,
   useCountLikesAndCommentsQuery,
 } = blogApi;

@@ -10,7 +10,10 @@ import com.lifetrackhub.entity.Blog;
 import com.lifetrackhub.service.BlogService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 public class AdminBlogController extends AdminBaseController {
@@ -33,8 +36,10 @@ public class AdminBlogController extends AdminBaseController {
     }
 
     @GetMapping("/blog/stats")
-    public BlogCountStatsDto getBlogCountStats() {
-        return blogService.getBlogCountStats();
+    public BlogCountStatsDto getBlogCountStats(
+            @RequestParam(value = "start", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+        return blogService.getBlogCountStats(startDate, endDate);
     }
 
     @PostMapping("/blog/self")

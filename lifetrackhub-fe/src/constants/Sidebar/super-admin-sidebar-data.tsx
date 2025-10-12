@@ -8,7 +8,7 @@ const ICON_SIZE = 18;
 
 const SIDE_MENU_ITEMS = [
   {
-    title: data.BLOG,
+    title: data.BLOG_MANAGEMENT,
     children: [
       {
         title: data.ALL_BLOGS,

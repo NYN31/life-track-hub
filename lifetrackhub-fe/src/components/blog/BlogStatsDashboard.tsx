@@ -13,7 +13,7 @@ const BlogStatsDashboard: React.FC<{ stats: IBlogStats }> = ({ stats }) => {
   const { statusCounts } = stats;
 
   return (
-    <section className="space-y-8 common-box animate-fade-in">
+    <section className="space-y-8 common-box animate-fade-in w-auto xl:w-[50%]">
       <h3 className="text-center tracking-tight">Visibility</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {statusCounts.map(({ status, count }) => (
