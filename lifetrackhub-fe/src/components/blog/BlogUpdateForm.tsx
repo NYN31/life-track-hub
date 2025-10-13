@@ -28,6 +28,7 @@ const BlogUpdateForm: React.FC<{
   updateHandler,
 }) => {
   const isDark = useDarkMode();
+  const isSuperAdmin = localStorage.getItem('role') === 'SUPER_ADMIN';
 
   const {
     register,
@@ -100,7 +101,7 @@ const BlogUpdateForm: React.FC<{
         >
           <option value="PUBLIC">PUBLIC</option>
           <option value="PRIVATE">PRIVATE</option>
-          <option value="DELETED">DELETED</option>
+          {isSuperAdmin && <option value="DELETED">DELETED</option>}
           <option value="DRAFT">DRAFT</option>
         </select>
       </div>
