@@ -49,9 +49,8 @@ const AboutContainer = () => {
         className="object-cover w-48 md:w-64 h-48 md:h-64 rounded-full"
         src={myPhoto}
         alt="Nayon"
-        md:flex-row
-        items-center
         loading="lazy"
+        fetchPriority="low"
       />
 
       <div className="mt-4 lg:mt-8 common-box">

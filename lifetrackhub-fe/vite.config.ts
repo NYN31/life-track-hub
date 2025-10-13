@@ -9,5 +9,17 @@ export default defineConfig({
   },
   build: {
     outDir: 'build',
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react-dom')) return 'react-dom';
+            if (id.includes('react')) return 'react-core';
+            if (id.includes('@tailwindcss')) return 'tailwindcss';
+            return 'vendor';
+          }
+        },
+      },
+    },
   },
 });
