@@ -70,6 +70,10 @@ public class BlogServiceImpl implements BlogService {
         }
         User user = userFromSecurityContext.get();
 
+        if (!user.getRole().equals(Role.SUPER_ADMIN.name()) && request.getStatus().equals(BlogStatus.DELETED)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to perform this operation.");
+        }
+
         Blog blog = new Blog();
         blog.setTitle(request.getTitle());
         blog.setContent(request.getContent());
@@ -91,6 +95,14 @@ public class BlogServiceImpl implements BlogService {
         }
         User userFromSecurityContext = optionalUser.get();
 
+        if (!userFromSecurityContext.getRole().equals(Role.SUPER_ADMIN.name()) &&
+                request.getStatus().equals(BlogStatus.DELETED)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN,
+                    "You are not allowed to perform this operation."
+            );
+        }
+
         Optional<Blog> optionalBlog = blogRepository.getBlogBySlug(request.getSlug());
         if (optionalBlog.isPresent()) {
             Blog blog = optionalBlog.get();
@@ -106,7 +118,10 @@ public class BlogServiceImpl implements BlogService {
 
                 return blogRepository.save(blog);
             } else {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only update your blogs");
+                throw new ResponseStatusException(
+                        HttpStatus.FORBIDDEN,
+                        "You can only update your blogs"
+                );
             }
         }
 

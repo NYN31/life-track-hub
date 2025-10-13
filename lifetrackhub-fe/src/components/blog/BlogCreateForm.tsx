@@ -23,6 +23,7 @@ const BlogCreateForm: React.FC<{
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isDark = useDarkMode();
+  const isSuperAdmin = localStorage.getItem('role') === 'SUPER_ADMIN';
 
   const [errorMessage, setErrorMessage] = useState('');
   const [triggerBlogCreate, { isLoading: isSaving }] = useCreateBlogMutation();
@@ -143,7 +144,7 @@ const BlogCreateForm: React.FC<{
         >
           <option value="PUBLIC">PUBLIC</option>
           <option value="PRIVATE">PRIVATE</option>
-          <option value="DELETED">DELETED</option>
+          {isSuperAdmin && <option value="DELETED">DELETED</option>}
           <option value="DRAFT">DRAFT</option>
         </select>
       </div>
