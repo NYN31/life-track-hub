@@ -12,10 +12,13 @@ import { getDateToString, getStrToDate } from '../../helper/utils/get-date';
 import { getValidParams } from '../../helper/utils/get-valid-params';
 import { BLOG_STATS_PATH } from '../../constants/title-and-paths';
 import { useLazyGetBlogStatsQuery } from '../../features/blog/blogApi';
+import { useToast } from '../../context/toast-context';
 
 const BlogStatsContainer = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
+
   const [isLoading, setIsLoading] = useState(false);
   const [blogStatsData, setBlogStatsData] = useState<IBlogStats>();
   const [showFilters, setShowFilters] = useState(false);
@@ -50,6 +53,7 @@ const BlogStatsContainer = () => {
       .then(response => {
         setBlogStatsData(response);
       })
+      .catch(err => toast(err.data.message, 'error'))
       .finally(() => setIsLoading(false));
   };
 

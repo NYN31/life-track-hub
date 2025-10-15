@@ -15,6 +15,7 @@ import MarkdownEditor from './MarkdownEditor';
 import useDarkMode from '../../helper/hooks/useDarkMode';
 import { getCustomSelectStyles } from '../../helper/utils/get-custom-select-styles';
 import OnSubmitButton from '../common/button/OnSubmitButton';
+import { useToast } from '../../context/toast-context';
 
 const BlogCreateForm: React.FC<{
   blogDetails: IBlog;
@@ -23,6 +24,7 @@ const BlogCreateForm: React.FC<{
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isDark = useDarkMode();
+  const toast = useToast();
   const isSuperAdmin = localStorage.getItem('role') === 'SUPER_ADMIN';
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -64,9 +66,11 @@ const BlogCreateForm: React.FC<{
         resetDraftBlogStorage();
         reset();
         navigate(`${BLOG_DETAILS_PATH}/${res.slug}`);
+        toast('Blog creation has been successful.', 'success');
       })
       .catch(err => {
         setErrorMessage(err?.data?.message);
+        toast(err?.data?.message, 'error', 300);
       });
   };
 

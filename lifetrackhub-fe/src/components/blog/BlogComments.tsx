@@ -56,7 +56,7 @@ const BlogComments = () => {
         toast('Comment add successfully', 'success', 3000);
       })
       .catch(err => {
-        toast(err.data.message, 'error', 300);
+        toast(err?.data?.message, 'error', 300);
       });
   };
 
@@ -75,12 +75,11 @@ const BlogComments = () => {
         toast('Comment update successfully', 'success', 3000);
       })
       .catch(err => {
-        toast(err.data.message, 'error', 300);
+        toast(err?.data?.message, 'error', 300);
       });
   };
 
   const deleteCommentHandler = async () => {
-    console.log('Comment ID: ', deleteCommentId);
     await deleteComment({
       commentId: deleteCommentId,
       slug,
@@ -92,7 +91,7 @@ const BlogComments = () => {
         toast('Comment deleted successfully', 'success', 3000);
       })
       .catch(err => {
-        toast(err.data.message, 'error', 3000);
+        toast(err?.data?.message, 'error', 300);
       });
   };
 
