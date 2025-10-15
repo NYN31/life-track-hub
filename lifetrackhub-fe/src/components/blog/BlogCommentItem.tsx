@@ -1,16 +1,18 @@
 import React from 'react';
 import OnClickTrashIcon from '../common/button/OnClickTrashIcon';
 
+import { Dispatch, SetStateAction } from 'react';
+
 interface BlogCommentItemProps {
   comment: any;
   editCommentId: number | null;
-  setEditCommentId: (id: number | null) => void;
+  setEditCommentId: Dispatch<SetStateAction<number | null>>;
   editCommentContent: string;
-  setEditCommentContent: (content: string) => void;
+  setEditCommentContent: Dispatch<SetStateAction<string>>;
   isUpdateCommentLoading: boolean;
   updateCommentHandler: () => void;
-  setDeleteCommentId: (id: number) => void;
-  setIsOpen: (isOpen: boolean) => void;
+  setDeleteCommentId: Dispatch<SetStateAction<number>>;
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   isEligibleForUpdateAndDeleteComment: (email: string) => boolean;
 }
 
@@ -23,7 +25,7 @@ const BlogCommentItem: React.FC<BlogCommentItemProps> = ({
   editCommentContent,
   updateCommentHandler,
   setDeleteCommentId,
-  setIsOpen,
+  setIsModalOpen,
   isEligibleForUpdateAndDeleteComment,
 }) => {
   const MAX_CONTENT_LENGTH = 10000;
@@ -142,7 +144,7 @@ const BlogCommentItem: React.FC<BlogCommentItemProps> = ({
               <OnClickTrashIcon
                 handleRemover={() => {
                   setDeleteCommentId(comment.commentId);
-                  setIsOpen(true);
+                  setIsModalOpen(true);
                 }}
                 absolute={false}
                 title="Comment Delete"
