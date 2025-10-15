@@ -40,7 +40,7 @@ const BlogComments = () => {
   const [editCommentId, setEditCommentId] = useState<number | null>(null);
   const [editCommentContent, setEditCommentContent] = useState<string>('');
   const [commentContent, setCommentContent] = useState<string>('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [addComment, { isLoading: isAddCommentLoading }] =
     useAddCommentMutation();
@@ -79,8 +79,13 @@ const BlogComments = () => {
       });
   };
 
-  const deleteCommentHandler = async (commentId: number) => {
-    await deleteComment({ commentId, slug, currentPage: pageNumber })
+  const deleteCommentHandler = async () => {
+    console.log('Comment ID: ', deleteCommentId);
+    await deleteComment({
+      commentId: deleteCommentId,
+      slug,
+      currentPage: pageNumber,
+    })
       .unwrap()
       .then(res => {
         dispatch(updateBlogComment(res));
@@ -147,7 +152,7 @@ const BlogComments = () => {
             editCommentContent={editCommentContent}
             updateCommentHandler={updateCommentHandler}
             setDeleteCommentId={setDeleteCommentId}
-            setIsOpen={setIsOpen}
+            setIsModalOpen={setIsModalOpen}
             isEligibleForUpdateAndDeleteComment={
               isEligibleForUpdateAndDeleteComment
             }
@@ -155,12 +160,14 @@ const BlogComments = () => {
         ))}
       </div>
 
-      <ConfirmDialog
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        proceedAction={() => deleteCommentHandler(deleteCommentId)}
-        actionName="Delete comment"
-      />
+      {isModalOpen && (
+        <ConfirmDialog
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          proceedAction={deleteCommentHandler}
+          actionName="Delete comment"
+        />
+      )}
 
       <SimplePagination
         handlePreviousPage={handlePreviousPage}

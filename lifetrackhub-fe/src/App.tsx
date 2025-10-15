@@ -6,16 +6,14 @@ import useAuthCheck from './helper/hooks/useAuthCheck';
 import FallbackSpinner from './components/common/FallbackSpinner';
 
 // AUTH
-const LoginContainer = React.lazy(() => import('./pages/auth/LoginContainer'));
-const RegistrationContainer = React.lazy(
-  () => import('./pages/auth/RegistrationContainer')
-);
+import LoginContainer from './pages/auth/LoginContainer';
+import RegistrationContainer from './pages/auth/RegistrationContainer';
 const UserVerifyFormContainer = React.lazy(
   () => import('./pages/auth/UserVerifyFormContainer')
 );
 
 // BLOG
-const BlogContainer = React.lazy(() => import('./pages/blog/BlogContainer'));
+import BlogContainer from './pages/blog/BlogContainer';
 const BlogCreateContainer = React.lazy(
   () => import('./pages/blog/BlogCreateContainer')
 );
