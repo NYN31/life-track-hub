@@ -12,10 +12,12 @@ import { BLOG_DETAILS_PATH } from '../../constants/title-and-paths';
 import { IBlog, TagOption } from '../../types/blog';
 import { MdOutlineImageSearch } from 'react-icons/md';
 import OnClickButton from '../../components/common/button/OnClickButton';
+import { useToast } from '../../context/toast-context';
 
 const BlogUpdateContainer = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [errorMessage, setErrorMessage] = useState('');
   const [currentBlog, setCurrentBlog] = useState<IBlog | null>(null);
@@ -40,9 +42,11 @@ const BlogUpdateContainer = () => {
       .then(() => {
         reset();
         navigate(`${BLOG_DETAILS_PATH}/${slug}`);
+        toast('Blog updation has been successful.', 'success');
       })
       .catch(err => {
         setErrorMessage(err?.data?.message);
+        toast(err?.data?.message, 'error');
       });
   };
 

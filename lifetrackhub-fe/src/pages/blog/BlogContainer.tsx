@@ -18,6 +18,7 @@ import useAuth from '../../helper/hooks/useAuth';
 import { OptionType } from '../../types/common';
 import OnClickFilterIcon from '../../components/common/button/OnClickFilterIcon';
 import { ROLE } from '../../types/user';
+import { useToast } from '../../context/toast-context';
 
 const statusOptions: OptionType[] = [
   { value: 'PUBLIC', label: 'PUBLIC' },
@@ -34,6 +35,7 @@ const BlogContainer: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
+  const toast = useToast();
 
   const queryPageNo = useQuery().get('page') || '0';
   const queryKeywords = useQuery().get('keywords') || '';
@@ -138,6 +140,7 @@ const BlogContainer: React.FC = () => {
       .catch((error: any) => {
         setErrorMessage(error?.data?.message);
         setResults([]);
+        toast(error.data.message, 'error');
       })
       .finally(() => setBlogContentLoading(false));
   };

@@ -51,7 +51,7 @@ const DisplayBlog: React.FC<{
       .then()
       .catch(err => {
         setCurrentuserLikeInBlog(prev => !prev);
-        toast(err.data.message, 'error');
+        toast(err?.data?.message, 'error', 300);
       });
   };
 
@@ -71,7 +71,10 @@ const DisplayBlog: React.FC<{
     }
   };
 
-  const handleScroll = (e:React.MouseEvent<HTMLAnchorElement>, elementId: string) => {
+  const handleScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    elementId: string
+  ) => {
     e.preventDefault(); // prevent default anchor jump
     const element = document.getElementById(elementId);
     if (element) {
@@ -108,7 +111,7 @@ const DisplayBlog: React.FC<{
 
         <a
           href="#comment-list"
-          onClick={(e) => handleScroll(e, 'comment-list')}
+          onClick={e => handleScroll(e, 'comment-list')}
           className="flex items-center space-x-2 hover:text-purple-500 cursor-pointer transition"
         >
           <FaRegCommentDots className="w-5 h-5" />
@@ -137,7 +140,7 @@ const DisplayBlog: React.FC<{
                         ? 'text-purple-700 font-semibold dark:text-purple-300'
                         : ''
                     }`}
-                    onClick={(e) => handleScroll(e, heading.id)}
+                    onClick={e => handleScroll(e, heading.id)}
                   >
                     {heading.text}
                   </a>

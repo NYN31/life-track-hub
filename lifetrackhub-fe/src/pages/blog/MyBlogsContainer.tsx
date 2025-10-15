@@ -14,6 +14,7 @@ import ErrorMessage from '../../components/common/ErrorMessage';
 import { OptionType } from '../../types/common';
 import OnClickFilterIcon from '../../components/common/button/OnClickFilterIcon';
 import { statusOptions } from '../../constants/blog-constants';
+import { useToast } from '../../context/toast-context';
 
 const MyBlogContainer: React.FC = () => {
   const { email } = useParams();
@@ -22,6 +23,7 @@ const MyBlogContainer: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
 
   const queryPageNo = useQuery().get('page') || '0';
   const queryStatus = useQuery().get('status') || '';
@@ -91,6 +93,7 @@ const MyBlogContainer: React.FC = () => {
       .catch((error: any) => {
         setErrorMessage(error?.data?.message);
         setResults([]);
+        toast(error?.data?.message, 'error');
       })
       .finally(() => setBlogContentLoading(false));
   };
