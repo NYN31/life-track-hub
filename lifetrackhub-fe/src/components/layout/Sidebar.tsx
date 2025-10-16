@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { X, ChevronDown, ChevronRight } from 'lucide-react';
+import { GiCrossedBones } from 'react-icons/gi';
+import { MdKeyboardArrowRight } from 'react-icons/md';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 
 interface SidebarItem {
   title: string;
@@ -37,7 +39,7 @@ export const Sidebar = ({
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold">LifeTrackHub</h2>
             <button onClick={onToggleSidebarClose}>
-              <X className="w-5 h-5 text-purple-500" />
+              <GiCrossedBones className="w-5 h-5 text-purple-500" />
             </button>
           </div>
           <SidebarList items={items} depth={0} />
@@ -123,9 +125,9 @@ const SidebarItemComponent = ({
               className="ml-2"
             >
               {isOpen ? (
-                <ChevronDown className="w-4 h-4 text-purple-600" />
+                <MdOutlineKeyboardArrowDown className="w-4 h-4 text-purple-600" />
               ) : (
-                <ChevronRight className="w-4 h-4 text-purple-600" />
+                <MdKeyboardArrowRight className="w-4 h-4 text-purple-600" />
               )}
             </button>
           )}
@@ -141,9 +143,9 @@ const SidebarItemComponent = ({
           </span>
           {hasChildren &&
             (isOpen ? (
-              <ChevronDown className="w-4 h-4 text-purple-600" />
+              <MdOutlineKeyboardArrowDown className="w-4 h-4 text-purple-600" />
             ) : (
-              <ChevronRight className="w-4 h-4 text-purple-600" />
+              <MdKeyboardArrowRight className="w-4 h-4 text-purple-600" />
             ))}
         </button>
       )}

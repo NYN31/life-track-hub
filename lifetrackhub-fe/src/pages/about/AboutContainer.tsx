@@ -1,7 +1,7 @@
 import { FaGithub, FaLinkedin, FaFacebook, FaTwitter } from 'react-icons/fa';
 import MarkdownRenderer from '../../components/blog/MarkdownRenderer';
 import { aboutData } from '../../constants/about-json';
-import myPhoto from '../../assets/site-owner.jpeg';
+import myPhoto from '../../assets/site-owner.jpg';
 
 const AboutContainer = () => {
   return (
