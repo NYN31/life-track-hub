@@ -115,12 +115,11 @@ const BlogStatsGraph: React.FC<IBlogStats> = ({ statusCounts }) => {
   };
 
   return (
-    <div
-      className="common-box p-6 animate-fade-in w-auto xl:w-[50%]"
-      style={{ height: '400px' }}
-    >
-      <Bar options={options} data={chartData} />
-    </div>
+    <section className="space-y-8 common-box animate-fade-in w-full sm:w-[90%] md:w-[80%] xl:w-[50%] mx-auto">
+      <div className="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px]">
+        <Bar options={options} data={chartData} />
+      </div>
+    </section>
   );
 };
 

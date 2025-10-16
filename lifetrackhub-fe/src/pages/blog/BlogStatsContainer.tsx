@@ -107,7 +107,7 @@ const BlogStatsContainer = () => {
 
       {/* Stats Dashboard */}
       {blogStatsData && (
-        <div className="flex flex-col xl:flex-row gap-4 w-auto">
+        <div className="flex flex-col xl:flex-row gap-4 w-full">
           <BlogStatsDashboard stats={blogStatsData} />
           <BlogStatsGraph statusCounts={blogStatsData.statusCounts} />
         </div>
