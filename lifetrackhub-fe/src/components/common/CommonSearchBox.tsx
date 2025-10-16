@@ -126,7 +126,11 @@ const CommonSearchBox: React.FC<{
             type="button"
             disabled={!isSearchButtonEnable}
             onClick={() => handleSearch()}
-            className="h-[45px] px-6 py-2 order-2 lg:order-1 rounded-lg bg-gradient-to-r from-purple-400 to-purple-300 text-white font-semibold shadow hover:from-purple-700 hover:to-purple-600 transition text-sm disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+            className={`${
+              isSearchButtonEnable
+                ? 'btn-submit-enabled'
+                : 'btn-submit-disabled'
+            } order-2 lg:order-1`}
           >
             Search
           </button>
@@ -137,7 +141,11 @@ const CommonSearchBox: React.FC<{
               reset();
               handleReset();
             }}
-            className="h-[45px] px-6 py-2 order-1 lg:order-2 rounded-lg border border-gray-400 text-gray-600 bg-white font-semibold shadow hover:bg-gray-100 transition text-sm disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+            className={`${
+              isSearchButtonEnable
+                ? 'btn-submit-enabled'
+                : 'btn-submit-disabled'
+            } order-1 lg:order-2 bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-400 dark:hover:bg-gray-600`}
           >
             Reset
           </button>
